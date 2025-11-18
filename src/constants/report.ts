@@ -1,0 +1,1 @@
+export const reportStatuses = ["Pending", "In Review", "Resolved"] as const;

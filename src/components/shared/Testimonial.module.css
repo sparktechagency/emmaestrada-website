@@ -1,0 +1,69 @@
+.campaign-swiper {
+  overflow: hidden;
+  position: relative;
+}
+.swiper-wrapper .swiper-slide-prev{
+left: 193px !important;
+}
+.campaign-swiper .swiper-slide-prev {
+  transform: translateX(-50%) scale(0.9); /* Shift to the left and scale down */
+  opacity: 0.6; /* Optional: to give it a slightly faded look */
+  z-index: 1; 
+  
+}
+
+.campaign-swiper .swiper-slide-next {
+  transform: translateX(50%) scale(0.9); /* Shift to the right and scale down */
+  opacity: 0.6; /* Optional: to give it a slightly faded look */
+  z-index: 1; /* Ensure it stays behind the active slide */
+}
+
+.campaign-swiper .swiper-slide-active {
+  transform: scale(1.08); /* Slightly scale the active slide */
+  z-index: 10; /* Bring the active slide to the front */
+}
+
+/* Adjust the image on the next slide */
+.campaign-swiper .swiper-slide-next img {
+  transform: scale(1.1) translateX(10%); /* Adjust image scale and translation */
+}
+
+/* Adjust previous slide content (optional) */
+.campaign-swiper .swiper-slide-prev .card-container {
+  transform: scale(0.85); /* Scale down the content */
+  opacity: 0.9; /* Optional fading effect */
+  transition: 0.4s ease;
+}
+
+/* Center slide bigger */
+.swiper-slide-active {
+  transform: scale(1.08) !important;
+  z-index: 10;
+}
+
+/* Side slides slightly faded */
+.swiper-slide-next,
+.swiper-slide-prev {
+  filter: blur(0.5px) brightness(0.7);
+}
+
+/* INACTIVE slides */
+.campaign-swiper .swiper-slide:not(.swiper-slide-active) .card-container {
+  transform: scale(0.85); /* change this value to increase height */
+  opacity: 0.9;
+  transition: 0.4s ease;
+}
+
+@media (max-width: 768px) {
+  .testimonial-header {
+    font-size: 1.5rem;
+  }
+
+  .testimonial-subheader {
+    font-size: 1rem;
+  }
+
+  .testimonial-card {
+    padding: 20px;
+  }
+}
