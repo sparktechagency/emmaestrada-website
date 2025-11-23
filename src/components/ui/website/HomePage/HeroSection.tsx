@@ -1,0 +1,107 @@
+import Container from "@/components/shared/Container";
+import { Star, ArrowUpRight, Music, Mic, Video } from "lucide-react";
+
+const HeroSection = () => {
+    return (
+        <section className="relative px-4 h-screen md:py-20 ">
+
+            <div className="absolute top-0 left-0 w-full h-full inset-0 pointer-events-none">
+                <img src="/headerBg.png" alt="background" className="h-full w-full object-cover " />
+            </div>
+            <Container>
+
+                <div className="absolute inset-0 pointer-events-none">
+                    <div className="absolute top-10 left-[5%] w-20 h-20 md:w-24 md:h-24 bg-purple-500 rounded-full blur-2xl opacity-60 animate-pulse"></div>
+
+                    <div className="absolute top-[30%] left-[10%] hidden lg:block">
+                        <img src="/instagram.png" className="w-24 h-24 blur-[3px]" />
+                    </div>
+                    <div className="absolute bottom-20 left-[20%] hidden lg:block">
+                        <img src="/tiktok.png" className="w-24 h-24 blur-[3px]" />
+                    </div>
+
+                    <div className="absolute top-[15%] right-[20%] hidden lg:block">
+                        <img src="/microphone.png" className="w-24 h-24 blur-[3px]" />
+                    </div>
+                    <div className="absolute bottom-[15%] right-[20%] hidden lg:block">
+                        <img src="/youtube.png" className="w-24 h-16 blur-[3px]" />
+                    </div>
+
+                    {/* Right - Orange Glow */}
+                    <div className="absolute top-1/2 right-[10%] w-24 h-24 bg-orange-500 rounded-full blur-2xl opacity-40"></div>
+                </div>
+
+                {/* Main Content */}
+                <div className=" text-center relative z-10 mt-32">
+                    {/* Top Reviews */}
+                    <div className="flex flex-wrap justify-center gap-4 md:gap-24 mb-8 md:mb-20">
+                        {[1, 2, 3].map((item) => (
+                            <div key={item} className="flex flex-col items-center gap-2">
+                                <p className="text-white text-sm md:text-2xl mb-2">Campaign Planner</p>
+                                <div className="flex gap-1">
+                                    {[1, 2, 3, 4, 5].map((star) => (
+                                        <Star
+                                            key={star}
+                                            className="w-4 h-4 md:w-5 md:h-5 fill-yellow-400 text-yellow-400"
+                                        />
+                                    ))}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Main Heading */}
+                    <div className="mb-6 md:mb-8 ">
+                        <h1 className="text-white text-4xl md:text-[72px] lg:text-7xl mb-4 md:mb-10 font-bold">
+                            Where Sound Meets
+                        </h1>
+                        <button
+                            className=" text-white text-7xl font-extrabold py-3 px-14 rounded-[40px] shadow-2xl shadow-orange-400/50 transition-all duration-300 hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-orange-300 bg-gradient-to-r from-[#ff8a00] to-[#ff4500] uppercase tracking-wider"
+                        >
+                            SUCCESS
+                        </button>
+
+                    </div>
+
+                    {/* Subtitle */}
+                    <p className="text-white/80 text-base md:text-lg lg:text-2xl mb-8 md:mb-10 max-w-2xl mx-auto px-4 leading-10">
+                        Artists launch campaigns. Influencers <br /> promote songs. Everyone wins.
+                    </p>
+
+                    {/* CTA Button */}
+                    <button className="group bg-white text-gray-900 px-8 py-4 rounded-full inline-flex items-center gap-2 hover:bg-gray-100 transition-all transform hover:scale-105">
+                        <span className="text-base md:text-lg">Get Started</span>
+                        <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                    </button>
+                </div>
+            </Container>
+            <style>{`
+        @keyframes float {
+          0%, 100% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-20px);
+          }
+        }
+        @keyframes float-delayed {
+          0%, 100% {
+            transform: translateY(0px) rotate(0deg);
+          }
+          50% {
+            transform: translateY(-15px) rotate(5deg);
+          }
+        }
+        .animate-float {
+          animation: float 3s ease-in-out infinite;
+        }
+        .animate-float-delayed {
+          animation: float-delayed 4s ease-in-out infinite;
+        }
+      `}</style>
+        </section>
+    );
+}
+
+
+export default HeroSection;

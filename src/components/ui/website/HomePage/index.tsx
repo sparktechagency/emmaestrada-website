@@ -3,6 +3,8 @@ import Testimonial from "@/components/shared/Testimonial";
 import { myFetch } from "@/utils/myFetch";
 import UserList from "./UserList";
 import ShadowCom from "@/components/shared/ShadowCom";
+import HeroSection from "./HeroSection";
+import BrandLogos from "./BrandLogos";
 
 const HomePage = async ({ searchParams }: any) => {
   // const {role} = await searchParams;
@@ -10,6 +12,8 @@ const HomePage = async ({ searchParams }: any) => {
 
   return (
     <div className="">
+      <HeroSection />
+      <BrandLogos />
       <Container>
         {/* <UserList data={res?.data} /> */}
         <Testimonial />
