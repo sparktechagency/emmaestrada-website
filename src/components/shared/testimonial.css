@@ -1,34 +1,87 @@
+/* Custom Navigation Buttons */
+.custom-nav-btn {
+  width: 46px;
+  height: 46px;
+  border: 2px solid #fff;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 20px;
+  transition: 0.3s ease;
+}
+
+.custom-nav-btn:hover {
+  background: #fff;
+  color: #000;
+}
+
+.swiper-prev-btn {
+  left: 20px;
+}
+
+.swiper-next-btn {
+  right: 20px;
+}
+
+/* Pagination Style */
+.custom-pagination {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.custom-pagination .swiper-pagination-bullet {
+  width: 14px;
+  height: 14px;
+  background: transparent;
+  border: 2px solid #fff;
+  opacity: 1;
+  transition: 0.3s ease;
+}
+
+.custom-pagination .swiper-pagination-bullet-active {
+  background: #fff;
+}
+
+
 .campaign-swiper {
   overflow: hidden;
   position: relative;
+  
 }
+
+
 .swiper-wrapper .swiper-slide-prev{
 left: 193px !important;
 }
 .campaign-swiper .swiper-slide-prev {
-  transform: translateX(-50%) scale(0.9); /* Shift to the left and scale down */
-  opacity: 0.6; /* Optional: to give it a slightly faded look */
+  transform: translateX(-50%) scale(0.9);
+  opacity: 0.6; 
   z-index: 1; 
   
 }
 
 .campaign-swiper .swiper-slide-next {
-  transform: translateX(50%) scale(0.9); /* Shift to the right and scale down */
-  opacity: 0.6; /* Optional: to give it a slightly faded look */
-  z-index: 1; /* Ensure it stays behind the active slide */
+  transform: translateX(50%) scale(0.9);
+  opacity: 0.6; 
+  z-index: 1; 
 }
 
 .campaign-swiper .swiper-slide-active {
-  transform: scale(1.08); /* Slightly scale the active slide */
-  z-index: 10; /* Bring the active slide to the front */
+  transform: scale(1.08); 
+  z-index: 10; 
+  
 }
 
-/* Adjust the image on the next slide */
+
 .campaign-swiper .swiper-slide-next img {
-  transform: scale(1.1) translateX(10%); /* Adjust image scale and translation */
+  transform: scale(1.1) translateX(10%); 
 }
 
-/* Adjust previous slide content (optional) */
+
 .campaign-swiper .swiper-slide-prev .card-container {
   transform: scale(0.85); /* Scale down the content */
   opacity: 0.9; /* Optional fading effect */
@@ -38,8 +91,9 @@ left: 193px !important;
 /* Center slide bigger */
 .swiper-slide-active {
   transform: scale(1.08) !important;
-  z-index: 10;
+  z-index: 10;  
 }
+
 
 /* Side slides slightly faded */
 .swiper-slide-next,
@@ -52,6 +106,7 @@ left: 193px !important;
   transform: scale(0.85); /* change this value to increase height */
   opacity: 0.9;
   transition: 0.4s ease;
+  
 }
 
 @media (max-width: 768px) {
