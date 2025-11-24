@@ -44,7 +44,7 @@ const ArtistCard = ({ data }:any) => {
                             {data.creator.charAt(0)}
                         </div>
                         {/* Creator Name */}
-                        <span className="text-lg font-medium text-black blur-[3px]">
+                        <span className="text-lg font-medium text-black blur-[4px]">
                             {data.creator}
                         </span>
                     </div>

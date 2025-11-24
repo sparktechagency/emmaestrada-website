@@ -3,71 +3,70 @@ import { Separator } from "@/components/ui/separator"
 import { Facebook, Twitter, Instagram, Mail } from "lucide-react"
 import Link from "next/link"
 import Container from "./Container"
+import { IoIosCall } from "react-icons/io"
+import { MdEmail } from "react-icons/md";
+
 
 export default function Footer() {
   return (
-    <footer className="bg-muted/40 border-t pb-10">
+    <footer className="bg-[#FFA76A] border-t pt-32 pb-14 text-white ">
       <Container >
         <div className="grid grid-cols-1 pt-10 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Logo & About */}
           <div>
             <h2 className="text-2xl font-bold mb-3">Artify</h2>
-            <p className="text-sm text-muted-foreground">
-              Discover, buy, and sell exclusive digital artworks by talented artists worldwide.
+            <p className="text-lg text-white">
+              Authentic Job Bulletins for Influencer. Friendly for brands to create campaign.
             </p>
+            <div className="flex gap-4 mt-4 sm:mt-5">
+            <Link href="#" className="hover:text-primary flex items-center justify-center w-10 h-10 rounded-full bg-black"><Facebook size={18} /></Link>
+            <Link href="#" className="hover:text-primary flex items-center justify-center w-10 h-10 rounded-full bg-black"><Twitter size={18} /></Link>
+            <Link href="#" className="hover:text-primary flex items-center justify-center w-10 h-10 rounded-full bg-black"><Instagram size={18} /></Link>
+            <Link href="mailto:info@artify.com" className="hover:text-primary flex items-center justify-center w-10 h-10 rounded-full bg-black"><Mail size={18} /></Link>
+          </div>
           </div>
 
-          {/* Quick Links */}
+          {/* Services */}
           <div>
-            <h3 className="font-semibold mb-3">Quick Links</h3>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><Link href="/">Home</Link></li>
-              <li><Link href="/about">About</Link></li>
-              <li><Link href="/events">Events</Link></li>
-              <li><Link href="/contact">Contact</Link></li>
+            <h3 className="font-semibold mb-3 text-xl">Services</h3>
+            <ul className="space-y-2 text-lg ">
+              <li><Link href="/">About Us</Link></li>
+              <li><Link href="/campaigns">Compaigns</Link></li>
+              <li><Link href="/influencers">Influencers</Link></li>
+              <li><Link href="/testimonial">Testimonial</Link></li>
+              <li><Link href="/#">Wow we work</Link></li>
             </ul>
           </div>
 
           {/* Support */}
           <div>
-            <h3 className="font-semibold mb-3">Support</h3>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><Link href="/faq">FAQ</Link></li>
-              <li><Link href="/terms">Terms & Conditions</Link></li>
+            <h3 className="font-semibold mb-3 text-xl">Support</h3>
+            <ul className="space-y-2 text-lg ">
+              <li><Link href="#">Contact Us</Link></li>
+              <li><Link href="/terms">Terms and Conditions</Link></li>
               <li><Link href="/privacy">Privacy Policy</Link></li>
+              <li><Link href="/faq">FAQ</Link></li>
             </ul>
           </div>
 
-          {/* Newsletter */}
           <div>
-            <h3 className="font-semibold mb-3">Stay Updated</h3>
-            <form className="flex gap-2">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="w-full px-3 py-2 rounded-md border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-              <button
-                type="submit"
-                className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 text-sm"
-              >
-                Subscribe
-              </button>
-            </form>
+            <h3 className="font-semibold mb-3 text-xl">Contact</h3>
+            <ul className="space-y-2 text-lg ">
+              <li><p className="flex items-center gap-3"><span><IoIosCall size={20} color="var(--color-primary)"/></span> +62 812-3456-7890</p></li>              
+
+              <li><p className="flex items-center gap-3"><span><MdEmail size={20} color="var(--color-primary)"/></span> Support@Dailybuzz.com</p></li>              
+            </ul>
           </div>
         </div>
 
         <Separator className="my-8" />
 
         {/* Bottom Section */}
-        <div className="flex flex-col sm:flex-row justify-between items-center text-sm text-muted-foreground">
+        <div className="flex flex-col sm:flex-row justify-between items-center text-lg ">
           <p>© {new Date().getFullYear()} Artify. All rights reserved.</p>
-
-          <div className="flex gap-4 mt-4 sm:mt-0">
-            <Link href="#" className="hover:text-primary"><Facebook size={18} /></Link>
-            <Link href="#" className="hover:text-primary"><Twitter size={18} /></Link>
-            <Link href="#" className="hover:text-primary"><Instagram size={18} /></Link>
-            <Link href="mailto:info@artify.com" className="hover:text-primary"><Mail size={18} /></Link>
+          <div className="flex items-center gap-3">
+            <span className="border-r-2 pr-3">Terms of Use</span>
+            <span>Policy</span>
           </div>
         </div>
       </Container>

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Bricolage_Grotesque, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import "react-vertical-timeline-component/style.min.css";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

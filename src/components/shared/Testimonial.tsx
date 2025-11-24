@@ -16,9 +16,12 @@ import "swiper/css/navigation";
 
 import "./testimonial.css";
 import CampaignCard from "./CampaignCard";
+import Container from "./Container";
 
 const Testimonial: React.FC = () => {
   return (
+    <section className="section">
+    <Container>
     <div className="relative w-full flex justify-center py-10">
       <Swiper
         modules={[EffectCoverflow, Pagination, Navigation, Autoplay]}
@@ -83,6 +86,8 @@ const Testimonial: React.FC = () => {
         <div className="swiper-next-btn custom-nav-btn">❯</div>
       </div>
     </div>
+    </Container>
+    </section>
   );
 };
 

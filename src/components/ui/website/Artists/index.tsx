@@ -1,8 +1,16 @@
+import CommonHeader from '@/components/shared/CommonHeader'
 import React from 'react'
+import ArtHeader from './ArtHeader'
+import Container from '@/components/shared/Container'
 
 const Artists = () => {
   return (
-    <div className='md:py-20'>Artists</div>
+    <div className="">
+      <CommonHeader title="Creators"/>
+      <Container>
+      <ArtHeader />
+      </Container>      
+    </div>
   )
 }
 

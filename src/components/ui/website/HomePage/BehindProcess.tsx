@@ -1,157 +1,182 @@
-import React from 'react';
+"use client";
 
-// Data for the 3 steps in the process, mimicking the structure and text from the image.
-const stepsData = [
-  {
-    number: '01',
-    title: 'Create Campaign',
-    description: 'Upload your track, set your goals and budget, define your audience, and let our platform help you reach the right listeners, grow your fanbase, and amplify your music to the next level.',
-    // Using placeholders for images as per the guidelines.
-    imageSrc: 'https://placehold.co/500x350/f43f5e/ffffff?text=LIVE+CONCERT',
-    alt: 'People at a live concert',
-    layout: 'left', // Text content on the left side of the timeline
-  },
-  {
-    number: '02',
-    title: 'Influencers Promote',
-    description: 'Upload your track, set your goals and budget, define your audience, and let our platform help you reach the right listeners, grow your fanbase, and amplify your music to the next level.',
-    imageSrc: 'https://placehold.co/500x350/f43f5e/ffffff?text=STUDIO+PRODUCTION',
-    alt: 'A music producer working in a studio',
-    layout: 'right', // Text content on the right side of the timeline (image on left)
-  },
-  {
-    number: '03',
-    title: 'Track & Get Paid',
-    description: 'Upload your track, set your goals and budget, define your audience, and let our platform help you reach the right listeners, grow your fanbase, and amplify your music to the next level.',
-    imageSrc: 'https://placehold.co/500x350/f43f5e/ffffff?text=MUSIC+ANALYTICS',
-    alt: 'Music waveform and analytics chart',
-    layout: 'left', // Text content on the left side of the timeline
-  },
+import Container from "@/components/shared/Container";
+import {
+    VerticalTimeline,
+    VerticalTimelineElement,
+} from "react-vertical-timeline-component";
+import "react-vertical-timeline-component/style.min.css";
+import React, { useMemo } from 'react';
+import { Sparkles, Megaphone, DollarSign } from 'lucide-react';
+
+const TIMELINE_STEPS = [
+    {
+        step: 1,
+        title: "Create Campaign",
+        description: "Upload your track, set your goals and budget, define your audience, and let our platform help you reach the right listeners, grow your fanbase, and amplify your music to the next level.",
+        imageUrl: "https://media.self.com/photos/5e70f72443731c000882cfe7/4:3/w_2560%2Cc_limit/GettyImages-125112134.jpg",
+        icon: Sparkles,
+    },
+    {
+        step: 2,
+        title: "Influencers Promote",
+        description: "Our network of vetted influencers and curators will promote your music across various platforms, ensuring high-quality placements and genuine engagement with potential new fans.",
+        imageUrl: "https://img.freepik.com/free-photo/joyful-pleased-music-producer-enjoying-his-high-quality-track-control-room_482257-93613.jpg?semt=ais_hybrid&w=740&q=80",
+        icon: Megaphone,
+    },
+    {
+        step: 3,
+        title: "Track & Get Paid",
+        description: "Track your campaign performance in real-time with detailed analytics. We handle the royalty collection and payments, ensuring you get paid quickly and transparently for every stream.",
+        imageUrl: "https://cdn.prod.website-files.com/6450cabeeba5aa511c9ac878/645bc11256621458c3d4cb15_Brandtrack-dj.jpeg",
+        icon: DollarSign,
+    },
 ];
 
-// Reusable component for the content box of each step.
-const StepContent = ({ title, description }:any) => (
-  <div className="flex flex-col space-y-2">
-    <h3 className="text-xl font-bold text-gray-900">{title}</h3>
-    <p className="text-gray-600 leading-relaxed">{description}</p>
-  </div>
-);
+export default function BehindProcess() {
+    return (
+        <div className="bg-secondary py-[130px]">
+            <Container>
+                {/* Header */}
+                <div className="mb-20 flex flex-col md:flex-row md:items-end ">
+                    <div className="md:w-1/2">
+                        <span className="px-10 py-3 bg-white text-primary rounded-md font-extrabold shadow-md text-6xl">
+                            The Beat
+                        </span>         
+                        <h1 className="text-6xl font-extrabold text-gray-900 mt-10 leading-tight">
+                            Behind the Process
+                        </h1>               
+                    </div>
 
-// Reusable component for the image box of each step.
-const StepImage = ({ src, alt }:any) => (
-  <div className="overflow-hidden rounded-xl shadow-lg transition-all duration-300 hover:shadow-2xl">
-    <img
-      src={src}
-      alt={alt}
-      className="w-full h-auto object-cover"      
-    />
-  </div>
-);
 
-// The core component for a single step in the timeline.
-const TimelineStep = ({ step, isLast }:any) => {
-  const isLeft = step.layout === 'left';
-  const isRight = step.layout === 'right';
+                    <div className="md:w-1/2 flex items-center pt-3">
+                        <p className="text-2xl text-gray-700 leading-12 text-white">
+                            Discover how our platform helps music creators and influencers
+                            connect, grow, and shine
+                        </p>
+                    </div>
+                </div>
 
-  // Content rendering based on layout (for desktop)
-  const Content = <StepContent title={step.title} description={step.description} />;
-  const Image = <StepImage src={step.imageSrc} alt={step.alt} />;
+                <div className="relative">
+                    {/* Continuous Timeline Line: Absolutely positioned to run down the center */}
+                    <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-1 -translate-x-1/2">
+                        <div className="absolute top-0 bottom-0 w-full border-l-4 border-dashed border-white"></div>
+                    </div>
 
-  return (
-    <div className="relative flex min-h-[300px] py-4 md:py-12">
-      
-      {/* 1. Content Area (Left/Right) */}
-      <div 
-        className={`flex w-full md:w-1/2 p-4 md:p-6 ${
-          isLeft ? 'md:order-1 md:text-right md:justify-end' : 'md:order-3'
-        }`}
-      >
-        <div className="max-w-md w-full">
-          {isLeft ? Content : Image}
+                    {TIMELINE_STEPS.map((step, index) => (
+                        <TimelineItem
+                            key={step.step}
+                            data={step}
+                            isOdd={index % 2 === 0} // 0 is odd in a 0-indexed array, representing Step 1, 3, etc.
+                            isLast={index === TIMELINE_STEPS.length - 1}
+                        />
+                    ))}
+                </div>
+
+            </Container>
         </div>
-      </div>
-      
-      {/* 2. Timeline Axis (Center) */}
-      <div className="relative w-12 flex justify-center md:order-2">
-        {/* Dashed Line */}
-        {!isLast && (
-          <div 
-            className="absolute top-0 bottom-0 w-1 bg-rose-500/50" 
-            style={{ 
-              borderLeft: '2px dashed', 
-              borderColor: 'rgb(244 63 94 / 0.5)', 
-              marginLeft: '-1px' 
-            }}
-          ></div>
-        )}
-        
-        {/* Number Circle */}
-        <div className="absolute top-1/2 transform -translate-y-1/2 w-10 h-10 md:w-16 md:h-16 flex items-center justify-center rounded-full bg-white border-4 border-rose-500 z-10 shadow-lg">
-          <span className="text-lg md:text-2xl font-extrabold text-gray-900">{step.number}</span>
+    );
+}
+
+
+
+const TimelineItem = ({ data, isOdd, isLast }: any) => {
+    const { step, title, description, imageUrl, icon: Icon } = data;
+
+    // Content block (text description)
+    const contentBlock = (
+        <div className={` h-full transition duration-300`}>
+            <h3 className="text-4xl font-bold text-black mb-2">{title}</h3>
+            <p className="text-white text-xl leading-10">{description}</p>
         </div>
-      </div>
+    );
 
-      {/* 3. Image Area (Left/Right) */}
-      <div 
-        className={`flex w-full md:w-1/2 p-4 md:p-6 ${
-          isLeft ? 'md:order-3' : 'md:order-1 md:text-right md:justify-end'
-        } hidden md:flex`}
-      >
-        <div className="max-w-md w-full">
-          {isLeft ? Image : Content}
-        </div>
-      </div>
-
-      {/* Mobile: Re-display Image/Content for clarity */}
-      <div className={`md:hidden flex w-full p-4 ${isLeft ? 'order-3' : 'order-1'} `}>
-         <div className="max-w-full w-full">
-          {isLeft ? Image : Content}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const BehindProcess = () => {
-  return (
-    <div className="min-h-screen bg-gray-50 font-sans">
-      <div className="container mx-auto px-4 py-16 max-w-7xl">
-        
-        {/* Header Section */}
-        <header className="mb-16 md:mb-24 flex flex-col md:flex-row md:items-start md:space-x-12">
-          
-          {/* Title Block */}
-          <div className="flex-shrink-0 md:w-1/3 mb-6 md:mb-0">
-            <span className="inline-block px-4 py-1.5 text-lg font-extrabold text-white bg-rose-500 rounded-full shadow-md mb-3">
-              The Beat
-            </span>
-            <h1 className="text-5xl font-extrabold text-gray-900 leading-tight">
-              Behind the Process
-            </h1>
-          </div>
-
-          {/* Description Block */}
-          <div className="md:w-2/3 flex items-center pt-2">
-            <p className="text-xl text-gray-700 max-w-2xl">
-              Discover how our platform helps music creators and influencers connect, grow, and shine
-            </p>
-          </div>
-        </header>
-
-        {/* Timeline Steps */}
-        <div className="relative">
-          {stepsData.map((step, index) => (
-            <TimelineStep 
-              key={step.number} 
-              step={step} 
-              isLast={index === stepsData.length - 1} 
+    // Media block (image)
+    const mediaBlock = (
+        <div className="rounded-xl overflow-hidden shadow-lg h-full">
+            <img
+                src={imageUrl}
+                alt={title}
+                className="w-full h-full object-cover"
+                onError={(e: any) => {
+                    e.target.onerror = null; // Prevents infinite loop if placeholder fails
+                    e.target.src = `https://placehold.co/600x400/1e293b/f8fafc?text=Error`;
+                }}
             />
-          ))}
         </div>
+    );
 
-      </div>     
-    </div>
-  );
+    // Center column element (the number circle)
+    // The continuous dashed line is now handled by the parent 'App' component.
+    const centerElement = (
+        <div className="flex flex-col items-center justify-start h-full pt-6">
+            {/* Number Circle */}
+            <div className="w-16 h-16 bg-black text-white font-extrabold text-2xl rounded-full flex items-center justify-center ring-4 ring-black  z-10 shadow-xl shadow-cyan-500/30">
+                {step < 10 ? `0${step}` : step}
+            </div>
+        </div>
+    );
+
+    // Desktop (md and above) Layout - 5-column grid
+    // We use items-start for top alignment and remove vertical transforms.
+    if (isOdd) {
+        return (
+            <div className="grid grid-cols-5 gap-8 py-8 items-start">
+                {/* Left: Text Block (col 1-2) */}
+                <div className="col-span-2 hidden md:block">
+                    {contentBlock}
+                </div>
+                {/* Center: Number/Circle (col 3) */}
+                <div className="col-span-1 hidden md:flex flex-col h-full">
+                    {centerElement}
+                </div>
+                {/* Right: Image Block (col 4-5) */}
+                <div className="col-span-2 hidden md:block">
+                    {mediaBlock}
+                </div>
+
+                {/* Mobile Stack Layout (col 1-5, always) */}
+                <div className="col-span-5 md:hidden space-y-4">
+                    <div className="flex items-center space-x-4">
+                        <div className="w-12 h-12 bg-white text-slate-900 font-extrabold text-xl rounded-full flex items-center justify-center ring-2 ring-cyan-500 flex-shrink-0">
+                            {step < 10 ? `0${step}` : step}
+                        </div>
+                        <h3 className="text-xl font-bold text-white">{title}</h3>
+                    </div>
+                    {mediaBlock}
+                    <p className="text-slate-400 text-base">{description}</p>
+                </div>
+            </div>
+        );
+    }
+
+    // Even steps (2, 4, ...) - Image on left, Text on right
+    return (
+        <div className="grid grid-cols-5 gap-8 py-8 items-start">
+            {/* Left: Image Block (col 1-2) */}
+            <div className="col-span-2 hidden md:block">
+                {mediaBlock}
+            </div>
+            {/* Center: Number/Circle (col 3) */}
+            <div className="col-span-1 hidden md:flex flex-col h-full">
+                {centerElement}
+            </div>
+            {/* Right: Text Block (col 4-5) */}
+            <div className="col-span-2 hidden md:block">
+                {contentBlock}
+            </div>
+
+            {/* Mobile Stack Layout (col 1-5, always) */}
+            <div className="col-span-5 md:hidden space-y-4">
+                <div className="flex items-center space-x-4">
+                    <div className="w-12 h-12 bg-white text-slate-900 font-extrabold text-xl rounded-full flex items-center justify-center ring-2 ring-cyan-500 flex-shrink-0">
+                        {step < 10 ? `0${step}` : step}
+                    </div>
+                    <h3 className="text-xl font-bold text-white">{title}</h3>
+                </div>
+                {mediaBlock}
+                <p className="text-slate-400 text-base">{description}</p>
+            </div>
+        </div>
+    );
 };
-
-export default BehindProcess;

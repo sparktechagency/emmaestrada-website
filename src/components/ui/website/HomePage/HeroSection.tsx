@@ -3,6 +3,7 @@ import { Star, ArrowUpRight, Music, Mic, Video } from "lucide-react";
 import BrandLogos from "./BrandLogos";
 
 const HeroSection = () => {
+    
     return (
         <section className="relative h-screen md:py-20 pb-30">
 
