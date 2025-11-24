@@ -1,4 +1,5 @@
-import React from "react";
+'use client'
+import React, { useEffect, useState } from "react";
 import Container from "./Container";
 import Link from "next/link";
 import { Button } from "../ui/button";
@@ -7,8 +8,19 @@ import { CircleFadingArrowUpIcon, Menu, Search, X } from "lucide-react";
 
 
 const Navbar = () => {
+   const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 80);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-     <nav className="fixed w-full z-50 px-4 bg-[#15141A]/70 py-6 md:px-8 lg:px-12">
+    <nav
+      className={`fixed w-full z-50 px-4 py-6 md:px-8 lg:px-12 transition-all duration-300
+      ${scrolled ? "backdrop-blur-xl bg-[#15141A]/70 shadow-lg" : "bg-transparent"}`}
+    >
       <Container>
       <div className=" flex items-center justify-between">
         {/* Logo */}
@@ -33,7 +45,7 @@ const Navbar = () => {
         </div>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full px-8 py-3">
+        <div className="hidden md:flex items-center gap-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full  px-8 py-3">
           <a
             href="#home"
             className="px-4 py-2 text-white hover:text-orange-500 transition-colors"
@@ -59,7 +71,7 @@ const Navbar = () => {
           <button className="hidden sm:block p-2 text-white hover:text-orange-500 transition-colors">
             <Search className="w-6 h-6" />
           </button>
-          <button className="hidden sm:block bg-gradient-to-r from-orange-500 to-orange-600 text-white px-6 py-3 rounded-full hover:from-orange-600 hover:to-orange-700 transition-all">
+          <button className="bg-primary btn text-white rounded-full hover:from-orange-600 hover:to-orange-700 transition-all">
             Sign up / Sign in
           </button>
 

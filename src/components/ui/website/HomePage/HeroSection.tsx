@@ -1,29 +1,30 @@
 import Container from "@/components/shared/Container";
 import { Star, ArrowUpRight, Music, Mic, Video } from "lucide-react";
+import BrandLogos from "./BrandLogos";
 
 const HeroSection = () => {
     return (
-        <section className="relative px-4 h-screen md:py-20 ">
+        <section className="relative h-screen md:py-20 pb-30">
 
-            <div className="absolute top-0 left-0 w-full h-full inset-0 pointer-events-none">
+            <div className="absolute top-0 left-0 w-full h-full inset-0 pointer-events-none z-10">
                 <img src="/headerBg.png" alt="background" className="h-full w-full object-cover " />
             </div>
             <Container>
 
                 <div className="absolute inset-0 pointer-events-none">
-                    <div className="absolute top-10 left-[5%] w-20 h-20 md:w-24 md:h-24 bg-purple-500 rounded-full blur-2xl opacity-60 animate-pulse"></div>
+                    <div className="absolute z-30 top-10 left-[5%] w-20 h-20 md:w-24 md:h-24 bg-purple-500 rounded-full blur-2xl opacity-60 animate-pulse"></div>
 
-                    <div className="absolute top-[30%] left-[10%] hidden lg:block">
+                    <div className="absolute z-30 top-[30%] left-[10%] hidden lg:block">
                         <img src="/instagram.png" className="w-24 h-24 blur-[3px]" />
                     </div>
-                    <div className="absolute bottom-20 left-[20%] hidden lg:block">
+                    <div className="absolute z-30 bottom-1/3 left-[20%] hidden lg:block">
                         <img src="/tiktok.png" className="w-24 h-24 blur-[3px]" />
                     </div>
 
-                    <div className="absolute top-[15%] right-[20%] hidden lg:block">
+                    <div className="absolute z-30 top-[15%] right-[20%] hidden lg:block">
                         <img src="/microphone.png" className="w-24 h-24 blur-[3px]" />
                     </div>
-                    <div className="absolute bottom-[15%] right-[20%] hidden lg:block">
+                    <div className="absolute z-30 bottom-2/5 right-[20%] hidden lg:block">
                         <img src="/youtube.png" className="w-24 h-16 blur-[3px]" />
                     </div>
 
@@ -32,7 +33,7 @@ const HeroSection = () => {
                 </div>
 
                 {/* Main Content */}
-                <div className=" text-center relative z-10 mt-32">
+                <div className=" text-center relative z-10 mt-20">
                     {/* Top Reviews */}
                     <div className="flex flex-wrap justify-center gap-4 md:gap-24 mb-8 md:mb-20">
                         {[1, 2, 3].map((item) => (
@@ -51,12 +52,12 @@ const HeroSection = () => {
                     </div>
 
                     {/* Main Heading */}
-                    <div className="mb-6 md:mb-8 ">
-                        <h1 className="text-white text-4xl md:text-[72px] lg:text-7xl mb-4 md:mb-10 font-bold">
+                    <div className="">
+                        <h1 className="text-white text-4xl md:text-[72px] lg:text-7xl mb-4 md:mb-5 font-bold">
                             Where Sound Meets
                         </h1>
                         <button
-                            className=" text-white text-7xl font-extrabold py-3 px-14 rounded-[40px] shadow-2xl shadow-orange-400/50 transition-all duration-300 hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-orange-300 bg-gradient-to-r from-[#ff8a00] to-[#ff4500] uppercase tracking-wider"
+                            className=" text-white text-5xl font-extrabold py-3 px-14 rounded-[40px] shadow-2xl shadow-orange-400/50 transition-all duration-300 hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-orange-300 bg-gradient-to-r from-[#ff8a00] to-[#ff4500] uppercase tracking-wider"
                         >
                             SUCCESS
                         </button>
@@ -64,7 +65,7 @@ const HeroSection = () => {
                     </div>
 
                     {/* Subtitle */}
-                    <p className="text-white/80 text-base md:text-lg lg:text-2xl mb-8 md:mb-10 max-w-2xl mx-auto px-4 leading-10">
+                    <p className="text-white/80 text-base md:text-lg lg:text-2xl mb-8 md:mb-5 max-w-2xl mx-auto px-4 leading-10 mt-5">
                         Artists launch campaigns. Influencers <br /> promote songs. Everyone wins.
                     </p>
 
@@ -75,7 +76,10 @@ const HeroSection = () => {
                     </button>
                 </div>
             </Container>
-            <style>{`
+
+            <BrandLogos />
+
+           <style>{`
         @keyframes float {
           0%, 100% {
             transform: translateY(0px);
@@ -98,7 +102,7 @@ const HeroSection = () => {
         .animate-float-delayed {
           animation: float-delayed 4s ease-in-out infinite;
         }
-      `}</style>
+      `}</style> 
         </section>
     );
 }

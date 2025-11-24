@@ -20,9 +20,8 @@ const BrandLogos = () => {
   ];
 
   return (
-    <section className="border-t border-white/10 bg-gradient-to-r from-[#1a1a2e] via-[#2d1b3d] to-[#3d2817]">
-      <Container>
-        <div className="px-4 py-8 md:py-12">
+    <section style={{borderInline: 0}} className="border-t border-white/10 glassBg backdrop-blur-xl !rounded-none absolute w-full bottom-10 z-20">      
+        <div className=" py-8 md:py-10">
 
           {/* Swiper Carousel - Desktop */}
           <div className="hidden md:block">
@@ -71,8 +70,7 @@ const BrandLogos = () => {
             </Swiper>
           </div>
 
-        </div>
-      </Container>
+        </div>      
     </section>
   );
 };

@@ -118,98 +118,38 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+  .title {
+  @apply text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight
 }
-/* .campaign-swiper {
-  --swiper-3d-perspective: auto !important;
-} */
-/* SWIPER OUTER SPACING */
-.mySwiper {
+
+.textPara {
+  @apply text-[#8A8A8A] text-[24px] font-sans
+}
+
+.btn {
+  @apply px-6 py-3
+}
+
+}
+
+.section {
+  padding-block: 150px;
+}
+
+.glassBg {
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5.9px);
+  -webkit-backdrop-filter: blur(5.9px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+
+.campaign-swiper  {
   padding-bottom: 60px !important;
-}
-
-/* =====================
-   PAGINATION STYLING
-   ===================== */
-.custom-pagination {
-  display: flex;
-  gap: 6px;
-}
-
-/* Default bullets */
-.custom-pagination .swiper-pagination-bullet {
-  width: 22px !important;
-  height: 12px !important;
-  background: transparent !important;
-  border: 2px solid var(--primary-color) !important;
-  border-radius: 999px !important;
-  opacity: 1 !important;
-  transition: 0.3s ease-in-out !important;
-}
-
-/* Active bullet expands */
-.custom-pagination .swiper-pagination-bullet-active {
-  background: var(--primary-color) !important;
-  width: 60px !important;
-}
-
-/* =====================
-   NAVIGATION BUTTONS
-   ===================== */
-.custom-nav-btn {
-  z-index: 20;
-  width: 46px;
-  height: 46px;
-  color: var(--primary-color);
-  border: 2px solid var(--primary-color);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-size: 22px;
-  font-weight: bold;
-  transition: 0.3s ease-in-out;
-}
-
-.custom-nav-btn:hover {
-  background: var(--primary-color);
-  color: white;
-  transform: scale(1.08);
-}
-
-/* =====================
-   SLIDE EFFECTS
-   ===================== */
-.swiper-slide-prev,
-.swiper-slide-next {
-  opacity: 0.55 !important;
-  transform: scale(0.92) !important;
-}
-
-/* Center slide enlarged */
-.swiper-slide-active {
-  transform: scale(1.05) !important;
-  transition: 0.3s ease;
-  z-index: 10;
-}
-
-/* =====================
-   RESPONSIVE FIXES
-   ===================== */
-@media (max-width: 768px) {
-  .custom-pagination .swiper-pagination-bullet {
-    width: 18px !important;
-    height: 10px !important;
-  }
-  .custom-pagination .swiper-pagination-bullet-active {
-    width: 40px !important;
-  }
-  .custom-nav-btn {
-    width: 38px;
-    height: 38px;
-    font-size: 18px;
-  }
 }

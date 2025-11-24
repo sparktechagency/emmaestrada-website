@@ -52,7 +52,7 @@ const Testimonial: React.FC = () => {
           modifier: 2.5,
           slideShadows: false,
         }}
-        className="mySwiper w-full"
+        className="campaign-swiper w-full"
       >
         {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
           <SwiperSlide key={i}>
