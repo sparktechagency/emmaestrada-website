@@ -20,7 +20,7 @@ const Testimonial = () => (
             </p>
         </div>
         <div className="w-4/5 mx-auto mt-10 ">
-        <div className="bg-secondary p-4 sm:p-10 rounded-2xl ">
+        <div className="bg-secondary p-4 w-4/5 mx-auto sm:p-10 rounded-2xl ">
             <TestimonialCarousel />
         </div>
         </div>
@@ -29,3 +29,4 @@ const Testimonial = () => (
 );
 
 export default Testimonial;
+

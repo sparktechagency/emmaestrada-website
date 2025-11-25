@@ -53,7 +53,7 @@ const Campaign: React.FC = () => {
             }}
             slidesPerView={1}
             breakpoints={{
-              640: { slidesPerView: 1.2 },
+              640: { slidesPerView: 1 },
               768: { slidesPerView: 1.6 },
               1024: { slidesPerView: 2 },
             }}

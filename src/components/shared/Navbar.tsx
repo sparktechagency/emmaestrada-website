@@ -22,8 +22,8 @@ const Navbar = () => {
       <Container>
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex-shrink-0">
-            <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg flex items-center justify-center">
+          <Link href="/" className="shrink-0">
+            <div className="w-10 h-10 bg-white/5 backdrop-blur-sm border border-white/10  rounded-lg flex items-center justify-center">
               <svg
                 width="24"
                 height="24"
@@ -84,7 +84,7 @@ const Navbar = () => {
         </div>
 
         {/* Mobile Menu */}
-        <div className="md:hidden mt-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-4">
+        <div className="hidden md:hidden mt-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-4">
           <div className="flex flex-col gap-2">
             <Link
               href="#home"
@@ -112,7 +112,7 @@ const Navbar = () => {
                 <Search className="w-5 h-5 mx-auto" />
               </button>
 
-              <button className="flex-1 bg-gradient-to-r from-orange-500 to-orange-600 text-white px-4 py-3 rounded-lg hover:from-orange-600 hover:to-orange-700 transition-all">
+              <button className="flex-1 bg-linear-to-r from-orange-500 to-orange-600 text-white px-4 py-3 rounded-lg hover:from-orange-600 hover:to-orange-700 transition-all">
                 Sign up / Sign in
               </button>
             </div>

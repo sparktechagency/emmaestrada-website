@@ -131,7 +131,7 @@
 }
 
 .btn {
-  @apply px-10 py-4 rounded-full
+  @apply px-5 py-3 rounded-full
 }
 
 .section {
@@ -147,6 +147,10 @@
   backdrop-filter: blur(5.9px);
   -webkit-backdrop-filter: blur(5.9px);
   border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.brandSwiper .swiper-wrapper {
+  transition-timing-function: linear !important;
 }
 
 

@@ -71,8 +71,7 @@ right: 193px !important;
 
 .campaign-swiper .swiper-pagination .swiper-pagination-bullet-active {
   background: var(--color-primary);
-  border: 2px solid var(--color-primary);
-  width: 100px;
+  border: 2px solid var(--color-primary);  
 }
 
 /* Custom Navigation Buttons */

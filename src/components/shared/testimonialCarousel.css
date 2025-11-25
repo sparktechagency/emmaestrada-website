@@ -9,7 +9,7 @@
 }
 
 .tesimonialCarousel .swiper-slide-active {
-background: rgba(255, 255, 255, .5) !important;
+background: rgba(255, 255, 255, .7) !important;
   backdrop-filter: blur(15px); 
 }
 

@@ -50,7 +50,7 @@ export default function BehindProcess() {
 
 
                     <div className="md:w-1/2 flex items-center pt-3">
-                        <p className="text-2xl text-gray-700 leading-12 text-white">
+                        <p className="text-2xl leading-12 text-white">
                             Discover how our platform helps music creators and influencers
                             connect, grow, and shine
                         </p>
@@ -87,7 +87,7 @@ const TimelineItem = ({ data, isOdd, isLast }: any) => {
     const contentBlock = (
         <div className={` h-full transition duration-300`}>
             <h3 className="text-4xl font-bold text-black mb-2">{title}</h3>
-            <p className="text-white text-xl leading-10">{description}</p>
+            <p className="text-white textPara leading-10">{description}</p>
         </div>
     );
 
@@ -144,7 +144,7 @@ const TimelineItem = ({ data, isOdd, isLast }: any) => {
                         <h3 className="text-xl font-bold text-white">{title}</h3>
                     </div>
                     {mediaBlock}
-                    <p className="text-slate-400 text-base">{description}</p>
+                    <p className="text-white textPara font-normal">{description}</p>
                 </div>
             </div>
         );
@@ -175,7 +175,7 @@ const TimelineItem = ({ data, isOdd, isLast }: any) => {
                     <h3 className="text-xl font-bold text-white">{title}</h3>
                 </div>
                 {mediaBlock}
-                <p className="text-slate-400 text-base">{description}</p>
+                <p className="text-white textPara font-normal">{description}</p>
             </div>
         </div>
     );

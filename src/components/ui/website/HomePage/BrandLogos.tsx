@@ -1,10 +1,6 @@
 "use client";
 
-import Container from "@/components/shared/Container";
-import React from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay } from "swiper/modules";
-import "swiper/css";
+import { motion } from "framer-motion";
 
 const BrandLogos = () => {
   const brands = [
@@ -20,57 +16,32 @@ const BrandLogos = () => {
   ];
 
   return (
-    <section style={{borderInline: 0}} className="border-t border-white/10 glassBg backdrop-blur-xl !rounded-none absolute w-full bottom-10 z-20">      
-        <div className=" py-8 md:py-10">
-
-          {/* Swiper Carousel - Desktop */}
-          <div className="hidden md:block">
-            <Swiper
-              modules={[Autoplay]}
-              slidesPerView={6}
-              spaceBetween={40}
-              loop={true}
-              autoplay={{
-                delay: 0,
-                disableOnInteraction: false,
-                pauseOnMouseEnter: false,
-              }}
-              speed={3000} // smooth speed
+    <section
+      style={{ borderInline: 0 }}
+      className="border-t border-white/10 glassBg backdrop-blur-xl !rounded-none absolute w-full bottom-10 z-20"
+    >
+      <div className="py-8 md:py-10 overflow-hidden">
+        <motion.div
+          className="flex gap-16 whitespace-nowrap"
+          animate={{
+            x: ["0%", "-100%"],
+          }}
+          transition={{
+            duration: 50,
+            ease: "linear",
+            repeat: Infinity,
+          }}
+        >
+          {[...brands, ...brands].map((brand, idx) => (
+            <span
+              key={idx}
+              className="text-white/60 hover:text-white transition-colors text-lg lg:text-xl uppercase tracking-wider"
             >
-              {brands.map((brand) => (
-                <SwiperSlide key={brand}>
-                  <div className="text-white/60 hover:text-white transition-colors text-lg lg:text-xl uppercase tracking-wider text-center">
-                    {brand}
-                  </div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
-
-          {/* Swiper Carousel - Mobile */}
-          <div className="md:hidden">
-            <Swiper
-              modules={[Autoplay]}
-              slidesPerView={3}
-              spaceBetween={20}
-              loop
-              autoplay={{
-                delay: 0,
-                disableOnInteraction: false,
-              }}
-              speed={2500}
-            >
-              {brands.map((brand) => (
-                <SwiperSlide key={brand}>
-                  <div className="text-white/60 text-base uppercase tracking-wider text-center">
-                    {brand}
-                  </div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
-
-        </div>      
+              {brand}
+            </span>
+          ))}
+        </motion.div>
+      </div>
     </section>
   );
 };

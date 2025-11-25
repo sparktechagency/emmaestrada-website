@@ -5,7 +5,7 @@ import BrandLogos from "./BrandLogos";
 const HeroSection = () => {
     
     return (
-        <section className="relative h-screen md:py-20 pb-30">
+        <section className="relative h-screen md:py-20 pb-30 pt-24">
 
             <div className="absolute top-0 left-0 w-full h-full inset-0 pointer-events-none z-10">
                 <img src="/headerBg.png" alt="background" className="h-full w-full object-cover " />
