@@ -54,7 +54,7 @@ function ArtistsSection() {
       </Container>
 
       <div className="flex justify-center mt-10">
-        <Link href="artists"><Button size="lg" className="rounded-full !w-[200px]">View All</Button></Link>
+        <Link href="/artists"><Button size="lg" className="rounded-full !w-[200px] cursor-pointer">View All</Button></Link>
       </div>
     </section>
   );

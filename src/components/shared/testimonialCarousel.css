@@ -1,0 +1,21 @@
+.tesimonialCarousel .swiper-slide{
+    background: rgba(255, 255, 255, 0.14) !important;
+  
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5.9px);
+  -webkit-backdrop-filter: blur(5.9px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+}
+
+.tesimonialCarousel .swiper-slide-active {
+background: rgba(255, 255, 255, .5) !important;
+  backdrop-filter: blur(15px); 
+}
+
+.tesimonialCarousel .swiper-slide-prev{
+     background: rgba(255, 255, 255, .14) !important;
+     backdrop-filter: blur(5.9px) !important;
+ -webkit-backdrop-filter: blur(5.9px) !important;
+ /* transform: translate3d(0px, calc(7.25% - 1195px), -100px) rotateZ(-10deg) scale(1) */
+}

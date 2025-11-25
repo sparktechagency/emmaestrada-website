@@ -55,7 +55,7 @@ const CampaignCard: React.FC<CampaignCardProps> = ({
         {/* Profile */}
         <div className="flex items-center gap-3 mt-4">
           <img
-            src="https://triple-slider.uiinitiative.com/images/thor-ragnarok.jpg"
+            src="https://images.pexels.com/photos/3756767/pexels-photo-3756767.jpeg"
             alt="profile"
             className="w-12 h-12 rounded-full object-cover"
           />
@@ -113,12 +113,12 @@ const CampaignCard: React.FC<CampaignCardProps> = ({
       {/* Right image */}
       <div>
         <img
-          src="https://triple-slider.uiinitiative.com/images/thor-ragnarok.jpg"
+          src="https://images.pexels.com/photos/3756767/pexels-photo-3756767.jpeg"
           alt="right-side"
           style={{
             width: "329px",
             height: "100%",
-            objectFit: "cover",
+            objectFit: "cover",            
             borderRadius: "18px",
           }}
         />

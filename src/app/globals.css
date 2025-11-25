@@ -134,10 +134,10 @@
   @apply px-10 py-4 rounded-full
 }
 
+.section {
+  @apply md:py-[150px] py-[50px]
 }
 
-.section {
-  padding-block: 150px;
 }
 
 .glassBg {
