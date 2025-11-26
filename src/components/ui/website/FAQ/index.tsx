@@ -1,19 +1,19 @@
 import CommonHeader from '@/components/shared/CommonHeader'
-import React from 'react'
-import TermsContent from './TermsContent'
 import Container from '@/components/shared/Container'
+import React from 'react'
+import FAQList from './FAQList'
 import FooterBanner from '@/components/shared/FooterBanner'
 
-const TermsCondition = () => {
+const FAQS = () => {
   return (
     <div>
-        <CommonHeader title='Terms & Condition'/>       
+        <CommonHeader title='FAQs'/>
         <Container>
-        <TermsContent  />
+            <FAQList />
         </Container>
         <FooterBanner />
     </div>
   )
 }
 
-export default TermsCondition
+export default FAQS

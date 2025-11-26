@@ -44,8 +44,8 @@ export default function Footer() {
             <ul className="space-y-2 text-lg ">
               <li><Link href="#">Contact Us</Link></li>
               <li><Link href="/terms-condition">Terms and Conditions</Link></li>
-              <li><Link href="/privacy">Privacy Policy</Link></li>
-              <li><Link href="/faq">FAQ</Link></li>
+              <li><Link href="/privacy-policy">Privacy Policy</Link></li>
+              <li><Link href="/faqs">FAQ</Link></li>
             </ul>
           </div>
 

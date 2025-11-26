@@ -22,7 +22,7 @@ const Navbar = () => {
       <Container>
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="shrink-0">
+          <Link href="/" className="shrink-0 md:mr-28">
             <div className="w-10 h-10 bg-white/5 backdrop-blur-sm border border-white/10  rounded-lg flex items-center justify-center">
               <svg
                 width="24"

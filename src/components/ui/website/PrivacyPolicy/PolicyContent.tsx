@@ -1,12 +1,10 @@
 import React from 'react'
 
-const TermsContent = () => {
-
-
-  return (
-    <div className="p-8 mt-10">
-      <div 
-        className="rich-text-content
+const PolicyContent = () => {
+    return (
+        <div className="p-8 mt-10">
+            <div
+                className="rich-text-content
           prose prose-lg max-w-none
           prose-headings:text-gray-900
           prose-headings:font-semibold
@@ -20,13 +18,13 @@ const TermsContent = () => {
           prose-strong:text-gray-900
           prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline
           prose-hr:border-gray-200"
-        dangerouslySetInnerHTML={{ __html: EditorContent }}
-      />
-    </div>
-  )
+                dangerouslySetInnerHTML={{ __html: EditorContent }}
+            />
+        </div>
+    )
 }
 
-export default TermsContent
+export default PolicyContent
 
   const EditorContent = `
     <p>Welcome to Whoa! These Terms and Conditions ("Terms") govern your use of our platform, including the website, mobile application, and any related services (collectively, "the Service"). By accessing or using Musiconic, you agree to comply with and be bound by these Terms. If you do not agree to these Terms, do not use our platform.</p>
