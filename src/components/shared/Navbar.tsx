@@ -72,9 +72,9 @@ const Navbar = () => {
               <Search className="w-6 h-6" />
             </button>
 
-            <button className="bg-primary btn text-white rounded-full hover:from-orange-600 hover:to-orange-700 transition-all">
+            <Link href="/login"><button className="bg-primary btn text-white rounded-full hover:from-orange-600 hover:to-orange-700 transition-all">
               Sign up / Sign in
-            </button>
+            </button></Link>
 
             {/* Mobile Menu Button */}
             <button className="md:hidden p-2 text-white">
