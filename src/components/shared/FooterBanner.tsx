@@ -42,7 +42,7 @@ const FooterBanner = () => {
 
 
                 <div className="relative z-10 text-center space-y-8 px-4">
-                    <h2 className="text-3xl sm:text-5xl lg:text-5xl font-extrabold text-gray-900 leading-18 max-w-4xl mx-auto">
+                    <h2 className="text-3xl sm:text-5xl lg:text-5xl font-extrabold text-gray-900 leading-18 max-w-4xl mx-auto font-sans">
                         Launch your next hit. <br /> Join today and start growing your audience
                     </h2>
 

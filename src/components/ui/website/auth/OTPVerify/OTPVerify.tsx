@@ -47,8 +47,8 @@ const OTPVerify = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[url('/images/bgImg.png')] bg-cover bg-no-repeat bg-center px-4 py-8">
-      <div className="backdrop-blur-[2.5px] border-2 border-white/20 rounded-xl p-8 sm:p-12">
-        <Card className="w-full max-w-lg p-8 sm:p-10">
+      <div className="backdrop-blur-[2.5px] border-2 border-white/20 rounded-xl p-8 sm:p-12 ">
+        <Card className="w-full min-w-xl p-8 sm:p-10">
           {/* Card Header */}
           <CardHeader className="flex flex-col items-center space-y-3">
             <img src="/logo.png" className='w-14 h-14' alt="Logo" />

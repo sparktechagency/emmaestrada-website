@@ -43,7 +43,7 @@ export default function Footer() {
             <h3 className="font-semibold mb-3 text-xl">Support</h3>
             <ul className="space-y-2 text-lg ">
               <li><Link href="#">Contact Us</Link></li>
-              <li><Link href="/terms">Terms and Conditions</Link></li>
+              <li><Link href="/terms-condition">Terms and Conditions</Link></li>
               <li><Link href="/privacy">Privacy Policy</Link></li>
               <li><Link href="/faq">FAQ</Link></li>
             </ul>
