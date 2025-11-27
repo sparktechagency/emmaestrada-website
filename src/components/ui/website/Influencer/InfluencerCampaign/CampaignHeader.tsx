@@ -141,29 +141,7 @@ const CampaignHeader = () => {
           </div>
         </div>
       </div>
-
-
-      {/* <div className="inline-block mb-6  bg-secondary rounded-full p-1">
-        <button
-          onClick={() => setCampaign("active")}
-          className={`flex-1 sm:flex-none md:px-14 py-3 rounded-full transition-colors ${activeStatusTab === "active"
-              ? "bg-white text-gray-900 "
-              : " text-white"
-            }`}
-        >
-          Active
-        </button>
-        <button
-          onClick={() => setCampaign("upcoming")}
-          className={`flex-1 sm:flex-none md:px-14 py-3 rounded-full transition-colors ${activeStatusTab === "upcoming"
-              ? "bg-white text-gray-900 "
-              : " text-white"
-            }`}
-        >
-          Upcoming
-        </button>
-      </div> */}
-
+    
       <FilterModal
         open={filterModalOpen}
         onOpenChange={setFilterModalOpen}
