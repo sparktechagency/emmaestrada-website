@@ -4,46 +4,36 @@ import React, { useEffect, useState } from "react";
 import Container from "./Container";
 import Link from "next/link";
 import { Search, Menu } from "lucide-react";
+import Image from "next/image";
+import { usePathname } from 'next/navigation'
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
-
+  
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 80);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+  const darkBgRoutes = ['influencer']
+
+const pathname = usePathname()
+const hasDarkBackground = darkBgRoutes.includes(pathname.split('/')[1])
 
   return (
     <nav
       className={`fixed w-full z-50 px-4 py-6 md:px-8 lg:px-12 transition-all duration-300
-      ${scrolled ? "backdrop-blur-xl bg-[#15141A]/70 shadow-lg" : "bg-transparent"}`}
+      ${scrolled ? "backdrop-blur-xl bg-[#15141A]/70 shadow-lg" : hasDarkBackground ? "bg-black" : "transparent"}`}
     >
       <Container>
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between ">
           {/* Logo */}
           <Link href="/" className="shrink-0 md:mr-28">
-            <div className="w-10 h-10 bg-white/5 backdrop-blur-sm border border-white/10  rounded-lg flex items-center justify-center">
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M7 17L17 7M17 7H7M17 7V17"
-                  stroke="white"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </div>
+            <Image src="/Original Logo 1.png" alt="logo" height={60} width={60}/>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full px-8 py-3">
+          <div className="hidden md:flex items-center gap-2 glassBg rounded-full! px-8 py-3">
             <Link
               href="/"
               className="px-4 py-2 text-white hover:text-orange-500 transition-colors"
@@ -58,6 +48,18 @@ const Navbar = () => {
               About us
             </Link>
 
+            <Link
+              href="/contact"
+              className="px-4 py-2 text-white/80 hover:text-orange-500 transition-colors"
+            >
+              Contact us
+            </Link>
+            <Link
+              href="/influencer"
+              className="px-4 py-2 text-white/80 hover:text-orange-500 transition-colors"
+            >
+              Influencer
+            </Link>
             <Link
               href="/contact"
               className="px-4 py-2 text-white/80 hover:text-orange-500 transition-colors"

@@ -1,31 +1,51 @@
-import { DialogTitle } from "@radix-ui/react-dialog";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTrigger,
+  DialogTitle,
 } from "../ui/dialog";
 
 type ModalProps = {
-  dialogTrigger: React.ReactNode;
+  dialogTrigger?: React.ReactNode;
   children?: React.ReactNode;
   dialogTitle?: React.ReactNode;
   className?: string;
+  open?: boolean;
+  setOpen?: (v: boolean) => void;
+  width?: string | number;   // new
+  height?: string | number;  // new
 };
 
-const Modal = ({ dialogTrigger, dialogTitle, children, className }: ModalProps) => {
+const Modal = ({
+  dialogTrigger,
+  dialogTitle,
+  children,
+  className,
+  open,
+  setOpen,
+  width,
+  height,
+}: ModalProps) => {
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{dialogTrigger}</DialogTrigger>
+
       <DialogContent
-        className={`
-          ${className} rounded-xl`}
+        className={`rounded-xl ${className || ""}`}
+        style={{
+          width: width ? (typeof width === "number" ? `${width}px` : width) : "auto",
+          height: height ? (typeof height === "number" ? `${height}px` : height) : "auto",
+          maxWidth: "100%",   // prevent overflow
+          overflowY: "auto",  // prevent overflow
+        }}
       >
-        <DialogHeader>
-          <DialogTitle className="text-xl font-semibold">
-            {dialogTitle}
-          </DialogTitle>
+        <DialogHeader >
+          {dialogTitle && (
+            <DialogTitle className="text-xl font-semibold ">{dialogTitle}</DialogTitle>
+          )}
         </DialogHeader>
+
         {children}
       </DialogContent>
     </Dialog>

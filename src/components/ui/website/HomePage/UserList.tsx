@@ -142,6 +142,7 @@ type FormValues = {
 
 export default function UserList({ data }: { data: any[] }) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
+   const [open, setOpen] = React.useState(false)
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
@@ -207,6 +208,7 @@ export default function UserList({ data }: { data: any[] }) {
 
         <div className="flex items-center gap-5">
           <Modal
+          setOpen={setOpen}
             dialogTitle="Add New User"
             dialogTrigger={<Button className="">Add User</Button>}
           >

@@ -1,19 +1,66 @@
 "use client";
 
 import React from "react";
+import { StatusBadge } from "./StatusBadge";
+
+type CampaignStatus =
+  | "upcoming"
+  | "pending"
+  | "accepted"
+  | "canceled"
+  | "active";
 
 interface CampaignCardProps {
-  name: string;
-  budget: string;
-  influencers: string;
-  dateRange: string;
-  duration: string;
-  progress: number;
-  profileImg: string;
-  rightImg: string;
-  username: string;
-  displayName: string;
+  name?: string;
+  budget?: string;
+  influencers?: string;
+  dateRange?: string;
+  duration?: string;
+  progress?: number;
+  profileImg?: string;
+  rightImg?: string;
+  username?: string;
+  displayName?: string;
+  isPrivate?: boolean;
+  status?: CampaignStatus;
 }
+
+/* -------------------- STATUS CONFIG -------------------- */
+const statusButtonConfig: Record<
+  CampaignStatus,
+  {
+    label: string;
+    className: string;
+    disabled: boolean;
+  }
+> = {
+  upcoming: {
+    label: "Upcoming",
+    className: "bg-black",
+    disabled: true,
+  },
+  pending: {
+    label: "Requested",
+    className: "bg-primary/40",
+    disabled: true,
+  },
+  accepted: {
+    label: "Submit",
+    className: "bg-blue-800",
+    disabled: false,
+  },
+  canceled: {
+    label: "Canceled",
+    className: "bg-gray-300 text-gray-600",
+    disabled: true,
+  },
+  active: {
+    label: "Join Now",
+    className: "bg-primary",
+    disabled: false,
+  },
+};
+/* ------------------------------------------------------- */
 
 const CampaignCard: React.FC<CampaignCardProps> = ({
   name,
@@ -21,12 +68,17 @@ const CampaignCard: React.FC<CampaignCardProps> = ({
   influencers,
   dateRange,
   duration,
-  progress,
+  progress = 0,
   profileImg,
   rightImg,
   username,
   displayName,
+  isPrivate,
+  status = "active",
 }) => {
+  const buttonConfig =
+    statusButtonConfig[status] ?? statusButtonConfig.active;
+
   return (
     <div
       className="rounded-2xl shadow-md flex gap-6"
@@ -37,27 +89,36 @@ const CampaignCard: React.FC<CampaignCardProps> = ({
         backgroundColor: "#FFF8F3",
       }}
     >
-      {/* Left Section */}
+      {/* ---------------- LEFT ---------------- */}
       <div className="flex-1 flex flex-col">
-        {/* Live + Icons */}
+        {/* Live + icons */}
         <div className="flex justify-between items-center">
-          <span className="flex items-center gap-2 bg-red-600 text-white px-3 py-1 rounded-full text-sm">
-            <span className="w-2 h-2 bg-white rounded-full"></span> Live
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="flex items-center gap-2 bg-red-600 text-white px-3 py-1 rounded-full text-sm">
+              <span className="w-2 h-2 bg-white rounded-full" />
+              Live
+            </span>
 
-          <div className="flex gap-2 text-[20px]">
-            <span>🎵</span>
-            <span>📸</span>
-            <span>▶️</span>
+            {isPrivate && (
+              <img src="/lockSign.png" width={20} height={20} alt="lock" />
+            )}
+          </div>
+
+          <div className="flex gap-2">
+            <img src="/tiktokBlack.png" width={20} alt="" />
+            <img src="/instagram.png" width={20} alt="" />
+            <img src="/youtube.png" width={20} alt="" />
           </div>
         </div>
 
         {/* Profile */}
         <div className="flex items-center gap-3 mt-4">
           <img
-            src="https://images.pexels.com/photos/3756767/pexels-photo-3756767.jpeg"
-            alt="profile"
+            src={              
+              "https://images.pexels.com/photos/3756767/pexels-photo-3756767.jpeg"
+            }
             className="w-12 h-12 rounded-full object-cover"
+            alt="profile"
           />
           <div>
             <h3 className="font-semibold text-lg">{displayName}</h3>
@@ -81,47 +142,61 @@ const CampaignCard: React.FC<CampaignCardProps> = ({
 
           <p>
             <span className="font-semibold">Influencers:</span>{" "}
-            <span className="text-orange-500 font-medium">{influencers}</span>
+            <span className="text-orange-500 font-medium">
+              {influencers}
+            </span>
           </p>
 
-          <p className="flex items-center gap-2">
-            📅 <span>{dateRange}</span>
-          </p>
-
-          <p className="flex items-center gap-2">
-            ⏱️ <span>{duration}</span>
-          </p>
+          <p className="flex items-center gap-2">📅 {dateRange}</p>
+          <p className="flex items-center gap-2">⏱️ {duration}</p>
         </div>
 
         {/* Progress */}
         <div className="mt-3">
-          <div className="h-2 rounded-full bg-gray-300 relative">
+          <div className="h-2 rounded-full bg-gray-300">
             <div
-              className="h-2 rounded-full bg-orange-500"
+              className="h-2 bg-orange-500 rounded-full"
               style={{ width: `${progress}%` }}
-            ></div>
+            />
           </div>
-          <p className="text-right text-sm mt-1 text-gray-600">{progress}%</p>
+          <p className="text-right text-sm mt-1 text-gray-600">
+            {progress}%
+          </p>
         </div>
 
-        {/* Button */}
-        <button className="bg-orange-500 text-white w-[150px] py-3 rounded-full mt-4 text-[17px] font-medium">
-          Join Now
+        {/* Button ✅ */}
+        <button
+          onClick={() => alert("Clicked")}
+          disabled={buttonConfig.disabled}
+          className={`${buttonConfig.className} 
+            text-white w-[150px] py-3 rounded-full mt-4 
+            text-[17px] font-medium 
+            disabled:cursor-not-allowed`}
+        >
+          {buttonConfig.label}
         </button>
       </div>
 
-      {/* Right image */}
-      <div>
+      {/* ---------------- RIGHT ---------------- */}
+      <div className="relative">
         <img
-          src="https://images.pexels.com/photos/3756767/pexels-photo-3756767.jpeg"
-          alt="right-side"
+          src={
+            "https://images.pexels.com/photos/3756767/pexels-photo-3756767.jpeg"
+          }
           style={{
             width: "329px",
             height: "100%",
-            objectFit: "cover",            
+            objectFit: "cover",
             borderRadius: "18px",
           }}
+          alt="campaign"
         />
+
+        {["pending", "accepted", "canceled"].includes(status) && (
+          <div className="absolute top-3 right-2">
+          <StatusBadge status={status as "pending" | "accepted" | "canceled"} />
+          </div>
+        )}
       </div>
     </div>
   );

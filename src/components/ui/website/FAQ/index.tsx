@@ -12,6 +12,7 @@ const FAQS = () => {
             <FAQList />
         </Container>
         <FooterBanner />
+        <div className="absolute -left-[350px] -z-99 rounded-full bg-[#FFA76A73]/50 blur-3xl top-[40vh] w-[700px] h-[700px]"></div>
     </div>
   )
 }

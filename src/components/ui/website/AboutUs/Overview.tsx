@@ -1,3 +1,4 @@
+import { bricolage } from '@/constants/bricolage'
 import React from 'react'
 
 const Overview = () => {
@@ -7,7 +8,7 @@ const Overview = () => {
 
                 {/* <!-- Left big image --> */}
                 <div className="lg:col-span-1 md:h-[300px]">
-                    <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-5">
+                    <h2 className={`text-4xl md:text-5xl font-bold text-gray-900 mb-5 ${bricolage.className}`}>
                         Overview
                     </h2>
                     <img

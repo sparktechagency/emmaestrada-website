@@ -24,7 +24,7 @@ const HomePage = async ({ searchParams }: any) => {
         <Testimonial />
         <Statics />
         <FooterBanner />
-        {/* <div className="absolute -left-[350px] -z-99 rounded-full bg-[#FFA76A73] blur-3xl top-5 w-[700px] h-[700px]"></div> */}
+        <div className="absolute -left-[350px] -z-99 rounded-full bg-[#FFA76A73]/50 blur-3xl top-[100vh] w-[700px] h-[700px]"></div>
       {/* <ShadowCom /> */}
     </div>
   );

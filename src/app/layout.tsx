@@ -1,34 +1,14 @@
 import type { Metadata } from "next";
-import { Bricolage_Grotesque, Geist, Geist_Mono } from "next/font/google";
+import { Bricolage_Grotesque, Geist, Geist_Mono, Poppins } from "next/font/google";
 import "./globals.css";
 import "react-vertical-timeline-component/style.min.css";
 
-// ES Rebond Grotesque
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+
+const poppins = Poppins({
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-
-
-const bricolage = Bricolage_Grotesque({
-  subsets: ["latin"],
-  display: "swap",
-  weight: [
-    "200",
-    "300",
-    "400",
-    "500",
-    "600",
-    "700",
-    "800"
-  ],
+  variable: "--font-poppins",
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 
@@ -48,7 +28,7 @@ export default function RootLayout({
       style={{
         background: 'linear-gradient(135.04deg, #FFF8F3 24.36%, #FFE3E3 75.64%)'
       }}
-        className={`${geistSans.variable} ${geistMono.variable} ${bricolage.className}  antialiased`}
+        className={`${poppins.className}  antialiased`}
       >
         {children}                
       </body>
