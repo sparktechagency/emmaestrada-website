@@ -8,7 +8,9 @@ type CampaignStatus =
   | "pending"
   | "accepted"
   | "canceled"
-  | "active";
+  | "active"
+  | "pactive"
+  | "pcompleted"
 
 interface CampaignCardProps {
   name?: string;
@@ -37,6 +39,16 @@ const statusButtonConfig: Record<
   upcoming: {
     label: "Upcoming",
     className: "bg-black",
+    disabled: true,
+  },
+  pactive: {
+    label: "Manage Campaigns",
+    className: "bg-transparent! border! border-secondary! text-black! text-xs! ",
+    disabled: true,
+  },
+  pcompleted: {
+    label: "Delete",
+    className: "bg-transparent! border! border-secondary! text-red-600! text-xs! ",
     disabled: true,
   },
   pending: {
@@ -192,11 +204,11 @@ const CampaignCard: React.FC<CampaignCardProps> = ({
           alt="campaign"
         />
 
-        {["pending", "accepted", "canceled"].includes(status) && (
+        {["pending", "accepted", "canceled", "pcompleted"].includes(status) && (
           <div className="absolute top-3 right-2">
-          <StatusBadge status={status as "pending" | "accepted" | "canceled"} />
+          <StatusBadge status={status as "pending" | "accepted" | "canceled" | "pcompleted"} />
           </div>
-        )}
+        )}        
       </div>
     </div>
   );

@@ -11,31 +11,32 @@ import {
     SlidersHorizontal,
     ArrowUpDown,
     Repeat,
+    Users,
+    Send,
 } from "lucide-react";
 import Link from 'next/link';
 import Container from '@/components/shared/Container';
+import HeaderSearch from './HeaderSearch';
 
-const InfluencerHeader = () => {
+
+
+const PromotorHeader = () => {
     const displayLinks = [
-        { link: "/influencer", label: "Campaigns", icon: Music },
-        { link: "/influencer/creator", label: "Creator", icon: User },
-        { link: "/influencer/promotors", label: "Promotors", icon: User },
-        { link: "/influencer/analytics", label: "Analytics", icon: BarChart3 },
-        { link: "/influencer/messages", label: "Messages", icon: MessageSquare },
-        { link: "/influencer/trusted", label: "Trusted Creators", icon: Shield },
-        { link: "/influencer/profile", label: "Profile", icon: UserCircle },
+        { link: "/promotor", label: "Campaigns", icon: Music },        
+        { link: "/promotor/analytics", label: "Analytics", icon: BarChart3 },
+        { link: "/promotor/artist", label: "Artist", icon: Users },
+        { link: "/promotor/my-request", label: "My Request", icon: Send },
+        { link: "/promotor/messages", label: "Messages", icon: MessageSquare },
+        { link: "/promotor/profile", label: "Profile", icon: UserCircle },
     ];
     return (
         <div>
             <Container>
                 <div className="mt-40 mb-10">
                     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 ">
-                        <button className='btn flex items-center gap-2 bg-white font-semibold text-black text-lg font-sans! rounded-full! shadow-md'> <div className="w-2 h-2 bg-green-500 rounded-full" /><span>Currently viewing as: Creator</span></button>
+                        <button className='btn flex items-center gap-2 bg-white font-semibold text-black text-lg font-sans! rounded-full! shadow-md'> <div className="w-2 h-2 bg-green-500 rounded-full" /><span>Currently viewing as: Music promoter</span></button>
 
-                        <button className="btn bg-primary text-white flex items-center w-full sm:w-auto text-lg rounded-full! shadow-md">
-                            <Repeat className="w-4 h-4 mr-2" />
-                            Switch into music promoter
-                        </button>
+                        <HeaderSearch />
                     </div>
 
                 </div>
@@ -60,4 +61,4 @@ const InfluencerHeader = () => {
     )
 }
 
-export default InfluencerHeader
+export default PromotorHeader

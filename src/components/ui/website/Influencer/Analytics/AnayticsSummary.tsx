@@ -9,8 +9,8 @@ const AnayticsSummary = () => {
   return (
     <div className="">
       <div className="mb-6 mt-10">
-        <h1 className={`mb-2 text-3xl font-semibold`}>Campaigns</h1>
-        <p className="textPara">Browse and join music campaigns</p>
+        <h1 className={`mb-2 text-3xl font-semibold`}>Analytics Dashboard</h1>
+        <p className="textPara">Track your performance and growth metrics</p>
       </div>
 
       <Card className="bg-black text-white rounded-2xl">

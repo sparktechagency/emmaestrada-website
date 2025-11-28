@@ -6,7 +6,7 @@ import CampaignCard from '@/components/shared/CampaignCard'
 
 const ArtistDetails = () => {
     return (
-        <div>
+        <div className='pb-20'>
             <div className="text-center">
                 <Image src="/images/profile21.jpg" height={200} width={200} className='mx-auto' alt='profile' />
                 <h1 className='text-3xl font-semibold mt-5'>Ariana Grande</h1>
@@ -26,6 +26,9 @@ const ArtistDetails = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
             <CampaignCard />
             <CampaignCard />
+            </div>            
+            <div className="flex items-center justify-end mt-10">
+            <button className="md:self-end btn bg-secondary text-white px-10 py-5 rounded-full shadow-md">Request to become partner</button>
             </div>
         </div>
     )

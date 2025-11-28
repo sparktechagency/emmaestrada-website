@@ -15,7 +15,7 @@ const Navbar = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-  const darkBgRoutes = ['influencer']
+  const darkBgRoutes = ['influencer', 'promotor']
 
 const pathname = usePathname()
 const hasDarkBackground = darkBgRoutes.includes(pathname.split('/')[1])
@@ -59,6 +59,12 @@ const hasDarkBackground = darkBgRoutes.includes(pathname.split('/')[1])
               className="px-4 py-2 text-white/80 hover:text-orange-500 transition-colors"
             >
               Influencer
+            </Link>
+            <Link
+              href="/promotor"
+              className="px-4 py-2 text-white/80 hover:text-orange-500 transition-colors"
+            >
+              Promotor
             </Link>
             <Link
               href="/contact"
