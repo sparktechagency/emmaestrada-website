@@ -15,18 +15,18 @@ export default function TestimonialCarousel() {
   };
 
   return (
-    <div className="relative w-full flex justify-center h-full pt-16 pb-56">
-      <div className="relative w-[90%] h-[130px]">{testimonials.map((item, i) => {
+    <div className="relative w-full flex justify-center h-full pt-5 md:pt-16 pb-30 md:pb-56">
+      <div className="relative w-full md:w-[90%] h-[130px]">{testimonials.map((item, i) => {
         const isActive = i === index;
         const isGone = i < index;
 
         // Correct alternating rotation based on relative position
-        const rotation = (isActive ? 0 : (i - index)  % 2 === 0 ? -2 : 5);        
+        const rotation = (isActive ? 0 : (i - index) % 2 === 0 ? -2 : 5);
 
         return (
           <motion.div
             key={i}
-            className="absolute top-0 left-0 w-full bg-white/30 backdrop-blur-2xl shadow-xl border-2 rounded-3xl p-8"
+            className="absolute top-0 left-0 w-full bg-white/30 backdrop-blur-2xl shadow-xl border-2 rounded-3xl p-2 md:p-8"
             style={{ zIndex: testimonials.length - i }}
             animate={{
               rotate: isGone ? -50 : rotation,
@@ -36,19 +36,20 @@ export default function TestimonialCarousel() {
             }}
             transition={{ duration: 0.55, ease: "easeInOut" }}
           >
-            <p className="text-lg text-gray-700 mb-6 leading-relaxed">{item.text}</p>
+            <p className="text-xs md:text-lg text-gray-700 mb-6 leading-relaxed">{item.text}</p>
 
             <div className="flex items-center gap-4 mt-auto">
-              <Image
-                src="/images/profile21.jpg"
-                width={60}
-                height={60}
-                alt={item.name}
-                className="rounded-full object-cover"
-              />
+              <div className="relative w-10 h-10 sm:w-16 sm:h-16 md:w-[60px] md:h-[60px]">
+                <Image
+                  src="/images/profile21.jpg"
+                  alt={item.name}
+                  fill
+                  className="rounded-full object-cover"
+                />
+              </div>
               <div>
-                <h3 className="text-2xl font-bold">{item.name}</h3>
-                <p className="text-gray-500">{item.role}</p>
+                <h3 className="text-sm md:text-2xl font-bold">{item.name}</h3>
+                <p className="text-xs md:text-gray-500">{item.role}</p>
               </div>
             </div>
           </motion.div>

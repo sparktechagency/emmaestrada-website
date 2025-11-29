@@ -8,24 +8,21 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Music } from 'lucide-react';
+import { Music, Search } from 'lucide-react';
 import { CampaignTabGroup } from '../InfluencerCampaign/CampaignTabGroup';
 
 
 const MessageSidebar = () => {
     return (
-        <div className="w-full lg:w-[30%] border-r bg-white flex flex-col rounded-2xl">
+        <div className="w-full lg:w-[30%] border-r bg-white flex flex-col rounded-2xl ">
 
             {/* Tabs */}
-
-            <div className="max-w-sm text-center py-3">
-                <CampaignTabGroup
-                    tabs={[
-                        { label: 'All', value: 'all' },
-                        { label: 'Accepted', value: 'accepted' },
-                    ]}
-                    queryParam="status"
+            <div className=" relative p-2 flex items-center my-5">                
+                <Input
+                    placeholder="Search campaigns or artists..."
+                    className="pl-3 pr-14 bg-white h-12 fo"
                 />
+                <button className='absolute right-2 top-1/2 transform -translate-y-1/2 bg-secondary h-12 w-12  rounded-r-md'><Search className="  text-white w-5 h-5 mx-auto" /></button>
             </div>
 
 
@@ -34,16 +31,16 @@ const MessageSidebar = () => {
 
                 {/* Item */}
                 {[
-                    { name: "Olivia Richards", time: "2 min ago", campaign: "Summer Vibes 2024", msg: "Just posted the first video! Check it out 🎵", badge: 2 },
-                    { name: "Marcus Thompson", time: "1 hour ago", campaign: "Rock Revolution", msg: "When is the deadline for submissions?", badge: 0 },
-                    { name: "Sofia Martinez", time: "3 hours ago", campaign: "Summer Vibes 2024", msg: "Thanks for the feedback!", badge: 0 },
-                    { name: "Luna Rivers", time: "5 hours ago", campaign: "Collaboration Request", msg: "Would love to work together", badge: 1 },
-                    { name: "Alex Kim", time: "1 day ago", campaign: "R&B Smooth Sessions", msg: "The video reached 500K views already! 🔥", badge: 0 }
+                    { name: "Olivia Richards", time: "2 min ago", campaign: "Summer Vibes 2024", msg: "Just posted the first video! Check it out 🎵", badge: 2, isPined: false },
+                    { name: "Marcus Thompson", time: "1 hour ago", campaign: "Rock Revolution", msg: "When is the deadline for submissions?", badge: 0, isPined: true },
+                    { name: "Sofia Martinez", time: "3 hours ago", campaign: "Summer Vibes 2024", msg: "Thanks for the feedback! submissions", badge: 0, isPined: false },
+                    { name: "Luna Rivers", time: "5 hours ago", campaign: "Collaboration Request", msg: "Would love to work together", badge: 1, isPined: false },
+                    { name: "Alex Kim", time: "1 day ago", campaign: "R&B Smooth Sessions", msg: "The video reached 500K views already! 🔥", badge: 0, isPined: false }
                 ].map((item, idx) => (
                     <div key={idx}>
-                        <div className="flex items-start gap-4 px-5 py-4 hover:bg-gray-50 cursor-pointer">
-                            <Avatar className='w-14 h-14'>
-                                <AvatarImage                                
+                        <div className="flex items-start gap-4 px-5 pb-4 hover:bg-gray-50 cursor-pointer">
+                            <Avatar className='w-12 h-12'>
+                                <AvatarImage
                                     src="/images/profile21.jpg"
                                     alt="@evilrabbit"
                                 />
@@ -52,22 +49,20 @@ const MessageSidebar = () => {
                                 </AvatarFallback>
                             </Avatar>
 
-                            <div className="flex-1">
-                                <div className="flex justify-between items-center">
-                                    <p className="font-semibold">{item.name}</p>
-                                    <small className="text-gray-500">{item.time}</small>
+                            <div className="">    
+                                <div className="flex items-center justify-between">
+                                <p className="font-semibold">{item.name}</p>
+                                <small className="text-gray-500 whitespace-nowrap self-end">{item.time}</small>
+                                </div>                            
+                                    
+                                <div className="flex items-center justify-between">
+                                <p className="text-sm text-gray-600 text-clip pr-3">{item.msg}</p>
+                                <span className='self-end'>
+                                    <Badge className="bg-primary text-white rounded-full">{item.badge}</Badge>                                
+                                </span>
+                                
                                 </div>
-
-                                <p className="text-orange-500 text-xs flex items-center mt-1">
-                                    <Music size={14} className="mr-1" /> {item.campaign}
-                                </p>
-
-                                <p className="text-sm text-gray-600">{item.msg}</p>
                             </div>
-
-                            {item.badge > 0 && (
-                                <Badge className="bg-orange-500 text-white rounded-full">{item.badge}</Badge>
-                            )}
                         </div>
                         <Separator />
                     </div>

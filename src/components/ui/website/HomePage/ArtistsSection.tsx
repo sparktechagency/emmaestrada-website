@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Container from "@/components/shared/Container";
 import ArtistCard from "@/components/shared/ArtistCard";
 
@@ -10,8 +10,10 @@ import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import { Button } from "../../button";
 import Link from "next/link";
+import { LoginPopup } from "@/components/shared/LoginPopup";
 
 function ArtistsSection() {
+  const [open, setOpen] = useState(false)
   return (
     <section className="section">
       <Container>
@@ -54,8 +56,10 @@ function ArtistsSection() {
       </Container>
 
       <div className="flex justify-center mt-10">
-        <Link href="/artists"><Button size="lg" className="rounded-full !w-[200px] cursor-pointer">View All</Button></Link>
+        {/* <Link href="/artists"><Button onClick={()=>setOpen(true)} size="lg" className="rounded-full !w-[200px] cursor-pointer">View All</Button></Link> */}
+        <Button onClick={()=>setOpen(true)} size="lg" className="rounded-full !w-[200px] cursor-pointer">View All</Button>
       </div>
+      {open && <LoginPopup open={open} onClose={()=>setOpen(false)}/>}
     </section>
   );
 }

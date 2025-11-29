@@ -9,8 +9,10 @@ const InfluencerCampaign = ({campaignType, status }: any) => {
   return (
     <div>
       <Container>
-        <CampaignHeader />      
+        <CampaignHeader />  
+        <div className="mb-10">
         {campaignType === 'campaigns' ? <AllCampaigns status={status}/> : campaignType === 'my-campaigns' ? < MyCampaigns status={status}/> : <AllCampaigns status={status}/>}  
+        </div>    
       </Container>
     </div>
   )

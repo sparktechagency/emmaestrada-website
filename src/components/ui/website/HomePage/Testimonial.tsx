@@ -19,8 +19,8 @@ const Testimonial = () => (
                 Explore our handpicked campaigns that are driving real impact, inspiring communities,
             </p>
         </div>
-        <div className="w-4/5 mx-auto mt-10 ">
-        <div className="bg-secondary p-4 w-4/5 mx-auto sm:p-10 rounded-2xl ">
+        <div className="w-full md:w-4/5 mx-auto mt-10 ">
+        <div className="bg-secondary p-2 md:p-4 w-full md:w-4/5 mx-auto sm:p-10 rounded-2xl ">
             <TestimonialCarousel />
         </div>
         </div>

@@ -19,7 +19,7 @@ export default function ContactForm() {
         </div>
 
         {/* Right Form */}
-        <div className="bg-[#F7EFE7] rounded-2xl p-8 md:p-10 shadow-sm">
+        <div className="bg-[#FFF8F3] rounded-2xl p-8 md:p-10 shadow-sm">
           <h2 className="text-4xl font-bold text-gray-900 mb-4">
             Get in <span className="text-orange-500">Touch</span>
           </h2>

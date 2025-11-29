@@ -22,10 +22,12 @@ import HeaderSearch from './HeaderSearch';
 
 const PromotorHeader = () => {
     const displayLinks = [
-        { link: "/promotor", label: "Campaigns", icon: Music },        
+        { link: "/promotor", label: "Campaigns", icon: Music },
         { link: "/promotor/analytics", label: "Analytics", icon: BarChart3 },
-        { link: "/promotor/artist", label: "Artist", icon: Users },
-        { link: "/promotor/my-request", label: "My Request", icon: Send },
+        // { link: "/promotor/artist", label: "Artist", icon: Users },
+        { link: "#", label: "Artist", icon: Users },
+        { link: "#", label: "My Request", icon: Send },
+        // { link: "/promotor/my-request", label: "My Request", icon: Send },
         { link: "/promotor/messages", label: "Messages", icon: MessageSquare },
         { link: "/promotor/profile", label: "Profile", icon: UserCircle },
     ];
@@ -35,12 +37,15 @@ const PromotorHeader = () => {
                 <div className="mt-40 mb-10">
                     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 ">
                         <button className='btn flex items-center gap-2 bg-white font-semibold text-black text-lg font-sans! rounded-full! shadow-md'> <div className="w-2 h-2 bg-green-500 rounded-full" /><span>Currently viewing as: Music promoter</span></button>
-
-                        <HeaderSearch />
+                        {/* Main Navigation Tabs */}
+                <Link href="/influencer"><button className="btn bg-primary text-white flex items-center w-full sm:w-auto text-lg rounded-full! shadow-md">
+                    <Repeat className="w-4 h-4 mr-2" />
+                    Switch into music creator
+                </button></Link>
                     </div>
-
                 </div>
 
+                
                 {/* Main Navigation Tabs */}
                 <div className="flex gap-3 overflow-x-auto no-scrollbar p-4 glassBg rounded-md shadow-md!">
                     {displayLinks && displayLinks?.map((item) => {

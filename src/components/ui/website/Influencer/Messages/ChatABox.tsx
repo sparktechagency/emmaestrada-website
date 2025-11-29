@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { InfoIcon, Music, Phone, Send, Video } from "lucide-react";
+import { EllipsisVertical, InfoIcon, Music, Phone, Send, Video } from "lucide-react";
 
 
 const ChatABox = () => {
@@ -25,27 +25,15 @@ const ChatABox = () => {
             <div>
               <h2 className="font-semibold text-lg">Olivia Richards</h2>
               <div className="flex items-center gap-2">
-                <span className="bg-green-500 w-2 h-2 rounded-full"></span>
-                <small className="text-green-600">Online</small>
+                <Badge variant="outline">Influencer</Badge>
               </div>
             </div>
           </div>
 
-          <div className="flex items-center gap-4 text-gray-600">
-            <Phone size={20} />
-            <Video size={20} />
-            <InfoIcon size={20} />
+          <div className="flex items-center gap-4 text-gray-600">            
+            <EllipsisVertical size={20}/>
           </div>
-        </div>
-
-        {/* Campaign info */}
-        <div className="bg-orange-50 px-6 py-3 border-b flex justify-between items-center">
-          <div className="flex items-center text-orange-600 font-medium">
-            <Music size={18} className="mr-2" />
-            Campaign: Summer Vibes 2024
-          </div>
-          <button className="text-orange-500 font-medium">View Details</button>
-        </div>
+        </div>   
 
         {/* Messages */}
         <ScrollArea className="flex-1 px-6 py-4">

@@ -34,7 +34,7 @@ const HeroSection = () => {
                 </div>
 
                 {/* Main Content */}
-                <div className=" text-center relative z-10 mt-20">
+                <div className=" text-center relative z-10 mt-10 md:mt-20">
                     {/* Top Reviews */}
                     <div className="flex flex-wrap justify-center gap-4 md:gap-24 mb-8 md:mb-20">
                         {[1, 2, 3].map((item) => (
@@ -58,7 +58,7 @@ const HeroSection = () => {
                             Where Sound Meets
                         </h1>
                         <button
-                            className=" text-white text-5xl font-extrabold py-3 px-14 rounded-[40px] shadow-2xl shadow-orange-400/50 transition-all duration-300 hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-orange-300 bg-gradient-to-r from-[#ff8a00] to-[#ff4500] uppercase tracking-wider"
+                            className=" text-white md:text-5xl font-extrabold py-3 px-14 rounded-[40px] shadow-2xl shadow-orange-400/50 transition-all duration-300 hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-orange-300 bg-gradient-to-r from-[#ff8a00] to-[#ff4500] uppercase tracking-wider"
                         >
                             SUCCESS
                         </button>
