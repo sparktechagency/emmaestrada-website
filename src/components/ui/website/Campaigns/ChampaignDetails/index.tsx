@@ -2,10 +2,11 @@ import { Progress } from "@/components/ui/progress";
 import { SquareArrowOutUpRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import SubmitButton from "../ui/website/Campaigns/ChampaignDetails/SubmitButton";
+import SubmitButton from "./SubmitButton";
 
-export default function CampaignsDetails() {
 
+
+export default function CampaignsDetails() {    
     return (
         <div className=" w-full  p-4 md:p-8 flex flex-col items-center">
             <div className="w-full max-w-4xl">
@@ -92,44 +93,12 @@ export default function CampaignsDetails() {
                 <div className="p-5 text-justify bg-secondary rounded-lg shadow-lg! text-white ">
                     <p>Creators may reject submissions that don't meet requirements. By submitting, you grant full usage rights and agree to follow the <Link href="#" className="text-blue-500 underline font-medium">FTC Guidelines</Link>  and <Link href="#" className="text-blue-500 underline font-medium"> the Content Rewards Terms</Link></p>
                 </div>
-                <SubmitButton />
+                
 
-                 {/* <div className="flex justify-end mt-5">
-                    <Modal
-                        dialogTitle="Campaign Form"
-                        open={open}
-                        setOpen={setOpen}
-                        width="900px"
-                        height="85vh"
-                        dialogTrigger={
-                            <button className="btn px-20 text-white bg-blue-700 rounded-full">
-                                Submit
-                            </button>
-                        }
-                    >
-                        <CampaignSubmitForm closeModal={() => setOpen(false)} setOpenAccVerifyModal={setOpenAccVerifyModal} />
-                    </Modal>
-                </div> */}
-                {/* {!open && !openVerifiedModal && openAccVerifyModal &&
-                    <Modal
-                        dialogTitle="Link Account"
-                        open={openAccVerifyModal}
-                        setOpen={setOpenAccVerifyModal}
-                        width="700px"                        
-                    >
-                        <AcccountConnectModal closeModal={() => setOpen(false)} setOpenVerifiedModal={setOpenVerifiedModal} />
-                    </Modal>
-                } */}
-                {/* { openVerifiedModal &&
-                    <Modal
-                        open={openVerifiedModal}
-                        setOpen={setOpenVerifiedModal}
-                        width="900px"
-                        height="85vh"
-                    >
-                        <AccountVerified closeModal={() => setOpen(false)} />
-                    </Modal>
-                } */}
+                 <div className="flex justify-end mt-5">
+                    <SubmitButton />
+                </div>
+                
             </div>
         </div >
     );

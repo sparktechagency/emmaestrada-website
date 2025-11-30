@@ -1,4 +1,5 @@
 import CampaignCard from '@/components/shared/CampaignCard'
+import Link from 'next/link'
 import React from 'react'
 
 const CampaignsList = () => {
@@ -15,7 +16,7 @@ const CampaignsList = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-5">
                 {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
                     <div className="" key={i}>
-                        <CampaignCard
+                        <Link href={`/influencer/${i}`}> <CampaignCard
                             name="Feel the Vibe"
                             budget="$1000"
                             influencers="25/25"
@@ -26,7 +27,7 @@ const CampaignsList = () => {
                             rightImg="/dj-right.jpg"
                             username="rikodj890"
                             displayName="DJ Nadir"
-                        />
+                        /></Link>
                     </div>
                 ))}
             </div>

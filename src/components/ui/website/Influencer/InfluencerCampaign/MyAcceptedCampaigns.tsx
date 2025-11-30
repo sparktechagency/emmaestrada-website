@@ -2,17 +2,17 @@
 import CampaignCard from '@/components/shared/CampaignCard'
 import CampaignsDetails from '@/components/shared/CampaignsDetails';
 import { ArrowLeft } from 'lucide-react';
+import Link from 'next/link';
 import React, { useState } from 'react'
 
 const MyAcceptedCampaigns = () => {
     const [open, setOpen] = useState(false);
 
     return (
-        <div>
-            {open ? <p onClick={() => setOpen(false)} className="mb-5 cursor-pointer flex items-center  gap-2"><ArrowLeft /> Back</p> :
+        <div>            
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-7 md:gap-10">
                     {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-                        <div onClick={()=>setOpen(true)} className="" key={i}>
+                        <Link href={`/influencer/${i}`}><div onClick={()=>setOpen(true)} className="" key={i}>
                             <CampaignCard
                                 name="Feel the Vibe"
                                 budget="$1000"
@@ -27,10 +27,9 @@ const MyAcceptedCampaigns = () => {
                                 isPrivate={i % 2 !== 0}
                                 status="accepted"
                             />
-                        </div>
+                        </div></Link>
                     ))}
-                </div>}
-            {open && <CampaignsDetails />}
+                </div>            
         </div>
     )
 }
