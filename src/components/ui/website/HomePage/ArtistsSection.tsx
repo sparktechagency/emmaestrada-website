@@ -43,7 +43,7 @@ function ArtistsSection() {
               480: { slidesPerView: 1.4 },
               640: { slidesPerView: 2.2 },
               1024: { slidesPerView: 3.2 },
-              1280: { slidesPerView: 4.5 }, // Desktop
+              1280: { slidesPerView: 3.5 }, // Desktop
             }}
           >
             {mediaData.map((data) => (

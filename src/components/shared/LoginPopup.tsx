@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 
 type LoginPopupProps = {
   open: boolean
@@ -20,30 +21,24 @@ export function LoginPopup({ open, onClose }: LoginPopupProps) {
       >
         <div className="flex flex-col md:flex-row">
 
-          {/* LEFT – Illustration */}
-          <div
-            className="
-              relative hidden md:flex w-full md:w-[45%]
-              items-center justify-center                            
-            "
-          >           
+          {/* LEFT – Illustration */}                  
             <Image
               src="https://images.unsplash.com/photo-1694355450046-ef2187e6e982?q=80&w=764&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               alt="Music Illustration"
-              fill
-              className="relative z-10 drop-shadow-xl object-cover center"
+              width={400}
+              height={600}
+              className="relative z-10  w-1/2 h-[500px] drop-shadow-xl object-cover center"
               priority
-            />
-          </div>
+            />          
 
           {/* RIGHT – Content */}
-          <div className="flex flex-col justify-center gap-6 px-6 py-20 sm:px-10 md:w-[55%]">
+          <div className="flex flex-col justify-center gap-6 px-6 py-2 sm:px-10 md:w-[55%]">
             {/* Badge */}
             <span
               className="
                 w-fit rounded-full px-4 py-1 text-xs font-bold uppercase tracking-wider
                 text-white
-                bg-gradient-to-r from-primary to-secondary
+                bg-linear-to-r from-primary to-secondary
               "
             >
               Welcome
@@ -62,16 +57,18 @@ export function LoginPopup({ open, onClose }: LoginPopupProps) {
             </div>
 
             {/* CTA */}
+            <Link href="/login">
             <Button
               size="lg"
               className="
                 mt-4 h-14 text-lg font-semibold rounded-2xl
-                bg-gradient-to-r from-primary to-secondary                
+                bg-linear-to-r from-primary to-secondary                
                 shadow-lg hover:shadow-xl transition-all
               "
             >
               Log In to Continue
             </Button>
+            </Link>
           </div>
         </div>
       </DialogContent>

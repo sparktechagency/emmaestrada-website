@@ -3,7 +3,7 @@ import { IoIosStar } from "react-icons/io";
 import { Button } from "../ui/button";
 import { FaPlus } from "react-icons/fa6";
 
-const ArtistCard = ({ data }:any) => {
+const ArtistCard = ({ data }: any) => {
     // Custom style to mimic the image background
     const cardStyle = {
         backgroundImage: `url('${data.imageUrl}')`,
@@ -18,25 +18,25 @@ const ArtistCard = ({ data }:any) => {
             `}
         >
             {/* Image Area with Aspect Ratio */}
-            <div 
+            <div
                 className="relative aspect-[3/4] bg-cover bg-center bg-no-repeat"
                 style={cardStyle}
             >
                 {/* Gradient Overlay (for Title visibility) */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                <div className="absolute inset-0 bg-linear-to-t from-black/80 to-transparent"></div>
 
                 <Button size="sm" className="absolute top-5 right-5 glassBg">Follow <FaPlus size={2} /></Button>
-                
+
                 <div className="absolute bottom-0  flex items-center justify-between  w-full p-4 pb-16 bg-white/5 backdrop-blur-sm border-t border-white/10">
                     <h2 className="text-xl font-extrabold text-white leading-snug tracking-tight">
                         {data.title}
                     </h2>
                     <div className="flex items-center gap-2">
-                        <IoIosStar size={15}  color="#FDC700"/>
+                        <IoIosStar size={15} color="#FDC700" />
                         <span className="text-white font-normal">4.9</span>
                     </div>
                 </div>
-                
+
                 <div className="absolute bottom-0 w-full bg-white p-3 border-t border-white/10 flex items-center justify-between">
                     <div className="flex items-center space-x-3 ">
                         {/* Avatar */}
@@ -50,7 +50,7 @@ const ArtistCard = ({ data }:any) => {
                     </div>
                     {/* Social Icon */}
                     <div className="border p-1">
-                    <IoLogoTiktok size={20} />
+                        <IoLogoTiktok size={20} />
                     </div>
                 </div>
             </div>

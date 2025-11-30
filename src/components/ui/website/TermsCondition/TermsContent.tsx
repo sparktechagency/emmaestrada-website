@@ -5,7 +5,7 @@ const TermsContent = () => {
 
   return (
     <div className="p-8 mt-10">
-      <div 
+      <div
         className="rich-text-content
           prose prose-lg max-w-none
           prose-headings:text-gray-900
@@ -28,90 +28,122 @@ const TermsContent = () => {
 
 export default TermsContent
 
-  const EditorContent = `
-    <p>Welcome to Whoa! These Terms and Conditions ("Terms") govern your use of our platform, including the website, mobile application, and any related services (collectively, "the Service"). By accessing or using Musiconic, you agree to comply with and be bound by these Terms. If you do not agree to these Terms, do not use our platform.</p>
+const EditorContent = `
+  <div class="prose prose-neutral max-w-none text-gray-800 leading-relaxed">
 
-    <h3>1. Eligibility</h3>
-    <ul>
-    <li>To use Whoa, you must be at least 18 years old or have the legal capacity to form a binding contract.</li>
-    <li>By registering, you represent that you meet these eligibility requirements.</li>
+    <p class="mb-4">
+      Welcome to Whoa! These Terms and Conditions ("Terms") govern your use of our platform, including the website, mobile application, and any related services (collectively, "the Service"). By accessing or using Musiconic, you agree to comply with and be bound by these Terms. If you do not agree to these Terms, do not use our platform.
+    </p>
+
+    <br />
+
+    <h3 class="text-xl font-semibold mt-6 mb-2">1. Eligibility</h3>
+    <ul class="list-disc pl-6 space-y-1">
+      <li>To use Whoa, you must be at least 18 years old or have the legal capacity to form a binding contract.</li>
+      <li>By registering, you represent that you meet these eligibility requirements.</li>
     </ul>
 
-    <h3>2. Account Registration</h3>
-    <ul>
-    <li>Artists and influencers must create an account to access the platform's features.</li>
-    <li>You must provide accurate, current, and complete information during registration.</li>
-    <li>You are responsible for maintaining the confidentiality of your account credentials.</li>
+    <br />
+
+    <h3 class="text-xl font-semibold mt-6 mb-2">2. Account Registration</h3>
+    <ul class="list-disc pl-6 space-y-1">
+      <li>Artists and influencers must create an account to access the platform's features.</li>
+      <li>You must provide accurate, current, and complete information during registration.</li>
+      <li>You are responsible for maintaining the confidentiality of your account credentials.</li>
     </ul>
 
-    <h3>3. Platform Use</h3>
-    <ul>
-    <li>Artists can create campaigns to promote their music by collaborating with influencers.</li>
-    <li>Influencers can apply to campaigns, create content, and receive payment for promotions.</li>
-    <li>Both roles must comply with all applicable laws and regulations while using Musiconic.</li>
+    <br />
+
+    <h3 class="text-xl font-semibold mt-6 mb-2">3. Platform Use</h3>
+    <ul class="list-disc pl-6 space-y-1">
+      <li>Artists can create campaigns to promote their music by collaborating with influencers.</li>
+      <li>Influencers can apply to campaigns, create content, and receive payment for promotions.</li>
+      <li>Both roles must comply with all applicable laws and regulations while using Musiconic.</li>
     </ul>
 
-    <h3>4. Content</h3>
-    <ul>
-    <li>Artists: You retain ownership of your music and any content you upload to the platform.</li>
-    <li>Influencers: You retain ownership of your original content, but grant Musiconic a non-exclusive, worldwide license to use, display, and share your content as part of the platform's features.</li>
-    <li>Both parties agree not to upload content that is illegal, infringing, or violates the rights of others.</li>
+    <br />
+
+    <h3 class="text-xl font-semibold mt-6 mb-2">4. Content</h3>
+    <ul class="list-disc pl-6 space-y-1">
+      <li>Artists: You retain ownership of your music and any content you upload to the platform.</li>
+      <li>Influencers: You retain ownership of your original content, but grant Musiconic a non-exclusive, worldwide license to use, display, and share your content as part of the platform's features.</li>
+      <li>Both parties agree not to upload content that is illegal, infringing, or violates the rights of others.</li>
     </ul>
 
-    <h3>5. Payments</h3>
-    <ul>
-    <li>Artists will pay influencers based on agreed rates (fixed or performance-based).</li>
-    <li>Influencers will receive payments via the platform's payout system.</li>
-    <li>All transactions are subject to applicable fees, including platform fees (e.g., 10% for Artists, 7% for Influencers).</li>
+    <br />
+
+    <h3 class="text-xl font-semibold mt-6 mb-2">5. Payments</h3>
+    <ul class="list-disc pl-6 space-y-1">
+      <li>Artists will pay influencers based on agreed rates (fixed or performance-based).</li>
+      <li>Influencers will receive payments via the platform's payout system.</li>
+      <li>All transactions are subject to applicable fees, including platform fees (e.g., 10% for Artists, 7% for Influencers).</li>
     </ul>
 
-    <h3>6. Prohibited Use</h3>
-    <p>You agree not to use Whoa for:</p>
-    <ul>
-    <li>Engaging in fraudulent activity.</li>
-    <li>Uploading harmful, offensive, or defamatory content.</li>
-    <li>Violating any intellectual property rights.</li>
-    <li>Disrupting the platform's operation or attempting to gain unauthorized access.</li>
+    <br />
+
+    <h3 class="text-xl font-semibold mt-6 mb-2">6. Prohibited Use</h3>
+    <p class="mb-2">You agree not to use Whoa for:</p>
+    <ul class="list-disc pl-6 space-y-1">
+      <li>Engaging in fraudulent activity.</li>
+      <li>Uploading harmful, offensive, or defamatory content.</li>
+      <li>Violating any intellectual property rights.</li>
+      <li>Disrupting the platform's operation or attempting to gain unauthorized access.</li>
     </ul>
 
-    <h3>7. Termination</h3>
-    <ul>
-    <li>We reserve the right to suspend or terminate your account if you violate these Terms or for any other reason, at our discretion.</li>
-    <li>You can deactivate your account at any time.</li>
+    <br />
+
+    <h3 class="text-xl font-semibold mt-6 mb-2">7. Termination</h3>
+    <ul class="list-disc pl-6 space-y-1">
+      <li>We reserve the right to suspend or terminate your account if you violate these Terms or for any other reason, at our discretion.</li>
+      <li>You can deactivate your account at any time.</li>
     </ul>
 
-    <h3>8. Privacy</h3>
-    <ul>
-    <li>Your use of the platform is also governed by our Privacy Policy, which outlines how we collect, use, and protect your data.</li>
+    <br />
+
+    <h3 class="text-xl font-semibold mt-6 mb-2">8. Privacy</h3>
+    <ul class="list-disc pl-6 space-y-1">
+      <li>Your use of the platform is also governed by our Privacy Policy, which outlines how we collect, use, and protect your data.</li>
     </ul>
 
-    <h3>9. Limitation of Liability</h3>
-    <ul>
-    <li>Whoa is not responsible for any loss or damage resulting from your use of the platform, including any direct or indirect consequences.</li>
-    <li>We do not guarantee the accuracy or reliability of content posted by users or the success of any campaigns.</li>
+    <br />
+
+    <h3 class="text-xl font-semibold mt-6 mb-2">9. Limitation of Liability</h3>
+    <ul class="list-disc pl-6 space-y-1">
+      <li>Whoa is not responsible for any loss or damage resulting from your use of the platform, including any direct or indirect consequences.</li>
+      <li>We do not guarantee the accuracy or reliability of content posted by users or the success of any campaigns.</li>
     </ul>
 
-    <h3>10. Indemnification</h3>
-    <ul>
-    <li>You agree to indemnify and hold harmless Whoa, its employees, partners, and affiliates from any claims, bases, or damages arising from your use of the platform or violation of these Terms.</li>
+    <br />
+
+    <h3 class="text-xl font-semibold mt-6 mb-2">10. Indemnification</h3>
+    <ul class="list-disc pl-6 space-y-1">
+      <li>You agree to indemnify and hold harmless Whoa, its employees, partners, and affiliates from any claims, bases, or damages arising from your use of the platform or violation of these Terms.</li>
     </ul>
 
-    <h3>11. Dispute Resolution</h3>
-    <ul>
-    <li>Any disputes between Whoa and users will be governed by [insert Jurisdiction, e.g., the laws of the United States, State of California].</li>
-    <li>Users agree to resolve disputes through binding arbitration if necessary.</li>
+    <br />
+
+    <h3 class="text-xl font-semibold mt-6 mb-2">11. Dispute Resolution</h3>
+    <ul class="list-disc pl-6 space-y-1">
+      <li>Any disputes between Whoa and users will be governed by [insert Jurisdiction].</li>
+      <li>Users agree to resolve disputes through binding arbitration if necessary.</li>
     </ul>
 
-    <h3>12. Modifications</h3>
-    <ul>
-    <li>Whoa reserves the right to modify these Terms at any time. Any changes will be posted on this page with an updated effective date.</li>
-    <li>By continuing to use the platform after changes are posted, you agree to the updated Terms.</li>
+    <br />
+
+    <h3 class="text-xl font-semibold mt-6 mb-2">12. Modifications</h3>
+    <ul class="list-disc pl-6 space-y-1">
+      <li>Whoa reserves the right to modify these Terms at any time. Any changes will be posted on this page with an updated effective date.</li>
+      <li>By continuing to use the platform after changes are posted, you agree to the updated Terms.</li>
     </ul>
 
-    <h3>13. Contact Information</h3>
-    <p>If you have any questions or concerns about these Terms, please contact us at:</p>
-    <ul>
-    <li>Email:</li>
-    <li>Phone:</li>
+    <br />
+
+    <h3 class="text-xl font-semibold mt-6 mb-2">13. Contact Information</h3>
+    <p class="mb-1">If you have any questions or concerns about these Terms, please contact us at:</p>
+    <ul class="list-disc pl-6 space-y-1">
+      <li>Email:</li>
+      <li>Phone:</li>
     </ul>
-  `
+
+  </div>
+`;

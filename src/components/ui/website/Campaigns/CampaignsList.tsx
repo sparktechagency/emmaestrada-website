@@ -12,7 +12,7 @@ const CampaignsList = () => {
                     Explore our handpicked campaigns that are driving real impact, inspiring communities, and shaping the future. Stay updated with the initiatives that matter most.
                 </p>
             </div>
-            <div className="grid grid-cols-2 gap-x-8 gap-y-5">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-5">
                 {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
                     <div className="" key={i}>
                         <CampaignCard

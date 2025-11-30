@@ -66,12 +66,12 @@ const Stepper = ({ currentStep }: { currentStep: number }) => (
                     {step.id < currentStep ? <Check className="h-5 w-5" /> : step.id}
                 </div>
                 <p
-                    className={`mt-2 text-xs font-medium ${step.id === currentStep ? "text-orange-600" : "text-gray-500"
+                    className={`mt-2 text-[10px] md:text-lg font-medium ${step.id === currentStep ? "text-orange-600" : "text-gray-500"
                         }`}
                 >
                     {step.name}
                 </p>
-                <p className="hidden md:block text-[10px] text-gray-400">{step.subtitle}</p>
+                <p className="hidden md:block text-[10px] md:text-[12px] text-gray-400">{step.subtitle}</p>
             </div>
         ))}
         <div className="absolute z-1 top-10 left-1/2 -translate-1/2 w-4/5 border-2 border-dashed border-gray-5"></div>
