@@ -67,9 +67,9 @@ const Navbar = () => {
 
             {/* Right Side */}
             <div className="flex items-center gap-4">
-              <button className="hidden sm:block p-2 text-white hover:text-orange-500 transition-colors">
+              {/* <button className="hidden sm:block p-2 text-white hover:text-orange-500 transition-colors">
                 <Search className="w-6 h-6" />
-              </button>
+              </button> */}
 
               <Link href="/login"><button className="bg-primary btn text-white rounded-full hover:from-orange-600 hover:to-orange-700 transition-all">
                 Sign in

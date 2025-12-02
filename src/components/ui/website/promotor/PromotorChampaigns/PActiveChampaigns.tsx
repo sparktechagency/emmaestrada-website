@@ -1,4 +1,5 @@
 import CampaignCard from '@/components/shared/CampaignCard'
+import Link from 'next/link'
 import React from 'react'
 
 const PActiveChampaigns = () => {
@@ -7,7 +8,7 @@ const PActiveChampaigns = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-7 md:gap-10">
                 {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
                     <div className="" key={i}>
-                        <CampaignCard
+                       <Link href={`/promotor/campaigns/${i}`}> <CampaignCard
                             name="Feel the Vibe"
                             budget="$1000"
                             influencers="25/25"
@@ -21,6 +22,7 @@ const PActiveChampaigns = () => {
                             isPrivate={i % 2 !== 0}
                             status="pactive"
                         />
+                        </Link>
                     </div>
                 ))}
             </div>

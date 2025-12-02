@@ -3,11 +3,11 @@ import { Star, ArrowUpRight, Music, Mic, Video } from "lucide-react";
 import BrandLogos from "./BrandLogos";
 
 const HeroSection = () => {
-    
+
     return (
         <section className="relative h-screen md:py-20 pb-30 pt-24">
 
-            <div className="absolute top-0 left-0 w-full h-full inset-0 pointer-events-none z-10">
+            <div className="absolute top-0 left-0 w-full h-full inset-0 pointer-events-none -z-10">
                 <img src="/headerBg.png" alt="background" className="h-full w-full object-cover " />
             </div>
             <Container>
@@ -76,11 +76,9 @@ const HeroSection = () => {
                         <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                     </button>
                 </div>
-            </Container>
-
-            <BrandLogos />
-
-           <style>{`
+            </Container>        
+                <BrandLogos />
+            <style>{`
         @keyframes float {
           0%, 100% {
             transform: translateY(0px);
@@ -103,7 +101,7 @@ const HeroSection = () => {
         .animate-float-delayed {
           animation: float-delayed 4s ease-in-out infinite;
         }
-      `}</style> 
+      `}</style>
         </section>
     );
 }

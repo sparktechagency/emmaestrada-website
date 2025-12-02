@@ -15,7 +15,7 @@ export function LoginPopup({ open, onClose }: LoginPopupProps) {
     <Dialog open={open} onOpenChange={onClose} >
       <DialogContent
         className="
-          min-w-4xl  p-0 overflow-hidden rounded-3xl
+          w-full md:min-w-4xl  p-0 overflow-hidden rounded-3xl
           bg-white shadow-2xl border-0
         "
       >
@@ -27,12 +27,12 @@ export function LoginPopup({ open, onClose }: LoginPopupProps) {
               alt="Music Illustration"
               width={400}
               height={600}
-              className="relative z-10  w-1/2 h-[500px] drop-shadow-xl object-cover center"
+              className="relative z-10 w-full  md:w-1/2 h-[200px] md:h-[500px] drop-shadow-xl object-cover center"
               priority
             />          
 
           {/* RIGHT – Content */}
-          <div className="flex flex-col justify-center gap-6 px-6 py-2 sm:px-10 md:w-[55%]">
+          <div className="flex flex-col justify-center gap-6 px-6 py-10 md:py-2 sm:px-10 w-full md:w-[55%]">
             {/* Badge */}
             <span
               className="
@@ -46,11 +46,11 @@ export function LoginPopup({ open, onClose }: LoginPopupProps) {
 
             {/* Message */}
             <div className="space-y-4">
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-primary leading-tight">
+              <h2 className="text-xl sm:text-3xl font-extrabold text-primary leading-tight">
                 Please Create Account 🎶
               </h2>
 
-              <p className="textPara">
+              <p className="md:textPara">
                 Join our music community to unlock exclusive campaigns,
                 early releases, and artist-only content.
               </p>

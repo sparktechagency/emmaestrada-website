@@ -18,7 +18,7 @@ const BrandLogos = () => {
   return (
     <section
       style={{ borderInline: 0 }}
-      className="border-t border-white/10 glassBg backdrop-blur-xl rounded-none! absolute w-full bottom-10 z-20"
+      className="border-t border-white/10 glassBg backdrop-blur-xl rounded-none! absolute w-full mt-10 md:bottom-10 z-20"
     >
       <div className="py-8 md:py-10 overflow-hidden">
         <motion.div
