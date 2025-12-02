@@ -4,7 +4,7 @@ import AcceptedSubmission from './AcceptedSubmission'
 import RejectedSubmission from './RejectedSubmission'
 import { CampaignTabGroup } from '../../../Influencer/InfluencerCampaign/CampaignTabGroup'
 
-const CampaignSubmission = () => {
+const CampaignSubmission = ({status}: {status?: string}) => {
   return (
     <div>
       <div className="mt-5">
@@ -17,9 +17,8 @@ const CampaignSubmission = () => {
         queryParam="status"
       />
       </div>
-      <PendingSubmission />
-      <AcceptedSubmission />
-      <RejectedSubmission />
+       {status === 'pending' ? <PendingSubmission /> : status === 'approved' ? < AcceptedSubmission /> : status === 'rejected' ? < RejectedSubmission/> : <PendingSubmission/>}  
+      
     </div>
   )
 }
