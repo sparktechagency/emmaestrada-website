@@ -1,24 +1,25 @@
-// 'use client'
-// import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-// import React from 'react'
+'use client'
+import { usePathname, useRouter, useParams, useSearchParams } from 'next/navigation'
+import React from 'react'
 
 
 
-// const ViewAllSubmittionBtn = ({}) => {
-//     const router = useRouter();
-//     const pathname = usePathname();
-//     const searchParams = useSearchParams()
+const ViewAllSubmittionBtn = () => {
+    const router = useRouter();
+    const pathname = usePathname();
+    const searchParams = useSearchParams()
+    const params = useParams<{id?: string}>()
+    
+    const {id} = params;
+    
+    const handleOpenSubmittion = () =>{
+       router.push(`/promotor/campaigns/${id}?openTab=true`)
+    }
+    return (
+        <div onClick={()=>handleOpenSubmittion()} className="border-2 border-secondary  shadow-md text-primary rounded-xl p-4 mt-4 text-sm text-center cursor-pointer">
+            View All Submission
+        </div>
+    )
+}
 
-
-//     const handleOpenSubmittion = (value: string) =>{
-//         const params = new URLSearchParams(searchParams.toString());
-//         params.set(value)
-//     }
-//     return (
-//         <div onClick={()=>handleOpenSubmittion(`openTab=true`)} className="bg-secondary  shadow-md text-white rounded-xl p-4 mt-4 text-sm text-center">
-//             View All Submission
-//         </div>
-//     )
-// }
-
-// export default ViewAllSubmittionBtn
+export default ViewAllSubmittionBtn

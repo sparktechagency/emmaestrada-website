@@ -5,8 +5,10 @@ import Image from 'next/image'
 import React from 'react'
 import SubmitButton from '../../Campaigns/ChampaignDetails/SubmitButton'
 import { Progress } from '@/components/ui/progress'
+import ViewAllSubmittionBtn from './ViewAllSubmittionBtn'
+import CampaignSubmission from './CampaignSubmission'
 
-const PromotorCampaignDetails = () => {
+const PromotorCampaignDetails = ({status, openTab}: { status?: string, openTab?: string}) => {
   return (
     <Container>
             <div className=" w-full  p-4 md:p-8 flex flex-col items-center">
@@ -31,10 +33,8 @@ const PromotorCampaignDetails = () => {
                 <div className="bg-secondary  shadow-md text-white rounded-xl p-4 mt-4 text-sm text-center">
                     Only views after you submit count towards payout. Submit as soon as you post to get paid for all of your views.
                 </div>
-                <div className="bg-secondary  shadow-md text-white rounded-xl p-4 mt-4 text-sm text-center">
-                    View All Submi
-                </div>
-
+                <ViewAllSubmittionBtn />
+                {openTab && <CampaignSubmission />}
                 {/* Paid Out */}
                 <div className="mt-6 text-lg font-semibold">Paid Out</div>
                 <div className="flex items-end gap-1">
