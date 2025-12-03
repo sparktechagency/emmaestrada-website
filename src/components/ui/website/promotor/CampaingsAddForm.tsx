@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Check, ChevronRight, ArrowLeft, Upload, Plus } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -105,7 +105,7 @@ const Step1 = ({ formData, updateFormData, next }: any) => {
         }}
 
       >
-        <div className="space-y-6 p-6 border rounded-xl bg-white mb-5">
+        <div className="space-y-6  p-3 md:p-6 border rounded-xl bg-white mb-5">
           <div className=" mt-5">
             <p className="text-md  font-md font-semibold mb-2">Campaign Title</p>
             <Input
@@ -125,7 +125,7 @@ const Step1 = ({ formData, updateFormData, next }: any) => {
           </div>
 
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-6">
             <div className="">
               <p className="text-md  font-md font-semibold mb-2">Genre</p>
               <Input
@@ -227,18 +227,10 @@ const Step1 = ({ formData, updateFormData, next }: any) => {
 
           </div>
         </div>
-        <div className="flex justify-between gap-4 bg-white rounded-md shadow-md p-4">
-          <Button size="lg" variant="outline" disabled={!valid} className="bg-transparent rounded-full! text-black! border border-black/50!">
-            Draft
+        <div className="flex justify-end gap-4 bg-white rounded-md shadow-md p-4">
+          <Button type="submit" disabled={!valid}>
+            Next Step <ChevronRight className="ml-2 h-4 w-4" />
           </Button>
-          <div className="flex items-center gap-3">
-
-
-            <Button type="submit" disabled={!valid}>
-              Next Step <ChevronRight className="ml-2 h-4 w-4" />
-            </Button>
-          </div>
-
         </div>
 
       </form>
@@ -264,17 +256,6 @@ const Step2 = ({ formData, updateFormData, prev, next }: any) => {
     formData.targetPlatform?.length > 0 &&
     formData.contentGuidelines?.length > 0;
 
-  const handleRequirementChange = (index: number, value: string) => {
-    const updated = [...formData.campaignRequirements];
-    updated[index] = value;
-    updateFormData({ campaignRequirements: updated });
-  };
-
-  const addRequirement = () => {
-    updateFormData({
-      campaignRequirements: [...formData.campaignRequirements, ""],
-    });
-  };
   return (
     <div className="">
       <p className="text-lg font-semibold mb-5">Playform & Assets</p>
@@ -307,7 +288,7 @@ const Step2 = ({ formData, updateFormData, prev, next }: any) => {
           {/* Content Types */}
           <p className="text-lg font-semibold mb-4">Allowed Content Type</p>
 
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-5 ">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-5 ">
             {contentTypes.map((c) => (
               <div
                 key={c.value}
@@ -329,45 +310,7 @@ const Step2 = ({ formData, updateFormData, prev, next }: any) => {
               </div>
             ))}
           </div>
-          {/* Requirements */}
-          {/* <div className="bg-white border rounded-xl p-6 mb-6">
-        <div className="flex items-center justify-between mb-4">
-          <p className="font-medium">Campaign Requirements</p>
-          <Button
-            size="sm"
-            onClick={addRequirement}
-            className="rounded-full bg-orange-400 hover:bg-orange-500"
-          >
-            <Plus className="h-4 w-4 mr-1" />
-            Add Requirement
-          </Button>
-        </div>
 
-        {formData.campaignRequirements.map((req: string, idx: number) => (
-          <Input
-            key={idx}
-            className="h-[45px] mb-3"
-            placeholder={`Requirement ${idx + 1}`}
-            value={req}
-            onChange={(e) =>
-              handleRequirementChange(idx, e.target.value)
-            }
-          />
-        ))}
-        
-        <div className="mt-6 bg-orange-50 border border-orange-200 rounded-xl p-4">
-          <p className="font-medium text-orange-600 mb-2">
-            Guidelines Suggestions
-          </p>
-          <ul className="text-sm text-gray-600 list-disc pl-5 space-y-1">
-            <li>Specify minimum follower count or engagement rate</li>
-            <li>Mention any content restrictions or brand guidelines</li>
-            <li>Include hashtags or mentions required</li>
-            <li>State video length requirements</li>
-            <li>Specify if prior approval is needed before posting</li>
-          </ul>
-        </div>      
-      </div> */}
           {/* Assets */}
           <div className="bg-white border rounded-xl p-3 md:p-6 mb-6">
             <p className="font-medium mb-3">Campaign Assets</p>
@@ -387,10 +330,6 @@ const Step2 = ({ formData, updateFormData, prev, next }: any) => {
             Previous
           </Button>
           <div className="flex items-center gap-3">
-            <Button size="lg" variant="outline" disabled={!valid} className="bg-transparent rounded-full! text-black! border border-black/50!">
-              Draft
-            </Button>
-
             <Button type="submit" disabled={!valid}>
               Next Step <ChevronRight className="ml-2 h-4 w-4" />
             </Button>
@@ -409,9 +348,9 @@ const Step3 = ({ formData, prev, submit }: any) => {
     <div className="">
       <p className="text-lg font-semibold mb-6">Review & Submit</p>
 
-      <div className="space-y-6 bg-white p-5 rounded-xl">
+      <div className="space-y-6 bg-whitemd:p-5 rounded-xl">
         {/* Basic Information */}
-        <div className="border rounded-xl p-6 bg-white">
+        <div className="border rounded-xl p-4 md:p-6 bg-white">
           <p className="font-semibold mb-4">Basic & Budget</p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -587,14 +526,6 @@ const Step3 = ({ formData, prev, submit }: any) => {
         <div className="flex gap-3">
           <Button
             size="lg"
-            variant="outline"
-            className="rounded-full"
-          >
-            Save as Draft
-          </Button>
-
-          <Button
-            size="lg"
             className="bg-orange-500 hover:bg-orange-600"
             onClick={submit}
           >
@@ -606,119 +537,9 @@ const Step3 = ({ formData, prev, submit }: any) => {
   );
 };
 
-const Step4 = ({ formData, updateFormData, prev, next }: any) => {
-
-  const handleRequirementChange = (index: number, value: string) => {
-    const updated = [...formData.campaignRequirements];
-    updated[index] = value;
-    updateFormData({ campaignRequirements: updated });
-  };
-
-  const addRequirement = () => {
-    updateFormData({
-      campaignRequirements: [...formData.campaignRequirements, ""],
-    });
-  };
-
-  const valid =
-    formData.campaignRequirements.some((r: string) => r.trim() !== "");
-
-  return (
-    <div>
-      <p className="text-lg font-semibold mb-6">
-        Campaign Requirements & Assets
-      </p>
-
-      {/* Requirements */}
-      <div className="bg-white border rounded-xl p-6 mb-6">
-        <div className="flex items-center justify-between mb-4">
-          <p className="font-medium">Campaign Requirements</p>
-          <Button
-            size="sm"
-            onClick={addRequirement}
-            className="rounded-full bg-orange-400 hover:bg-orange-500"
-          >
-            <Plus className="h-4 w-4 mr-1" />
-            Add Requirement
-          </Button>
-        </div>
-
-        {formData.campaignRequirements.map((req: string, idx: number) => (
-          <Input
-            key={idx}
-            className="h-[45px] mb-3"
-            placeholder={`Requirement ${idx + 1}`}
-            value={req}
-            onChange={(e) =>
-              handleRequirementChange(idx, e.target.value)
-            }
-          />
-        ))}
-
-        {/* Guideline Suggestions */}
-        <div className="mt-6 bg-orange-50 border border-orange-200 rounded-xl p-4">
-          <p className="font-medium text-orange-600 mb-2">
-            Guidelines Suggestions
-          </p>
-          <ul className="text-sm text-gray-600 list-disc pl-5 space-y-1">
-            <li>Specify minimum follower count or engagement rate</li>
-            <li>Mention any content restrictions or brand guidelines</li>
-            <li>Include hashtags or mentions required</li>
-            <li>State video length requirements</li>
-            <li>Specify if prior approval is needed before posting</li>
-          </ul>
-        </div>
-      </div>
-
-      {/* Assets */}
-      <div className="bg-white border rounded-xl p-6 mb-6">
-        <p className="font-medium mb-3">Campaign Assets</p>
-        <Input
-          className="h-[45px]"
-          placeholder="Paste asset link (Drive, Dropbox, etc.)"
-          value={formData.campaignAssets}
-          onChange={(e) =>
-            updateFormData({ campaignAssets: e.target.value })
-          }
-        />
-      </div>
-
-      {/* Footer */}
-      <div className="flex justify-between gap-4 bg-white rounded-md shadow-md p-4">
-        <Button
-          size="lg"
-          variant="outline"
-          onClick={prev}
-          className="rounded-full"
-        >
-          Previous
-        </Button>
-
-        <div className="flex gap-3">
-          <Button
-            size="lg"
-            variant="outline"
-            className="rounded-full"
-          >
-            Save as Draft
-          </Button>
-
-          <Button
-            size="lg"
-            onClick={next}
-            disabled={!valid}
-            className="bg-orange-500 hover:bg-orange-600"
-          >
-            Next Step
-          </Button>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 
-const CampaingsAddForm = () => {
+const CampaingsAddForm = ({ editData }: { editData?: any }) => {
   const [step, setStep] = useState(1);
 
   const [formData, setFormData] = useState({
@@ -742,6 +563,13 @@ const CampaingsAddForm = () => {
     campaignAssets: "",
   });
 
+  useEffect(() => {
+    if (editData) {
+      setFormData({ ...formData, ...editData });
+      setStep(1); // optional: always start at step 1 when editing
+    }
+  }, [editData]);
+
   const updateFormData = (field: any) =>
     setFormData((p) => ({ ...p, ...field }));
 
@@ -754,15 +582,13 @@ const CampaingsAddForm = () => {
     1: <Step1 formData={formData} updateFormData={updateFormData} next={() => setStep(2)} />,
     2: <Step2 formData={formData} updateFormData={updateFormData} prev={() => setStep(1)} next={() => setStep(3)} />,
     3: <Step3 formData={formData} updateFormData={updateFormData} submit={submit} prev={() => setStep(2)} />
-    // 4: <Step4 formData={formData} updateFormData={updateFormData} prev={() => setStep(3)} next={() => setStep(5)} />,
-    // 5: <Step5 formData={formData} prev={() => setStep(4)} submit={submit} />,
   };
 
   return (
     <div className="w-full">
       <div className="mb-6 pt-10">
-        <h1 className={`mb-2 text-3xl font-semibold`}>Create New Campaign</h1>
-        <p className="textPara">Set up your music promotion campaign</p>
+        <h1 className={`mb-2 text-2xl md:text-3xl font-semibold`}>Create New Campaign</h1>
+        <p className="text-md text-slate-500 md:text-xl">Set up your music promotion campaign</p>
       </div>
       <Stepper currentStep={step} />
       <div className="mt-8">{views[step]}</div>

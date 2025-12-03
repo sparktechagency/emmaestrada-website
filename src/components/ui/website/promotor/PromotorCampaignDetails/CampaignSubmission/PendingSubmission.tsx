@@ -1,99 +1,61 @@
-
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import {
-  Table,
-  TableHead,
-  TableRow,
-  TableHeader,
-  TableBody,
-  TableCell,
-} from "@/components/ui/table"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { ArrowLeft, ChevronDown, Plus } from "lucide-react"
+import { Card } from "@/components/ui/card"
 import Image from "next/image"
-import { MdOutlineStar } from "react-icons/md"
+import ProfileImageWithUserData from "./ProfileImageWithUserData"
+import ReelsAnalyticsChart from "./ReelsAnalyticsChart"
 
-const campaigns = Array.from({ length: 10 }).map((_, i) => ({
-  campaign: "Summer Vibes 2024",
-  profile: "/images/profile21.jpg",
-  artist: "Luna Rivers",
-  totalFollowers: "25K",
-  engagement: "3.5%",
-  rating: 5,
-  totalCampaigns: 7,
-  platform: "/tiktok.svg", // replace with your icon
-  isFollow: false,
-}))
 
 export default function CreatorAllArtists() {
-  
+
+  const user = {
+    name: "Sarah Jhonson",
+    profileImage: "/images/profile21.jpg",
+  }
 
   return (
     <div>
-      
-        <Card className="bg-transparent shadow-none border-0">
-          <CardContent className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Artists</TableHead>
-                  <TableHead>Platform</TableHead>
-                  <TableHead>Total Followers</TableHead>
-                  <TableHead>Engagement</TableHead>
-                  <TableHead>Rating</TableHead>
-                  <TableHead>Num. of Campaign</TableHead>
-                  <TableHead className="text-center">Action</TableHead>
-                </TableRow>
-              </TableHeader>
 
-              <TableBody>
-                {campaigns.map((row, i) => (
-                  <TableRow key={i}>
-                    <TableCell>
-                      <div className="flex items-center gap-3">
-                        <Image src={row?.profile} alt="platform" width={40} height={40} className="rounded-full" />
-                        <span>{row.artist}</span>
+      <Card className="bg-transparent shadow-none border-0">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between md:p-3 ">
+          <div className="flex items-center gap-3">
+            <ProfileImageWithUserData user={user} />
+            <div className="">
+              <p className="text-lg font-semibold text-black">Sarah Jhonson</p>
+              <p className="text-md text-slate-400">152 days ago by <span className="font-semibold text-primary">Pokiee Ttv</span></p>
+            </div>
+          </div>
+          <div className="flex w-full md:w-auto  items-center md:justify-between gap-3 mt-5 md:mt-0">
+            <div className="shring-0! bg-white p-2 rounded-lg flex items-center gap-2 ">
+              <Image src="/instagram.png" height={15} width={40} alt="logo" className="h-6 object-contain w-full md:w-7 rounded-md" />
+              <Image src="/tiktokBlack.png" height={15} width={40} alt="logo" className="h-6 object-contain w-full md:w-7 rounded-md" />
+            </div>
+            <div className="">
+              <Button className="bg-green-600">Approved</Button>
+              <Button variant="destructive" className="ml-3">Reject</Button>
+            </div>
+          </div>
+        </div>
+        <div className="flex md:flex-row flex-col items-center gap-4">          
+            <div className="flex justify-center items-center w-full md:w-1/2 h-60 min-h-66">
+              <video
+                controls
+                preload="metadata"
+                // poster="https://images.pexels.com/photos/1763075/pexels-photo-1763075.jpeg" // path to your video thumbnail
+                className="w-full h-full object-cover rounded-lg"
+                aria-label="Video player"
+              >
+                <source src="/reels-3.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>            
+          </div>
 
-                      </div>
-                    </TableCell>
-                    <TableCell className="flex items-center gap-2">
-                      <Image src="/tiktokBlack.png" alt="platform" width={22} height={22} className="" />
-                      <Image src="/instagram.png" alt="platform" width={22} height={22} />
-                    </TableCell>
-                    <TableCell>{row.totalFollowers}</TableCell>
-                    <TableCell className="text-green-600 font-semibold">
-                      {row.engagement}
-                    </TableCell>
-                    <TableCell className=" font-semibold flex ">
-                      {Array.from([1, 2, 3, 4, 5])?.map((_: any, i: number) => <MdOutlineStar className="text-orange-500" size={15} />)}
-                    </TableCell>
-                    <TableCell>
-                      {row?.totalCampaigns}
-                    </TableCell>
-                    <TableCell className="text-right md:w-[50px]">
-                      <div className=" flex items-center gap-3">
-                      <Button  className="border border-primary text-primary bg-transparent hover:text-white"
-                      >Follow
-                      </Button>
-                      <Button  className="border border-black/50 text-black/50 hover:bg-white hover:text-black bg-transparent"
-                      >View
-                      </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+          <div className="w-full md:w-1/2">
+            <ReelsAnalyticsChart />
+          </div>
+        </div>
 
-           
-          </CardContent>
-        </Card>      
+
+      </Card>
     </div>
   )
 }
