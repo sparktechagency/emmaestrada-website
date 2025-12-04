@@ -23,7 +23,7 @@ const ViewAllSubmittionBtn = () => {
     }
     return (
         <div className="">
-        {!openTab ? <div onClick={()=>handleOpenSubmittion()} className="border-2 border-secondary  shadow-md text-primary rounded-xl p-4 mt-4 text-sm text-center cursor-pointer">
+        {!openTab ? <div onClick={()=>handleOpenSubmittion()} className="border-2 duration-500 transition-all bg-primary  text-white shadow-md  rounded-xl p-4 mt-4 text-sm text-center cursor-pointer">
             View All Submission {openTab} 
         </div> : 
         <Button onClick={()=>handleBack()} variant="link" className='text-black'> <ArrowLeft size={20}/> <span>Back</span> </Button>}

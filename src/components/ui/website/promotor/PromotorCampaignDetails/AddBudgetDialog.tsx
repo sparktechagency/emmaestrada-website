@@ -34,6 +34,7 @@ export function AddBudgetDialog({
     function handleSubmit() {
         if (!amount || Number(amount) <= 0) return;
         setConfirmOpen(true);
+        onCancel()
     }
 
     return (

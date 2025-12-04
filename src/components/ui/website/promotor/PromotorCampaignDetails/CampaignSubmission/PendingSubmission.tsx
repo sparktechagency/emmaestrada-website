@@ -35,18 +35,18 @@ export default function CreatorAllArtists() {
             </div>
           </div>
         </div>
-        <div className="flex md:flex-row flex-col items-center gap-4">          
-            <div className="flex justify-center items-center w-full md:w-1/2 h-60 min-h-66">
-              <video
-                controls
-                preload="metadata"
-                // poster="https://images.pexels.com/photos/1763075/pexels-photo-1763075.jpeg" // path to your video thumbnail
-                className="w-full h-full object-cover rounded-lg"
-                aria-label="Video player"
-              >
-                <source src="/reels-3.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>            
+        <div className="flex md:flex-row flex-col items-center gap-4">
+          <div className="flex justify-center items-center w-full md:w-1/2 h-60 min-h-66">
+             <video
+              controls
+              preload="metadata"
+              poster="https://images.pexels.com/photos/33597/guitar-classical-guitar-acoustic-guitar-electric-guitar.jpg"
+              className="w-full h-full object-cover rounded-lg"
+              aria-label="Video player"
+              src="/reels-3.mp4"
+            >
+              Your browser does not support the video tag.
+            </video>
           </div>
 
           <div className="w-full md:w-1/2">

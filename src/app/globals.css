@@ -140,6 +140,22 @@
 
 }
 
+/* ------- Scroll bar ------- */
+::-webkit-scrollbar{
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track{
+  background: #dfdfdf00 !important;
+}
+::-webkit-scrollbar-thumb{
+  background: #6b5ecc34 !important; 
+  border-radius: 10px;
+}
+
+/* ------- Scroll bar ------- */
+
 .glassBg {
   background: rgba(255, 255, 255, 0.14);
   border-radius: 16px;

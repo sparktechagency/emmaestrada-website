@@ -63,11 +63,6 @@ const CampaignData = () => {
                     <SquareArrowOutUpRight size={20} />
                 </a>
             </div>
-
-            <p className="font-semibold  text-2xl mt-7 mb-6">Disclaimer</p>
-            <div className="p-5 text-justify bg-secondary rounded-lg shadow-lg! text-white ">
-                <p>Creators may reject submissions that don't meet requirements. By submitting, you grant full usage rights and agree to follow the <Link href="#" className="text-blue-500 underline font-medium">FTC Guidelines</Link>  and <Link href="#" className="text-blue-500 underline font-medium"> the Content Rewards Terms</Link></p>
-            </div>
         </div>
     )
 }

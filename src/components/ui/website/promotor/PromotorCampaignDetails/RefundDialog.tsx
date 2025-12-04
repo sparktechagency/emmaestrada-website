@@ -34,6 +34,7 @@ export function RefundDialog({
   function handleContinue() {
     if (!amount || Number(amount) <= 0) return;
     setConfirmOpen(true);
+    onCancel();
   }
 
   return (
@@ -63,7 +64,7 @@ export function RefundDialog({
             {amount && Number(amount) > 0 && (
               <div className="rounded-md bg-red-100 border border-red-300 p-4 text-red-700">
                 <p className="font-medium">
-                  Mission fee (8%): {fee.toFixed(2)} USD
+                  Comission fee (8%): {fee.toFixed(2)} USD
                 </p>
                 <p className="mt-1">
                   You will receive: <b>{afterFee.toFixed(2)} USD</b>
@@ -88,7 +89,7 @@ export function RefundDialog({
       <ConfirmDialog
         open={confirmOpen}
         title="Confirm Refund"
-        message={`Refunding ${amount} USD will deduct an 8% mission fee.`}
+        message={`Refunding ${amount} USD will deduct an 8% commission fee.`}
         subMessage={`You will receive ${afterFee.toFixed(2)} USD after a ${fee.toFixed(2)} USD fee.`}
         confirmText="Confirm Refund"
         cancelText="Cancel"

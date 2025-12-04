@@ -37,7 +37,7 @@ export function DropDownMenu() {
         <div className="">
             <DropdownMenu modal={false}>
                 <DropdownMenuTrigger asChild>
-                    <Button variant="destructive" className="cursor-pointer bg-primary/80">Actions <Menu /></Button>
+                    <Button  className="cursor-pointer bg-orange-500">Actions <Menu /></Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56" align="end">
                     <DropdownMenuGroup>

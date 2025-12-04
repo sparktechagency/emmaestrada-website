@@ -32,19 +32,19 @@ export default function AcceptedSubmission() {
             <Button variant="destructive" className="ml-3">Reject</Button>
           </div>
         </div>
-        <div className="flex md:flex-row flex-col items-center gap-4">          
-            {/* <iframe width="100%" className="min-h-66!" src="https://www.youtube.com/embed/19g66ezsKAg" allowFullScreen /> */}
-            <div className="flex justify-center items-center w-full md:w-1/2 h-60 min-h-66">
-              <video
-                controls
-                preload="metadata"
-                poster="https://images.pexels.com/photos/33597/guitar-classical-guitar-acoustic-guitar-electric-guitar.jpg" // path to your video thumbnail
-                className="w-full h-full object-cover rounded-lg"
-                aria-label="Video player"
-              >
-                <source src="/reels.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>            
+        <div className="flex md:flex-row flex-col items-center gap-4">
+          {/* <iframe width="100%" className="min-h-66!" src="https://www.youtube.com/embed/19g66ezsKAg" allowFullScreen /> */}
+          <div className="flex justify-center items-center w-full md:w-1/2 h-60 min-h-66">
+            <video
+              controls
+              preload="metadata"
+              poster="https://images.pexels.com/photos/33597/guitar-classical-guitar-acoustic-guitar-electric-guitar.jpg"
+              className="w-full h-full object-cover rounded-lg"
+              aria-label="Video player"
+              src="/reels.mp4"
+            >
+              Your browser does not support the video tag.
+            </video>
           </div>
 
           <div className="w-full md:w-1/2">
@@ -53,8 +53,8 @@ export default function AcceptedSubmission() {
         </div>
 
 
-      </Card>
-    </div>
+      </Card >
+    </div >
   )
 }
 

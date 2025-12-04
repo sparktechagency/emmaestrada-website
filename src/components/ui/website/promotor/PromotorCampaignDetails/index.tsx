@@ -34,9 +34,12 @@ const PromotorCampaignDetails = ({ status, openTab }: { status?: string, openTab
                     </h1>
 
                     {/* Info Banner */}
-                    <div className="bg-secondary  shadow-md text-white rounded-xl p-4 mt-4 text-sm text-center">
+                    <div className="text-blue-500 text-md text-center pt-4">
                         Only views after you submit count towards payout. Submit as soon as you post to get paid for all of your views.
                     </div>
+                    {/* <div className="bg-secondary  shadow-md text-white rounded-xl p-4 mt-4 text-sm text-center">
+                        Only views after you submit count towards payout. Submit as soon as you post to get paid for all of your views.
+                    </div> */}
                     <ViewAllSubmittionBtn />
                     {openTab ? <CampaignSubmission status={status} /> :
                         <CampaignData />

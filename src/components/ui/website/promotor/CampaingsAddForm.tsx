@@ -50,6 +50,64 @@ const contentTypes = [
   },
 ];
 
+const CampaingsAddForm = ({ editData }: { editData?: any }) => {
+  const [step, setStep] = useState(1);
+
+  const [formData, setFormData] = useState({
+    campaignTitle: "",
+    campaignDescription: "",
+    genre: "",
+    influencersNeeded: "",
+    startDate: "",
+    endDate: "",
+    audioTrack: null,
+    totalCampaignBudget: "",
+    rewardType: "",
+    rewardAmount: "",
+    minimumPayout: "",
+    maximumPayout: "",
+    targetPlatform: [],
+    contentGuidelines: [],
+    ageRestriction: "",
+    location: "",
+    campaignRequirements: [""],
+    campaignAssets: "",
+  });
+
+  useEffect(() => {
+    if (editData) {
+      setFormData({ ...formData, ...editData });
+      setStep(1); // optional: always start at step 1 when editing
+    }
+  }, [editData]);
+
+  const updateFormData = (field: any) =>
+    setFormData((p) => ({ ...p, ...field }));
+
+  const submit = () => {
+    console.log("SUBMITTED DATA:", formData);
+    alert("Submitted. Check console.");
+  };
+
+  const views: any = {
+    1: <Step1 formData={formData} updateFormData={updateFormData} next={() => setStep(2)} />,
+    2: <Step2 formData={formData} updateFormData={updateFormData} prev={() => setStep(1)} next={() => setStep(3)} />,
+    3: <Step3 formData={formData} updateFormData={updateFormData} submit={submit} prev={() => setStep(2)} />
+  };
+
+  return (
+    <div className="w-full">
+      <div className="mb-6 pt-10">
+        <h1 className={`mb-2 text-2xl md:text-3xl font-semibold`}>Create New Campaign</h1>
+        <p className="text-md text-slate-500 md:text-xl">Set up your music promotion campaign</p>
+      </div>
+      <Stepper currentStep={step} />
+      <div className="mt-8">{views[step]}</div>
+    </div>
+  );
+}
+
+
 const Stepper = ({ currentStep }: { currentStep: number }) => (
   <div className="relative w-full flex justify-between items-start md:items-center bg-white shadow-lg py-5 rounded-lg">
     {steps?.map((step) => (
@@ -539,62 +597,6 @@ const Step3 = ({ formData, prev, submit }: any) => {
 
 
 
-const CampaingsAddForm = ({ editData }: { editData?: any }) => {
-  const [step, setStep] = useState(1);
-
-  const [formData, setFormData] = useState({
-    campaignTitle: "",
-    campaignDescription: "",
-    genre: "",
-    influencersNeeded: "",
-    startDate: "",
-    endDate: "",
-    audioTrack: null,
-    totalCampaignBudget: "",
-    rewardType: "",
-    rewardAmount: "",
-    minimumPayout: "",
-    maximumPayout: "",
-    targetPlatform: [],
-    contentGuidelines: [],
-    ageRestriction: "",
-    location: "",
-    campaignRequirements: [""],
-    campaignAssets: "",
-  });
-
-  useEffect(() => {
-    if (editData) {
-      setFormData({ ...formData, ...editData });
-      setStep(1); // optional: always start at step 1 when editing
-    }
-  }, [editData]);
-
-  const updateFormData = (field: any) =>
-    setFormData((p) => ({ ...p, ...field }));
-
-  const submit = () => {
-    console.log("SUBMITTED DATA:", formData);
-    alert("Submitted. Check console.");
-  };
-
-  const views: any = {
-    1: <Step1 formData={formData} updateFormData={updateFormData} next={() => setStep(2)} />,
-    2: <Step2 formData={formData} updateFormData={updateFormData} prev={() => setStep(1)} next={() => setStep(3)} />,
-    3: <Step3 formData={formData} updateFormData={updateFormData} submit={submit} prev={() => setStep(2)} />
-  };
-
-  return (
-    <div className="w-full">
-      <div className="mb-6 pt-10">
-        <h1 className={`mb-2 text-2xl md:text-3xl font-semibold`}>Create New Campaign</h1>
-        <p className="text-md text-slate-500 md:text-xl">Set up your music promotion campaign</p>
-      </div>
-      <Stepper currentStep={step} />
-      <div className="mt-8">{views[step]}</div>
-    </div>
-  );
-}
 
 
 export default CampaingsAddForm;
