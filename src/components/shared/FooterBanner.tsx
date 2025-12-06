@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import React from 'react'
 
 const FooterBanner = () => {
@@ -42,17 +43,19 @@ const FooterBanner = () => {
 
 
                 <div className="relative z-10 text-center space-y-8 px-4">
-                    <h2 className="text-3xl sm:text-5xl lg:text-5xl font-extrabold text-gray-900 leading-18 max-w-4xl mx-auto font-sans">
+                     <h2 className="text-3xl sm:text-5xl lg:text-5xl font-extrabold text-gray-900 leading-18 max-w-4xl mx-auto font-sans">
                         Launch your next hit. <br /> Join today and start growing your audience
                     </h2>
 
                     <div className="flex flex-col sm:flex-row justify-center gap-4 pt-4">
-                        <button className="w-full sm:w-auto px-10 py-4 bg-primary text-white text-lg font-semibold rounded-full hover:bg-orange-700 transition duration-300 shadow-xl transform ">
+                        <Link href="/login"><button className="w-full sm:w-auto px-10 py-4 bg-primary text-white text-lg font-semibold rounded-full hover:bg-orange-700 transition duration-300 shadow-xl transform ">
                             Start Your Campaign
                         </button>
+                        </Link>
+                        <Link href="/login">
                         <button className="w-full sm:w-auto px-10 py-4 bg-primary text-white text-lg font-semibold rounded-full hover:bg-orange-600 transition duration-300 shadow-xl transform ">
                             Become a Influencer
-                        </button>
+                        </button></Link>
                     </div>
                 </div>
             </div>
