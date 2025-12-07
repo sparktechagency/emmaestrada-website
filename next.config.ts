@@ -1,4 +1,3 @@
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
@@ -13,8 +12,13 @@ const nextConfig = {
       },
     ],
   },
+
+  experimental: {
+    serverSourceMaps: false,  // ✅ Fixes invalid source map error
+  },
+
   eslint: {
-    ignoreDuringBuilds: true, // 🚀 disables ESLint check on build
+    ignoreDuringBuilds: true, // 🚀 skips ESLint during build
   },
 };
 

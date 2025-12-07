@@ -15,6 +15,7 @@ const AllCampaigns = ({status}: {status: string}) => {
                 queryParam="status"
             />
             {status === "active" ? <ActiveCampaigns /> : status === "upcoming" ? <AllUpcomingCampaigns /> : <ActiveCampaigns /> }
+            
         </div>
     )
 }

@@ -15,7 +15,7 @@ const MyCampaigns = ({ status }: { status: string }) => {
         ]}
         queryParam="status"
       />
-      {status === "pending" ? <MyPendingCampaigns /> : status === "accepted" ? <MyAcceptedCampaigns /> : status === "canceled" ? <MyCanceledCampaigns /> : <MyPendingCampaigns />}
+      {status === "pending" ? <MyPendingCampaigns /> : status === "accepted" ? <MyAcceptedCampaigns /> : status === "canceled" ? <MyCanceledCampaigns /> : <MyPendingCampaigns />}      
     </div>
   )
 }

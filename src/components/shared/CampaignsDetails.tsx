@@ -3,12 +3,13 @@ import { SquareArrowOutUpRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import SubmitButton from "../ui/website/Campaigns/ChampaignDetails/SubmitButton";
+import Container from "./Container";
 
 export default function CampaignsDetails() {
 
-    return (
-        <div className=" w-full  p-4 md:p-8 flex flex-col items-center">
-            <div className="w-full max-w-4xl">
+    return (        
+            <Container>
+                <div className="glassBg p-4 my-10">
                 {/* Image */}
                 <div className="w-full rounded-2xl overflow-hidden">
                     <Image
@@ -16,7 +17,7 @@ export default function CampaignsDetails() {
                         alt="Feel The Vibe"
                         width={1200}
                         height={700}
-                        className="w-full h-auto"
+                        className="md:w-3/5 w-full mx-auto rounded-xl"
                     />
                 </div>
 
@@ -125,7 +126,7 @@ export default function CampaignsDetails() {
                         <AccountVerified closeModal={() => setOpen(false)} />
                     </Modal>
                 } */}
-            </div>
-        </div >
+                </div>
+            </Container>        
     );
 }

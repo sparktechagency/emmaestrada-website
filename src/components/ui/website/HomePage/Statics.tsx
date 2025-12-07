@@ -4,7 +4,7 @@ import React from 'react'
 const Statics = () => {
     return (
         <Container>
-            <div className="pt-[150px] ">
+            <div className="section">
                 <div className="grid grid-cols-1 md:grid-cols-12 md:gap-12 items-center">
 
                     <div className="md:col-span-7 space-y-8">

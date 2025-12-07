@@ -8,7 +8,7 @@ const CampaignData = () => {
     return (
         <div className="">
             <div className="mt-6 text-lg font-semibold">Paid Out</div>
-            <div className="flex items-end gap-1">
+            <div className="flex flex-col md:flex-row gap-1">
                 <span className="text-3xl font-semibold">$2087.40</span>
                 <span className="text-slate-400  text-xl font-medium">of $4087.40 paid out</span>
             </div>
@@ -46,8 +46,8 @@ const CampaignData = () => {
             </div>
 
             <p className="font-semibold  text-2xl mt-7 mb-6">Assets</p>
-            <div className="p-5  glassBg shadow-lg! text-blue-600 font-semibold">
-                <a href="https://whop.com/dashboard/biz_uYZpwzLVni7EDx" className="text-wrap">https://whop.com/dashboard/biz_uYZpwzLVni7EDx</a>
+            <div className="p-5  glassBg shadow-lg! text-blue-600 font-semibold wrap-break-word">
+                <a href="https://whop.com/dashboard/biz_uYZpwzLVni7EDx" className="">https://whop.com/dashboard/biz_uYZpwzLVni7EDx</a>
             </div>
 
             <p className="font-semibold  text-2xl mt-7 mb-6">Audio Requirements</p>

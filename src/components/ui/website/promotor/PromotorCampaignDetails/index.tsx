@@ -13,6 +13,7 @@ import { DropDownMenu } from './DropDownMenu'
 const PromotorCampaignDetails = ({ status, openTab }: { status?: string, openTab?: string }) => {
     return (
         <Container>
+            <div className="glassBg p-4 my-10">
             <div className="flex justify-end mt-5">
             <DropDownMenu />
             </div>
@@ -24,7 +25,7 @@ const PromotorCampaignDetails = ({ status, openTab }: { status?: string, openTab
                             alt="Feel The Vibe"
                             width={1000}
                             height={400}
-                            className="w-3/5 h-[250px] mx-auto rounded-2xl"
+                            className="w-full md:w-3/5 h-[250px] mx-auto rounded-2xl"
                         />       
                         
 
@@ -37,52 +38,13 @@ const PromotorCampaignDetails = ({ status, openTab }: { status?: string, openTab
                     <div className="text-blue-500 text-md text-center pt-4">
                         Only views after you submit count towards payout. Submit as soon as you post to get paid for all of your views.
                     </div>
-                    {/* <div className="bg-secondary  shadow-md text-white rounded-xl p-4 mt-4 text-sm text-center">
-                        Only views after you submit count towards payout. Submit as soon as you post to get paid for all of your views.
-                    </div> */}
                     <ViewAllSubmittionBtn />
                     {openTab ? <CampaignSubmission status={status} /> :
                         <CampaignData />
-                    }
-                    {/* <div className="flex justify-end mt-5">
-                    <Modal
-                        dialogTitle="Campaign Form"
-                        open={open}
-                        setOpen={setOpen}
-                        width="900px"
-                        height="85vh"
-                        dialogTrigger={
-                            <button className="btn px-20 text-white bg-blue-700 rounded-full">
-                                Submit
-                            </button>
-                        }
-                    >
-                        <CampaignSubmitForm closeModal={() => setOpen(false)} setOpenAccVerifyModal={setOpenAccVerifyModal} />
-                    </Modal>
-                </div> */}
-                    {/* {!open && !openVerifiedModal && openAccVerifyModal &&
-                    <Modal
-                        dialogTitle="Link Account"
-                        open={openAccVerifyModal}
-                        setOpen={setOpenAccVerifyModal}
-                        width="700px"                        
-                    >
-                        <AcccountConnectModal closeModal={() => setOpen(false)} setOpenVerifiedModal={setOpenVerifiedModal} />
-                    </Modal>
-                } */}
-                    {/* { openVerifiedModal &&
-                    <Modal
-                        open={openVerifiedModal}
-                        setOpen={setOpenVerifiedModal}
-                        width="900px"
-                        height="85vh"
-                    >
-                        <AccountVerified closeModal={() => setOpen(false)} />
-                    </Modal>
-                } */}
-
+                    }                   
                 </div>
             </div >
+            </div>
         </Container>
     )
 }

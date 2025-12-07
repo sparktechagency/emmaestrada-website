@@ -1,3 +1,4 @@
+'use client';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import React, { useState } from 'react';
 import { FaBackward } from 'react-icons/fa';

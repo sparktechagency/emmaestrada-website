@@ -1,19 +1,21 @@
+
 import InfluencerCampaign from '@/components/ui/website/Influencer/InfluencerCampaign'
 
-type pageProps = {
+type PageProps = {
   searchParams: Promise<{
-    campaignType?: string,
+    campaignType?: string
     status?: string
   }>
 }
 
-const page = async ({ searchParams }: pageProps) => {
-  const { campaignType, status } = await searchParams
-  return (
-    <div>
-      <InfluencerCampaign campaignType={campaignType} status={status}/>
-    </div>
+const Page = async ({ searchParams }: PageProps) => {
+  const params = await searchParams  
+  return (    
+      <InfluencerCampaign 
+        campaignType={params.campaignType}
+        status={params.status}
+      />    
   )
 }
 
-export default page
+export default Page

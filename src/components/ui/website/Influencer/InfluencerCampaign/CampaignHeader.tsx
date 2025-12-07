@@ -46,7 +46,7 @@ const CampaignHeader = () => {
     if (paramValue && paramValue !== activeCampaignTab) {
       setActiveCampaignTab(paramValue)
     }
-  }, [searchParams])
+  }, [])
 
   const setCampaignType = (type: string) => {
     setActiveCampaignTab(type)

@@ -13,7 +13,7 @@ const PUpcomingChampaigns = () => {
             {openAddForm && <p onClick={() => setAddForm(false)} className="mb-5 cursor-pointer flex items-center  gap-2"><ArrowLeft /> Back</p> }
             <div className="flex flex-col items-center justify-center">
                 {!openAddForm && <div className="">
-                    <h2 className='text-2xl font-semibold'>No compaigns yet</h2>
+                    <h2 className='text-2xl font-semibold text-center'>No compaigns yet</h2>
                     <p className='text-lg text-gray-400 my-3'>A product is needed to organize access to your offering</p>
                 </div>}
 

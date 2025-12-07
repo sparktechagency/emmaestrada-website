@@ -83,12 +83,15 @@ export default function CreatorAllArtists() {
                     </TableCell>
                     <TableCell className="text-right md:w-[50px]">
                       <div className=" flex items-center gap-3">
-                      <Button  className="border border-primary text-primary bg-transparent hover:text-white"
-                      >Follow
-                      </Button>
-                      <Button onClick={()=>setOpen(true)}  className="border border-black/50 text-black/50 hover:bg-white hover:text-black bg-transparent"
-                      >View
-                      </Button>
+
+                        <Button
+                        >
+                          <span>Follow</span>
+                          <Plus />
+                        </Button>
+                        <Button onClick={() => setOpen(true)} className="border border-black/50 text-black/50 hover:bg-white hover:text-black bg-transparent"
+                        >View
+                        </Button>
                       </div>
                     </TableCell>
                   </TableRow>
