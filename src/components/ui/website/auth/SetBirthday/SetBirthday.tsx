@@ -38,24 +38,24 @@ const SetBirthday = () => {
   const isFormValid = day && month && year
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[url('/images/bgImg.png')] bg-cover bg-no-repeat bg-center px-4 py-8">
-      <div className="backdrop-blur-[2.5px] border-2 border-white/20 rounded-xl p-8 sm:p-12">
-        <Card className="w-full max-w-lg p-8 sm:p-10">
+    <div className="h-screen flex items-center justify-center bg-[url('/images/bgImg.png')] bg-cover bg-no-repeat bg-center ">
+      <div className="backdrop-blur-[2.5px] border-2 border-white/20 rounded-xl p-5 sm:p-12">
+        <Card className="w-full max-w-lg  sm:p-10">
           {/* Card Header */}
           <CardHeader className="flex flex-col items-center space-y-3">
-            <h2 className="text-2xl font-bold text-center">What is your birthday?</h2>
-            <p className="text-md text-center text-slate-500 font-sans">
+            <h2 className="text-lg md:text-2xl font-bold text-center">What is your birthday?</h2>
+            <p className="text-xs md:text-md text-center text-slate-500 font-sans">
               In order to give you the best experience on Whop, please enter your birthday.
             </p>
           </CardHeader>
 
           {/* Card Content */}
-          <CardContent className="space-y-6">
+          <CardContent className="space-y-6 w-full ">
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="flex justify-between gap-3">
+              <div className="flex flex-row justify-between gap-3">
                 {/* Day */}
-                <Select onValueChange={setDay} value={day} >
-                  <SelectTrigger className="flex-1 w-[150px]">
+                <Select onValueChange={setDay} value={day}>
+                  <SelectTrigger className="md:flex-1 w-full md:w-[150px]">
                     <SelectValue placeholder="Day" />
                   </SelectTrigger>
                   <SelectContent>
@@ -67,7 +67,7 @@ const SetBirthday = () => {
 
                 {/* Month */}
                 <Select onValueChange={setMonth} value={month} >
-                  <SelectTrigger className="flex-1 w-[150px]">
+                  <SelectTrigger className="md:flex-1 w-full md:w-[150px]">
                     <SelectValue placeholder="Month" />
                   </SelectTrigger>
                   <SelectContent>
@@ -79,7 +79,7 @@ const SetBirthday = () => {
 
                 {/* Year */}
                 <Select onValueChange={setYear} value={year} >
-                  <SelectTrigger className="flex-1 w-[150px]">
+                  <SelectTrigger className="md:flex-1 w-full md:w-[150px]">
                     <SelectValue placeholder="Year" />
                   </SelectTrigger>
                   <SelectContent className="max-h-60 overflow-y-auto">

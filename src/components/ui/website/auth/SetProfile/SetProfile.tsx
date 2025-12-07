@@ -62,7 +62,7 @@ export default function SetProfile() {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-[url('/images/bgImg.png')] bg-cover bg-center px-4">
-            <div className=" backdrop-blur-[2.5px] border-2 border-white/20 rounded-xl p-18">
+            <div className=" backdrop-blur-[2.5px] border-2 border-white/20 rounded-xl p-2 md:p-18">
                 <Card className="w-full md:min-w-lg max-w-lg py-8 px-2">
                     <CardHeader className="text-center space-y-2">
                         <h2 className="text-2xl font-bold font-sans">Set your profile</h2>

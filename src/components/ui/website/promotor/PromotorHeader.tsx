@@ -15,6 +15,8 @@ import {
   Repeat,
   Users,
   Send,
+  Handshake,
+  UsersRound,
 } from "lucide-react";
 import Link from "next/link";
 import Container from "@/components/shared/Container";
@@ -37,10 +39,11 @@ const PromotorHeader = () => {
 
   const displayLinks = [
     { link: "/promotor", label: "Campaigns", icon: Music },
+    { link: "/promotor/influencer", label: "Influencer", icon: UsersRound },
+    { link: "/promotor/promotor-list", label: "Promotor", icon: UsersRound },
     { link: "/promotor/analytics", label: "Analytics", icon: BarChart3 },
-    { link: "/promotor/influencer", label: "Influencer", icon: BarChart3 },
-    { link: "/promotor/trusted-creators", label: "Trusted Creator", icon: BarChart3 },    
     { link: "/promotor/messages", label: "Messages", icon: MessageSquare },
+    { link: "/promotor/trusted-creators", label: "Trusted Creator", icon: Handshake },    
     { link: "/promotor/profile", label: "Profile", icon: UserCircle },
   ];
 

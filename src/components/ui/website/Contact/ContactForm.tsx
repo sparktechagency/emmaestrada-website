@@ -8,7 +8,7 @@ export default function ContactForm() {
     <section className="w-full section">
       <div className="max-w-7xl mx-auto px-4 lg:px-8 grid md:grid-cols-2 gap-10 items-center overflowhidden">
         {/* Left Image */}
-        <div className="w-full h-[650px]">
+        <div className="w-full h-[300px] md:h-[650px]">
           <Image
             src="https://images.pexels.com/photos/3756767/pexels-photo-3756767.jpeg"
             alt="Woman listening to music"

@@ -1,10 +1,11 @@
 import Container from '@/components/shared/Container'
 import React from 'react'
 import CreatorHeader from './CreatorHeader'
-import CreatorPopularArtists from './CreatorPopularArtists'
-import CreatorFollowedArtist from './CreatorFollowedArtist'
-import CreatorAllArtists from './CreatorAllArtists'
+
+import CreatorFollowedInfluencer from './CreatorFollowedInfluencer'
+import CreatorAllInfluencer from './CreatorAllInfluencer'
 import { CampaignTabGroup } from '../InfluencerCampaign/CampaignTabGroup'
+import CreatorPopularInfluencer from './CreatorPopularInfluencer'
 
 const Creator = ({type}: any) => {
     return (
@@ -13,13 +14,13 @@ const Creator = ({type}: any) => {
                 <CreatorHeader />
                  <CampaignTabGroup
                 tabs={[
-                    { label: 'Popular Artists', value: 'popular-artist' },
-                    { label: 'Followed Artists', value: 'followed-artist' },
-                    { label: 'All Artists', value: 'all-artists' },
+                    { label: 'Popular Influencer', value: 'popular-influencer' },
+                    { label: 'Followed Influencer', value: 'followed-influencer' },
+                    { label: 'All Influencer', value: 'all-influencers' },
                 ]}
                 queryParam="type"
             />
-                {type === 'popular-artist' ? <CreatorPopularArtists/> : type === 'followed-artist' ? < CreatorFollowedArtist />  : type === 'all-artists' ? < CreatorAllArtists/>: <CreatorPopularArtists/>}  
+                {type === 'popular-influencer' ? <CreatorPopularInfluencer/> : type === 'followed-influencer' ? < CreatorFollowedInfluencer />  : type === 'all-influencers' ? < CreatorAllInfluencer/>: <CreatorPopularInfluencer/>}  
             
             
             </Container>

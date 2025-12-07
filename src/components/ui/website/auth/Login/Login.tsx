@@ -30,9 +30,9 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[url('/images/bgImg.png')] bg-cover bg-no-repeat bg-center px-4 py-8">
-      <div className=" backdrop-blur-[2.5px] border-2 border-white/20 rounded-xl p-18">
+      <div className=" backdrop-blur-[2.5px] border-2 border-white/20 rounded-xl py-5 md:p-18">
       
-      <Card className="w-full max-w-md p-8 sm:p-10">
+      <Card className="w-[90%] md:w-full mx-auto max-w-md p-0 py-5 sm:p-10">
         {/* Card Header */}
         <CardHeader className="flex flex-col items-center space-y-3">
           <img src="/logo.png" className='w-14 h-14' alt="Logo" />
@@ -62,20 +62,20 @@ export default function Login() {
           </form>
 
           {/* Separator */}
-          <Separator className="my-2">
+          <Separator className="my-5">
             <span className="text-xs uppercase text-gray-500 font-semibold">OR</span>
           </Separator>
 
           {/* Social Buttons */}
-          <div className="flex space-x-3">
-            <Button variant="outline" className="flex-1 justify-center h-12">
-              <FcGoogle className="mr-2 text-lg" /> Google
+          <div className="flex space-x-1.5 md:space-x-3">
+            <Button size="sm" variant="outline" className=" justify-center h-12">
+              <FcGoogle className=" text-xs md:text-lg" /> Google
             </Button>
-            <Button variant="outline" className="flex-1 justify-center h-12">
-              <FaAppleAlt className="mr-2 text-lg" /> Apple
+            <Button size="sm" variant="outline" className=" justify-center h-12">
+              <FaAppleAlt className=" text-xs md:text-lg" /> Apple
             </Button>
-            <Button variant="outline" className="flex-1 justify-center h-12">
-              <FaDiscord className="mr-2 text-lg" /> Discord
+            <Button size="sm" variant="outline" className=" justify-center h-12">
+              <FaDiscord className=" text-xs md:text-lg" /> Discord
             </Button>
           </div>
         </CardContent>
@@ -84,16 +84,16 @@ export default function Login() {
         <CardFooter className="flex flex-col space-y-2 text-center">
           <p className="text-sm text-gray-600">
             Don&apos;t have an account?{' '}
-            <Link href="/signup" className="font-bold text-primary hover:underline">
+            <Link href="/login" className="font-bold text-primary hover:underline">
               Sign up
             </Link>
           </p>
 
           <p className="text-xs text-gray-500">
             By signing in you agree to Whop&apos;s{' '}
-            <Link href="/terms" className="font-medium text-black hover:underline">Terms of Service</Link>{' '}
+            <Link href="/terms-condition" className="font-medium text-black hover:underline">Terms of Service</Link>{' '}
             and{' '}
-            <Link href="/privacy" className="font-medium text-black hover:underline">Privacy Policy</Link>
+            <Link href="/privacy-policy" className="font-medium text-black hover:underline">Privacy Policy</Link>
           </p>
         </CardFooter>
       </Card>

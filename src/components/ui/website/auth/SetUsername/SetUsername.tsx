@@ -25,9 +25,9 @@ const SetUsername = () => {
   }
 
   return (
-    <div className="h-screen flex items-center justify-center bg-[url('/images/bgImg.png')] bg-cover bg-no-repeat bg-center px-4 py-8">
-      <div className="backdrop-blur-[2.5px] border-2 border-white/20 rounded-xl p-8 sm:p-12">
-        <Card className="w-full md:min-w-xl p-8 sm:p-10">
+    <div className="h-screen flex items-center justify-center bg-[url('/images/bgImg.png')] bg-cover bg-no-repeat bg-center px-4  overflow-hidden">
+      <div className="backdrop-blur-[2.5px] border-2 border-white/20 rounded-xl p-3 sm:p-12">
+        <Card className="w-full md:min-w-xl md:p-8 sm:p-10">
           {/* Card Header */}
           <CardHeader className="flex flex-col items-center space-y-3">
             <h2 className="text-2xl font-bold text-center">Pick your username</h2>

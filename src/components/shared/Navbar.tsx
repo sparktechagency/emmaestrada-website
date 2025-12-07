@@ -39,7 +39,7 @@ const Navbar = () => {
         <Container>
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <Link href="#">
+            <Link href="/">
               <div className="relative h-12 w-12">
                 <Image src="/logo.png" alt="logo" fill />
               </div>
@@ -79,9 +79,9 @@ const Navbar = () => {
             <div className="md:hidden absolute w-4/5 left-0 h-screen top-0 backdrop-blur-xl bg-black/50 shadow-lg border border-white/10 p-4">
               <div className="relative flex flex-col h-full">
                 <div className="flex items-center gap-2 border-b border-gray-700 pb-2">
-                  <div>
+                  <Link href="/"><div>
                     <Image src="/logo.png" alt="logo" width={35} height={35} />
-                  </div>
+                  </div></Link>
                   <h1 className="text-xl font-semibold text-white">Whop</h1>
                 </div>
 

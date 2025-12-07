@@ -34,13 +34,13 @@ const influencers = Array.from({ length: 10 }).map(() => ({
     totalCampaigns: 12,
 }))
 
-export default function InfluencerAllInfluencers() {
+export default function PromotorList() {
     const [open, setOpen] = useState(false)
 
     return (
         <Container>
             <div className="mt-10">
-                <h1 className={`mb-2 text-3xl font-semibold`}>All Influencer</h1>                
+                <h1 className={`mb-2 text-3xl font-semibold`}>All Promotor</h1>                
             </div>
             <div>
                 {open ? (
@@ -56,7 +56,7 @@ export default function InfluencerAllInfluencers() {
                             <Table>
                                 <TableHeader>
                                     <TableRow>
-                                        <TableHead>Influencers</TableHead>
+                                        <TableHead>Promotor</TableHead>
                                         <TableHead>Platform</TableHead>
                                         <TableHead>Total Followers</TableHead>
                                         <TableHead>Engagement</TableHead>

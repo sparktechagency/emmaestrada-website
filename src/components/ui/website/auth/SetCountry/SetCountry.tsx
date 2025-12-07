@@ -37,9 +37,9 @@ export default function SetCountry() {
     const isValid = !!selected
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-[url('/images/bgImg.png')] bg-cover bg-no-repeat bg-center px-4 py-8">
-            <div className="backdrop-blur-[2.5px] border-2 border-white/20 rounded-xl p-8 sm:p-12">
-                <Card className="w-full min-w-lg p-8 sm:p-10">
+        <div className="min-h-screen flex items-center justify-center bg-[url('/images/bgImg.png')] bg-cover bg-no-repeat bg-center md:px-4 py-8">
+            <div className="backdrop-blur-[2.5px] border-2 border-white/20 rounded-xl p-4 sm:p-12">
+                <Card className="w-full md:min-w-lg py-4 sm:p-10">
                     {/* Header */}
                     <CardHeader className="flex flex-col items-center space-y-3">
                         <h2 className="text-2xl font-bold text-center">
@@ -77,7 +77,7 @@ export default function SetCountry() {
                             </PopoverTrigger>
 
                             {/* ✅ WIDTH FIX */}
-                            <PopoverContent className="p-0 w-[--radix-popover-trigger-width]">
+                            <PopoverContent className="p-0 w-full max-w-[300px] md:max-w-[500px]">
                                 <Command>
                                     <CommandInput placeholder="Search country..." />
 

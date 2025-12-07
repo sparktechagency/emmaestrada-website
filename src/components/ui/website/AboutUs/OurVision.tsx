@@ -1,18 +1,22 @@
 import React from 'react'
 import { Button } from '../../button'
+import Image from 'next/image'
 
 const OurVision = () => {
     return (
         <div className="grid grid-cols-1 md:grid-cols-12 md:gap-x-28 items-center section">
-            <div className="md:col-span-5 mt-10 md:mt-0 flex justify-center items-center">
-                <img
+<div className="md:col-span-5 mt-10 md:mt-0 flex justify-center items-center">
+                <Image
+                width={600}
+                height={500}
                     src="/images/videoMaking.png"
                     alt="Stylized 3D bar chart showing significant growth with an upward arrow"
-                    className="w-full h-auto  rounded-lg float-left scale-120"
+                    className="w-full h-auto object-contain "
                 />
             </div>
 
-            <div className="md:col-span-7 ">
+
+            <div className="md:col-span-7 md:mt-0 mt-8">
                 <div>
                     <h1 className="title">
                         Our Vision                        

@@ -32,7 +32,7 @@ const campaigns = Array.from({ length: 6 }).map((_, i) => ({
   isFollow: false,
 }))
 
-export default function CreatorFollowedArtist() {
+export default function CreatorFollowedInfluencer() {
   return (
     <Card className="bg-transparent shadow-none border-0">
       <CardContent className="overflow-x-auto">

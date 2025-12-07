@@ -9,6 +9,8 @@ import {
   MessageSquare,
   UserCircle,
   Repeat,
+  UsersRound,
+  Handshake,
 } from "lucide-react";
 import Link from "next/link";
 import Container from "@/components/shared/Container";
@@ -17,13 +19,15 @@ import { usePathname } from "next/navigation";
 const InfluencerHeader = () => {
   const pathname = usePathname();
 
+  
+
   const displayLinks = [
     { link: "/influencer", label: "Campaigns", icon: Music },
-    { link: "/influencer/creator", label: "Creator", icon: User },
+    { link: "/influencer/creator", label: "influencer", icon: UsersRound },
+    { link: "/influencer/promotor", label: "Promotor", icon: UsersRound },
     { link: "/influencer/analytics", label: "Analytics", icon: BarChart3 },
-    { link: "/influencer/influencer", label: "Influencer", icon: BarChart3 },
-    { link: "/influencer/trusted-creators", label: "Trusted Creator", icon: BarChart3 },
     { link: "/influencer/messages", label: "Messages", icon: MessageSquare },
+    { link: "/influencer/trusted-creators", label: "Trusted Creator", icon: Handshake },
     { link: "/influencer/profile", label: "Profile", icon: UserCircle },
   ];
 
@@ -41,7 +45,7 @@ const InfluencerHeader = () => {
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 ">
             <button className="btn flex items-center gap-2 bg-white font-semibold text-black text-lg rounded-full shadow-md">
               <div className="w-2 h-2 bg-green-500 rounded-full" />
-              <span>Currently viewing as: Creator</span>
+              <span>Currently viewing as: Influencer</span>
             </button>
 
             <Link href="/promotor">

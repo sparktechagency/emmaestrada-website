@@ -36,7 +36,7 @@ const campaigns = Array.from({ length: 10 }).map((_, i) => ({
   isFollow: false,
 }))
 
-export default function CreatorAllArtists() {
+export default function CreatorAllInfluencer() {
   const [open, setOpen] = useState(false);
 
   return (
