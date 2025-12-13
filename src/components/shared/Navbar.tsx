@@ -3,17 +3,21 @@
 import React, { useEffect, useState } from "react";
 import Container from "./Container";
 import Link from "next/link";
-import { Search, Menu, X } from "lucide-react";
+import { Search, Menu, X, Bell, Wallet } from "lucide-react";
 import Image from "next/image";
 import { usePathname } from 'next/navigation';
+import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { IoNotifications } from "react-icons/io5";
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
+  const [loginView, setLoginView] = useState(true)
 
   const pathname = usePathname();
   const darkBgRoutes = ['influencer', 'promotor'];
   const hasDarkBackground = darkBgRoutes.includes(pathname.split('/')[1]);
+
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 80);
@@ -30,6 +34,7 @@ const Navbar = () => {
 
   const isActive = (href: string) => pathname === href;
 
+  
   return (
     <div>
       <nav
@@ -61,11 +66,17 @@ const Navbar = () => {
 
             {/* Right Side */}
             <div className="flex items-center gap-4">
-              <Link href="/login">
-                <button className="bg-primary btn text-white rounded-full hover:from-orange-600 hover:to-orange-700 transition-all">
-                  Sign in
+              {loginView ? <ViewAsLogin /> : <>
+                <Link href="/login">
+                  <button className="bg-primary btn text-white rounded-full hover:from-orange-600 hover:to-orange-700 transition-all">
+                    Sign in
+                  </button>
+                </Link>
+
+                <button onClick={() => setLoginView(true)} className="border-primary border btn bg-white text-primary rounded-full hover:from-orange-600 hover:to-orange-700 transition-all">
+                  View as login
                 </button>
-              </Link>
+              </>}
 
               {/* Mobile Menu Button */}
               <button onClick={() => setOpenMenu(true)} className="md:hidden p-2 text-white">
@@ -114,3 +125,21 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+
+const ViewAsLogin = () => {
+  return (<div className="flex items-center gap-3">
+    <Wallet  size={30}  color="#ededed"/>
+    <Bell size={30}  color="white"/>
+    <Link href="/influencer">
+    <Avatar className="rounded-lg ">
+      <AvatarImage
+        src="/images/profile21.jpg"
+        alt="@evilrabbit"
+        className="w-12 rounded-full border-2!  border-slate-300!"
+      />
+      <AvatarFallback>ER</AvatarFallback>
+    </Avatar>
+    </Link>
+  </div>)
+}

@@ -29,13 +29,13 @@ const ArtAndInfluencerBanner = () => {
                     </div>
 
                     <div className="lg:col-span-5 rounded-3xl  p-6 sm:p-8 glassBg  flex flex-col justify-center ">
-                        <h2 className="text-2xl font-bold text-gray-800 mb-2">As an Influencer</h2>
+                        <h2 className="text-2xl font-bold text-gray-800 mb-2">As an Creator</h2>
                         <p className="text-lg text-gray-600">
                             Join campaigns, create content, get paid, and grow your influence by promoting music you love.
                         </p>
                     </div>
                     <div className="lg:col-span-7 rounded-3xl  p-6 sm:p-8 glassBg flex flex-col justify-center ">
-                        <h2 className="text-2xl font-bold text-gray-800 mb-2">As an Artist</h2>
+                        <h2 className="text-2xl font-bold text-gray-800 mb-2">As an Promotor</h2>
                         <p className="text-lg text-gray-600">
                             Promote your music, collaborate with influencers, track performance, and grow your audience globally.
                         </p>

@@ -136,7 +136,7 @@ const CampaignCard: React.FC<CampaignCardProps> = ({
             className="w-12 h-12 rounded-full object-cover"
           />
           <div>
-            <h3 className="font-semibold text-lg">{displayName}</h3>
+            <h3 className="font-semibold text-lg blur-[10px]">{displayName}</h3>
             <p className="text-gray-600 text-sm">@{username}</p>
           </div>
         </div>

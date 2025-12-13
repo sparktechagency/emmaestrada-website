@@ -7,6 +7,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "../../badge";
+import Image from "next/image";
+
 
 const steps = [
   { id: 1, name: "Basic & Budget", subtitle: "Campaign details" },
@@ -17,9 +19,10 @@ const steps = [
 ];
 
 const platforms = [
-  { label: "TikTok", value: "tiktok" },
-  { label: "Instagram", value: "instagram" },
-  { label: "YouTube", value: "youtube" },
+  { label: "TikTok", value: "tiktok", icon: "/tiktokBlack.png" },
+  { label: "Instagram", value: "instagram", icon: "/instagram.png" },
+  { label: "X", value: "x", icon: "/X.png" },
+  { label: "YouTube", value: "youtube", icon: "/youtube.png" },
 ];
 
 const contentTypes = [
@@ -64,6 +67,7 @@ const CampaingsAddForm = ({ editData }: { editData?: any }) => {
     totalCampaignBudget: "",
     rewardType: "",
     rewardAmount: "",
+    perViews: "",
     minimumPayout: "",
     maximumPayout: "",
     targetPlatform: [],
@@ -140,9 +144,8 @@ const FileUpload = ({ onChange }: { onChange: (file: File) => void }) => (
   <label className="flex flex-col items-center justify-center h-40 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 hover:bg-gray-100 cursor-pointer">
     <Upload className="h-6 w-6 text-gray-400" />
     <p className="mt-2 text-sm text-gray-500">
-      Drag & drop or <span className="text-orange-600 font-medium">Browse</span>
+      <span className="text-orange-600 font-medium">Upload thumbnail</span>
     </p>
-    <p className="text-xs text-gray-400">MP3, WAV, AAC • Max 10MB</p>
     <input
       type="file"
       className="hidden"
@@ -152,7 +155,8 @@ const FileUpload = ({ onChange }: { onChange: (file: File) => void }) => (
 );
 
 const Step1 = ({ formData, updateFormData, next }: any) => {
-  const valid = formData.campaignTitle && formData.campaignDescription;
+  // const valid = formData.campaignTitle && formData.campaignDescription;
+  const valid = true;
   return (
     <div className=" ">
       <p className="text-lg font-semibold mb-5">Campaign Basic Information</p>
@@ -168,40 +172,25 @@ const Step1 = ({ formData, updateFormData, next }: any) => {
             <p className="text-md  font-md font-semibold mb-2">Campaign Title</p>
             <Input
               className="h-[45px]"
-              placeholder="Campaign Title"
+              placeholder="Fanatics UGC -$3 per 1,000 views"
               value={formData.campaignTitle}
               onChange={(e) => updateFormData({ campaignTitle: e.target.value })}
             />
           </div>
-          <div className="">
-            <p className="text-md  font-md font-semibold mb-2">Campaign Description</p>
-            <Textarea
-              placeholder="Campaign Description"
-              value={formData.campaignDescription}
-              onChange={(e) => updateFormData({ campaignDescription: e.target.value })}
-            />
-          </div>
-
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-6">
-            <div className="">
-              <p className="text-md  font-md font-semibold mb-2">Genre</p>
-              <Input
-                className="h-[45px]"
-                placeholder="Genre"
-                value={formData.genre}
-                onChange={(e) => updateFormData({ genre: e.target.value })}
-              />
+            <div>
+              <label className="text-sm font-medium">Content Type</label>
+              <select className="mt-2 w-full h-12 border rounded-xl px-3">
+                <option>UGC</option>
+                <option>Clipping</option>
+              </select>
             </div>
-            <div className="">
-              <p className="text-md  font-md font-semibold mb-2">Influencers needed</p>
-              <Input
-                className="h-[45px]"
-                placeholder="Influencers Needed"
-                type="number"
-                value={formData.influencersNeeded}
-                onChange={(e) => updateFormData({ influencersNeeded: e.target.value })}
-              />
+            <div>
+              <label className="text-sm font-medium">Category</label>
+              <select className="mt-2 w-full h-12 border rounded-xl px-3">
+                <option>Personal  brand</option>
+              </select>
             </div>
           </div>
 
@@ -227,41 +216,45 @@ const Step1 = ({ formData, updateFormData, next }: any) => {
             </div>
 
           </div>
+
+
           <div className="">
-            <p className="text-md  font-md font-semibold mb-2">Upload Audio Track *</p>
+            <p className="text-md text-slate-400  font-md font-medium mb-2">Fanatics UGC -$3 per 1,000 views</p>
             <FileUpload onChange={(file) => updateFormData({ audioTrack: file })} />
           </div>
-          <div className="mt-5">
-            <p className="text-md  font-md font-semibold mb-2">Campaign Title</p>
-            <Input
-              className="h-[45px]"
-              placeholder="Total Budget"
-              value={formData.totalCampaignBudget}
-              onChange={(e) => updateFormData({ totalCampaignBudget: e.target.value })}
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            <div className="">
+              <p className="text-md  font-md font-semibold mb-2">Campaign budget</p>
+              <Input
+                className="h-[45px]"
+                placeholder="Reward Type"
+                value={formData.rewardType}
+                onChange={(e) => updateFormData({ rewardType: e.target.value })}
+              />
+            </div>
+
+            <div className="flex gap-3">
+              <div className="w-full">
+              <p className="text-md  font-md font-semibold mb-2">Reward Amount ($)</p>
+              <Input
+                className="h-[45px] mr w-full"
+                placeholder="Reward Rate"
+                value={formData.rewardAmount}
+                onChange={(e) => updateFormData({ rewardAmount: e.target.value })}
+              />              
+              </div>
+              <div className="w-full">
+              <p className="text-md  font-md font-semibold mb-2">Per Views</p>
+              <Input
+                className="h-[45px] mr w-full"
+                placeholder="1000"
+                value={formData.perViews}
+                onChange={(e) => updateFormData({ perViews: e.target.value })}
+              />              
+              </div>
+            </div>
           </div>
-
-
-          <div className="">
-            <p className="text-md  font-md font-semibold mb-2">Reward Type</p>
-            <Input
-              className="h-[45px]"
-              placeholder="Reward Type"
-              value={formData.rewardType}
-              onChange={(e) => updateFormData({ rewardType: e.target.value })}
-            />
-          </div>
-
-          <div className="">
-            <p className="text-md  font-md font-semibold mb-2">Reward Amount</p>
-            <Input
-              className="h-[45px]"
-              placeholder="Reward Amount"
-              value={formData.rewardAmount}
-              onChange={(e) => updateFormData({ rewardAmount: e.target.value })}
-            />
-          </div>
-
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="">
               <p className="text-md  font-md font-semibold mb-2">Minimum Payout</p>
@@ -310,29 +303,27 @@ const Step2 = ({ formData, updateFormData, prev, next }: any) => {
     });
   };
 
-  const valid =
-    formData.targetPlatform?.length > 0 &&
-    formData.contentGuidelines?.length > 0;
-
   return (
     <div className="">
       <p className="text-lg font-semibold mb-5">Playform & Assets</p>
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          valid && next();
+           next();
         }}
       >
         <div className="space-y-6 p-2 md:p-6 border rounded-xl bg-white mb-5">
           <p className="text-lg font-semibold mb-4">Select Platforms *</p>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
             {platforms.map((p) => (
               <div
                 key={p.value}
                 className="flex items-center justify-between border rounded-xl p-4 bg-white"
-              >
+              > <div className="flex items-center gap-2">
+                <Image src={p.icon} height={20} width={20} alt="logo" />
                 <p className="font-medium">{p.label}</p>
+              </div>
                 <Checkbox
                   checked={formData.targetPlatform?.includes(p.value)}
                   onCheckedChange={() =>
@@ -343,38 +334,26 @@ const Step2 = ({ formData, updateFormData, prev, next }: any) => {
             ))}
           </div>
 
-          {/* Content Types */}
-          <p className="text-lg font-semibold mb-4">Allowed Content Type</p>
-
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-5 ">
-            {contentTypes.map((c) => (
-              <div
-                key={c.value}
-                className="last:col-span-2 md:last:col-span-1 flex items-start justify-between border rounded-xl p-4 bg-white"
-              >
-                <div>
-                  <p className="font-medium text-sm md:text-md">{c.title}</p>
-                  <p className="text-xs md:text-sm text-gray-500 text-wrap">{c.desc}</p>
-                </div>
-                <div className="w-5 ">
-                  <Checkbox
-                    className=""
-                    checked={formData.contentGuidelines?.includes(c.value)}
-                    onCheckedChange={() =>
-                      toggleArrayValue("contentGuidelines", c.value)
-                    }
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-
           {/* Assets */}
           <div className="bg-white border rounded-xl p-3 md:p-6 mb-6">
-            <p className="font-medium mb-3">Campaign Assets</p>
+            <p className="font-medium mb-1">Available content</p>
+            <p className="text-sm text-gray-500 mb-1">We recommend you add guides and raw footage here</p>
             <Input
               className="h-[45px]"
-              placeholder="Paste asset link (Drive, Dropbox, etc.)"
+              placeholder="https://drive.google.com/drive/folder/123456789"
+              value={formData.campaignAssets}
+              onChange={(e) =>
+                updateFormData({ campaignAssets: e.target.value })
+              }
+            />
+          </div>
+          {/* Assets */}
+          <div className="bg-white border rounded-xl p-3 md:p-6 mb-6">
+            <p className="font-medium mb-1">Content requirement</p>
+            <p className="text-sm text-gray-500 mb-1">Add content guidelines for users to follow</p>
+            <Input
+              className="h-[45px]"
+              placeholder="Must tag @whop in the description"
               value={formData.campaignAssets}
               onChange={(e) =>
                 updateFormData({ campaignAssets: e.target.value })
@@ -384,11 +363,11 @@ const Step2 = ({ formData, updateFormData, prev, next }: any) => {
         </div>
 
         <div className="flex justify-between gap-4 bg-white rounded-md shadow-md p-4">
-          <Button onClick={prev} size="lg" variant="outline" disabled={!valid} className="bg-transparent rounded-full! text-black! border border-black/50!">
+          <Button onClick={prev} size="lg" variant="outline"  className="bg-transparent rounded-full! text-black! border border-black/50!">
             Previous
           </Button>
           <div className="flex items-center gap-3">
-            <Button type="submit" disabled={!valid}>
+            <Button type="submit" >
               Next Step <ChevronRight className="ml-2 h-4 w-4" />
             </Button>
           </div>

@@ -122,35 +122,37 @@
   body {
     @apply bg-background text-foreground;
   }
+
   .title {
-  @apply text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight
-}
+    @apply text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight
+  }
 
-.textPara {
-  @apply text-[#8A8A8A] text-[24px] font-sans
-}
+  .textPara {
+    @apply text-[#8A8A8A] text-[24px] font-sans
+  }
 
-.btn {
-  @apply px-5 py-3 rounded-full
-}
+  .btn {
+    @apply px-5 py-3 rounded-full
+  }
 
-.section {
-  @apply md:py-[150px] py-[50px]
-}
+  .section {
+    @apply md:py-[150px] py-[50px]
+  }
 
 }
 
 /* ------- Scroll bar ------- */
-::-webkit-scrollbar{
+::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
-::-webkit-scrollbar-track{
+::-webkit-scrollbar-track {
   background: #dfdfdf00 !important;
 }
-::-webkit-scrollbar-thumb{
-  background: #6b5ecc34 !important; 
+
+::-webkit-scrollbar-thumb {
+  background: #6b5ecc34 !important;
   border-radius: 10px;
 }
 
@@ -162,7 +164,7 @@
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(5.9px);
   -webkit-backdrop-filter: blur(5.9px);
-  border: 1px solid rgba(255, 255, 255, 0.3);  
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .brandSwiper .swiper-wrapper {
@@ -170,6 +172,42 @@
 }
 
 
-.campaign-swiper  {
+.campaign-swiper {
   padding-bottom: 60px !important;
+}
+
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  gap: 20;
+  animation: marquee 20s linear infinite;
+}
+
+.marquee-item {
+  flex-shrink: 0;
+  margin-right: 5rem;
+  /* gap between logos */
+}
+
+.marquee-logo {
+  height: 4rem;
+  opacity: 0.6;
+  /* filter: grayscale(100%); */
+  transition: all 0.5s ease;
+}
+
+.marquee-logo:hover {
+  opacity: 1;
+  filter: grayscale(0%);
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
 }

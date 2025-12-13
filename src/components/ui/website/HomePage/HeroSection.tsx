@@ -66,8 +66,8 @@ const HeroSection = () => {
                     </div>
 
                     {/* Subtitle */}
-                    <p className="text-white/80 text-base md:text-lg lg:text-2xl mb-8 md:mb-5 max-w-2xl mx-auto px-4 leading-10 mt-5">
-                        Artists launch campaigns. Influencers <br /> promote songs. Everyone wins.
+                    <p className="text-white/80 text-base md:text-lg lg:text-2xl mb-8 md:mb-5 max-w-2xl mx-auto px-4 leading-10 pt-14">
+                        Artists launch campaigns. Creators <br /> promote songs. Everyone wins.
                     </p>
 
                     {/* CTA Button */}

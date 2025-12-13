@@ -7,9 +7,9 @@ import AddButton from './AddButton'
 import CampaingsAddForm from '../CampaingsAddForm';
 
 const PUpcomingChampaigns = () => {
-    const [openAddForm, setAddForm] = useState(false)
+    const [openAddForm, setAddForm] = useState(true)
     return (
-        <div className=''>
+        <div className=' relative'>
             {openAddForm && <p onClick={() => setAddForm(false)} className="mb-5 cursor-pointer flex items-center  gap-2"><ArrowLeft /> Back</p> }
             <div className="flex flex-col items-center justify-center">
                 {!openAddForm && <div className="">
@@ -20,7 +20,7 @@ const PUpcomingChampaigns = () => {
                 {/* <AddButton /> */}
 
                 {openAddForm ? <CampaingsAddForm /> :
-                    <button onClick={() => setAddForm(true)} className='btn bg-primary rounded-full text-white flex items-center mt-5'><Plus /> Create Campaign </button>
+                    <button onClick={() => setAddForm(true)} className='absolute -top-24 right-0 btn bg-primary rounded-full text-white flex items-center mt-5'><Plus /> Create Campaign </button>
 
                 }
             </div>

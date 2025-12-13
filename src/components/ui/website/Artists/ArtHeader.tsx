@@ -17,8 +17,8 @@ const ArtHeader = () => {
                     <h1 className="title">
                         <span className="text-primary">Grow</span>  Your <span className='text-primary'>Reach</span> by Sharing Music.                        
                     </h1>
-                    <p className="mt-4 mb-8 textPara">
-                        Easily promote your tracks, collaborate with influencers, and grow your fanbase through targeted campaigns. Easily promote your tracks, collaborate with influencers.
+                    <p className="mt-4 mb-8 textPara text-justify">
+                        Easily promote your tracks, collaborate with influencers, and grow your fanbase through targeted campaigns. Easily promote your tracks, collaborate with creators.
                     </p>
 
                     <button  className='btn  bg-primary text-white'>Get Started</button>

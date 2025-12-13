@@ -19,7 +19,7 @@ const TIMELINE_STEPS = [
     },
     {
         step: 2,
-        title: "Influencers Promote",
+        title: "Creators Promote",
         description: "Our network of vetted influencers and curators will promote your music across various platforms, ensuring high-quality placements and genuine engagement with potential new fans.",
         imageUrl: "https://img.freepik.com/free-photo/joyful-pleased-music-producer-enjoying-his-high-quality-track-control-room_482257-93613.jpg?semt=ais_hybrid&w=740&q=80",
         icon: Megaphone,
@@ -51,7 +51,7 @@ export default function BehindProcess() {
 
                     <div className="md:w-1/2 flex items-center pt-3">
                         <p className="text-2xl leading-12 text-white">
-                            Discover how our platform helps music creators and influencers
+                            Discover how our platform helps music creators and creators
                             connect, grow, and shine
                         </p>
                     </div>
