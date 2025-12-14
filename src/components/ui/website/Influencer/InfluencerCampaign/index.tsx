@@ -3,6 +3,7 @@ import AllCampaigns from './AllCampaigns'
 import CampaignHeader from './CampaignHeader'
 import Container from '@/components/shared/Container'
 import MyCampaigns from './MyCampaigns'
+import CreatorPagination from '../Creator/CreatorPagination'
 
 
 const InfluencerCampaign = ({campaignType, status }: any) => {
@@ -14,6 +15,7 @@ const InfluencerCampaign = ({campaignType, status }: any) => {
         <div className="mb-10">
         {campaignType === 'my-campaigns' ? < MyCampaigns status={status}/> : <AllCampaigns status={status}/>} 
         </div>    
+        <CreatorPagination />
       </Container>
     </div>
   )

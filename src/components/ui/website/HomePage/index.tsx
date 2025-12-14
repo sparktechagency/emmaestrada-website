@@ -7,6 +7,7 @@ import BehindProcess from "./BehindProcess";
 import Statics from "./Statics";
 import FooterBanner from "@/components/shared/FooterBanner";
 import Testimonial from "./Testimonial";
+import WhyChooseUs from "./WhyChooseUs";
 
 const HomePage = async ({ searchParams }: any) => {
   // const {role} = await searchParams;
@@ -20,6 +21,7 @@ const HomePage = async ({ searchParams }: any) => {
         <ArtistsSection />
       </Container>
       <BehindProcess />
+      <WhyChooseUs />
       <Campaign />
       <Testimonial />
       <Statics />

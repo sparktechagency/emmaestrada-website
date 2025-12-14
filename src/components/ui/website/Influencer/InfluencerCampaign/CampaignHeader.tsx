@@ -19,27 +19,14 @@ import FilterModal, { FilterValues } from './FilterModal';
 
 
 const CampaignHeader = () => {
-  const [activeMainTab, setActiveMainTab] = useState("campaigns");
+
   const [activeCampaignTab, setActiveCampaignTab] = useState("campaigns");
-  const [activeStatusTab, setActiveStatusTab] = useState("active");
   const [filterModalOpen, setFilterModalOpen] = useState(false);
-  const [showDemoPage, setShowDemoPage] = useState(false);
-  const [appliedFilters, setAppliedFilters] = useState<FilterValues>({
-    genres: [],
-    payoutRange: { min: "", max: "" },
-    campaignType: [],
-    platforms: [],
-  });
+
   const [visibility, setVisibility] = useState("all");
-  const [sortBy, setSortBy] = useState("payout");
+  const [sortBy, setSortBy] = useState("all");
   const router = useRouter()
   const searchParams = useSearchParams()
-
-
-  // const setCampaign = (type: string) => {
-  //   setActiveCampaignTab(type)
-  //   router.push(`/influencer?status=${type}`)
-  // }
 
   useEffect(() => {
     const paramValue = searchParams.get('campaignType')
@@ -50,14 +37,12 @@ const CampaignHeader = () => {
 
   const setCampaignType = (type: string) => {
     setActiveCampaignTab(type)
-    router.push(`/influencer?campaignType=${type}`)
+    router.push(`/creator?campaignType=${type}`)
   }
 
 
 
   const handleApplyFilters = (filters: FilterValues) => {
-    // setAppliedFilters(filters);
-    // setShowDemoPage(true);
 
     console.log("filters", filters)
   };
@@ -98,7 +83,7 @@ const CampaignHeader = () => {
           <div className="flex-1 relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
             <Input
-              placeholder="Search campaigns or artists..."
+              placeholder="Search creator..."
               className="pl-10 bg-white h-12"
             />
           </div>
@@ -113,6 +98,17 @@ const CampaignHeader = () => {
                 <SelectItem value="all">All</SelectItem>
                 <SelectItem value="public">Public</SelectItem>
                 <SelectItem value="private">Private</SelectItem>
+                <Button
+                  className="w-full px-2"
+                  variant="secondary"
+                  size="sm"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setVisibility("")                    
+                  }}
+                >
+                  Clear
+                </Button>
               </SelectContent>
             </Select>
 
@@ -133,9 +129,21 @@ const CampaignHeader = () => {
                 </div>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="payout">Highest Maximum Payout Rate</SelectItem>
-                <SelectItem value="deadline">Deadline</SelectItem>
-                <SelectItem value="popularity">Popularity</SelectItem>
+                <SelectItem value="all">All</SelectItem>
+                <SelectItem value="followers">No of Followers</SelectItem>
+                <SelectItem value="engagement">Engagement</SelectItem>
+                <SelectItem value="rating">Rating</SelectItem>
+                <Button
+                  className="w-full px-2"
+                  variant="secondary"
+                  size="sm"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setSortBy("")                    
+                  }}
+                >
+                  Clear
+                </Button>
               </SelectContent>
             </Select>
           </div>

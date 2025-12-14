@@ -3,6 +3,8 @@ import { Card } from "@/components/ui/card"
 import Image from "next/image"
 import ProfileImageWithUserData from "./ProfileImageWithUserData"
 import ReelsAnalyticsChart from "./ReelsAnalyticsChart"
+import RejectButtonWithForm from "./RejectButtonWithForm"
+import ReviewButtonWithModal from "./ReviewButtonWithModal"
 
 
 export default function AcceptedSubmission() {
@@ -29,7 +31,8 @@ export default function AcceptedSubmission() {
               <Image src="/instagram.png" height={15} width={40} alt="logo" className="h-6 object-contain w-full md:w-7 rounded-md" />
               <Image src="/tiktokBlack.png" height={15} width={40} alt="logo" className="h-6 object-contain w-full md:w-7 rounded-md" />
             </div>
-            <Button variant="destructive" className="ml-3">Reject</Button>
+            <RejectButtonWithForm />
+            <ReviewButtonWithModal />
           </div>
         </div>
         <div className="flex md:flex-row flex-col items-center gap-4">

@@ -22,19 +22,19 @@ const InfluencerHeader = () => {
   
 
   const displayLinks = [
-    { link: "/influencer", label: "Campaigns", icon: Music },
-    { link: "/influencer/creator", label: "influencer", icon: UsersRound },
-    { link: "/influencer/promotor", label: "Promotor", icon: UsersRound },
-    { link: "/influencer/analytics", label: "Analytics", icon: BarChart3 },
-    { link: "/influencer/messages", label: "Messages", icon: MessageSquare },
-    { link: "/influencer/trusted-creators", label: "Trusted Creator", icon: Handshake },
-    { link: "/influencer/profile", label: "Profile", icon: UserCircle },
+    { link: "/creator", label: "Campaigns", icon: Music },
+    { link: "/creator/creators", label: "Creator", icon: UsersRound },
+    { link: "/creator/promotor", label: "Promotor", icon: UsersRound },
+    { link: "/creator/analytics", label: "Analytics", icon: BarChart3 },
+    { link: "/creator/messages", label: "Messages", icon: MessageSquare },
+    { link: "/creator/trusted-creators", label: "Trusted Creator", icon: Handshake },
+    { link: "/creator/profile", label: "Profile", icon: UserCircle },
   ];
 
   const isActive = (path: string) => {
-  if (path === "/influencer") {
-    // active only on "/influencer" root
-    return pathname === "/influencer";
+  if (path === "/creator") {
+    // active only on "/creator" root
+    return pathname === "/creator";
   }
   return pathname.startsWith(path);
 };
@@ -45,7 +45,7 @@ const InfluencerHeader = () => {
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 ">
             <button className="btn flex items-center gap-2 bg-white font-semibold text-black text-lg rounded-full shadow-md">
               <div className="w-2 h-2 bg-green-500 rounded-full" />
-              <span>Currently viewing as: Influencer</span>
+              <span>Currently viewing as: Creator</span>
             </button>
 
             <Link href="/promotor">

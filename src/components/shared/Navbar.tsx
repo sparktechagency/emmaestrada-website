@@ -12,10 +12,10 @@ import { IoNotifications } from "react-icons/io5";
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
-  const [loginView, setLoginView] = useState(true)
+  const [loginView, setLoginView] = useState(false)
 
   const pathname = usePathname();
-  const darkBgRoutes = ['influencer', 'promotor'];
+  const darkBgRoutes = ['creator', 'promotor'];
   const hasDarkBackground = darkBgRoutes.includes(pathname.split('/')[1]);
 
 
@@ -29,7 +29,7 @@ const Navbar = () => {
     { name: "Home", href: "/" },
     { name: "About us", href: "/about-us" },
     { name: "Contact us", href: "/contact" },
-    { name: "My Hub", href: "/influencer" },
+    { name: "My Hub", href: "/creator" },
   ];
 
   const isActive = (href: string) => pathname === href;
@@ -73,7 +73,7 @@ const Navbar = () => {
                   </button>
                 </Link>
 
-                <button onClick={() => setLoginView(true)} className="border-primary border btn bg-white text-primary rounded-full hover:from-orange-600 hover:to-orange-700 transition-all">
+                <button onClick={() => setLoginView(true)} className="hidden md:block border-primary border btn bg-white text-primary rounded-full hover:from-orange-600 hover:to-orange-700 transition-all">
                   View as login
                 </button>
               </>}
@@ -129,8 +129,8 @@ export default Navbar;
 
 const ViewAsLogin = () => {
   return (<div className="flex items-center gap-3">
-    <Wallet  size={30}  color="#ededed"/>
-    <Bell size={30}  color="white"/>
+    <Wallet  strokeWidth={1}  size={30}  color="#ededed"/>    
+    <Bell strokeWidth={1} size={30}  color="white"/>
     <Link href="/influencer">
     <Avatar className="rounded-lg ">
       <AvatarImage

@@ -1,3 +1,4 @@
+
 "use client"
 
 import {
@@ -19,9 +20,10 @@ import { ArrowLeft, Plus } from "lucide-react"
 import Image from "next/image"
 import { MdOutlineStar } from "react-icons/md"
 import { useState } from "react"
-import CreatorPagination from "../Creator/CreatorPagination"
-import Container from "@/components/shared/Container"
 
+import Container from "@/components/shared/Container"
+import CreatorPagination from "../../Influencer/Creator/CreatorPagination"
+import Link from "next/link"
 
 
 const influencers = Array.from({ length: 10 }).map(() => ({
@@ -30,20 +32,14 @@ const influencers = Array.from({ length: 10 }).map(() => ({
     platform: "/tiktok.svg",
     totalFollowers: "45K",
     engagement: "4.1%",
-    rating: 4,
-    totalCampaigns: 12,
+    rating: 4,    
 }))
 
-export default function PromotorList() {
-    const [open, setOpen] = useState(false)
 
-    return (
-        <Container>
-            <div className="mt-10">
-                <h1 className={`mb-2 text-3xl font-semibold`}>All Promotor</h1>                
-            </div>
-            <div>
-                {open ? (
+const PPopularInfluencer = () => {
+    const [open, setOpen] = useState(false)
+    return <Container>        
+        {open ? (
                     <p
                         onClick={() => setOpen(false)}
                         className="mb-5 cursor-pointer flex items-center gap-2"
@@ -56,12 +52,11 @@ export default function PromotorList() {
                             <Table>
                                 <TableHeader>
                                     <TableRow>
-                                        <TableHead>Promotor</TableHead>
+                                        <TableHead>Influencers</TableHead>
                                         <TableHead>Platform</TableHead>
                                         <TableHead>Total Followers</TableHead>
                                         <TableHead>Engagement</TableHead>
-                                        <TableHead>Rating</TableHead>
-                                        <TableHead>Num. of Campaign</TableHead>
+                                        <TableHead>Rating</TableHead>                                        
                                         <TableHead className="text-center">Action</TableHead>
                                     </TableRow>
                                 </TableHeader>
@@ -117,8 +112,6 @@ export default function PromotorList() {
                                                 ))}
                                             </TableCell>
 
-                                            <TableCell>{row.totalCampaigns}</TableCell>
-
                                             <TableCell className="text-right md:w-[50px]">
                                                 <div className="flex items-center gap-3">
                                                     <Button>
@@ -126,12 +119,11 @@ export default function PromotorList() {
                                                         <Plus />
                                                     </Button>
 
-                                                    <Button
-                                                        onClick={() => setOpen(true)}
+                                                    <Link href={`/promotor/creator/${idx}`}><Button                                                        
                                                         className="border border-black/50 text-black/50 hover:bg-white hover:text-black bg-transparent"
                                                     >
                                                         View
-                                                    </Button>
+                                                    </Button></Link>
                                                 </div>
                                             </TableCell>
                                         </TableRow>
@@ -146,8 +138,7 @@ export default function PromotorList() {
                     </Card>
                 )}
 
-                {/* {open && <InfluencerDetails />} */}
-            </div>
-        </Container>
-    )
+    </Container>
 }
+
+export default PPopularInfluencer

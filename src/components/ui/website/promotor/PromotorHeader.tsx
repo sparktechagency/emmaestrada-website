@@ -39,7 +39,7 @@ const PromotorHeader = () => {
 
   const displayLinks = [
     { link: "/promotor", label: "Campaigns", icon: Music },
-    { link: "/promotor/influencer", label: "Influencer", icon: UsersRound },
+    { link: "/promotor/creator", label: "Creator", icon: UsersRound },
     { link: "/promotor/promotor-list", label: "Promotor", icon: UsersRound },
     { link: "/promotor/analytics", label: "Analytics", icon: BarChart3 },
     { link: "/promotor/messages", label: "Messages", icon: MessageSquare },
@@ -57,7 +57,7 @@ const PromotorHeader = () => {
               <span>Currently viewing as: Music promoter</span>
             </button>
 
-            <Link href="/influencer">
+            <Link href="/creator">
               <button className="btn bg-primary text-white flex items-center w-full sm:w-auto text-lg rounded-full shadow whitespace-nowrap">
                 <Repeat className="w-4 h-4 mr-2" />
                 Switch into music creator

@@ -1,9 +1,11 @@
 
-import PromotorsList from '@/components/ui/website/promotor/PromotorsList'
+
+import CPromotorList from '@/components/ui/website/Influencer/PromotorList/CPromotorList'
+import PromotorList from '@/components/ui/website/promotor/PromotorsList'
 import React from 'react'
 
 const page = () => {
-  return <PromotorsList />
+  return <PromotorList />
 }
 
 export default page

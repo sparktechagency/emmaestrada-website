@@ -42,10 +42,10 @@ export default function BehindProcess() {
                     <div className="md:w-1/2">
                         <span className="px-10 py-3 bg-white text-primary rounded-md font-extrabold shadow-md text-6xl">
                             The Beat
-                        </span>         
+                        </span>
                         <h1 className="text-6xl font-extrabold text-gray-900 mt-10 leading-tight">
                             Behind the Process
-                        </h1>               
+                        </h1>
                     </div>
 
 
@@ -72,7 +72,6 @@ export default function BehindProcess() {
                         />
                     ))}
                 </div>
-
             </Container>
         </div>
     );

@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card"
 import Image from "next/image"
 import ProfileImageWithUserData from "./ProfileImageWithUserData"
 import ReelsAnalyticsChart from "./ReelsAnalyticsChart"
+import RejectButtonWithForm from "./RejectButtonWithForm"
 
 
 export default function CreatorAllArtists() {
@@ -31,7 +32,7 @@ export default function CreatorAllArtists() {
             </div>
             <div className="">
               <Button className="bg-green-600">Approved</Button>
-              <Button variant="destructive" className="ml-3">Reject</Button>
+              <RejectButtonWithForm />
             </div>
           </div>
         </div>

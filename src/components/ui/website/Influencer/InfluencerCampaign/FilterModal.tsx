@@ -13,7 +13,7 @@ export interface FilterValues { genres: string[]; payoutRange: { min: string; ma
 
 export default function FilterModal({ open, onOpenChange, onApply }: FilterModalProps) {
   const [visibility, setVisibility] = useState("Both");
-  const [contentType, setContentType] = useState("Both");
+  const [contentType, setContentType] = useState("UGC");
   const [genres, setGenres] = useState([]);
   const [categories, setCategories] = useState([]);
   const [platforms, setPlatforms] = useState([]);
@@ -84,9 +84,8 @@ export default function FilterModal({ open, onOpenChange, onApply }: FilterModal
           <div>
             <label className="text-sm font-medium">Content Type</label>
             <select value={contentType} onChange={e => setContentType(e.target.value)} className="mt-2 w-full h-12 border rounded-xl px-3">
-              <option>Both</option>
-              <option>Video</option>
-              <option>Audio</option>
+              <option>UGC</option>
+              <option>Clipping</option>              
             </select>
           </div>
         </div>

@@ -1,96 +1,68 @@
-"use client"
 
+
+import { Button } from "@/components/ui/button"
 import {
     Card,
-    CardContent,
+    CardContent
 } from "@/components/ui/card"
 import {
     Table,
-    TableHead,
-    TableRow,
-    TableHeader,
     TableBody,
     TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
 } from "@/components/ui/table"
-import { Button } from "@/components/ui/button"
-import { ArrowLeft, Plus } from "lucide-react"
+import { Plus } from "lucide-react"
 import Image from "next/image"
+import Link from "next/link"
 import { MdOutlineStar } from "react-icons/md"
-import { useState } from "react"
 import CreatorPagination from "../Creator/CreatorPagination"
 import Container from "@/components/shared/Container"
-import Link from "next/link"
 
 
-// Trusted Creator Dummy Data
-const trustedCreators = Array.from({ length: 10 }).map(() => ({
-    name: "Ethan Blaze",
-    profile: "/images/profile21.jpg",
-    platform: "/tiktok.svg",
-    totalFollowers: "60K",
-    engagement: "4.8%",
-    rating: 5,
-    verified: true,
+
+const influencers = Array.from({ length: 10 }).map(() => ({
+    name: "Ava Storm",
+    profile: "/images/profile22.jpg",
+    totalFollowers: "45K",
+    engagement: "4.1%",
+    rating: 4,
+    totalCampaigns: 12,
 }))
 
-export default function TrustedCreators() {
+export default function CPromotorList() {
+
     return (
         <Container>
-            <div className="mt-10">
-                <h1 className={`mb-2 text-3xl font-semibold`}>Trusted Creators</h1>
-            </div>
-
             <Card className="bg-transparent shadow-none border-0">
                 <CardContent className="overflow-x-auto">
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>Trusted Creators</TableHead>
-                                <TableHead>Platform</TableHead>
+                                <TableHead>Promotor</TableHead>
                                 <TableHead>Total Followers</TableHead>
                                 <TableHead>Engagement</TableHead>
-                                <TableHead>Rating</TableHead>                                
+                                <TableHead>Rating</TableHead>
+                                <TableHead>Num. of Campaign</TableHead>
                                 <TableHead className="text-center">Action</TableHead>
                             </TableRow>
                         </TableHeader>
 
                         <TableBody>
-                            {trustedCreators.map((row, idx) => (
+                            {influencers.map((row, idx) => (
                                 <TableRow key={idx}>
                                     <TableCell>
                                         <div className="flex items-center gap-3">
                                             <Image
                                                 src={row.profile}
-                                                alt="creator"
+                                                alt="influencer"
                                                 width={40}
                                                 height={40}
                                                 className="rounded-full"
                                             />
-
-                                            <div className="flex items-center gap-2">
-                                                <span>{row.name}</span>
-                                                {row.verified && (
-                                                    <span className="text-xs bg-green-200 text-green-700 px-2 py-0.5 rounded-full">
-                                                        Verified
-                                                    </span>
-                                                )}
-                                            </div>
+                                            <span>{row.name}</span>
                                         </div>
-                                    </TableCell>
-
-                                    <TableCell className="flex items-center gap-2">
-                                        <Image
-                                            src="/tiktokBlack.png"
-                                            alt="platform"
-                                            width={22}
-                                            height={22}
-                                        />
-                                        <Image
-                                            src="/instagram.png"
-                                            alt="platform"
-                                            width={22}
-                                            height={22}
-                                        />
                                     </TableCell>
 
                                     <TableCell>{row.totalFollowers}</TableCell>
@@ -113,9 +85,16 @@ export default function TrustedCreators() {
                                         ))}
                                     </TableCell>
 
+                                    <TableCell>{row.totalCampaigns}</TableCell>
+
                                     <TableCell className="text-right md:w-[50px]">
                                         <div className="flex items-center gap-3">
-                                            <Link href={`/creator/trusted-creators/${idx + 1}`}> <Button
+                                            <Button>
+                                                <span>Follow</span>
+                                                <Plus />
+                                            </Button>
+
+                                            <Link href={`/creator/promotor/${idx + 1}`}> <Button
                                                 className="border border-black/50 text-black/50 hover:bg-white hover:text-black bg-transparent"
                                             >
                                                 View
@@ -132,6 +111,9 @@ export default function TrustedCreators() {
                     </div>
                 </CardContent>
             </Card>
+
+
+            {/* {open && <InfluencerDetails />} */}
         </Container>
     )
 }

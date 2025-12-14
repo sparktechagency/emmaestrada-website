@@ -23,6 +23,7 @@ import Pagination from "./CreatorPagination"
 import CreatorPagination from "./CreatorPagination"
 import { useState } from "react"
 import ArtistDetails from "./ArtistDetails"
+import Link from "next/link"
 
 const campaigns = Array.from({ length: 10 }).map((_, i) => ({
   campaign: "Summer Vibes 2024",
@@ -52,7 +53,6 @@ export default function CreatorAllInfluencer() {
                   <TableHead>Total Followers</TableHead>
                   <TableHead>Engagement</TableHead>
                   <TableHead>Rating</TableHead>
-                  <TableHead>Num. of Campaign</TableHead>
                   <TableHead className="text-center">Action</TableHead>
                 </TableRow>
               </TableHeader>
@@ -78,20 +78,18 @@ export default function CreatorAllInfluencer() {
                     <TableCell className=" font-semibold flex ">
                       {Array.from([1, 2, 3, 4, 5])?.map((_: any, i: number) => <MdOutlineStar className="text-orange-500" size={15} />)}
                     </TableCell>
-                    <TableCell>
-                      {row?.totalCampaigns}
-                    </TableCell>
                     <TableCell className="text-right md:w-[50px]">
                       <div className=" flex items-center gap-3">
-
                         <Button
                         >
                           <span>Follow</span>
                           <Plus />
                         </Button>
-                        <Button onClick={() => setOpen(true)} className="border border-black/50 text-black/50 hover:bg-white hover:text-black bg-transparent"
-                        >View
-                        </Button>
+                        <Link href={`/influencer/creators/${i + 1}`}><Button
+                          className="border border-black/50 text-black/50 hover:bg-white hover:text-black bg-transparent"
+                        >
+                          View
+                        </Button></Link>
                       </div>
                     </TableCell>
                   </TableRow>
@@ -99,9 +97,7 @@ export default function CreatorAllInfluencer() {
               </TableBody>
             </Table>
 
-            <div className="flex justify-end mt-6 pr-10">
-              <CreatorPagination />
-            </div>
+
           </CardContent>
         </Card>
       }

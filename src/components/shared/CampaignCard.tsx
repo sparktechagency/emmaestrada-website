@@ -3,6 +3,7 @@
 import React from "react";
 import { StatusBadge } from "./StatusBadge";
 import Image from "next/image";
+import { Gift } from "lucide-react";
 
 type CampaignStatus =
   | "upcoming"
@@ -146,8 +147,13 @@ const CampaignCard: React.FC<CampaignCardProps> = ({
         
         <div className="space-y-1 text-[16px]">
           <p>
-            <span className="font-semibold">Name:</span>{" "}
+            <span className="font-semibold">Title:</span>{" "}
             <span className="text-orange-500 font-medium">{name}</span>
+          </p>
+
+          <p>
+            <span className="font-semibold">Types:</span>{" "}
+            <span className="text-orange-500 font-medium">Pop</span>
           </p>
 
           <p>
@@ -156,26 +162,30 @@ const CampaignCard: React.FC<CampaignCardProps> = ({
           </p>
 
           <p>
-            <span className="font-semibold">Influencers:</span>{" "}
+            <span className="font-semibold">Content Type:</span>{" "}
             <span className="text-orange-500 font-medium">
-              {influencers}
+              UCG
             </span>
-          </p>
-
-          <p className="flex items-center gap-2">📅 {dateRange}</p>
-          <p className="flex items-center gap-2">⏱️ {duration}</p>
+          </p>          
+          <p className="flex items-center gap-3">
+            <span className="font-semibold flex items-center gap-2"> <Gift strokeWidth={1} size={16} color="var(--color-primary)"/> Rewards-:</span>{" "}
+            <span className="text-orange-500 font-medium">
+              $0.25/1K
+            </span>
+          </p>          
         </div>
         
-        <div className="mt-3">
+        <div className="mt-7">
+          <p className="text-right text-xs mb-2 text-gray-600 flex items-center justify-between">
+            <span className="font-semibold">$700.60 of $8000.00 paid out</span>
+            <span>{progress}%</span> 
+          </p>
           <div className="h-2 rounded-full bg-gray-300">
             <div
               className="h-2 bg-orange-500 rounded-full"
               style={{ width: `${progress}%` }}
             />
-          </div>
-          <p className="text-right text-sm mt-1 text-gray-600">
-            {progress}%
-          </p>
+          </div>          
         </div>
       
         <button          

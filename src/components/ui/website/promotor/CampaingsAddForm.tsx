@@ -194,30 +194,6 @@ const Step1 = ({ formData, updateFormData, next }: any) => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="">
-              <p className="text-md  font-md font-semibold mb-2">Start Date</p>
-              <Input
-                className="h-[45px]"
-                type="date"
-                value={formData.startDate}
-                onChange={(e) => updateFormData({ startDate: e.target.value })}
-              />
-            </div>
-
-            <div className="">
-              <p className="text-md  font-md font-semibold mb-2">End Date</p>
-              <Input
-                className="h-[45px]"
-                type="date"
-                value={formData.endDate}
-                onChange={(e) => updateFormData({ endDate: e.target.value })}
-              />
-            </div>
-
-          </div>
-
-
           <div className="">
             <p className="text-md text-slate-400  font-md font-medium mb-2">Fanatics UGC -$3 per 1,000 views</p>
             <FileUpload onChange={(file) => updateFormData({ audioTrack: file })} />
@@ -380,15 +356,15 @@ const Step2 = ({ formData, updateFormData, prev, next }: any) => {
 };
 
 const Step3 = ({ formData, prev, submit }: any) => {
-
   return (
-    <div className="">
+    <div>
       <p className="text-lg font-semibold mb-6">Review & Submit</p>
 
-      <div className="space-y-6 bg-whitemd:p-5 rounded-xl">
+      <div className="space-y-6">
+
         {/* Basic Information */}
         <div className="border rounded-xl p-4 md:p-6 bg-white">
-          <p className="font-semibold mb-4">Basic & Budget</p>
+          <p className="font-semibold mb-4">Campaign Information</p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
@@ -399,58 +375,28 @@ const Step3 = ({ formData, prev, submit }: any) => {
             </div>
 
             <div>
-              <p className="text-sm text-gray-500">Genre</p>
+              <p className="text-sm text-gray-500">Duration</p>
               <p className="font-medium">
-                {formData.genre || "Not set"}
+                {formData.startDate && formData.endDate
+                  ? `${formData.startDate} → ${formData.endDate}`
+                  : "Not set"}
               </p>
             </div>
 
             <div>
-              <p className="text-sm text-gray-500">Start Date</p>
+              <p className="text-sm text-gray-500">Audio Track</p>
               <p className="font-medium">
-                {formData.startDate || "Not set"}
-              </p>
-            </div>
-
-            <div>
-              <p className="text-sm text-gray-500">End Date</p>
-              <p className="font-medium">
-                {formData.endDate || "Not set"}
-              </p>
-            </div>
-
-            <div>
-              <p className="text-sm text-gray-500">
-                Influencers Needed
-              </p>
-              <p className="font-medium">
-                {formData.influencersNeeded || "Not set"}
-              </p>
-            </div>
-
-            <div>
-              <p className="text-sm text-gray-500">Audio File</p>
-              <p className="font-medium">
-                {formData.audioTrack
-                  ? "Uploaded"
-                  : "Not uploaded"}
+                {formData.audioTrack ? "Uploaded" : "Not uploaded"}
               </p>
             </div>
           </div>
         </div>
 
         {/* Budget & Rewards */}
-        <div className="border rounded-xl p-6 bg-white">
-          <p className="font-semibold mb-4">Platform & Assets</p>
+        <div className="border rounded-xl p-4 md:p-6 bg-white">
+          <p className="font-semibold mb-4">Budget & Rewards</p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <p className="text-sm text-gray-500">Total Budget</p>
-              <p className="font-medium">
-                ${formData.totalCampaignBudget || 0}
-              </p>
-            </div>
-
             <div>
               <p className="text-sm text-gray-500">Reward Type</p>
               <p className="font-medium">
@@ -459,93 +405,51 @@ const Step3 = ({ formData, prev, submit }: any) => {
             </div>
 
             <div>
-              <p className="text-sm text-gray-500">
-                Reward Amount
-              </p>
+              <p className="text-sm text-gray-500">Reward Amount</p>
               <p className="font-medium">
-                ${formData.rewardAmount || 0}
+                ${formData.rewardAmount || 0} per {formData.perViews || "—"} views
               </p>
             </div>
 
             <div>
-              <p className="text-sm text-gray-500">
-                Payout Range
-              </p>
+              <p className="text-sm text-gray-500">Minimum Payout</p>
               <p className="font-medium">
-                {formData.minimumPayout &&
-                  formData.maximumPayout
-                  ? `$${formData.minimumPayout} - $${formData.maximumPayout}`
-                  : "Not set"}
+                ${formData.minimumPayout || "Not set"}
+              </p>
+            </div>
+
+            <div>
+              <p className="text-sm text-gray-500">Maximum Payout</p>
+              <p className="font-medium">
+                ${formData.maximumPayout || "Not set"}
               </p>
             </div>
           </div>
         </div>
 
-        {/* Platforms & Content */}
-        <div className="border rounded-xl p-6 bg-white">
-          <p className="font-semibold mb-4">
-            Platforms & Content
-          </p>
+        {/* Platforms */}
+        <div className="border rounded-xl p-4 md:p-6 bg-white">
+          <p className="font-semibold mb-4">Target Platforms</p>
 
-          <div className="mb-4">
-            <p className="text-sm text-gray-500 mb-2">
-              Selected Platforms
-            </p>
-
-            {formData.targetPlatform?.length ? (
-              <div className="flex flex-wrap gap-2">
-                {formData.targetPlatform.map((p: string) => (
-                  <Badge key={p} variant="outline">
-                    {p}
-                  </Badge>
-                ))}
-              </div>
-            ) : (
-              <p className="font-medium">
-                No platforms selected
-              </p>
-            )}
-          </div>
-
-          <div>
-            <p className="text-sm text-gray-500 mb-2">
-              Content Types
-            </p>
-
-            {formData.contentGuidelines?.length ? (
-              <div className="flex flex-wrap gap-2">
-                {formData.contentGuidelines.map(
-                  (c: string) => (
-                    <Badge key={c} variant="secondary">
-                      {c}
-                    </Badge>
-                  )
-                )}
-              </div>
-            ) : (
-              <p className="font-medium">Not set</p>
-            )}
-          </div>
+          {formData.targetPlatform?.length ? (
+            <div className="flex flex-wrap gap-2">
+              {formData.targetPlatform.map((p: string) => (
+                <Badge key={p} variant="outline">
+                  {p}
+                </Badge>
+              ))}
+            </div>
+          ) : (
+            <p className="text-gray-500">No platform selected</p>
+          )}
         </div>
 
-        {/* Requirements */}
-        <div className="border rounded-xl p-6 bg-white">
-          <p className="font-semibold mb-3">Requirements</p>
-
-          {formData.campaignRequirements?.some(
-            (r: string) => r.trim() !== ""
-          ) ? (
-            <ul className="list-disc pl-5 space-y-1 text-sm">
-              {formData.campaignRequirements.map(
-                (req: string, idx: number) =>
-                  req && <li key={idx}>{req}</li>
-              )}
-            </ul>
-          ) : (
-            <p className="text-gray-500">
-              No requirements added
-            </p>
-          )}
+        {/* Assets */}
+        <div className="border rounded-xl p-4 md:p-6 bg-white">
+          <p className="font-semibold mb-2">Campaign Assets</p>
+          <p className="text-sm text-gray-500 break-all">
+            {formData.campaignAssets || "No assets link provided"}
+          </p>
         </div>
       </div>
 
@@ -560,19 +464,18 @@ const Step3 = ({ formData, prev, submit }: any) => {
           Previous
         </Button>
 
-        <div className="flex gap-3">
-          <Button
-            size="lg"
-            className="bg-orange-500 hover:bg-orange-600"
-            onClick={submit}
-          >
-            Submit Campaign
-          </Button>
-        </div>
+        <Button
+          size="lg"
+          className="bg-orange-500 hover:bg-orange-600"
+          onClick={submit}
+        >
+          Submit Campaign
+        </Button>
       </div>
     </div>
   );
 };
+
 
 
 
