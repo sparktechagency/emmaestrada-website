@@ -14,36 +14,36 @@ import {
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
 
-const RejectSubmissionForm = ({ closeModal }: { closeModal: () => void }) => {
+const CreatorReportForm = ({ closeModal }: { closeModal: () => void }) => {
   const form = useForm({
     defaultValues: {
-      reason: '',
-      banUser: false,
+      message: '',
+      requiresAttention: false,
     },
   })
 
   const onSubmit = async (values: any) => {
     try {
-      console.log('Reject Data:', values)
+      console.log('Report to creator:', values)
 
       // 👉 call API here
-      // await rejectSubmission(values)
+      // await sendReportToCreator(values)
 
       closeModal()
     } catch (error) {
-      console.error('Reject failed:', error)
+      console.error('Report failed:', error)
     }
   }
 
   return (
     <div>
       <h2 className="text-xl font-semibold text-center">
-        Reject submission by Pookie Ttv?
+        Report an issue to the creator
       </h2>
 
       <p className="text-sm text-slate-500 text-center mt-2">
-        If you catch a user botting, please ban them. Banning users will ban them
-        from this whop and reject all their submissions in your organization.
+        Use this form to inform the creator about an issue with this campaign or
+        submission. Your message will be reviewed by the creator.
       </p>
 
       <Form {...form}>
@@ -53,14 +53,14 @@ const RejectSubmissionForm = ({ closeModal }: { closeModal: () => void }) => {
         >
           <FormField
             control={form.control}
-            name="reason"
-            rules={{ required: 'Reason is required' }}
+            name="message"
+            rules={{ required: 'Message is required' }}
             render={({ field }) => (
               <FormItem>
                 <FormControl>
                   <Textarea
                     {...field}
-                    placeholder="Provide a brief explanation for why you are rejecting this submission"
+                    placeholder="Describe the issue you want to report to the creator"
                     className="min-h-[120px]"
                     maxLength={255}
                   />
@@ -72,7 +72,7 @@ const RejectSubmissionForm = ({ closeModal }: { closeModal: () => void }) => {
 
           <FormField
             control={form.control}
-            name="banUser"
+            name="requiresAttention"
             render={({ field }) => (
               <label className="flex items-center gap-2 text-sm">
                 <input
@@ -80,7 +80,7 @@ const RejectSubmissionForm = ({ closeModal }: { closeModal: () => void }) => {
                   checked={field.value}
                   onChange={field.onChange}
                 />
-                Also ban this user for botting
+                This issue requires urgent attention
               </label>
             )}
           />
@@ -94,8 +94,8 @@ const RejectSubmissionForm = ({ closeModal }: { closeModal: () => void }) => {
               Cancel
             </Button>
 
-            <Button type="submit" variant="destructive">
-              Reject
+            <Button type="submit">
+              Send Report
             </Button>
           </div>
         </form>
@@ -104,4 +104,4 @@ const RejectSubmissionForm = ({ closeModal }: { closeModal: () => void }) => {
   )
 }
 
-export default RejectSubmissionForm
+export default CreatorReportForm

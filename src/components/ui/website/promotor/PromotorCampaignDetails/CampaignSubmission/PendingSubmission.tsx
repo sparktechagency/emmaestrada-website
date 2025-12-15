@@ -4,9 +4,10 @@ import Image from "next/image"
 import ProfileImageWithUserData from "./ProfileImageWithUserData"
 import ReelsAnalyticsChart from "./ReelsAnalyticsChart"
 import RejectButtonWithForm from "./RejectButtonWithForm"
+import PendingDropDown from "./PendingDropDown"
 
 
-export default function CreatorAllArtists() {
+export default function PendingSubmission() {
 
   const user = {
     name: "Sarah Jhonson",
@@ -21,7 +22,7 @@ export default function CreatorAllArtists() {
           <div className="flex items-center gap-3">
             <ProfileImageWithUserData user={user} />
             <div className="">
-              <p className="text-lg font-semibold text-black">Sarah Jhonson</p>
+              <p className="text-lg font-semibold text-black">Sarah Jhonson11</p>
               <p className="text-md text-slate-400">152 days ago by <span className="font-semibold text-primary">Pokiee Ttv</span></p>
             </div>
           </div>
@@ -30,9 +31,8 @@ export default function CreatorAllArtists() {
               <Image src="/instagram.png" height={15} width={40} alt="logo" className="h-6 object-contain w-full md:w-7 rounded-md" />
               <Image src="/tiktokBlack.png" height={15} width={40} alt="logo" className="h-6 object-contain w-full md:w-7 rounded-md" />
             </div>
-            <div className="">
-              <Button className="bg-green-600">Approved</Button>
-              <RejectButtonWithForm />
+            <div className="">              
+              <PendingDropDown />
             </div>
           </div>
         </div>

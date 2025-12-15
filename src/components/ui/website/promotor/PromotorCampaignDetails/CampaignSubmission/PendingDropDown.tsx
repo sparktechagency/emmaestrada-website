@@ -1,0 +1,71 @@
+"use client"
+
+import { Check, CircleAlert, Menu, X } from "lucide-react"
+import { useState } from "react"
+
+import { Button } from "@/components/ui/button"
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuGroup,
+    DropdownMenuItem,
+    DropdownMenuShortcut,
+    DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu"
+
+import Modal from "@/components/modals/Modal"
+import CreatorReportForm from "@/components/shared/CreatorReportForm"
+import RejectSubmissionForm from "./RejectSubmissionModal"
+
+const PendingDropDown = () => {
+    const [showRejectForm, setShowRejectForm] = useState(false);
+    const [openReport, setOpenReport] = useState(false);
+
+    return (
+        <>
+            <DropdownMenu modal={false}>
+                <DropdownMenuTrigger asChild>
+                    <Button variant="outline" aria-label="Open menu" size="icon-lg">
+                        <Menu size={30} />
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-40" align="end">
+                    <DropdownMenuGroup >
+                        <DropdownMenuItem className="bg-green-600 hover:bg-green-700! text-white! mb-2">
+                            Accept
+                            <DropdownMenuShortcut><Check color="white" /></DropdownMenuShortcut>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onSelect={() => setShowRejectForm(true)} className="bg-red-600 hover:bg-red-700! text-white! mb-2">
+                            Reject
+                            <DropdownMenuShortcut><X color="white" /></DropdownMenuShortcut>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onSelect={() => setOpenReport(true)} className="bg-slate-600 hover:bg-slate-700! text-white!">
+                            Report
+                            <DropdownMenuShortcut><CircleAlert color="white" /></DropdownMenuShortcut>
+                        </DropdownMenuItem>
+                    </DropdownMenuGroup>
+                </DropdownMenuContent>
+            </DropdownMenu>
+
+            {/* -------------- Reject Form -------------- */}
+            <Modal                
+                open={showRejectForm}
+                setOpen={setShowRejectForm}
+                width="600px">                
+                <RejectSubmissionForm closeModal={() => setShowRejectForm(false)} />
+            </Modal>
+          
+            {/* -------------- Report Form -------------- */}
+            <Modal                
+                open={openReport}
+                setOpen={setOpenReport}
+                width="600px"               
+            >
+                <CreatorReportForm closeModal={() => setOpenReport(false)} />
+            </Modal>
+        </>
+    )
+}
+
+
+export default PendingDropDown;

@@ -20,8 +20,7 @@ const steps = [
 
 const platforms = [
   { label: "TikTok", value: "tiktok", icon: "/tiktokBlack.png" },
-  { label: "Instagram", value: "instagram", icon: "/instagram.png" },
-  { label: "X", value: "x", icon: "/X.png" },
+  { label: "Instagram", value: "instagram", icon: "/instagram.png" },  
   { label: "YouTube", value: "youtube", icon: "/youtube.png" },
 ];
 
@@ -291,7 +290,7 @@ const Step2 = ({ formData, updateFormData, prev, next }: any) => {
         <div className="space-y-6 p-2 md:p-6 border rounded-xl bg-white mb-5">
           <p className="text-lg font-semibold mb-4">Select Platforms *</p>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
             {platforms.map((p) => (
               <div
                 key={p.value}
