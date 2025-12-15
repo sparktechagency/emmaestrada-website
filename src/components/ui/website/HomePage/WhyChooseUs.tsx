@@ -7,7 +7,7 @@ const WhyChooseUs = () => {
             <div className="pt-12 md:pt-[150px]">
                 <div className='mb-10'>
                     <h1 className="title text-center mb-3">
-                        Voices of Our <span className="text-primary">Fans</span>
+                        Why Choose <span className="text-primary">Us</span>
                     </h1>
                     <p className=" textPara text-center max-w-6xl mx-auto">
                         Explore our handpicked campaigns that are driving real impact, inspiring communities,

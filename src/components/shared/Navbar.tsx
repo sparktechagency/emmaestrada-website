@@ -137,7 +137,7 @@ const ViewAsLogin = () => {
   return (<div className="flex items-center gap-3">
     <Wallet strokeWidth={1} size={30} color="#ededed" />
     <Bell strokeWidth={1} size={30} color="white" />
-    <Link href="/influencer">
+    <Link href="/creator">
       <Avatar className="rounded-lg ">
         <AvatarImage
           src="/images/profile21.jpg"

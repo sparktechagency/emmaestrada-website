@@ -338,7 +338,7 @@ const Step2 = ({ formData, updateFormData, prev, next }: any) => {
         </div>
 
         <div className="flex justify-between gap-4 bg-white rounded-md shadow-md p-4">
-          <Button onClick={prev} size="lg" variant="outline"  className="bg-transparent rounded-full! text-black! border border-black/50!">
+          <Button onClick={prev} size="lg" variant="outline"  className="bg-transparent rounded-md! text-black! border border-black/50!">
             Previous
           </Button>
           <div className="flex items-center gap-3">
@@ -457,7 +457,7 @@ const Step3 = ({ formData, prev, submit }: any) => {
         <Button
           size="lg"
           variant="outline"
-          className="rounded-full"
+          className="rounded-lg!"
           onClick={prev}
         >
           Previous

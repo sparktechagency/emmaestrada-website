@@ -138,6 +138,9 @@
   .section {
     @apply md:py-[150px] py-[50px]
   }
+  .container{
+    @apply container mx-auto px-4 lg:px-5
+  }
 
 }
 

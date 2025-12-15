@@ -10,7 +10,7 @@ const ReviewButtonWithModal = () => {
 
   return (
     <>
-      <Button onClick={() => setOpen(true)}>Rating</Button>
+      <Button className='w-full rounded-full bg-black/60!' onClick={() => setOpen(true)}>Rating</Button>
 
       <Modal
         open={open}
