@@ -20,8 +20,14 @@ const Navbar = () => {
 
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 80);
-    window?.addEventListener("scroll", handleScroll);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 80);
+    };
+
+    // 🔹 Set initial value on page load / reload
+    handleScroll();
+
+    window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -34,7 +40,7 @@ const Navbar = () => {
 
   const isActive = (href: string) => pathname === href;
 
-  
+
   return (
     <div>
       <nav
@@ -42,7 +48,7 @@ const Navbar = () => {
         ${scrolled && !openMenu ? "backdrop-blur-xl bg-[#15141A]/70 shadow-lg" : hasDarkBackground || openMenu ? "bg-black" : "md:transparent"}`}
       >
         <Container>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between relative">
             {/* Logo */}
             <Link href="/">
               <div className="relative h-12 w-12">
@@ -51,7 +57,7 @@ const Navbar = () => {
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-2 glassBg rounded-full! px-8 py-3">
+            <div className="hidden md:flex absolute top-1/2 left-1/2 -translate-1/2 items-center gap-2 glassBg rounded-full! px-8 py-3">
               {links.map(link => (
                 <Link
                   key={link.href}
@@ -129,17 +135,17 @@ export default Navbar;
 
 const ViewAsLogin = () => {
   return (<div className="flex items-center gap-3">
-    <Wallet  strokeWidth={1}  size={30}  color="#ededed"/>    
-    <Bell strokeWidth={1} size={30}  color="white"/>
+    <Wallet strokeWidth={1} size={30} color="#ededed" />
+    <Bell strokeWidth={1} size={30} color="white" />
     <Link href="/influencer">
-    <Avatar className="rounded-lg ">
-      <AvatarImage
-        src="/images/profile21.jpg"
-        alt="@evilrabbit"
-        className="w-12 rounded-full border-2!  border-slate-300!"
-      />
-      <AvatarFallback>ER</AvatarFallback>
-    </Avatar>
+      <Avatar className="rounded-lg ">
+        <AvatarImage
+          src="/images/profile21.jpg"
+          alt="@evilrabbit"
+          className="w-12 rounded-full border-2!  border-slate-300!"
+        />
+        <AvatarFallback>ER</AvatarFallback>
+      </Avatar>
     </Link>
   </div>)
 }
