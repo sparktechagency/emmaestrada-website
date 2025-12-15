@@ -32,7 +32,7 @@ const AcceptedDropDown = () => {
                         <Menu size={30} />
                     </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-40" align="end">
+                <DropdownMenuContent className="w-40 p-3 inset-0 shadow z-10" align="end">
                     <DropdownMenuGroup >                        
                         <DropdownMenuItem onSelect={() => setShowRejectForm(true)} className="bg-red-600 hover:bg-red-700! text-white! mb-2">
                             Reject
@@ -54,7 +54,7 @@ const AcceptedDropDown = () => {
             <Modal
                 open={showRejectForm}
                 setOpen={setShowRejectForm}
-                width="600px">
+                className='md:max-w-md! w-[90%]! md:w-full!'>
                 <RejectSubmissionForm closeModal={() => setShowRejectForm(false)} />
             </Modal>
 
@@ -62,8 +62,7 @@ const AcceptedDropDown = () => {
             <Modal
                 open={openReport}
                 setOpen={setOpenReport}
-                width="600px"
-            >
+                className='md:max-w-md! w-[90%]! md:w-full!'>
                 <CreatorReportForm closeModal={() => setOpenReport(false)} />
             </Modal>
 

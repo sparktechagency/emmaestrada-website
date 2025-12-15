@@ -41,11 +41,6 @@ const RejectSubmissionForm = ({ closeModal }: { closeModal: () => void }) => {
         Reject submission by Pookie Ttv?
       </h2>
 
-      <p className="text-sm text-slate-500 text-center mt-2">
-        If you catch a user botting, please ban them. Banning users will ban them
-        from this whop and reject all their submissions in your organization.
-      </p>
-
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -61,7 +56,7 @@ const RejectSubmissionForm = ({ closeModal }: { closeModal: () => void }) => {
                   <Textarea
                     {...field}
                     placeholder="Provide a brief explanation for why you are rejecting this submission"
-                    className="min-h-[120px]"
+                    className="min-h-[120px] placeholder:text-xs"
                     maxLength={255}
                   />
                 </FormControl>

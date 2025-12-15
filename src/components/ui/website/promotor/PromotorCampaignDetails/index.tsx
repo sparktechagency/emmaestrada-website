@@ -17,7 +17,7 @@ const PromotorCampaignDetails = ({ status, openTab }: { status?: string, openTab
             <div className="flex justify-end mt-5">
             <DropDownMenu />
             </div>
-            <div className="relative w-full  p-4 md:p-8 flex flex-col items-center">
+            <div className="relative w-full  px-0 py-4 md:p-8 flex flex-col items-center">
                 <div className="w-full">
                     {/* Image */}                    
                         <Image

@@ -40,11 +40,6 @@ const CreatorReportForm = ({ closeModal }: { closeModal: () => void }) => {
         Report an issue to the creator
       </h2>
 
-      <p className="text-sm text-slate-500 text-center mt-2">
-        Use this form to inform the creator about an issue with this campaign or
-        submission. Your message will be reviewed by the creator.
-      </p>
-
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -60,7 +55,7 @@ const CreatorReportForm = ({ closeModal }: { closeModal: () => void }) => {
                   <Textarea
                     {...field}
                     placeholder="Describe the issue you want to report to the creator"
-                    className="min-h-[120px]"
+                    className="min-h-[120px] placeholder:text-xs "
                     maxLength={255}
                   />
                 </FormControl>

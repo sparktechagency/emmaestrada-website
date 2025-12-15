@@ -32,7 +32,7 @@ const PendingDropDown = () => {
                         <Menu size={30} />
                     </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-40" align="end">
+                <DropdownMenuContent className="w-40 p-3 inset-0 shadow z-10" align="end">
                     <DropdownMenuGroup >
                         <DropdownMenuItem className="bg-green-600 hover:bg-green-700! text-white! mb-2">
                             Accept
@@ -58,7 +58,7 @@ const PendingDropDown = () => {
             <Modal
                 open={showRejectForm}
                 setOpen={setShowRejectForm}
-                width="600px">
+                className='md:max-w-md! w-[90%]! md:w-full!'>
                 <RejectSubmissionForm closeModal={() => setShowRejectForm(false)} />
             </Modal>
 
@@ -66,8 +66,7 @@ const PendingDropDown = () => {
             <Modal
                 open={openReport}
                 setOpen={setOpenReport}
-                width="600px"
-            >
+                className='md:max-w-md! w-[90%]! md:w-full!'>            
                 <CreatorReportForm closeModal={() => setOpenReport(false)} />
             </Modal>
 

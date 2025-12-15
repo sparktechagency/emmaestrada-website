@@ -62,9 +62,9 @@ const ReviewModal = ({ closeModal }: { closeModal: () => void }) => {
 
             {/* Rating */}
             <div className="mt-6">
-                <p className="text-sm mb-2">Tap a star to rate it!</p>
+                <p className="text-sm mb-2 text-center">Tap a star to rate it!</p>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center justify-center gap-2">
                     {[1, 2, 3, 4, 5].map((star) => (
                         <Star
                             key={star}
