@@ -1,6 +1,5 @@
 'use client'
 
-import React from 'react'
 import { useForm } from 'react-hook-form'
 
 import {
@@ -11,8 +10,8 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 
-import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
+import { Textarea } from '@/components/ui/textarea'
 
 const CreatorReportForm = ({ closeModal }: { closeModal: () => void }) => {
   const form = useForm({
@@ -70,20 +69,6 @@ const CreatorReportForm = ({ closeModal }: { closeModal: () => void }) => {
             )}
           />
 
-          <FormField
-            control={form.control}
-            name="requiresAttention"
-            render={({ field }) => (
-              <label className="flex items-center gap-2 text-sm">
-                <input
-                  type="checkbox"
-                  checked={field.value}
-                  onChange={field.onChange}
-                />
-                This issue requires urgent attention
-              </label>
-            )}
-          />
 
           <div className="flex justify-end gap-3 pt-4">
             <Button

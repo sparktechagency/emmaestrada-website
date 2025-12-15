@@ -22,7 +22,7 @@ export default function PendingSubmission() {
           <div className="flex items-center gap-3">
             <ProfileImageWithUserData user={user} />
             <div className="">
-              <p className="text-lg font-semibold text-black">Sarah Jhonson11</p>
+              <p className="text-lg font-semibold text-black">Sarah Jhonson</p>
               <p className="text-md text-slate-400">152 days ago by <span className="font-semibold text-primary">Pokiee Ttv</span></p>
             </div>
           </div>

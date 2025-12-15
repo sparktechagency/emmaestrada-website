@@ -1,8 +1,5 @@
 "use client"
 
-import { Check, CircleAlert, Menu, X } from "lucide-react"
-import { useState } from "react"
-
 import { Button } from "@/components/ui/button"
 import {
     DropdownMenu,
@@ -12,15 +9,15 @@ import {
     DropdownMenuShortcut,
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu"
+import { CircleAlert, Menu } from "lucide-react"
+import { useState } from "react"
 
 import Modal from "@/components/modals/Modal"
 import CreatorReportForm from "@/components/shared/CreatorReportForm"
-import RejectSubmissionForm from "./RejectSubmissionModal"
-import { IoIosStar } from "react-icons/io"
 import ReviewModal from "@/components/shared/ReviewModal"
+import { IoIosStar } from "react-icons/io"
 
-const PendingDropDown = () => {
-    const [showRejectForm, setShowRejectForm] = useState(false);
+const RejectDropdown = () => {    
     const [openReport, setOpenReport] = useState(false);
     const [openReview, setOpenReview] = useState(false);
 
@@ -33,15 +30,7 @@ const PendingDropDown = () => {
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-40" align="end">
-                    <DropdownMenuGroup >
-                        <DropdownMenuItem className="bg-green-600 hover:bg-green-700! text-white! mb-2">
-                            Accept
-                            <DropdownMenuShortcut><Check color="white" /></DropdownMenuShortcut>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onSelect={() => setShowRejectForm(true)} className="bg-red-600 hover:bg-red-700! text-white! mb-2">
-                            Reject
-                            <DropdownMenuShortcut><X color="white" /></DropdownMenuShortcut>
-                        </DropdownMenuItem>
+                    <DropdownMenuGroup >                                                
                         <DropdownMenuItem onSelect={() => setOpenReview(true)} className="bg-yellow-600 hover:bg-yellow-700! text-white! mb-2">
                             Review
                             <DropdownMenuShortcut><IoIosStar className="text-yellow-200" /></DropdownMenuShortcut>
@@ -54,14 +43,7 @@ const PendingDropDown = () => {
                 </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* -------------- Reject Form -------------- */}
-            <Modal
-                open={showRejectForm}
-                setOpen={setShowRejectForm}
-                width="600px">
-                <RejectSubmissionForm closeModal={() => setShowRejectForm(false)} />
-            </Modal>
-
+          
             {/* -------------- Report Form -------------- */}
             <Modal
                 open={openReport}
@@ -83,4 +65,4 @@ const PendingDropDown = () => {
 }
 
 
-export default PendingDropDown;
+export default RejectDropdown;

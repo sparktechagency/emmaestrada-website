@@ -1,10 +1,8 @@
-import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import Image from "next/image"
+import AcceptedDropDown from "./AcceptedDropDown"
 import ProfileImageWithUserData from "./ProfileImageWithUserData"
 import ReelsAnalyticsChart from "./ReelsAnalyticsChart"
-import RejectButtonWithForm from "./RejectButtonWithForm"
-import ReviewButtonWithModal from "./ReviewButtonWithModal"
 
 
 export default function AcceptedSubmission() {
@@ -31,8 +29,7 @@ export default function AcceptedSubmission() {
               <Image src="/instagram.png" height={15} width={40} alt="logo" className="h-6 object-contain w-full md:w-7 rounded-md" />
               <Image src="/tiktokBlack.png" height={15} width={40} alt="logo" className="h-6 object-contain w-full md:w-7 rounded-md" />
             </div>
-            <RejectButtonWithForm />
-            <ReviewButtonWithModal />
+            <AcceptedDropDown />
           </div>
         </div>
         <div className="flex md:flex-row flex-col items-center gap-4">

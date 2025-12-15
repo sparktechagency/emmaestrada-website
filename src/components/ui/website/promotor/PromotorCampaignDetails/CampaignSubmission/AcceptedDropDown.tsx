@@ -19,7 +19,7 @@ import RejectSubmissionForm from "./RejectSubmissionModal"
 import { IoIosStar } from "react-icons/io"
 import ReviewModal from "@/components/shared/ReviewModal"
 
-const PendingDropDown = () => {
+const AcceptedDropDown = () => {
     const [showRejectForm, setShowRejectForm] = useState(false);
     const [openReport, setOpenReport] = useState(false);
     const [openReview, setOpenReview] = useState(false);
@@ -33,11 +33,7 @@ const PendingDropDown = () => {
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-40" align="end">
-                    <DropdownMenuGroup >
-                        <DropdownMenuItem className="bg-green-600 hover:bg-green-700! text-white! mb-2">
-                            Accept
-                            <DropdownMenuShortcut><Check color="white" /></DropdownMenuShortcut>
-                        </DropdownMenuItem>
+                    <DropdownMenuGroup >                        
                         <DropdownMenuItem onSelect={() => setShowRejectForm(true)} className="bg-red-600 hover:bg-red-700! text-white! mb-2">
                             Reject
                             <DropdownMenuShortcut><X color="white" /></DropdownMenuShortcut>
@@ -83,4 +79,4 @@ const PendingDropDown = () => {
 }
 
 
-export default PendingDropDown;
+export default AcceptedDropDown;
