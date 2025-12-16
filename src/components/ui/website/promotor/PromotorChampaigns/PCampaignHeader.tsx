@@ -51,27 +51,6 @@ const CampaignHeader = () => {
 
           {/* Controls */}
           <div className="flex flex-col sm:flex-row gap-3">
-            <Select value={visibility} onValueChange={setVisibility}>
-              <SelectTrigger className="w-full sm:w-[140px] bg-white h-12!">
-                <SelectValue placeholder="Visibility" />
-              </SelectTrigger>
-              <SelectContent>                
-                <SelectItem value="public">Public</SelectItem>
-                <SelectItem value="private">Private</SelectItem>
-                <Button
-                  className="w-full px-2"
-                  variant="secondary"
-                  size="sm"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    setVisibility("")                    
-                  }}
-                >
-                  Clear
-                </Button>
-              </SelectContent>
-            </Select>
-
             <Button
               variant="outline"
               onClick={() => setFilterModalOpen(true)}
