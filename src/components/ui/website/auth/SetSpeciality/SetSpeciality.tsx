@@ -13,21 +13,21 @@ import { cn } from '@/lib/utils'
 
 const options = [
   {
-    value: 'artist',
-    title: 'Music Artist',
+    value: 'promotor',
+    title: 'Music Promotor',
     desc: 'Create and release original music',
     icon: Music,
   },
   {
-    value: 'influencer',
-    title: 'Music Influencer',
+    value: 'creator',
+    title: 'Music Creator',
     desc: 'Promote music and trends online',
     icon: Users,
   },
   {
     value: 'both',
     title: 'Both',
-    desc: 'Creating and influencing together',
+    desc: 'Create and promotor together',
     icon: Sparkles,
   },
 ]

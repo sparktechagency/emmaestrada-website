@@ -68,12 +68,7 @@ export default function TrustedCreators() {
                                             />
 
                                             <div className="flex items-center gap-2">
-                                                <span>{row.name}</span>
-                                                {row.verified && (
-                                                    <span className="text-xs bg-green-200 text-green-700 px-2 py-0.5 rounded-full">
-                                                        Verified
-                                                    </span>
-                                                )}
+                                                <span>{row.name}</span>                                               
                                             </div>
                                         </div>
                                     </TableCell>

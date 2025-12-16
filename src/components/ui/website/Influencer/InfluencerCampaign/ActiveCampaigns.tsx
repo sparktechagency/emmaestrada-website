@@ -4,7 +4,7 @@ import React from 'react'
 const ActiveCampaigns = () => {
   return (
     <div>
-      <div className="grid grid-cols-1 md:grid-cols-2 md:gap-10">
+      <div className="grid grid-cols-1 md:grid-cols-3 md:gap-5">
         {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
           <div className="" key={i}>
             <CampaignCard

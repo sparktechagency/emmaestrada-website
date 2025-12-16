@@ -91,7 +91,7 @@ const PromotorsDataTable = () => {
                                             <Plus />
                                         </Button>
 
-                                        <Link href={`/promotor/creator/${idx + 1}`}><Button
+                                        <Link href={`/promotor/promotor-list/${idx + 1}`}><Button
                                             className="border border-black/50 text-black/50 hover:bg-white hover:text-black bg-transparent"
                                         >
                                             View
