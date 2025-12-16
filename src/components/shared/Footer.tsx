@@ -9,7 +9,7 @@ import { MdEmail } from "react-icons/md";
 
 export default function Footer() {
   return (
-    <footer className="bg-[#FFA76A] border-t pt-32 pb-14 text-white ">
+    <footer className="bg-secondary border-t pt-32 pb-14 text-white ">
       <Container >
         <div className="grid grid-cols-1 pt-10 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Logo & About */}
@@ -30,11 +30,11 @@ export default function Footer() {
           <div>
             <h3 className="font-semibold mb-3 text-xl">Services</h3>
             <ul className="space-y-2 text-lg ">
-              <li><Link href="/">About Us</Link></li>
+              <li><Link href="/about-us">About Us</Link></li>
               <li><Link href="/campaigns">Compaigns</Link></li>
-              <li><Link href="/influencers">Influencers</Link></li>
-              <li><Link href="/testimonial">Testimonial</Link></li>
-              <li><Link href="/#">Wow we work</Link></li>
+              <li><Link href="/creator">Influencers</Link></li>
+              <li><Link href="/#testimonial">Testimonial</Link></li>
+              <li><Link href="/#why_choose_us">Why Choose Us</Link></li>
             </ul>
           </div>
 
@@ -65,8 +65,8 @@ export default function Footer() {
         <div className="flex flex-col sm:flex-row justify-between items-center text-lg ">
           <p>© {new Date().getFullYear()} Artify. All rights reserved.</p>
           <div className="flex items-center gap-3">
-            <span className="border-r-2 pr-3">Terms of Use</span>
-            <span>Policy</span>
+            <Link href="/terms-condition"><span className="border-r-2 pr-3">Terms of Use</span></Link>
+            <Link href="/privacy-policy"> <span>Policy</span></Link>
           </div>
         </div>
       </Container>

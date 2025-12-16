@@ -34,7 +34,7 @@ const HeroSection = () => {
                 </div>
 
                 {/* Main Content */}
-                <div className=" text-center relative z-10 mt-10 md:mt-20">
+                <div className=" text-center relative z-10 mt-10 md:mt-32">
                     {/* Top Reviews */}
                     <div className="flex flex-wrap justify-center gap-4 md:gap-24 mb-8 md:mb-20">
                         {[1, 2, 3].map((item) => (
@@ -66,7 +66,7 @@ const HeroSection = () => {
                     </div>
 
                     {/* Subtitle */}
-                    <p className="text-white/80 text-base md:text-lg lg:text-2xl mb-8 md:mb-5 max-w-2xl mx-auto px-4 leading-10 pt-14">
+                    <p className="text-white/80 text-base md:text-lg lg:text-2xl mb-8 md:mb-5 max-w-2xl mx-auto px-4 leading-10 pt-5">
                         Artists launch campaigns. Creators <br /> promote songs. Everyone wins.
                     </p>
 

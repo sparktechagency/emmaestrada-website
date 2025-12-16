@@ -35,6 +35,7 @@ const TIMELINE_STEPS = [
 
 export default function BehindProcess() {
     return (
+        <div className="bottomPadding">
         <div className="bg-secondary py-[130px]">
             <Container>
                 {/* Header */}
@@ -73,6 +74,7 @@ export default function BehindProcess() {
                     ))}
                 </div>
             </Container>
+        </div>
         </div>
     );
 }

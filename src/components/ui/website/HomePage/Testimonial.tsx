@@ -10,7 +10,7 @@ import TestimonialCarousel from '@/components/shared/TestimonialCarousel';
 // Wrapper App component to allow for necessary styling and context
 const Testimonial = () => (
     <Container>
-        <div className="">
+        <div className="bottomPadding" id='testimonial'>
         <div>
             <h1 className="title text-center mb-3">
                 Voices of Our <span className="text-primary">Fans</span>

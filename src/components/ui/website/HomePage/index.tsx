@@ -19,9 +19,9 @@ const HomePage = async ({ searchParams }: any) => {
       <Container>
         <ArtAndInfluencerBanner />
         <ArtistsSection />
+      <WhyChooseUs />
       </Container>
       <BehindProcess />
-      <WhyChooseUs />
       <Campaign />
       <Testimonial />
       <Statics />

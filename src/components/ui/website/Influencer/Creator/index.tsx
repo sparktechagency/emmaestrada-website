@@ -15,8 +15,8 @@ const Creator = ({ type }: any) => {
                 <CreatorHeader />
                 <CampaignTabGroup
                     tabs={[
-                        { label: 'Popular Creator', value: 'popular-influencer' },
-                        { label: 'Followed Creator', value: 'followed-influencer' },
+                        { label: 'Popular', value: 'popular-influencer' },
+                        { label: 'Followed', value: 'followed-influencer' },
                         { label: 'All Creator', value: 'all-influencers' },
                     ]}
                     queryParam="type"

@@ -68,27 +68,14 @@ export default function FilterModal({ open, onOpenChange, onApply }: FilterModal
           </DialogDescription>
         </DialogHeader>
         
-        {/* TOP SELECTS */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-          {/* Visibility */}
-          <div>
-            <label className="text-sm font-medium">Visibility</label>
-            <select value={visibility} onChange={e => setVisibility(e.target.value)} className="mt-2 w-full h-12 border rounded-xl px-3">
-              <option>Both</option>
-              <option>Public</option>
-              <option>Private</option>
-            </select>
-          </div>
-
-          {/* Content Type */}
+        {/* Content Type */}
           <div>
             <label className="text-sm font-medium">Content Type</label>
             <select value={contentType} onChange={e => setContentType(e.target.value)} className="mt-2 w-full h-12 border rounded-xl px-3">
               <option>UGC</option>
               <option>Clipping</option>              
             </select>
-          </div>
-        </div>
+          </div>        
 
         {/* MUSIC GENRE */}
         <div className="mt-5">

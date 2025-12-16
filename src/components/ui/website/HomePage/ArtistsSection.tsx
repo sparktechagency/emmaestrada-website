@@ -15,7 +15,7 @@ import { LoginPopup } from "@/components/shared/LoginPopup";
 function ArtistsSection() {
   const [open, setOpen] = useState(false)
   return (
-    <section className="section">
+    <section className="bottomPadding">
       <Container>
         <div>
           <h1 className="title text-center mb-3">

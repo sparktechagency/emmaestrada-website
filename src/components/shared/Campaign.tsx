@@ -22,7 +22,7 @@ import { Button } from "../ui/button";
 
 const Campaign: React.FC = () => {
   return (
-    <section className="section">
+    <section className="bottomPadding">
       <Container>
         <div>
           <h1 className="title text-center mb-3">

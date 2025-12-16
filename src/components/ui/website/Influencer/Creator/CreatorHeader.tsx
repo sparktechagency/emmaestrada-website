@@ -1,31 +1,37 @@
 'use client'
 
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from '@/components/ui/select';
 import { useState } from 'react';
 import { FilterValues } from '../InfluencerCampaign/FilterModal';
 
 import { Input } from '@/components/ui/input';
-import { ArrowUpDown, Search } from 'lucide-react';
+import { ArrowUpDown, Search, SlidersHorizontal } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import CreatorFilterModal from '@/components/shared/CreatorFilterModal';
 
 
 const CreatorHeader = () => {  
-      const [visibility, setVisibility] = useState("");
-      const [sortBy, setSortBy] = useState("");     
-    return (
-        <div className='mt-10'>
-            <div className="mb-6">
-                <h1 className={`mb-2 text-3xl font-semibold`}>Creator</h1>
-                <p className="textPara">Discover artists and join their campaigns</p>
-            </div>           
+  const [sortBy, setSortBy] = useState("");
+  const [filterModalOpen, setFilterModalOpen] = useState(false);
 
-            {/* Search and Filters */}
+  const handleApplyFilters = (filters: FilterValues) => {
+    console.log("filters", filters)
+  };
+
+  return (
+    <div className='mt-10'>
+      <div className="mb-6">
+        <h1 className={`mb-2 text-3xl font-semibold`}>Creator</h1>
+        <p className="textPara">Discover artists and join their campaigns</p>
+      </div>
+
+      {/* Search and Filters */}
       <div className="bg-secondary rounded-xl p-4 mb-6">
         <div className="flex flex-col lg:flex-row gap-4">
           {/* Search Input */}
@@ -39,27 +45,14 @@ const CreatorHeader = () => {
 
           {/* Controls */}
           <div className="flex flex-col sm:flex-row gap-3">
-            <Select value={visibility} onValueChange={setVisibility}>
-              <SelectTrigger className="w-full sm:w-[140px] bg-white h-12!">
-                <SelectValue placeholder="Gender" />
-              </SelectTrigger>
-              <SelectContent>                
-                <SelectItem value="male">Male</SelectItem>
-                <SelectItem value="female">Female</SelectItem>
-                <SelectItem value="other">Other</SelectItem>
-                <Button
-                  className="w-full px-2"
-                  variant="secondary"
-                  size="sm"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    setVisibility("")                    
-                  }}
-                >
-                  Clear
-                </Button>
-              </SelectContent>
-            </Select>
+            <Button
+              variant="outline"
+              onClick={() => setFilterModalOpen(true)}
+              className="bg-white h-12"
+            >
+              <SlidersHorizontal className="w-4 h-4 mr-2" />
+              Filters
+            </Button>
 
             <Select value={sortBy} onValueChange={setSortBy}>
               <SelectTrigger className="w-full sm:w-[300px] bg-white h-12!">
@@ -68,17 +61,20 @@ const CreatorHeader = () => {
                   <SelectValue placeholder="Sort by" />
                 </div>
               </SelectTrigger>
-              <SelectContent>                
+              <SelectContent>
                 <SelectItem value="followers">No of Follower</SelectItem>
-                <SelectItem value="engagement">Engagement</SelectItem>
+                <SelectItem value="instagram-follower">Instragram Follower</SelectItem>
+                <SelectItem value="youtube-follower">Youtube Follower</SelectItem>
+                <SelectItem value="tiktok-followers">Tiktok Follower</SelectItem>                
                 <SelectItem value="rating">Rating</SelectItem>
+                <SelectItem value="engagement">Engagement</SelectItem>
                 <Button
                   className="w-full px-2"
                   variant="secondary"
                   size="sm"
                   onClick={(e) => {
                     e.stopPropagation()
-                    setSortBy("")                    
+                    setSortBy("")
                   }}
                 >
                   Clear
@@ -88,9 +84,13 @@ const CreatorHeader = () => {
           </div>
         </div>
       </div>
-          
-        </div>
-    )
+      <CreatorFilterModal
+        open={filterModalOpen}
+        onOpenChange={setFilterModalOpen}
+        onApply={handleApplyFilters}
+      />
+    </div>
+  )
 }
 
 export default CreatorHeader

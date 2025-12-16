@@ -85,7 +85,7 @@ export default function CreatorAllInfluencer() {
                           <span>Follow</span>
                           <Plus />
                         </Button>
-                        <Link href={`/influencer/creators/${i + 1}`}><Button
+                        <Link href={`/creator/creators/${i + 1}`}><Button
                           className="border border-black/50 text-black/50 hover:bg-white hover:text-black bg-transparent"
                         >
                           View

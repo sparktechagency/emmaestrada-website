@@ -14,7 +14,9 @@ const AboutUs = () => {
         <Container>
         <Overview />
         <OutMission />
+        <div className="bottomPadding">
         <Statics />
+        </div>
         <OurVision />        
         </Container>
         <FooterBanner />

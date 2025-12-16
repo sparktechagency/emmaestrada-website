@@ -4,7 +4,7 @@ import Image from 'next/image'
 
 const OurVision = () => {
     return (
-        <div className="grid grid-cols-1 md:grid-cols-12 md:gap-x-28 items-center section">
+        <div className="grid grid-cols-1 md:grid-cols-12 md:gap-x-28 items-center ">
 <div className="md:col-span-5 mt-10 md:mt-0 flex justify-center items-center">
                 <Image
                 width={600}
