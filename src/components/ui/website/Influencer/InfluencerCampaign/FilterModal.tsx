@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Slider } from "@/components/ui/slider";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
+import Image from "next/image";
 
 
 interface FilterModalProps { open: boolean; onOpenChange: (open: boolean) => void; onApply: (filters: any) => void; }
@@ -33,9 +34,14 @@ export default function FilterModal({ open, onOpenChange, onApply }: FilterModal
   ];
 
   const [budget, setBudget] = useState([0, 10000]);
+  const [flatFee, setFlatFee] = useState([0, 200]);
+  const [tiktokFollowers, setTiktokFollowers] = useState([0, 100000]);
+  const [instagramFollowers, setInstagramFollowers] = useState([0, 100000]);
+  const [youtubeFollowers, setYoutubeFollowers] = useState([0, 100000]);
   const [minPayout, setMinPayout] = useState([0, 200]);
   const [rewardRate, setRewardRate] = useState([0, 50]);
   const [maxPayout, setMaxPayout] = useState([0, 1000]);
+
 
   const toggleItem = (list: any, setList: any, item: any) => {
     setList((prev: any) => prev.includes(item) ? prev.filter((i: any) => i !== item) : [...prev, item]);
@@ -53,13 +59,17 @@ export default function FilterModal({ open, onOpenChange, onApply }: FilterModal
     setCategories([]);
     setPlatforms([]);
     setBudget([0, 10000]);
+    setFlatFee([0, 10000]);
+    setTiktokFollowers([0, 100000]);
+    setInstagramFollowers([0, 100000]);
+    setYoutubeFollowers([0, 100000]);
     setMinPayout([0, 200]);
     setRewardRate([0, 50]);
     setMaxPayout([0, 1000]);
   };
 
   return (
-    <Dialog  open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className=" p-8 w-full! max-w-[1000px]! h-[80vh]! overflow-y-auto">
         <DialogHeader className="text-center!">
           <DialogTitle className="text-2xl font-semibold">Filter Campaigns</DialogTitle>
@@ -67,15 +77,16 @@ export default function FilterModal({ open, onOpenChange, onApply }: FilterModal
             Refine your search with advanced filters
           </DialogDescription>
         </DialogHeader>
-        
-        {/* Content Type */}
-          <div>
-            <label className="text-sm font-medium">Content Type</label>
-            <select value={contentType} onChange={e => setContentType(e.target.value)} className="mt-2 w-full h-12 border rounded-xl px-3">
-              <option>UGC</option>
-              <option>Clipping</option>              
-            </select>
-          </div>        
+
+
+        <div>
+          <label className="text-sm font-medium">Content Type</label>
+          <select value={contentType} onChange={e => setContentType(e.target.value)} className="mt-2 w-full h-12 border rounded-xl px-3">
+            <option>UGC</option>
+            <option>Clipping</option>
+          </select>
+        </div>
+
 
         {/* MUSIC GENRE */}
         <div className="mt-5">
@@ -124,6 +135,38 @@ export default function FilterModal({ open, onOpenChange, onApply }: FilterModal
           </div>
         </div>
 
+        <p className="font-medium mt-5">Follower Filter</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-y-5 md:gap-5">
+          <div>
+            <p className="pb-3 flex items-center justify-between">
+              <span className="flex items-center justify-between gap-2">
+                <Image width={70} height={70} className="h-5 w-5 rounded-full" src={platformList[0]?.icon} alt={platformList[0]?.name} />
+                Tiktok Followers:</span>
+              <span>${tiktokFollowers[0]} - ${tiktokFollowers[1]}</span> </p>
+            <Slider disabled={!platforms?.includes('TikTok')} value={tiktokFollowers} min={0} max={100000} onValueChange={setTiktokFollowers} />
+          </div>
+          <div>
+            <p className="pb-3 flex items-center justify-between">
+              <span className="flex items-center justify-between gap-2">
+                <Image width={70} height={70} className="h-5 w-5 rounded-full" src={platformList[1]?.icon} alt={platformList[1]?.name} />
+                Instagram Followers:</span><span>${instagramFollowers[0]} - ${instagramFollowers[1]}</span>  </p>
+            <Slider disabled={!platforms?.includes('Instagram')} value={instagramFollowers} min={0} max={100000} onValueChange={setInstagramFollowers} />
+          </div>
+
+          <div>
+            <p className="pb-3 flex items-center justify-between">
+              <span className="flex items-center justify-between gap-2">
+                <Image width={70} height={70} className="h-5 w-5 rounded-full" src={platformList[2]?.icon} alt={platformList[2]?.name} />
+                Youtube Followers:</span>  <span>${youtubeFollowers[0]} - ${youtubeFollowers[1]}</span> </p>
+            <Slider disabled={!platforms?.includes('YouTube')} value={youtubeFollowers} min={0} max={100000} onValueChange={setYoutubeFollowers} />
+          </div>
+
+          <div>
+            <p className="pb-3">Flat Fee: ${flatFee[0]} - ${flatFee[1]}</p>
+            <Slider value={flatFee} min={0} max={200} onValueChange={setFlatFee} />
+          </div>
+
+        </div>
         {/* SLIDERS */}
         <p className="font-medium mt-5">Budget</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 ">

@@ -21,14 +21,16 @@ export default function CreatorFilterModal({
   onOpenChange,
   onApply,
 }: CreatorFilterModalProps) {
-  const [platforms, setPlatforms] = useState<string[]>([]);
+
   const [categories, setCategories] = useState<string[]>([]);
   const [gender, setGender] = useState<string>("Both");
   const [rating, setRating] = useState<number[]>([1, 5]);
   const [followers, setFollowers] = useState<number[]>([0, 1000000]);
   const [country, setCountry] = useState("");
-
+  const [selectPlatform, setSelectPlatform] = useState(false)
   const platformList = ["TikTok", "Instagram", "YouTube"];
+  const [platforms, setPlatforms] = useState<string[]>([]);
+
   const categoryList = [
     "Lifestyle",
     "Beauty",
@@ -42,6 +44,12 @@ export default function CreatorFilterModal({
   const toggleItem = (list: string[], setList: any, item: string) => {
     setList((prev: string[]) =>
       prev.includes(item) ? prev.filter(i => i !== item) : [...prev, item]
+    );
+  };
+
+  const selectSinglePlatform = (item: string) => {
+    setPlatforms(prev =>
+      prev[0] === item ? [] : [item] // click again to unselect
     );
   };
 
@@ -89,9 +97,7 @@ export default function CreatorFilterModal({
               >
                 <Checkbox
                   checked={platforms.includes(p)}
-                  onCheckedChange={() =>
-                    toggleItem(platforms, setPlatforms, p)
-                  }
+                  onCheckedChange={() => selectSinglePlatform(p)}
                 />
                 <span>{p}</span>
               </div>
@@ -99,12 +105,14 @@ export default function CreatorFilterModal({
           </div>
         </div>
 
+
         {/* FOLLOWERS */}
         <div className="mt-6">
           <p className="font-medium mb-2">
             Followers: {followers[0]} - {followers[1]}
           </p>
           <Slider
+          disabled={platforms?.length < 1}
             value={followers}
             min={0}
             max={1000000}
@@ -121,11 +129,10 @@ export default function CreatorFilterModal({
               <button
                 key={cat}
                 onClick={() => toggleItem(categories, setCategories, cat)}
-                className={`border rounded-xl py-2 text-sm ${
-                  categories.includes(cat)
+                className={`border rounded-xl py-2 text-sm ${categories.includes(cat)
                     ? "bg-black text-white"
                     : "bg-white"
-                }`}
+                  }`}
               >
                 {cat}
               </button>

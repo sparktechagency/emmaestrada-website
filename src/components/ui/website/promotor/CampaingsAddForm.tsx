@@ -20,7 +20,7 @@ const steps = [
 
 const platforms = [
   { label: "TikTok", value: "tiktok", icon: "/tiktokBlack.png" },
-  { label: "Instagram", value: "instagram", icon: "/instagram.png" },  
+  { label: "Instagram", value: "instagram", icon: "/instagram.png" },
   { label: "YouTube", value: "youtube", icon: "/youtube.png" },
 ];
 
@@ -66,6 +66,7 @@ const CampaingsAddForm = ({ editData }: { editData?: any }) => {
     totalCampaignBudget: "",
     rewardType: "",
     rewardAmount: "",
+    platFee: "",
     perViews: "",
     minimumPayout: "",
     maximumPayout: "",
@@ -199,34 +200,46 @@ const Step1 = ({ formData, updateFormData, next }: any) => {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-            <div className="">
-              <p className="text-md  font-md font-semibold mb-2">Campaign budget</p>
-              <Input
-                className="h-[45px]"
-                placeholder="Reward Type"
-                value={formData.rewardType}
-                onChange={(e) => updateFormData({ rewardType: e.target.value })}
-              />
+            <div className="flex gap-3">
+              <div className="w-full">
+                <p className="text-md  font-md font-semibold mb-2">Campaign budget</p>
+                <Input
+                  className="h-[45px]"
+                  placeholder="Reward Type"
+                  value={formData.rewardType}
+                  onChange={(e) => updateFormData({ rewardType: e.target.value })}
+                />
+              </div>
+              <div className="w-full">
+                <p className="text-md  font-md font-semibold mb-2">Plat Fee</p>
+                <Input
+                  className="h-[45px] placeholder:text-[10px] md:placeholder:text-md"
+                  placeholder="Plat Fee Type (Max: $200)"
+                  value={formData.platFee}
+                  onChange={(e) => updateFormData({ platFee: e.target.value })}
+                />
+              </div>
             </div>
+
 
             <div className="flex gap-3">
               <div className="w-full">
-              <p className="text-md  font-md font-semibold mb-2">Reward Amount ($)</p>
-              <Input
-                className="h-[45px] mr w-full"
-                placeholder="Reward Rate"
-                value={formData.rewardAmount}
-                onChange={(e) => updateFormData({ rewardAmount: e.target.value })}
-              />              
+                <p className="text-md  font-md font-semibold mb-2">Reward Amount ($)</p>
+                <Input
+                  className="h-[45px] mr w-full"
+                  placeholder="Reward Rate"
+                  value={formData.rewardAmount}
+                  onChange={(e) => updateFormData({ rewardAmount: e.target.value })}
+                />
               </div>
               <div className="w-full">
-              <p className="text-md  font-md font-semibold mb-2">Per Views</p>
-              <Input
-                className="h-[45px] mr w-full"
-                placeholder="1000"
-                value={formData.perViews}
-                onChange={(e) => updateFormData({ perViews: e.target.value })}
-              />              
+                <p className="text-md  font-md font-semibold mb-2">Per Views</p>
+                <Input
+                  className="h-[45px] mr w-full"
+                  placeholder="1000"
+                  value={formData.perViews}
+                  onChange={(e) => updateFormData({ perViews: e.target.value })}
+                />
               </div>
             </div>
           </div>
@@ -284,7 +297,7 @@ const Step2 = ({ formData, updateFormData, prev, next }: any) => {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-           next();
+          next();
         }}
       >
         <div className="space-y-6 p-2 md:p-6 border rounded-xl bg-white mb-5">
@@ -296,9 +309,9 @@ const Step2 = ({ formData, updateFormData, prev, next }: any) => {
                 key={p.value}
                 className="flex items-center justify-between border rounded-xl p-4 bg-white"
               > <div className="flex items-center gap-2">
-                <Image src={p.icon} height={20} width={20} alt="logo" />
-                <p className="font-medium">{p.label}</p>
-              </div>
+                  <Image src={p.icon} height={20} width={20} alt="logo" />
+                  <p className="font-medium">{p.label}</p>
+                </div>
                 <Checkbox
                   checked={formData.targetPlatform?.includes(p.value)}
                   onCheckedChange={() =>
@@ -338,7 +351,7 @@ const Step2 = ({ formData, updateFormData, prev, next }: any) => {
         </div>
 
         <div className="flex justify-between gap-4 bg-white rounded-md shadow-md p-4">
-          <Button onClick={prev} size="lg" variant="outline"  className="bg-transparent rounded-md! text-black! border border-black/50!">
+          <Button onClick={prev} size="lg" variant="outline" className="bg-transparent rounded-md! text-black! border border-black/50!">
             Previous
           </Button>
           <div className="flex items-center gap-3">

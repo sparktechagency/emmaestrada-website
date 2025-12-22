@@ -7,9 +7,42 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
-import { Image, MapPin, AtSign } from "lucide-react";
+import { Image, MapPin, AtSign, ChevronDown, Check, X } from "lucide-react";
+import { FcLikePlaceholder } from "react-icons/fc";
+import React from "react";
+import { cn } from "@/lib/utils";
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+const CONTENT_TYPES = [
+  "Pop",
+  "Rock",
+  "Jazz",
+  "Hip Hop",
+  "Classical",
+  "Electronic",
+];
 
 export default function ProfileInfo() {
+ const [selected, setSelected] = React.useState<string[]>([]);
+
+  const addItem = (value: string) => {
+    if (!selected.includes(value)) {
+      setSelected((prev) => [...prev, value]);
+    }
+  };
+
+  const removeItem = (value: string) => {
+    console.log("r clicked");
+    
+    setSelected((prev) => prev.filter((item) => item !== value));
+  };
   return (
     <div className=" space-y-10">
       {/* PERSONAL INFORMATION CARD */}
@@ -83,36 +116,107 @@ export default function ProfileInfo() {
 
           {/* Primary Genre */}
           <div className="flex flex-col gap-2 md:col-span-2">
-            <label className="font-medium">Primary Genre</label>
-            <Input defaultValue="Pop" className="h-12 rounded-xl" />
+            <label className="font-medium">Content Type</label>
+
+            {/* Input + Dropdown Row */}
+            <div className="flex flex-col md:flex-row gap-3">
+              {/* Chips Input (3/5 width) */}
+              <div className="flex w-full md:w-3/5 min-h-12 flex-wrap items-center gap-2 rounded-xl border px-3 py-2">
+                {selected?.length === 0 && (
+                  <span className="text-sm text-muted-foreground">
+                    Select content types
+                  </span>
+                )}
+
+                {selected?.map((item) => (
+                  <span
+                    key={item}                    
+                    className="bg-primary/80! text-xs flex items-center gap-1 text-white rounded-full px-3 py-1 uppercase"
+                  >
+                    {item}
+                    <X
+                      className="h-3 w-3 cursor-pointer"
+                      onClick={() => removeItem(item)}                      
+                    />
+                  </span>
+                ))}
+              </div>
+
+              {/* Dropdown (2/5 width) */}
+              <Select onValueChange={addItem}>
+                <SelectTrigger className="h-12! py-2! w-full md:w-2/5 rounded-xl">
+                  <SelectValue placeholder="Add type" />
+                </SelectTrigger>
+
+                <SelectContent>
+                  {CONTENT_TYPES.map((item) => (
+                    <SelectItem
+                      key={item}
+                      value={item}
+                      disabled={selected.includes(item)}
+                    >
+                      {item}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         </div>
 
         {/* Social Media Section */}
-        <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="mt-3 md:mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
 
-          {/* Instagram */}
-          <div className="flex flex-col gap-2">
-            <label className="font-medium">Instagram</label>
-            <div className="relative">
-              <AtSign className="absolute left-3 top-3.5 text-gray-500" size={18} />
-              <Input defaultValue="@musicflow" className="h-12 pl-10 rounded-xl" />
+          <div className="">
+            <div className="flex flex-col gap-2 mb-2">
+              <label className="font-medium">Instagram</label>
+              <div className="relative">
+                <AtSign className="absolute left-3 top-3.5 text-gray-500" size={18} />
+                <Input defaultValue="@musicflow" className="h-12 pl-10 rounded-xl" />
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <label className="font-medium">No. of Followers</label>
+              <div className="relative">
+                <FcLikePlaceholder className="absolute left-3 top-3.5 text-gray-500" size={18} />
+                <Input placeholder="Total Followers" className="h-12 pl-10 rounded-xl" />
+              </div>
             </div>
           </div>
 
-          {/* Tiktok */}
-          <div className="flex flex-col gap-2">
-            <label className="font-medium">Tiktok</label>
-            <div className="relative">
-              <AtSign className="absolute left-3 top-3.5 text-gray-500" size={18} />
-              <Input defaultValue="@jadakpop" className="h-12 pl-10 rounded-xl" />
+          <div className="">
+
+            <div className="flex flex-col gap-2 mb-2">
+              <label className="font-medium">Tiktok</label>
+              <div className="relative">
+                <AtSign className="absolute left-3 top-3.5 text-gray-500" size={18} />
+                <Input defaultValue="@jadakpop" className="h-12 pl-10 rounded-xl" />
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <label className="font-medium">No. of Followers</label>
+              <div className="relative">
+                <FcLikePlaceholder className="absolute left-3 top-3.5 text-gray-500" size={18} />
+                <Input placeholder="Total Followers" className="h-12 pl-10 rounded-xl" />
+              </div>
             </div>
           </div>
 
-          {/* YouTube */}
-          <div className="flex flex-col gap-2">
-            <label className="font-medium">YouTube</label>
-            <Input defaultValue="Luna Rivers" className="h-12 rounded-xl" />
+          <div className="">
+
+            <div className="flex flex-col gap-2 mb-2">
+              <label className="font-medium">YouTube</label>
+              <Input defaultValue="Luna Rivers" className="h-12 rounded-xl" />
+            </div>
+            <div className="flex flex-col gap-2">
+              <label className="font-medium">No. of Followers</label>
+              <div className="relative">
+                <FcLikePlaceholder className="absolute left-3 top-3.5 text-gray-500" size={18} />
+                <Input placeholder="Total Followers" className="h-12 pl-10 rounded-xl" />
+              </div>
+            </div>
           </div>
         </div>
 
