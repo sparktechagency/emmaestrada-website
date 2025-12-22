@@ -143,6 +143,7 @@ export default function FilterModal({ open, onOpenChange, onApply }: FilterModal
                 <Image width={70} height={70} className="h-5 w-5 rounded-full" src={platformList[0]?.icon} alt={platformList[0]?.name} />
                 Tiktok Followers:</span>
               <span>${tiktokFollowers[0]} - ${tiktokFollowers[1]}</span> </p>
+              {/* @ts-ignore */}
             <Slider disabled={!platforms?.includes('TikTok')} value={tiktokFollowers} min={0} max={100000} onValueChange={setTiktokFollowers} />
           </div>
           <div>
@@ -150,6 +151,7 @@ export default function FilterModal({ open, onOpenChange, onApply }: FilterModal
               <span className="flex items-center justify-between gap-2">
                 <Image width={70} height={70} className="h-5 w-5 rounded-full" src={platformList[1]?.icon} alt={platformList[1]?.name} />
                 Instagram Followers:</span><span>${instagramFollowers[0]} - ${instagramFollowers[1]}</span>  </p>
+                {/* @ts-ignore */}
             <Slider disabled={!platforms?.includes('Instagram')} value={instagramFollowers} min={0} max={100000} onValueChange={setInstagramFollowers} />
           </div>
 
@@ -158,6 +160,7 @@ export default function FilterModal({ open, onOpenChange, onApply }: FilterModal
               <span className="flex items-center justify-between gap-2">
                 <Image width={70} height={70} className="h-5 w-5 rounded-full" src={platformList[2]?.icon} alt={platformList[2]?.name} />
                 Youtube Followers:</span>  <span>${youtubeFollowers[0]} - ${youtubeFollowers[1]}</span> </p>
+                {/* @ts-ignore */}
             <Slider disabled={!platforms?.includes('YouTube')} value={youtubeFollowers} min={0} max={100000} onValueChange={setYoutubeFollowers} />
           </div>
 

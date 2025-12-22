@@ -1,9 +1,11 @@
 .campaign-swiper .swiper-wrapper .swiper-slide-prev{
-left: 193px !important;
+left: 173px !important;
+/* max-width: 300px !important; */
 }
 
 .campaign-swiper .swiper-wrapper .swiper-slide-next{
-right: 193px !important;
+right: 173px !important;
+/* max-width: 300px !important; */
 }
 
 .campaign-swiper .swiper-slide-prev {
@@ -20,9 +22,9 @@ right: 193px !important;
 }
 
 .campaign-swiper .swiper-slide-active {
-  transform: scale(1.08); 
-  z-index: 10; 
-  
+  transform: scale(1.10); 
+  max-width: 450px !important;
+  z-index: 10;   
 }
 
 .campaign-swiper .swiper-slide:not(.swiper-slide-active) .card-container {

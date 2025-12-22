@@ -32,8 +32,8 @@ const Campaign: React.FC = () => {
             Explore our handpicked campaigns that are driving real impact, inspiring communities, and shaping the future. Stay updated with the initiatives that matter most.
           </p>
         </div>
-        <div className="relative w-full flex justify-center py-10">
-          <Swiper           
+        <div className="relative w-full md:w-4/5 mx-auto flex justify-center py-10">
+          <Swiper
             modules={[EffectCoverflow, Pagination, Navigation, Autoplay]}
             effect="coverflow"
             grabCursor
@@ -45,6 +45,7 @@ const Campaign: React.FC = () => {
             pagination={{
               clickable: true,
             }}
+            spaceBetween={50}
             loop={true}
             initialSlide={1}
             autoplay={{
@@ -54,7 +55,7 @@ const Campaign: React.FC = () => {
             slidesPerView={1}
             breakpoints={{
               640: { slidesPerView: 1 },
-              768: { slidesPerView: 1.6 },
+              768: { slidesPerView: 1.3 },
               1024: { slidesPerView: 2 },
             }}
             coverflowEffect={{
@@ -69,9 +70,40 @@ const Campaign: React.FC = () => {
           >
             {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
               <SwiperSlide key={i}>
+                <CampaignCard
+                  name="Feel the Vibe"
+                  budget="$1000"
+                  influencers="25/25"
+                  dateRange="01/06/2024 - 30/06/2024"
+                  duration="30 days"
+                  progress={20}
+                  profileImg="/dj.jpg"
+                  rightImg="/dj-right.jpg"
+                  username="rikodj890"
+                  displayName="DJ Nadir"
+                />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+
+          {/* Navigation + Pagination */}
+          <div className="absolute bottom-10 flex items-center justify-center w-full gap-10">
+            <div className="swiper-pagination custom-pagination flex justify-center"></div>
+          </div>
+        </div>
+        <div className="flex justify-center mt-10">
+          <Link href="/campaigns"><Button size="lg" className="rounded-full !w-[200px] cursor-pointer">View All</Button></Link>
+        </div>
+      </Container>
+    </section>
+  );
+};
+
+export default Campaign;
+
+/*
   <div className="rounded-2xl shadow-md grid grid-cols-1 md:grid-cols-2 gap-4 lg:h-[421px] p-5 bg-[#FFF8F3]">
-    
-    {/* LEFT */}
+        
     <div className="flex flex-col order-2 md:order-1">
       <div className="flex justify-between items-center">
         <span className="flex items-center gap-2 bg-red-600 text-white px-3 py-1 rounded-full text-sm">
@@ -122,7 +154,7 @@ const Campaign: React.FC = () => {
       </button>
     </div>
 
-    {/* RIGHT */}
+    
     <div className="relative order-1 md:order-2">
       <img
         src="/images/campaign-img.png"
@@ -131,21 +163,4 @@ const Campaign: React.FC = () => {
       />
     </div>
   </div>
-</SwiperSlide>
-            ))}
-          </Swiper>
-
-          {/* Navigation + Pagination */}
-          <div className="absolute bottom-10 flex items-center justify-center w-full gap-10">
-            <div className="swiper-pagination custom-pagination flex justify-center"></div>
-          </div>
-        </div>
-         <div className="flex justify-center mt-10">
-        <Link href="/campaigns"><Button size="lg" className="rounded-full !w-[200px] cursor-pointer">View All</Button></Link>
-      </div>
-      </Container>
-    </section>
-  );
-};
-
-export default Campaign;
+  */

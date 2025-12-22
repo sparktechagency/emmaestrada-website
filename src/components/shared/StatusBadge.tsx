@@ -23,7 +23,7 @@ export const StatusBadge = ({ status }: StatusBadgeProps) => {
   return (
     <Badge
       className={clsx(
-        "capitalize px-3 py-1 text-sm font-medium",
+        "capitalize font-medium",
         statusStyles[status]
       )}
       variant="secondary"
