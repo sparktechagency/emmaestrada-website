@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Bricolage_Grotesque, Geist, Geist_Mono, Poppins } from "next/font/google";
 import "./globals.css";
 import "react-vertical-timeline-component/style.min.css";
+import { Toaster } from "sonner";
 
 
 
@@ -31,6 +32,7 @@ export default function RootLayout({
         className={`${poppins.className}  antialiased`}
       >
         {children}                
+          <Toaster position='top-right' richColors />
       </body>
     </html>
   );

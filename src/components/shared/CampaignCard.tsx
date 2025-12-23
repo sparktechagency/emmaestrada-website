@@ -275,7 +275,7 @@ const CampaignCard: React.FC<CampaignCardProps> = ({
 
         <div className="relative h-4 rounded-full bg-gray-300">
           <div
-            className="h-4 bg-[#FD7979] rounded-full"
+            className="h-4 bg-black/60 rounded-full"
             // style={{ width: `${progress}%` }}
             style={{ width: `50%` }}
           />
