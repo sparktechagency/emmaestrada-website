@@ -1,7 +1,7 @@
 // app/set-username/page.tsx
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import {
   Card,
@@ -12,16 +12,49 @@ import {
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { useRouter } from 'next/navigation'
+import { myFetch } from '@/utils/myFetch'
+import { ImCheckboxChecked } from 'react-icons/im'
+import { MdCancel } from 'react-icons/md'
+import { toast } from 'sonner'
 
 const SetUsername = () => {
   const [username, setUsername] = useState('')
+  const [isVerified, setIsVerified] = useState(false)
   const router = useRouter()
 
+
+
+  useEffect(() => {
+    if (username) {
+      checkAvailablelity()
+    } else {
+      setIsVerified(false)
+    }
+  }, [username])
+
+
+  
+  const checkAvailablelity = async () => {
+    try {
+      const result = await myFetch(`/users/check-field?username=${username}`);
+
+      if (result?.success) {
+        setIsVerified(result?.data?.data?.isAvailable)
+      }
+    } catch (error) {
+      console.error("Error creating user:", error);
+    }
+  }
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    console.log("username submitted:", username)
-    // Navigate to next page after setting username
-    router.push("/set-birthday") // change to your next page route
+    if (!isVerified) {
+      toast.error("Usename already exist try again with other username")
+    }
+
+    const data = { userName: username }
+
+    localStorage.setItem("registrationData", JSON.stringify(data))
+    router.push("/set-birthday")
   }
 
   return (
@@ -39,7 +72,7 @@ const SetUsername = () => {
           {/* Card Content */}
           <CardContent className="space-y-6">
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
+              <div className="space-y-2 relative">
                 <label htmlFor="email" className="text-sm font-semibold text-gray-700">
                   User
                 </label>
@@ -51,6 +84,8 @@ const SetUsername = () => {
                   onChange={(e) => setUsername(e.target.value)}
                   required
                 />
+                {isVerified ? <ImCheckboxChecked className='absolute top-1/2  right-3 text-green-600' /> :
+                  <MdCancel className='absolute top-1/2  right-3 text-red-600' />}
               </div>
 
               <Button type="submit" size="lg" className="w-full">

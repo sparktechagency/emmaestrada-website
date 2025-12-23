@@ -73,9 +73,9 @@ const Navbar = () => {
             {/* Right Side */}
             <div className="flex items-center gap-4">
               {loginView ? <ViewAsLogin /> : <>
-                <Link href="/login">
+                <Link href="/signup">
                   <button className="bg-primary btn text-white rounded-full hover:from-orange-600 hover:to-orange-700 transition-all">
-                    Sign in
+                    Sign Up
                   </button>
                 </Link>
 
@@ -118,9 +118,11 @@ const Navbar = () => {
                   ))}
                 </div>
 
+                <Link href="/signup">
                 <button className="mt-auto! bg-linear-to-r from-orange-500 to-orange-600 text-white px-4 py-3 rounded-lg hover:from-orange-600 hover:to-orange-700 transition-all">
-                  Sign in
+                  Sign Up
                 </button>
+                </Link>
               </div>
             </div>
           )}

@@ -23,6 +23,7 @@ import {
 import { Check, ChevronsUpDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { countriesData } from '@/assets/countrydata'
+import { toast } from 'sonner'
 
 
 export default function SetCountry() {
@@ -34,13 +35,44 @@ export default function SetCountry() {
         flag: string
     } | null>(null)
 
+    const storedData = localStorage.getItem("registrationData");
+    const image = localStorage.getItem("image");
+
+    const registrationData = storedData ? JSON.parse(storedData) : null
+    const { userName, birthday } = registrationData || {}
+
     const isValid = !!selected
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault()
+
+        if (!userName) {
+            toast.error("First set username")
+            router.push("/set-username")
+            return
+        }
+
+        if (!birthday) {
+            toast.error("Please Set Birthday")
+            router.push("/set-birthday")
+            return
+        }
+        if (!image) {
+            toast.error("Please select profile")
+            router.push("/set-profile")
+            return
+        }
+
+        const data = { country:selected?.name, ...registrationData }
+
+        localStorage.setItem("registrationData", JSON.stringify(data))
+        router.push('/businessname')
+    }
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-[url('/images/bgImg.png')] bg-cover bg-no-repeat bg-center md:px-4 py-8">
             <div className="backdrop-blur-[2.5px] border-2 border-white/20 rounded-xl p-4 sm:p-12">
                 <Card className="w-full md:min-w-lg py-4 sm:p-10">
-                    {/* Header */}
                     <CardHeader className="flex flex-col items-center space-y-3">
                         <h2 className="text-2xl font-bold text-center">
                             Select your country
@@ -52,82 +84,83 @@ export default function SetCountry() {
 
                     {/* Content */}
                     <CardContent className="space-y-6">
-                        {/* Country Select */}
-                        <Popover open={open} onOpenChange={setOpen}>
-                            <PopoverTrigger asChild>
-                                <Button
-                                    variant="outline"
-                                    role="combobox"
-                                    className="h-12 w-full justify-between"
-                                >
-                                    {selected ? (
-                                        <span className="flex items-center gap-2">
-                                            <img
-                                                src={selected.flag}
-                                                alt={selected.name}
-                                                className="w-5 h-4 object-cover rounded-sm"
-                                            />
-                                            {selected.name}
-                                        </span>
-                                    ) : (
-                                        'Choose your country'
-                                    )}
-                                    <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
-                                </Button>
-                            </PopoverTrigger>
+                        <form onSubmit={handleSubmit}>
 
-                            {/* ✅ WIDTH FIX */}
-                            <PopoverContent className="p-0 w-full max-w-[300px] md:max-w-[500px]">
-                                <Command>
-                                    <CommandInput placeholder="Search country..." />
-
-                                    <CommandEmpty>No country found.</CommandEmpty>
-
-                                    <CommandGroup className="max-h-64 overflow-y-auto">
-                                        {countriesData.map((country) => (
-                                            <CommandItem
-                                                key={country.iso2}
-                                                /* ✅ UNIQUE SEARCH VALUE */
-                                                value={`${country.name}-${country.iso2}`}
-                                                onSelect={() => {
-                                                    setSelected(country)
-                                                    setOpen(false)
-                                                }}
-                                            >
-                                                <div className="flex items-center gap-2">
-                                                    <img
-                                                        src={country.flag}
-                                                        alt={country.name}
-                                                        className="w-5 h-4 rounded-sm object-cover"
-                                                    />
-                                                    <span>{country.name}</span>
-                                                </div>
-
-                                                <Check
-                                                    className={cn(
-                                                        'ml-auto h-4 w-4',
-                                                        selected?.iso2 === country.iso2
-                                                            ? 'opacity-100'
-                                                            : 'opacity-0'
-                                                    )}
+                            <Popover open={open} onOpenChange={setOpen}>
+                                <PopoverTrigger asChild>
+                                    <Button
+                                        variant="outline"
+                                        role="combobox"
+                                        className="h-12 w-full justify-between"
+                                    >
+                                        {selected ? (
+                                            <span className="flex items-center gap-2">
+                                                <img
+                                                    src={selected.flag}
+                                                    alt={selected.name}
+                                                    className="w-5 h-4 object-cover rounded-sm"
                                                 />
-                                            </CommandItem>
-                                        ))}
-                                    </CommandGroup>
-                                </Command>
-                            </PopoverContent>
-                        </Popover>
+                                                {selected.name}
+                                            </span>
+                                        ) : (
+                                            'Choose your country'
+                                        )}
+                                        <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
+                                    </Button>
+                                </PopoverTrigger>
+
+                                {/* ✅ WIDTH FIX */}
+                                <PopoverContent className="p-0 w-full max-w-[300px] md:max-w-[500px]">
+                                    <Command>
+                                        <CommandInput placeholder="Search country..." />
+
+                                        <CommandEmpty>No country found.</CommandEmpty>
+
+                                        <CommandGroup className="max-h-64 overflow-y-auto">
+                                            {countriesData.map((country) => (
+                                                <CommandItem
+                                                    key={country.iso2}
+                                                    /* ✅ UNIQUE SEARCH VALUE */
+                                                    value={`${country.name}-${country.iso2}`}
+                                                    onSelect={() => {
+                                                        setSelected(country)
+                                                        setOpen(false)
+                                                    }}
+                                                >
+                                                    <div className="flex items-center gap-2">
+                                                        <img
+                                                            src={country.flag}
+                                                            alt={country.name}
+                                                            className="w-5 h-4 rounded-sm object-cover"
+                                                        />
+                                                        <span>{country.name}</span>
+                                                    </div>
+
+                                                    <Check
+                                                        className={cn(
+                                                            'ml-auto h-4 w-4',
+                                                            selected?.iso2 === country.iso2
+                                                                ? 'opacity-100'
+                                                                : 'opacity-0'
+                                                        )}
+                                                    />
+                                                </CommandItem>
+                                            ))}
+                                        </CommandGroup>
+                                    </Command>
+                                </PopoverContent>
+                            </Popover>
 
 
-                        {/* Submit */}
-                        <Button
-                            size="lg"
-                            className="w-full"
-                            disabled={!isValid}
-                            onClick={() => router.push('/businessname')}
-                        >
-                            Finish
-                        </Button>
+                            {/* Submit */}
+                            <Button
+                                size="lg"
+                                className="w-full mt-5"
+                                disabled={!isValid}
+                            >
+                                Select Country
+                            </Button>
+                        </form>
                     </CardContent>
                 </Card>
             </div>

@@ -12,13 +12,24 @@ import {
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { useRouter } from 'next/navigation'
-
+import Cookies from 'js-cookie'
+import { myFetch } from '@/utils/myFetch'
+import { toast } from 'sonner'
+import { useOtpTimer } from '@/hooks/useOtpTimer'
 
 const OTPVerify = () => {
   const [otp, setOtp] = useState<string[]>(Array(6).fill(''))
   const inputsRef = useRef<(HTMLInputElement | null)[]>([])
-
   const route = useRouter()
+  const [timerKey, setTimerKey] = useState(0);
+
+
+  const secondsLeft = useOtpTimer(timerKey);
+  const minutes = String(Math.floor(secondsLeft / 60)).padStart(2, "0");
+  const seconds = String(secondsLeft % 60).padStart(2, "0");
+
+
+  const email = Cookies.get('email');
   const handleChange = (value: string, index: number) => {
     if (!/^\d*$/.test(value)) return // allow only digits
 
@@ -38,11 +49,22 @@ const OTPVerify = () => {
     }
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     const otpValue = otp.join('')
-    console.log("OTP submitted:", otpValue)
-    route.push("/set-username")
+
+    try {
+      const result = await myFetch('/auth/verify-otp', { method: "POST", body: { email, oneTimeCode: Number(otpValue) } });      
+      if (result?.data?.success) {
+        Cookies.set("accessToken", result?.data?.data?.accessToken)
+        toast.success(result?.data?.message)
+        route.push("/set-username")
+      }else{
+        toast.error(result?.message)
+      }
+    } catch (error) {
+      console.error("Error creating user:", error);
+    }
   }
 
   return (
@@ -54,7 +76,7 @@ const OTPVerify = () => {
             <img src="/logo.png" className='w-14 h-14' alt="Logo" />
             <h2 className="text-2xl font-bold text-center">Verify your email</h2>
             <p className='text-md text-center text-slate-500 font-sans'>
-              Whop is a password-less platform. You will use this email to log in to your account. 
+              Whop is a password-less platform. You will use this email to log in to your account.
               Please check for your six digit code. Make sure to check spam 📧
             </p>
           </CardHeader>
@@ -71,13 +93,20 @@ const OTPVerify = () => {
                     value={digit}
                     onChange={(e) => handleChange(e.target.value, index)}
                     onKeyDown={(e) => handleBackspace(e, index)}
-                    ref={(el:any) => inputsRef.current[index] = el}
+                    ref={(el: any) => inputsRef.current[index] = el}
                     className="text-center text-xl h-12 w-12"
                   />
                 ))}
               </div>
 
-              <Button type="submit" size="lg" className="w-full mt-4">
+              <div className="text-center mb-5">
+                <span className="text-xl font-semibold text-red-200">
+                  {secondsLeft > 0 ? `${minutes}:${seconds}` : "OTP Expired"}
+                </span>
+              </div>
+
+
+              <Button disabled={!secondsLeft} type="submit" size="lg" className="w-full mt-4">
                 Verify OTP
               </Button>
             </form>
@@ -85,7 +114,8 @@ const OTPVerify = () => {
 
           {/* Card Footer */}
           <CardFooter className="flex flex-col space-y-2 text-center">
-            <Link href="/login" className="text-blue-600 font-normal hover:underline">
+            <Link href="/signup" onClick={() =>
+              setTimerKey((prev) => prev + 1)} className="text-blue-600 font-normal hover:underline">
               Use a different email
             </Link>
           </CardFooter>

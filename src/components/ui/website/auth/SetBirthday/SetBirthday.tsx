@@ -12,6 +12,8 @@ import {
 import { Button } from "@/components/ui/button"
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select"
 import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
+
 
 const SetBirthday = () => {
   const router = useRouter()
@@ -19,12 +21,33 @@ const SetBirthday = () => {
   const [month, setMonth] = useState<string | undefined>()
   const [year, setYear] = useState<string | undefined>()
 
+  const storedData = localStorage.getItem("registrationData");
+
+  const registrationData = storedData ? JSON.parse(storedData) : null;
+  const { userName } = registrationData;
+
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    if (day && month && year) {
-      console.log("Birthday:", `${day}-${month}-${year}`)
-      router.push("/set-profile")
+    if (!userName) {
+      toast.error("First set username");
+      router.push("/set-username")
     }
+  if (day && month && year) {
+  const monthIndex = months.indexOf(month);
+  if (monthIndex === -1) return;
+
+  const d = String(day).padStart(2, "0"); // use day as-is
+  const m = String(monthIndex + 1).padStart(2, "0"); // month number 01-12
+
+  localStorage.setItem(
+    "registrationData",
+    JSON.stringify({ ...registrationData, birthday: `${year}-${m}-${d}` })
+  );
+
+  router.push("/set-profile");
+}
+
   }
 
   const days = Array.from({ length: 31 }, (_, i) => (i + 1).toString())
@@ -66,7 +89,7 @@ const SetBirthday = () => {
                 </Select>
 
                 {/* Month */}
-                <Select onValueChange={setMonth} value={month} >
+                <Select onValueChange={setMonth}>
                   <SelectTrigger className="md:flex-1 w-full md:w-[150px]">
                     <SelectValue placeholder="Month" />
                   </SelectTrigger>

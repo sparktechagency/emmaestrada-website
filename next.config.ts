@@ -15,6 +15,10 @@ const nextConfig = {
 
   experimental: {
     serverSourceMaps: false,  // ✅ Fixes invalid source map error
+    serverActions: {
+      // Increase the maximum request body size
+      bodySizeLimit: "10mb",
+    },
   },
 
   eslint: {

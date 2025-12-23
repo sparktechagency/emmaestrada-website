@@ -1,27 +1,93 @@
 // app/set-username/page.tsx
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 
-import {
-  Card,
-  CardHeader,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card"
+import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { useRouter } from 'next/navigation'
+import { myFetch } from '@/utils/myFetch'
+import { useData } from '@/hooks/context/DataContext'
+
+const base64ToFile = (base64: string, filename = "image.png") => {
+  const arr = base64.split(",");
+  const mime = arr[0].match(/:(.*?);/)?.[1] || "image/png";
+  const bstr = atob(arr[1]);
+  const n = bstr.length;
+  const u8arr = new Uint8Array(n);
+
+  for (let i = 0; i < n; i++) {
+    u8arr[i] = bstr.charCodeAt(i);
+  }
+
+  return new File([u8arr], filename, { type: mime });
+}
 
 const SetBusinessName = () => {
-  const [businessname, setBusinessname] = useState('')
+  const [businessName, setBusinessName] = useState('')
+  const [registrationData, setRegistrationData] = useState<any>(null)
+  const [imageFile, setImageFile] = useState<File | null>(null)
+   const { data, image, setData, setImage, clearData } = useData();
+
   const router = useRouter()
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const isValid = !!businessName
+
+  useEffect(() => {
+    const stored = localStorage.getItem("registrationData")
+    const base64 = localStorage.getItem("image")
+
+    if (stored) setRegistrationData(JSON.parse(stored))
+    if (base64) setImageFile(base64ToFile(base64))
+  }, [])
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log("username submitted:", businessname)
-    // Navigate to next page after setting username
-    router.push("/") // change to your next page route
+
+    if (!registrationData) {
+      toast.error("Missing registration data")
+      router.push("/set-username")
+      return
+    }
+
+    if (!imageFile) {
+      toast.error("Missing image")
+      return
+    }
+
+    if (!businessName) {
+      toast.error("Business name is required")
+      return
+    }
+
+    const { userName, birthday, country } = registrationData
+
+    if (!userName || !birthday || !country) {
+      toast.error("Incomplete previous data")
+      router.push("/set-username")
+      return
+    }
+
+    try {
+      const formData = new FormData()
+      // formData.append("image", imageFile)
+      formData.append("data", JSON.stringify({ businessName, ...registrationData }))
+
+      const result = await myFetch(`/users/complete-registration`, {
+        method: "POST",
+        body: formData
+      })
+
+      if (result?.data) {
+        toast.success(result.data.message)
+        router.push(result.data.role === "USER" ? "/creator/profile" : "/promotor/profile")
+      }
+    } catch (error) {
+      console.error("Error creating user:", error)
+      toast.error("Failed to create user")
+    }
   }
 
   return (
@@ -30,7 +96,7 @@ const SetBusinessName = () => {
         <Card className="w-full md:min-w-xl py-5 sm:p-10">
           {/* Card Header */}
           <CardHeader className="flex flex-col items-center space-y-3">
-            <h2 className="text-2xl font-bold text-center font-sans">Name Your business</h2>
+            <h2 className="text-2xl font-bold text-center font-sans">Name Your Business</h2>
             <p className="text-md text-center text-slate-500 font-sans">
               This can be changed later
             </p>
@@ -40,20 +106,20 @@ const SetBusinessName = () => {
           <CardContent className="space-y-6">
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <label htmlFor="email" className="text-sm font-semibold text-gray-700">
+                <label htmlFor="businessname" className="text-sm font-semibold text-gray-700">
                   Business Name
                 </label>
                 <Input
                   id="businessname"
-                  type="businessname"
-                  placeholder="businessname"
-                  value={businessname}
-                  onChange={(e) => setBusinessname(e.target.value)}
+                  type="text"
+                  placeholder="Business Name"
+                  value={businessName}
+                  onChange={(e) => setBusinessName(e.target.value)}
                   required
                 />
               </div>
 
-              <Button type="submit" size="lg" className="w-full">
+              <Button disabled={!isValid} type="submit" size="lg" className="w-full">
                 Create Now
               </Button>
             </form>
@@ -61,7 +127,6 @@ const SetBusinessName = () => {
 
           {/* Card Footer */}
           <CardFooter className="flex flex-col space-y-2 text-center">
-            {/* Optional footer links or info */}
           </CardFooter>
         </Card>
       </div>
