@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { AiOutlineUpload } from "react-icons/ai"
 import { IoCloseOutline } from "react-icons/io5"
 import { toast } from 'sonner'
+import { useData } from '@/hooks/context/DataContext'
 
 const avatars = [
     '/images/avatar.jpg',
@@ -23,12 +24,7 @@ export default function SetProfile() {
     const [thumbnail, setThumbnail] = useState<File | null>(null)
     const [previewUrl, setPreviewUrl] = useState<string | null>(null)
     const [isUploading, setIsUploading] = useState(false)
-
-    /* ------------------ Stored Data ------------------ */
-
-    const storedData = localStorage.getItem("registrationData")
-    const registrationData = storedData ? JSON.parse(storedData) : null
-    const { userName, birthday } = registrationData || {}
+    const {data, setImage} = useData()
 
     /* ------------------ Utils ------------------ */
 
@@ -41,15 +37,6 @@ export default function SetProfile() {
         })
     }
 
-    const fileToBase64 = (file: File): Promise<string> =>
-        new Promise((resolve, reject) => {
-            const reader = new FileReader()
-            reader.readAsDataURL(file)
-            reader.onload = () => resolve(reader.result as string)
-            reader.onerror = reject
-        })
-
-
     /* ------------------ Handlers ------------------ */
 
     const handleFile = (file: File) => {
@@ -59,7 +46,8 @@ export default function SetProfile() {
             console.error("Not a File:", file);
             return;
         }
-        setThumbnail(file)
+        setImage(file)
+        setThumbnail(file)        
         setPreviewUrl(URL.createObjectURL(file))
     }
 
@@ -80,13 +68,13 @@ export default function SetProfile() {
     }
 
     const handleSubmit = async () => {
-        if (!userName) {
+        if (!data?.userName) {
             toast.error("First set username")
             router.push("/set-username")
             return
         }
 
-        if (!birthday) {
+        if (!data?.birthday) {
             toast.error("First set Birthday")
             router.push("/set-birthday")
             return
@@ -108,9 +96,7 @@ export default function SetProfile() {
                 toast.error("Please select an image")
                 return
             }
-
-            const base64 = await fileToBase64(finalFile)
-            localStorage.setItem("image", base64)
+            setImage(finalFile);
             router.push('/set-country')
 
         } catch (error) {

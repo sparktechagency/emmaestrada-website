@@ -1,0 +1,1 @@
+export const imageUrl = "http://10.10.7.48:5000";

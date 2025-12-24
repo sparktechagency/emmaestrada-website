@@ -1,7 +1,6 @@
 import dotenv from "dotenv";
+dotenv?.config();
 
-// Load environment variables from .env.local file
-dotenv.config();
 
 export const config = {
   // serverURL: process.env.NEXT_PUBLIC_SERVER_URL || "https://rakibur5000.binarybards.online",

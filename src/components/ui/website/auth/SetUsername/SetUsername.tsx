@@ -16,12 +16,13 @@ import { myFetch } from '@/utils/myFetch'
 import { ImCheckboxChecked } from 'react-icons/im'
 import { MdCancel } from 'react-icons/md'
 import { toast } from 'sonner'
+import { useData } from '@/hooks/context/DataContext'
 
 const SetUsername = () => {
   const [username, setUsername] = useState('')
   const [isVerified, setIsVerified] = useState(false)
   const router = useRouter()
-
+  const { setData} = useData()
 
 
   useEffect(() => {
@@ -31,7 +32,6 @@ const SetUsername = () => {
       setIsVerified(false)
     }
   }, [username])
-
 
   
   const checkAvailablelity = async () => {
@@ -49,11 +49,8 @@ const SetUsername = () => {
     e.preventDefault()
     if (!isVerified) {
       toast.error("Usename already exist try again with other username")
-    }
-
-    const data = { userName: username }
-
-    localStorage.setItem("registrationData", JSON.stringify(data))
+    }    
+    setData({userName: username})
     router.push("/set-birthday")
   }
 

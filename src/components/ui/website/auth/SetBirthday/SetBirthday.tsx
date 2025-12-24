@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button"
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select"
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
+import { useData } from '@/hooks/context/DataContext'
 
 
 const SetBirthday = () => {
@@ -21,29 +22,24 @@ const SetBirthday = () => {
   const [month, setMonth] = useState<string | undefined>()
   const [year, setYear] = useState<string | undefined>()
 
-  const storedData = localStorage.getItem("registrationData");
-
-  const registrationData = storedData ? JSON.parse(storedData) : null;
-  const { userName } = registrationData;
+  const {data, setData} = useData()
 
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    if (!userName) {
+    if (!data?.userName) {
       toast.error("First set username");
-      router.push("/set-username")
+      router.push("/set-username");
+      return;
     }
   if (day && month && year) {
   const monthIndex = months.indexOf(month);
   if (monthIndex === -1) return;
 
-  const d = String(day).padStart(2, "0"); // use day as-is
-  const m = String(monthIndex + 1).padStart(2, "0"); // month number 01-12
+  const d = String(day).padStart(2, "0");
+  const m = String(monthIndex + 1).padStart(2, "0");
 
-  localStorage.setItem(
-    "registrationData",
-    JSON.stringify({ ...registrationData, birthday: `${year}-${m}-${d}` })
-  );
+  setData({birthday: `${year}-${m}-${d}` })
 
   router.push("/set-profile");
 }

@@ -11,48 +11,20 @@ import { Button } from "@/components/ui/button"
 import { myFetch } from '@/utils/myFetch'
 import { useData } from '@/hooks/context/DataContext'
 
-const base64ToFile = (base64: string, filename = "image.png") => {
-  const arr = base64.split(",");
-  const mime = arr[0].match(/:(.*?);/)?.[1] || "image/png";
-  const bstr = atob(arr[1]);
-  const n = bstr.length;
-  const u8arr = new Uint8Array(n);
-
-  for (let i = 0; i < n; i++) {
-    u8arr[i] = bstr.charCodeAt(i);
-  }
-
-  return new File([u8arr], filename, { type: mime });
-}
 
 const SetBusinessName = () => {
   const [businessName, setBusinessName] = useState('')
-  const [registrationData, setRegistrationData] = useState<any>(null)
-  const [imageFile, setImageFile] = useState<File | null>(null)
-   const { data, image, setData, setImage, clearData } = useData();
+   const { data, image, clearData} = useData();
 
+   console.log("useData", image);
+   
   const router = useRouter()
-
   const isValid = !!businessName
-
-  useEffect(() => {
-    const stored = localStorage.getItem("registrationData")
-    const base64 = localStorage.getItem("image")
-
-    if (stored) setRegistrationData(JSON.parse(stored))
-    if (base64) setImageFile(base64ToFile(base64))
-  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (!registrationData) {
-      toast.error("Missing registration data")
-      router.push("/set-username")
-      return
-    }
-
-    if (!imageFile) {
+    if (!image) {
       toast.error("Missing image")
       return
     }
@@ -62,18 +34,16 @@ const SetBusinessName = () => {
       return
     }
 
-    const { userName, birthday, country } = registrationData
 
-    if (!userName || !birthday || !country) {
-      toast.error("Incomplete previous data")
-      router.push("/set-username")
+    if (!data?.userName || !data?.birthday || !data?.country) {
+      toast.error("Incomplete previous data")      
       return
     }
 
     try {
       const formData = new FormData()
-      // formData.append("image", imageFile)
-      formData.append("data", JSON.stringify({ businessName, ...registrationData }))
+      formData.append("image", image)
+      formData.append("data", JSON.stringify({ businessName, ...data }))
 
       const result = await myFetch(`/users/complete-registration`, {
         method: "POST",
@@ -82,7 +52,8 @@ const SetBusinessName = () => {
 
       if (result?.data) {
         toast.success(result.data.message)
-        router.push(result.data.role === "USER" ? "/creator/profile" : "/promotor/profile")
+        clearData()
+        router.push("/")
       }
     } catch (error) {
       console.error("Error creating user:", error)

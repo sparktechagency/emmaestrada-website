@@ -24,6 +24,7 @@ import { Check, ChevronsUpDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { countriesData } from '@/assets/countrydata'
 import { toast } from 'sonner'
+import { useData } from '@/hooks/context/DataContext'
 
 
 export default function SetCountry() {
@@ -35,24 +36,20 @@ export default function SetCountry() {
         flag: string
     } | null>(null)
 
-    const storedData = localStorage.getItem("registrationData");
-    const image = localStorage.getItem("image");
-
-    const registrationData = storedData ? JSON.parse(storedData) : null
-    const { userName, birthday } = registrationData || {}
+    const {data, image, setData} = useData()
 
     const isValid = !!selected
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
 
-        if (!userName) {
+        if (!data?.userName) {
             toast.error("First set username")
             router.push("/set-username")
             return
         }
 
-        if (!birthday) {
+        if (!data?.birthday) {
             toast.error("Please Set Birthday")
             router.push("/set-birthday")
             return
@@ -63,9 +60,7 @@ export default function SetCountry() {
             return
         }
 
-        const data = { country:selected?.name, ...registrationData }
-
-        localStorage.setItem("registrationData", JSON.stringify(data))
+        setData({ country: selected?.name})        
         router.push('/businessname')
     }
 

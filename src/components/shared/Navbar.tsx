@@ -5,31 +5,43 @@ import Container from "./Container";
 import Link from "next/link";
 import { Search, Menu, X, Bell, Wallet } from "lucide-react";
 import Image from "next/image";
-import { usePathname } from 'next/navigation';
+import { usePathname } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { IoNotifications } from "react-icons/io5";
+import { useProfile } from "@/hooks/context/ProfileContext";
+import { imageUrl } from "@/constants";
 
 const Navbar = () => {
+  const [mounted, setMounted] = useState(false); // ✅ ADD
   const [scrolled, setScrolled] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
-  const [loginView, setLoginView] = useState(false)
 
   const pathname = usePathname();
-  const darkBgRoutes = ['creator', 'promotor'];
-  const hasDarkBackground = darkBgRoutes.includes(pathname.split('/')[1]);
+  const darkBgRoutes = ["creator", "promotor"];
+  const hasDarkBackground = darkBgRoutes.includes(pathname.split("/")[1]);
+
+  const { profile, loading, error } = useProfile();
 
 
+  console.log("profileprofile",profile);
+  
+  // ✅ Mount guard
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // ✅ Scroll logic AFTER mount
+  useEffect(() => {
+    if (!mounted) return;
+
     const handleScroll = () => {
       setScrolled(window.scrollY > 80);
     };
 
-    // 🔹 Set initial value on page load / reload
     handleScroll();
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [mounted]);
 
   const links = [
     { name: "Home", href: "/" },
@@ -40,12 +52,19 @@ const Navbar = () => {
 
   const isActive = (href: string) => pathname === href;
 
+  // ⛔ CRITICAL: prevent SSR/CSR mismatch
+  if (!mounted) return null;
 
   return (
     <div>
       <nav
         className={`fixed w-full z-50 px-2 py-2 md:py-6 md:px-8 lg:px-12 transition-all duration-300
-        ${scrolled && !openMenu ? "backdrop-blur-xl bg-[#15141A]/70 shadow-lg" : hasDarkBackground || openMenu ? "bg-black" : "md:transparent"}`}
+        ${scrolled && !openMenu
+            ? "backdrop-blur-xl bg-[#15141A]/70 shadow-lg"
+            : hasDarkBackground || openMenu
+              ? "bg-black"
+              : "md:transparent"
+          }`}
       >
         <Container>
           <div className="flex items-center justify-between relative">
@@ -57,13 +76,16 @@ const Navbar = () => {
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex absolute top-1/2 left-1/2 -translate-1/2 items-center gap-2 glassBg rounded-full! px-8 py-3">
+            <div className="hidden md:flex absolute top-1/2 left-1/2 -translate-1/2 items-center gap-2 glassBg rounded-full px-8 py-3">
               {links.map(link => (
                 <Link
                   key={link.href}
                   href={link.href}
                   className={`px-4 py-2 transition-colors
-                    ${isActive(link.href) ? "text-orange-500 font-semibold" : "text-white/80 hover:text-orange-500"}`}
+                    ${isActive(link.href)
+                      ? "text-orange-500 font-semibold"
+                      : "text-white/80 hover:text-orange-500"
+                    }`}
                 >
                   {link.name}
                 </Link>
@@ -72,20 +94,38 @@ const Navbar = () => {
 
             {/* Right Side */}
             <div className="flex items-center gap-4">
-              {loginView ? <ViewAsLogin /> : <>
+              {/* 🔧 Loading/Error moved INSIDE navbar */}
+              {loading && (
+                <span className="text-xs text-white/70">Loading...</span>
+              )}
+              {error && (
+                <span className="text-xs text-red-500">{error}</span>
+              )}
+
+              {profile ? (
+                <ViewAsLogin profile={profile} />
+              ) : 
+              <>
                 <Link href="/signup">
-                  <button className="bg-primary btn text-white rounded-full hover:from-orange-600 hover:to-orange-700 transition-all">
+                  <button className="bg-primary btn text-white rounded-full">
                     Sign Up
                   </button>
                 </Link>
 
-                <button onClick={() => setLoginView(true)} className="hidden md:block border-primary border btn bg-white text-primary rounded-full hover:from-orange-600 hover:to-orange-700 transition-all">
-                  View as login
-                </button>
+                <Link href="/login">
+                  <button className="hidden md:block border-primary border btn bg-white text-primary rounded-full">
+                    View as login
+                  </button>
+                </Link>
               </>}
+              
+
 
               {/* Mobile Menu Button */}
-              <button onClick={() => setOpenMenu(true)} className="md:hidden p-2 text-white">
+              <button
+                onClick={() => setOpenMenu(true)}
+                className="md:hidden p-2 text-white"
+              >
                 <Menu className="w-6 h-6" />
               </button>
             </div>
@@ -96,13 +136,16 @@ const Navbar = () => {
             <div className="md:hidden absolute w-4/5 left-0 h-screen top-0 backdrop-blur-xl bg-black/50 shadow-lg border border-white/10 p-4">
               <div className="relative flex flex-col h-full">
                 <div className="flex items-center gap-2 border-b border-gray-700 pb-2">
-                  <Link href="/"><div>
+                  <Link href="/">
                     <Image src="/logo.png" alt="logo" width={35} height={35} />
-                  </div></Link>
+                  </Link>
                   <h1 className="text-xl font-semibold text-white">Whop</h1>
                 </div>
 
-                <X onClick={() => setOpenMenu(false)} className="w-6 h-6 text-white absolute right-0" />
+                <X
+                  onClick={() => setOpenMenu(false)}
+                  className="w-6 h-6 text-white absolute right-0"
+                />
 
                 <div className="flex flex-col gap-2 mt-6">
                   {links.map(link => (
@@ -110,8 +153,11 @@ const Navbar = () => {
                       key={link.href}
                       href={link.href}
                       onClick={() => setOpenMenu(false)}
-                      className={`px-4 py-3 rounded-lg transition-colors
-                        ${isActive(link.href) ? "bg-orange-500 text-white" : "text-white/80 hover:bg-white/5"}`}
+                      className={`px-4 py-3 rounded-lg
+                        ${isActive(link.href)
+                          ? "bg-orange-500 text-white"
+                          : "text-white/80 hover:bg-white/5"
+                        }`}
                     >
                       {link.name}
                     </Link>
@@ -119,9 +165,9 @@ const Navbar = () => {
                 </div>
 
                 <Link href="/signup">
-                <button className="mt-auto! bg-linear-to-r from-orange-500 to-orange-600 text-white px-4 py-3 rounded-lg hover:from-orange-600 hover:to-orange-700 transition-all">
-                  Sign Up
-                </button>
+                  <button className="mt-auto bg-linear-to-r from-orange-500 to-orange-600 text-white px-4 py-3 rounded-lg">
+                    Sign Up
+                  </button>
                 </Link>
               </div>
             </div>
@@ -134,20 +180,24 @@ const Navbar = () => {
 
 export default Navbar;
 
-
-const ViewAsLogin = () => {
-  return (<div className="flex items-center gap-3">
-    <Wallet strokeWidth={1} size={30} color="#ededed" />
-    <Bell strokeWidth={1} size={30} color="white" />
-    <Link href="/creator">
-      <Avatar className="rounded-lg ">
-        <AvatarImage
-          src="/images/profile21.jpg"
-          alt="@evilrabbit"
-          className="w-12 rounded-full border-2!  border-slate-300!"
-        />
-        <AvatarFallback>ER</AvatarFallback>
-      </Avatar>
-    </Link>
-  </div>)
-}
+/* ✅ KEPT your component, just improved usage */
+const ViewAsLogin = ({ profile }: any) => {
+  return (
+    <div className="flex items-center gap-3">
+      <Wallet strokeWidth={1} size={30} color="#ededed" />
+      <Bell strokeWidth={1} size={30} color="white" />
+      <Link href={profile?.data?.role === "CREATOR" ? "/creator" : "/promotor"}>
+        <Avatar className="rounded-lg">
+          <AvatarImage
+            src={`${imageUrl}${profile?.data?.image}` || "/images/profile21.jpg"}
+            alt={profile?.name}
+            className="w-12 h-12 object-fill rounded-full border-2 border-slate-300"
+          />
+          <AvatarFallback>
+            {profile?.name?.[0]?.toUpperCase()}
+          </AvatarFallback>
+        </Avatar>
+      </Link>
+    </div>
+  );
+};

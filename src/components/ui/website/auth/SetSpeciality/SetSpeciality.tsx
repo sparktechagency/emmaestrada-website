@@ -1,16 +1,15 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { Button } from '@/components/ui/button'
 import {
   Card,
-  CardHeader,
   CardContent,
+  CardHeader,
 } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Music, Users, Sparkles } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { toast } from 'sonner'
+import { Music, Sparkles, Users } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 
 const options = [
   {
@@ -37,38 +36,11 @@ export default function SetSpeciality() {
   const router = useRouter()
   const [selected, setSelected] = useState<string | undefined>()
 
-  const storedData = localStorage.getItem("registrationData");
-  const image = localStorage.getItem("image");
-
-  const registrationData = storedData ? JSON.parse(storedData) : null
-  const { userName, birthday } = registrationData || {}
 
   const isValid = !!selected
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-
-    console.log("preventDefault", selected);
-    
-    if (!userName) {
-      toast.error("First set username")
-      router.push("/set-username")
-      return
-    }
-
-    if (!birthday) {
-      toast.error("Please Set Birthday")
-      router.push("/set-birthday")
-      return
-    }
-    if (!image) {
-      toast.error("Please select profile")
-      router.push("/set-profile")
-      return
-    }
-
-
-    // localStorage.setItem("registrationData", JSON.stringify(data))
     // router.push("/set-birthday")
   }
 

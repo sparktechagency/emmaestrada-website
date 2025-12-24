@@ -3,6 +3,7 @@ import { Bricolage_Grotesque, Geist, Geist_Mono, Poppins } from "next/font/googl
 import "./globals.css";
 import "react-vertical-timeline-component/style.min.css";
 import { Toaster } from "sonner";
+import ContextProviders from "@/hooks/context";
 
 
 
@@ -26,13 +27,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-      style={{
-        background: 'linear-gradient(135.04deg, #FFF8F3 24.36%, #FFE3E3 75.64%)'
-      }}
+        style={{
+          background: 'linear-gradient(135.04deg, #FFF8F3 24.36%, #FFE3E3 75.64%)'
+        }}
         className={`${poppins.className}  antialiased`}
       >
-        {children}                
-          <Toaster position='top-right' richColors />
+        <ContextProviders>
+          {children}
+        </ContextProviders>
+        <Toaster position='top-right' richColors />
       </body>
     </html>
   );
