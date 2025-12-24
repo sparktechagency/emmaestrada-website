@@ -16,10 +16,12 @@ import {
 } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { ChevronDown, Plus } from "lucide-react"
+import { ChevronDown, Eye, MessageCircleMore, Plus } from "lucide-react"
 import Image from "next/image"
 import { MdOutlineStar } from "react-icons/md"
 import Link from "next/link"
+import { myFetch } from "@/utils/myFetch"
+import { toast } from "sonner"
 
 const campaigns = Array.from({ length: 6 }).map((_, i) => ({
   campaign: "Summer Vibes 2024",
@@ -33,6 +35,17 @@ const campaigns = Array.from({ length: 6 }).map((_, i) => ({
 }))
 
 export default function CreatorFollowedInfluencer() {
+
+    const handleCreateChat = async (participant: string) => {
+    try {
+      const res = await myFetch("/chats/create-chat", { method: "POST", body: { participant } });
+
+      console.log("create chat", res);
+      toast.success("Created Chat Successfully")
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
     <Card className="bg-transparent shadow-none border-0">
       <CardContent className="overflow-x-auto">
@@ -74,11 +87,8 @@ export default function CreatorFollowedInfluencer() {
                     <Button variant="outline" className="border border-primary text-primary bg-transparent"
                     >Following
                     </Button>
-                    <Link href={`/creator/creators/${i + 1}`}><Button
-                      className="border border-black/50 text-black/50 hover:bg-white hover:text-black bg-transparent"
-                    >
-                      View
-                    </Button></Link>
+                    <Button onClick={()=>handleCreateChat("15561")} size="sm" className="cursor-pointer"><MessageCircleMore /></Button>
+                    <Link href={`/creator/creators/${i + 1}`}><Button size="sm" className="cursor-pointer"><Eye /></Button></Link>
                   </div>
                 </TableCell>
               </TableRow>

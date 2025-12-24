@@ -22,9 +22,6 @@ const Navbar = () => {
 
   const { profile, loading, error } = useProfile();
 
-
-  console.log("profileprofile",profile);
-  
   // ✅ Mount guard
   useEffect(() => {
     setMounted(true);
@@ -104,21 +101,21 @@ const Navbar = () => {
 
               {profile ? (
                 <ViewAsLogin profile={profile} />
-              ) : 
-              <>
-                <Link href="/signup">
-                  <button className="bg-primary btn text-white rounded-full">
-                    Sign Up
-                  </button>
-                </Link>
+              ) :
+                <>
+                  <Link href="/signup">
+                    <button className="bg-primary btn text-white rounded-full">
+                      Sign Up
+                    </button>
+                  </Link>
 
-                <Link href="/login">
-                  <button className="hidden md:block border-primary border btn bg-white text-primary rounded-full">
-                    View as login
-                  </button>
-                </Link>
-              </>}
-              
+                  <Link href="/login">
+                    <button className="hidden md:block border-primary border btn bg-white text-primary rounded-full">
+                      View as login
+                    </button>
+                  </Link>
+                </>}
+
 
 
               {/* Mobile Menu Button */}
@@ -187,12 +184,14 @@ const ViewAsLogin = ({ profile }: any) => {
       <Wallet strokeWidth={1} size={30} color="#ededed" />
       <Bell strokeWidth={1} size={30} color="white" />
       <Link href={profile?.data?.role === "CREATOR" ? "/creator" : "/promotor"}>
-        <Avatar className="rounded-lg">
+        <Avatar className="rounded-lg ">
+          <div className="border-2 border-slate-300/50 rounded-full p-1">
           <AvatarImage
-            src={`${imageUrl}${profile?.data?.image}` || "/images/profile21.jpg"}
+            src={`${imageUrl}${profile?.image}` || "/placeholder.png"}
             alt={profile?.name}
-            className="w-12 h-12 object-fill rounded-full border-2 border-slate-300"
+            className="w-10 h-10 object-fill rounded-full "
           />
+          </div>
           <AvatarFallback>
             {profile?.name?.[0]?.toUpperCase()}
           </AvatarFallback>

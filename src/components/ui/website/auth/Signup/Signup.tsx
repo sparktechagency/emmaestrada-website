@@ -40,8 +40,9 @@ export default function Signup() {
 
   const checkAvailablelity = async () => {
     try {
-      const result = await myFetch(`/users/check-field?email=${email}`);
+      const result = await myFetch(`/users/check-field?email=${email}`, {cache:'no-store'});
 
+      console.log("resultresult", result)
       if (result?.success) {
         setIsVerified(result?.data?.data?.isAvailable)
       }
@@ -85,7 +86,7 @@ export default function Signup() {
           {/* Card Header */}
           <CardHeader className="flex flex-col items-center space-y-3">
             <img src="/logo.png" className='w-14 h-14' alt="Logo" />
-            <h2 className="text-2xl font-bold text-center">Sign in to Whop</h2>
+            <h2 className="text-2xl font-bold text-center">Welcome to Whop</h2>
           </CardHeader>
 
           {/* Card Content */}
@@ -126,9 +127,9 @@ export default function Signup() {
           {/* Card Footer */}
           <CardFooter className="flex flex-col space-y-2 text-center">
             <p className="text-sm text-gray-600">
-              Don&apos;t have an account?{' '}
+              Already have an account?{' '}
               <Link href="/login" className="font-bold text-primary hover:underline">
-                Sign up
+                Log In
               </Link>
             </p>
 

@@ -40,7 +40,7 @@ export default function Login() {
 
   const checkAvailablelity = async () => {
     try {
-      const result = await myFetch(`/users/check-field?email=${email}`);
+      const result = await myFetch(`/users/check-field?email=${email}`,{cache:'no-store'});
 
       if (result?.success) {
         setIsVerified(!result?.data?.data?.isAvailable)
@@ -124,7 +124,7 @@ export default function Login() {
           <CardFooter className="flex flex-col space-y-2 text-center">
             <p className="text-sm text-gray-600">
               Don&apos;t have an account?{' '}
-              <Link href="/login" className="font-bold text-primary hover:underline">
+              <Link href="/signup" className="font-bold text-primary hover:underline">
                 Sign up
               </Link>
             </p>

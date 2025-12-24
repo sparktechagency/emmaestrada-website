@@ -27,7 +27,7 @@ const InfluencerHeader = () => {
     { link: "/creator/promotor", label: "Promotor", icon: UsersRound },
     { link: "/creator/analytics", label: "Analytics", icon: BarChart3 },
     { link: "/creator/messages", label: "Messages", icon: MessageSquare },
-    { link: "/creator/trusted-creators", label: "Trusted Creator", icon: Handshake },
+    { link: "/creator/trusted-promotors", label: "Trusted Promotor", icon: Handshake },
     { link: "/creator/profile", label: "Profile", icon: UserCircle },
   ];
 

@@ -1,17 +1,15 @@
-"use client";
+'use client';
 
+import React, { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Badge } from "@/components/ui/badge";
-import { Image, MapPin, AtSign, ChevronDown, Check, X } from "lucide-react";
+import { Calendar, CalendarIcon, LucideUserPlus, X } from "lucide-react";
+import { AtSign, MapPin, Image as ImageIcon } from "lucide-react";
 import { FcLikePlaceholder } from "react-icons/fc";
-import React from "react";
-import { cn } from "@/lib/utils";
-
 import {
   Select,
   SelectContent,
@@ -20,286 +18,458 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const CONTENT_TYPES = [
-  "Pop",
-  "Rock",
-  "Jazz",
-  "Hip Hop",
-  "Classical",
-  "Electronic",
-];
+import { useProfile } from "@/hooks/context/ProfileContext";
+import Loader from "@/components/shared/Loader";
+import { imageUrl } from "@/constants";
+import { myFetch } from "@/utils/myFetch";
+import { Popover, PopoverContent, PopoverTrigger } from "@radix-ui/react-popover";
+import { cn } from "@/lib/utils";
+import DatePicker from "@/components/shared/DatePicker";
+
+const CONTENT_TYPES = ["Pop", "Rock", "Jazz", "Hip Hop", "Classical", "Electronic", "Rock1", "Jazz2", "Hip Hop2", "Classical2", "Electronic2"];
+
+const isoToDate = (date: any) => {
+  const yyyyMmDd = [
+    date.getFullYear(),
+    String(date.getMonth() + 1).padStart(2, "0"),
+    String(date.getDate()).padStart(2, "0"),
+  ].join("-");
+
+  return yyyyMmDd;
+}
+
 
 export default function ProfileInfo() {
- const [selected, setSelected] = React.useState<string[]>([]);
+  const { profile, refetchProfile, loading: profileLoading } = useProfile();
 
-  const addItem = (value: string) => {
-    if (!selected.includes(value)) {
-      setSelected((prev) => [...prev, value]);
+  const [loading, setLoading] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const [selected, setSelected] = useState<string[]>([]);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [formData, setFormData] = useState<any>({});
+
+  console.log("assdfsdf", formData?.birthday);
+  useEffect(() => {
+    if (profile) {
+      setFormData({
+        userName: profile.userName || "",
+        email: profile.email || "",
+        role: profile.role || "",
+        gender: profile.gender || "",
+        birthday: profile.birthday || "",
+        location: profile.location || "",
+        country: profile.country || "",
+        bio: profile.bio || "",
+        instagramUserName: profile.instagramUserName || "",
+        instagramFollowers: profile.instagramFollowers || 0,
+        tiktokUserName: profile.tiktokUserName || "",
+        tiktokFollowers: profile.tiktokFollowers || 0,
+        youtubeUserName: profile.youtubeUserName || "",
+        youtubeFollowers: profile.youtubeFollowers || 0,
+      });
+      setSelected(profile.contentTypes || []);
+      setPreviewUrl(profile.image ? `${imageUrl}${profile.image}` : null);
+    }
+  }, [profile]);
+
+  const handleChange = (field: string, value: any) => {
+    setFormData((prev: any) => ({ ...prev, [field]: value }));
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImageFile(file);
+      setPreviewUrl(URL.createObjectURL(file));
     }
   };
 
+  const addItem = (value: string) => {
+    if (!selected.includes(value)) setSelected((prev) => [...prev, value]);
+  };
+
   const removeItem = (value: string) => {
-    console.log("r clicked");
-    
     setSelected((prev) => prev.filter((item) => item !== value));
   };
-  return (
-    <div className=" space-y-10">
-      {/* PERSONAL INFORMATION CARD */}
-      <Card className="p-6 md:p-10 rounded-3xl shadow-sm">
 
+  const saveProfile = async () => {
+    try {
+
+      setLoading(true);      
+      const dataToUpdate = { ...formData, contentTypes: selected };
+      const body = new FormData();
+      if (imageFile) body.append("image", imageFile);
+      body.append("data", JSON.stringify(dataToUpdate));
+
+      const res = await myFetch("/users/profile", {
+        method: "PATCH",
+        body,
+      });
+      if (res?.success) {
+        refetchProfile();
+        setEditMode(false);
+      } else {
+        console.log("res", res)
+        alert(res?.message || "Failed to update profile");
+      }
+    } catch (err: any) {
+      alert(err?.message || "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (profileLoading) return <Loader />;
+
+  return (
+    <div className="space-y-10">
+      <Card className="p-6 md:p-10 rounded-3xl shadow-sm">
         {/* Top User Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-
           <div className="flex items-center gap-5">
-            <Avatar className="w-20 h-20">
+            <Avatar className="w-20 h-20 border-2 relative">
+              <AvatarImage
+                src={previewUrl || "/placeholder.png"}
+                alt={profile?.userName}
+                className="w-full h-full object-cover rounded-full border-2 border-slate-300"
+              />
               <AvatarFallback className="bg-orange-500 text-white text-2xl">
-                LR
+                {profile?.userName?.[0]?.toUpperCase()}
               </AvatarFallback>
+
+              {editMode && (
+                <label className="absolute bottom-0 right-0 p-1 rounded-full bg-white cursor-pointer border shadow-md">
+                  <ImageIcon size={18} />
+                  <input
+                    type="file"
+                    className="hidden"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                  />
+                </label>
+              )}
             </Avatar>
 
             <div>
-              <h2 className="text-xl font-semibold">Luna Rivers</h2>
-              <p className="text-gray-500 text-sm">Pop Artist</p>
+              <h2 className="text-lg font-semibold">{profile?.userName}</h2>
+              <p className="text-gray-500 text-sm mb-1.5">{profile?.email}</p>
+              <button disabled
+                className="group flex items-center overflow-hidden rounded-sm border border-gray-200 bg-white transition-all"
+              >
+                {/* Label Section */}
+                <span className="flex items-center gap-2 px-5 py-1 text-xs font-semibold text-gray-700 transition-colors ">
+                  <LucideUserPlus size={12} />
+                  Followers
+                </span>
 
-              <Badge className="bg-green-100 text-green-700 mt-2 rounded-full">
-                Verified Account
-              </Badge>
+                {/* Count Badge Section */}
+                <span className="bg-gray-100 px-4 py-1 text-xs font-bold text-gray-900 transition-colors group-hover:bg-blue-50  border-l border-gray-200">
+                  {profile?.totalFollowers}
+                </span>
+              </button>
             </div>
           </div>
 
-          <Button variant="outline" className="rounded-full flex gap-2">
-            <Image size={18} /> Change Photo
+          <Button
+            variant="outline"
+            className="rounded-full flex gap-2"
+            onClick={() => setEditMode(!editMode)}
+          >
+            {editMode ? "Cancel Edit" : "Edit Profile"}
           </Button>
         </div>
 
         <Separator className="my-8" />
 
-        {/* FORM GRID */}
+        {/* Form Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-          {/* Full Name */}
           <div className="flex flex-col gap-2">
-            <label className="font-medium">Full Name</label>
-            <Input defaultValue="Luna Rivers" className="h-12 rounded-xl" />
+            <label className="font-medium">User Name</label>
+            <Input
+              value={formData.userName}
+              onChange={(e) => handleChange("userName", e.target.value)}
+              className="h-12 rounded-xl bg-slate-100"
+              disabled
+            />
           </div>
 
-          {/* Email Address */}
           <div className="flex flex-col gap-2">
             <label className="font-medium">Email Address</label>
             <Input
-              defaultValue="user@musicflow.com"
-              className="h-12 rounded-xl"
+              value={formData.email}
+              onChange={(e) => handleChange("email", e.target.value)}
+              className="h-12 rounded-xl bg-slate-100"
+              disabled
             />
           </div>
 
-          {/* Phone Number */}
-          <div className="flex flex-col gap-2">
-            <label className="font-medium">Phone Number</label>
-            <Input
-              defaultValue="+1 (555) 123-4567"
-              className="h-12 rounded-xl"
-            />
-          </div>
-
-          {/* Location */}
           <div className="flex flex-col gap-2">
             <label className="font-medium">Location</label>
             <div className="relative">
               <MapPin className="absolute left-3 top-3.5 text-gray-500" size={18} />
               <Input
-                defaultValue="Los Angeles, CA"
-                className="h-12 pl-10 rounded-xl"
+                value={formData.location}
+                placeholder="Location"
+                onChange={(e) => handleChange("location", e.target.value)}
+                className="pl-10 h-12 rounded-xl"
+                disabled={!editMode}
               />
             </div>
           </div>
 
-          {/* Primary Genre */}
-          <div className="flex flex-col gap-2 md:col-span-2">
-            <label className="font-medium">Content Type</label>
+          <div className="flex flex-col gap-2">
+            <label className="font-medium">Country</label>
+            <div className="relative">
+              <MapPin className="absolute left-3 top-3.5 text-gray-500" size={18} />
+              <Input
+                value={formData.country}
+                placeholder="Country"
+                onChange={(e) => handleChange("country", e.target.value)}
+                className="h-12 pl-10 rounded-xl bg-slate-100"
+                disabled={!editMode}
+              />
+            </div>
+          </div>
 
-            {/* Input + Dropdown Row */}
-            <div className="flex flex-col md:flex-row gap-3">
-              {/* Chips Input (3/5 width) */}
-              <div className="flex w-full md:w-3/5 min-h-12 flex-wrap items-center gap-2 rounded-xl border px-3 py-2">
-                {selected?.length === 0 && (
-                  <span className="text-sm text-muted-foreground">
-                    Select content types
-                  </span>
-                )}
+          <div className="col-span-1">
+            <label className="font-medium ">Gender</label>
+            <Select disabled={!editMode} value={formData?.gender}>
+              <SelectTrigger className="h-12! py-2! w-full  rounded-xl mt-2">
+                <SelectValue placeholder="Select Gender" />
+              </SelectTrigger>
+              <SelectContent>
+                {
+                  [
+                    { value: "male", label: "Male" },
+                    { value: "female", label: "Female" },
+                    { value: "other", label: "Other" },
+                  ]?.map((item, index) => <SelectItem key={index} value={item?.value} disabled={selected.includes(item?.value)}>{item?.label}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </div>
 
-                {selected?.map((item) => (
-                  <span
-                    key={item}                    
-                    className="bg-primary/80! text-xs flex items-center gap-1 text-white rounded-full px-3 py-1 uppercase"
-                  >
-                    {item}
-                    <X
-                      className="h-3 w-3 cursor-pointer"
-                      onClick={() => removeItem(item)}                      
-                    />
-                  </span>
-                ))}
-              </div>
+          <div aria-disabled={!editMode} className="col-span-1 space-y-2">
+            {/* <label className="font-medium">Date of Birth</label> */}
+            <p className="font-medium mb-2">Date of Birth</p>
+            <DatePicker
+              disabledDays={!editMode}
+              value={formData.birthday}
+              onChange={(date: any) =>
+                setFormData((prev: any) => ({
+                  ...prev,
+                  birthday: isoToDate(date) || "",
+                }))
+              }
+            />
+          </div>
 
-              {/* Dropdown (2/5 width) */}
-              <Select onValueChange={addItem}>
-                <SelectTrigger className="h-12! py-2! w-full md:w-2/5 rounded-xl">
-                  <SelectValue placeholder="Add type" />
-                </SelectTrigger>
 
-                <SelectContent>
-                  {CONTENT_TYPES.map((item) => (
-                    <SelectItem
-                      key={item}
-                      value={item}
-                      disabled={selected.includes(item)}
-                    >
+          {/* Content Types */}
+
+
+          {/* Social Media Section */}
+          <div className="mt-3 md:mt-10 grid grid-cols-1 md:grid-cols-3  md:col-span-2 gap-6">
+
+            <div className="flex flex-col gap-2 md:col-span-3">
+              <label className="font-medium">Content Type</label>
+              <div className="flex flex-col md:flex-row gap-3">
+                <div className="flex w-full md:w-3/5 h-12 overflow-y-auto flex-wrap items-center gap-2 rounded-xl border px-3 py-2">
+                  {selected.length === 0 && <span className="text-sm text-muted-foreground">Select content types</span>}
+                  {selected.map((item) => (
+                    // <span key={item} className="bg-primary/80 text-xs flex items-center gap-1 text-white rounded-full px-3 py-1 uppercase">
+                    <span key={item} className="border-primary/80 border text-xs flex items-center gap-1 text-primary rounded-full px-2 uppercase">
                       {item}
-                    </SelectItem>
+                      {editMode && <X className="h-3 w-3 cursor-pointer" onClick={() => removeItem(item)} />}
+                    </span>
                   ))}
-                </SelectContent>
-              </Select>
+                </div>
+                <Select disabled={!editMode} onValueChange={addItem}>
+                  <SelectTrigger className="h-12! py-2! w-full md:w-2/5 rounded-xl">
+                    <SelectValue placeholder="Add type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {CONTENT_TYPES.map((item) => (
+                      <SelectItem key={item} value={item} disabled={selected.includes(item)}>
+                        {item}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
+
+
+
+            <div className="">
+
+              <div className="flex flex-col gap-2 mb-2">
+                <label className="font-medium">Tiktok</label>
+                <div className="relative">
+                  <AtSign className="absolute left-3 top-3.5 text-gray-500" size={18} />
+                  <Input
+                    placeholder="Tiktok username"
+                    value={formData.tiktokUserName}
+                    onChange={(e) => handleChange("tiktokUserName", e.target.value)}
+                    className="h-12 pl-10 rounded-xl"
+                    disabled={!editMode} />
+
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <label className="font-medium">No. of Followers</label>
+                <div className="relative">
+                  <FcLikePlaceholder className="absolute left-3 top-3.5 text-gray-500" size={18} />
+                  <Input
+                    placeholder="Total Followers"
+                    value={formData.tiktokFollowers}
+                    onChange={(e) => handleChange("tiktokFollowers", e.target.value)}
+                    className="h-12 pl-10 rounded-xl"
+                    disabled={!editMode}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="">
+              <div className="flex flex-col gap-2 mb-2">
+                <label className="font-medium">Instagram</label>
+                <div className="relative">
+                  <AtSign className="absolute left-3 top-3.5 text-gray-500" size={18} />
+                  <Input
+                    placeholder="Instagram username"
+                    value={formData.instagramUserName}
+                    onChange={(e) => handleChange("instagramUserName", e.target.value)}
+                    className="h-12 pl-10 rounded-xl"
+                    disabled={!editMode} />
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <label className="font-medium">No. of Followers</label>
+                <div className="relative">
+                  <FcLikePlaceholder className="absolute left-3 top-3.5 text-gray-500" size={18} />
+                  <Input
+                    placeholder="Total Followers"
+                    value={formData.instagramFollowers}
+                    onChange={(e) => handleChange("instagramFollowers", e.target.value)}
+                    disabled={!editMode}
+                    className="h-12 pl-10 rounded-xl" />
+                </div>
+              </div>
+            </div>
+
+
+            <div className="">
+              <div className="flex flex-col gap-2 mb-2">
+                <label className="font-medium">YouTube</label>
+                <div className="relative">
+                  <AtSign className="absolute left-3 top-3.5 text-gray-500" size={18} />
+                  <Input
+                    placeholder="Youtube username"
+                    value={formData.youtubeUserName}
+                    onChange={(e) => handleChange("youtubeUserName", e.target.value)}
+                    className="h-12 pl-10 rounded-xl"
+                    disabled={!editMode} />
+                </div>
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="font-medium">No. of Followers</label>
+                <div className="relative">
+                  <FcLikePlaceholder className="absolute left-3 top-3.5 text-gray-500" size={18} />
+                  <Input
+                    placeholder="Total Followers"
+                    value={formData.youtubeFollowers}
+                    onChange={(e) => handleChange("youtubeFollowers", e.target.value)}
+                    className="h-12 pl-10 rounded-xl"
+                    disabled={!editMode} />
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* Artist Bio */}
+          <div className="mt-10 flex flex-col gap-3 md:col-span-2">
+            <label className="font-medium">Artist Bio</label>
+            <Textarea
+              value={formData.bio}
+              onChange={(e) => handleChange("bio", e.target.value)}
+              className="rounded-2xl min-h-[120px] bg-orange-50 border-0"
+              disabled={!editMode} />
           </div>
         </div>
 
-        {/* Social Media Section */}
-        <div className="mt-3 md:mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
-
-          <div className="">
-            <div className="flex flex-col gap-2 mb-2">
-              <label className="font-medium">Instagram</label>
-              <div className="relative">
-                <AtSign className="absolute left-3 top-3.5 text-gray-500" size={18} />
-                <Input defaultValue="@musicflow" className="h-12 pl-10 rounded-xl" />
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <label className="font-medium">No. of Followers</label>
-              <div className="relative">
-                <FcLikePlaceholder className="absolute left-3 top-3.5 text-gray-500" size={18} />
-                <Input placeholder="Total Followers" className="h-12 pl-10 rounded-xl" />
-              </div>
-            </div>
+        {/* Save Button */}
+        {editMode && (
+          <div className="mt-10 flex justify-end">
+            <Button
+              onClick={saveProfile}
+              className="rounded-full px-10 py-6 bg-orange-500 hover:bg-orange-600"
+              disabled={loading}
+            >
+              {loading ? "Saving..." : "Save Changes"}
+            </Button>
           </div>
-
-          <div className="">
-
-            <div className="flex flex-col gap-2 mb-2">
-              <label className="font-medium">Tiktok</label>
-              <div className="relative">
-                <AtSign className="absolute left-3 top-3.5 text-gray-500" size={18} />
-                <Input defaultValue="@jadakpop" className="h-12 pl-10 rounded-xl" />
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <label className="font-medium">No. of Followers</label>
-              <div className="relative">
-                <FcLikePlaceholder className="absolute left-3 top-3.5 text-gray-500" size={18} />
-                <Input placeholder="Total Followers" className="h-12 pl-10 rounded-xl" />
-              </div>
-            </div>
-          </div>
-
-          <div className="">
-
-            <div className="flex flex-col gap-2 mb-2">
-              <label className="font-medium">YouTube</label>
-              <Input defaultValue="Luna Rivers" className="h-12 rounded-xl" />
-            </div>
-            <div className="flex flex-col gap-2">
-              <label className="font-medium">No. of Followers</label>
-              <div className="relative">
-                <FcLikePlaceholder className="absolute left-3 top-3.5 text-gray-500" size={18} />
-                <Input placeholder="Total Followers" className="h-12 pl-10 rounded-xl" />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Artist Bio */}
-        <div className="mt-10 flex flex-col gap-3">
-          <label className="font-medium">Artist Bio</label>
-          <Textarea
-            defaultValue="Pop artist with a passion for creating catchy melodies and meaningful lyrics. Known for chart-topping hits and energetic live performances."
-            className="rounded-2xl min-h-[120px] bg-orange-50 border-0"
-          />
-        </div>
-
-        {/* Buttons */}
-        <div className="mt-10 flex flex-col md:flex-row justify-end gap-4">
-          <Button
-            variant="outline"
-            className="rounded-full px-8 py-6 border-gray-300"
-          >
-            Cancel
-          </Button>
-          <Button
-            className="rounded-full px-10 py-6 bg-orange-500 hover:bg-orange-600"
-          >
-            Next Step
-          </Button>
-        </div>
-      </Card>
-
-      {/* ACCOUNT SETTINGS */}
-      <Card className="p-6 md:p-10 rounded-3xl shadow-sm">
-
-        <h2 className="text-xl font-semibold mb-6">Account Settings</h2>
-
-        <div className="space-y-6">
-
-          <SettingsRow
-            title="Email Notifications"
-            desc="Receive updates about campaigns and requests"
-            action="Configure"
-          />
-
-          <Separator />
-
-          <SettingsRow
-            title="Privacy Settings"
-            desc="Manage your profile visibility"
-            action="Manage"
-          />
-
-          <Separator />
-
-          <SettingsRow
-            title="Payment Methods"
-            desc="Update your payment information"
-            action="Edit"
-          />
-
-          <Separator />
-
-          <SettingsRow
-            title="Account Security"
-            desc="Change password and enable 2FA"
-            action="Update"
-          />
-
-        </div>
+        )}
       </Card>
     </div>
   );
 }
+
 
 /* Reusable Settings Row Component */
-function SettingsRow({ title, desc, action }: any) {
-  return (
-    <div className="flex flex-col md:flex-row md:items-center justify-between gap-2">
-      <div>
-        <p className="font-medium">{title}</p>
-        <p className="text-gray-500 text-sm">{desc}</p>
-      </div>
+// function SettingsRow({ title, desc, action }: any) {
+//   return (
+//     <div className="flex flex-col md:flex-row md:items-center justify-between gap-2">
+//       <div>
+//         <p className="font-medium">{title}</p>
+//         <p className="text-gray-500 text-sm">{desc}</p>
+//       </div>
 
-      <Button variant="ghost" className="text-orange-500 font-medium">
-        {action}
-      </Button>
-    </div>
-  );
-}
+//       <Button variant="ghost" className="text-orange-500 font-medium">
+//         {action}
+//       </Button>
+//     </div>
+//   );
+// }
+
+
+
+{/* ACCOUNT SETTINGS */ }
+// <Card className="hidden p-6 md:p-10 rounded-3xl shadow-sm">
+
+//   <h2 className="text-xl font-semibold mb-6">Account Settings</h2>
+
+//   <div className="space-y-6">
+
+//     <SettingsRow
+//       title="Email Notifications"
+//       desc="Receive updates about campaigns and requests"
+//       action="Configure"
+//     />
+
+//     <Separator />
+
+//     <SettingsRow
+//       title="Privacy Settings"
+//       desc="Manage your profile visibility"
+//       action="Manage"
+//     />
+
+//     <Separator />
+
+//     <SettingsRow
+//       title="Payment Methods"
+//       desc="Update your payment information"
+//       action="Edit"
+//     />
+
+//     <Separator />
+
+//     <SettingsRow
+//       title="Account Security"
+//       desc="Change password and enable 2FA"
+//       action="Update"
+//     />
+
+//   </div>
+// </Card>

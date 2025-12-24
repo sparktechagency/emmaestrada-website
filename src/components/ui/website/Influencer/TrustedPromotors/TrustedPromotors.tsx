@@ -33,11 +33,11 @@ const trustedCreators = Array.from({ length: 10 }).map(() => ({
     verified: true,
 }))
 
-export default function TrustedCreators() {
+export default function TrustedPromotors() {
     return (
         <Container>
             <div className="mt-10">
-                <h1 className={`mb-2 text-3xl font-semibold`}>Trusted Creators</h1>
+                <h1 className={`mb-2 text-3xl font-semibold`}>Trusted Promotors</h1>
             </div>
 
             <Card className="bg-transparent shadow-none border-0">
