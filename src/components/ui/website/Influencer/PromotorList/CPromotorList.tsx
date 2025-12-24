@@ -19,8 +19,7 @@ import Link from "next/link"
 import { MdOutlineStar } from "react-icons/md"
 import CreatorPagination from "../Creator/CreatorPagination"
 import Container from "@/components/shared/Container"
-
-
+import { myFetch } from "@/utils/myFetch"
 
 const influencers = Array.from({ length: 10 }).map(() => ({
     name: "Ava Storm",
@@ -31,8 +30,12 @@ const influencers = Array.from({ length: 10 }).map(() => ({
     totalCampaigns: 12,
 }))
 
-export default function CPromotorList() {
+const CPromotorList = async () => {
 
+    const { data } = await myFetch("/promoters", { cache: "no-cache", tags: ['Promotors'] });
+
+    console.log("CPromotorList", data);
+    
     return (
         <Container>
             <Card className="bg-transparent shadow-none border-0">
@@ -117,3 +120,6 @@ export default function CPromotorList() {
         </Container>
     )
 }
+
+
+export default CPromotorList;

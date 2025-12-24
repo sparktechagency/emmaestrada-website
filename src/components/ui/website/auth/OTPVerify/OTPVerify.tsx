@@ -75,9 +75,8 @@ const OTPVerify = () => {
           <CardHeader className="flex flex-col items-center space-y-3">
             <img src="/logo.png" className='w-14 h-14' alt="Logo" />
             <h2 className="text-2xl font-bold text-center">Verify your email</h2>
-            <p className='text-md text-center text-slate-500 font-sans'>
-              Whop is a password-less platform. You will use this email to log in to your account.
-              Please check for your six digit code. Make sure to check spam 📧
+            <p className='text-md text-center text-slate-500 font-sans'>             
+              Please check email for your six digit code. Make sure to check spam 📧
             </p>
           </CardHeader>
 

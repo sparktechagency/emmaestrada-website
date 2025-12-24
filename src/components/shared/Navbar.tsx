@@ -3,13 +3,22 @@
 import React, { useEffect, useState } from "react";
 import Container from "./Container";
 import Link from "next/link";
-import { Search, Menu, X, Bell, Wallet } from "lucide-react";
+import { Search, Menu, X, Bell, Wallet, Contact, LogOut } from "lucide-react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { IoNotifications } from "react-icons/io5";
 import { useProfile } from "@/hooks/context/ProfileContext";
 import { imageUrl } from "@/constants";
+import Cookies from "js-cookie";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuShortcut,
+  DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu";
 
 const Navbar = () => {
   const [mounted, setMounted] = useState(false); // ✅ ADD
@@ -179,24 +188,40 @@ export default Navbar;
 
 /* ✅ KEPT your component, just improved usage */
 const ViewAsLogin = ({ profile }: any) => {
+
+  const handleLogout = ()=>{
+    Cookies.remove("accessToken")
+  }
   return (
     <div className="flex items-center gap-3">
       <Wallet strokeWidth={1} size={30} color="#ededed" />
       <Bell strokeWidth={1} size={30} color="white" />
-      <Link href={profile?.data?.role === "CREATOR" ? "/creator" : "/promotor"}>
-        <Avatar className="rounded-lg ">
-          <div className="border-2 border-slate-300/50 rounded-full p-1">
-          <AvatarImage
-            src={`${imageUrl}${profile?.image}` || "/placeholder.png"}
-            alt={profile?.name}
-            className="w-10 h-10 object-fill rounded-full "
-          />
-          </div>
-          <AvatarFallback>
-            {profile?.name?.[0]?.toUpperCase()}
-          </AvatarFallback>
-        </Avatar>
-      </Link>
+      <DropdownMenu modal={false}>
+        <DropdownMenuTrigger>
+          <Avatar className="rounded-lg ">
+            <div className="border-2 border-slate-300/50 rounded-full p-1">
+              <AvatarImage
+                src={`${imageUrl}${profile?.image}` || "/placeholder.png"}
+                alt={profile?.name}
+                className="w-10 h-10 object-fill rounded-full "
+              />
+            </div>
+            <AvatarFallback>
+              {profile?.name?.[0]?.toUpperCase()}
+            </AvatarFallback>
+          </Avatar>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="center">
+          <Link href={profile?.role == "CREATOR" ? "/creator" : "promotor"} ><DropdownMenuItem className="cursor-pointer">
+            Profile
+            <DropdownMenuShortcut><Contact /></DropdownMenuShortcut>
+          </DropdownMenuItem></Link>
+          <DropdownMenuItem onSelect={handleLogout}>
+            Logout
+            <DropdownMenuShortcut><LogOut /></DropdownMenuShortcut>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 };

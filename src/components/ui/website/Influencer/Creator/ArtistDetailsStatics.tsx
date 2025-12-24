@@ -15,7 +15,7 @@ import {
 const ArtistDetailsStatics = () => {
   return (
     <div className="my-5">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <StatCard
           icon={<UsersRound />}
           iconBg="bg-green-500"
@@ -36,14 +36,7 @@ const ArtistDetailsStatics = () => {
           title="Total Campaigns"
           value="12"
           badge="-3"          
-        />
-        <StatCard
-          icon={<TrendingUp />}
-          iconBg="bg-red-500"
-          title="Active  Now"
-          value="1"
-          badge="+5.2%"
-        />
+        />        
       </div>        
       <p className='textPara mt-3'>Multi-platinum recording artist and actress. Known for powerful vocals and chart-topping hits.</p>
 

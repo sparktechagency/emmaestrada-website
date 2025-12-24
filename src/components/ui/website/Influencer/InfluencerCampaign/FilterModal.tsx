@@ -136,22 +136,21 @@ export default function FilterModal({ open, onOpenChange, onApply }: FilterModal
         </div>
 
         <p className="font-medium mt-5">Follower Filter</p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-y-5 md:gap-5">
+        {/*
+         <div className="grid grid-cols-1 md:grid-cols-2 gap-y-5 md:gap-5">
           <div>
             <p className="pb-3 flex items-center justify-between">
               <span className="flex items-center justify-between gap-2">
                 <Image width={70} height={70} className="h-5 w-5 rounded-full" src={platformList[0]?.icon} alt={platformList[0]?.name} />
                 Tiktok Followers:</span>
-              <span>${tiktokFollowers[0]} - ${tiktokFollowers[1]}</span> </p>
-              {/* @ts-ignore */}
+              <span>${tiktokFollowers[0]} - ${tiktokFollowers[1]}</span> </p>              
             <Slider disabled={!platforms?.includes('TikTok')} value={tiktokFollowers} min={0} max={100000} onValueChange={setTiktokFollowers} />
           </div>
           <div>
             <p className="pb-3 flex items-center justify-between">
               <span className="flex items-center justify-between gap-2">
                 <Image width={70} height={70} className="h-5 w-5 rounded-full" src={platformList[1]?.icon} alt={platformList[1]?.name} />
-                Instagram Followers:</span><span>${instagramFollowers[0]} - ${instagramFollowers[1]}</span>  </p>
-                {/* @ts-ignore */}
+                Instagram Followers:</span><span>${instagramFollowers[0]} - ${instagramFollowers[1]}</span>  </p>                
             <Slider disabled={!platforms?.includes('Instagram')} value={instagramFollowers} min={0} max={100000} onValueChange={setInstagramFollowers} />
           </div>
 
@@ -159,8 +158,7 @@ export default function FilterModal({ open, onOpenChange, onApply }: FilterModal
             <p className="pb-3 flex items-center justify-between">
               <span className="flex items-center justify-between gap-2">
                 <Image width={70} height={70} className="h-5 w-5 rounded-full" src={platformList[2]?.icon} alt={platformList[2]?.name} />
-                Youtube Followers:</span>  <span>${youtubeFollowers[0]} - ${youtubeFollowers[1]}</span> </p>
-                {/* @ts-ignore */}
+                Youtube Followers:</span>  <span>${youtubeFollowers[0]} - ${youtubeFollowers[1]}</span> </p>                
             <Slider disabled={!platforms?.includes('YouTube')} value={youtubeFollowers} min={0} max={100000} onValueChange={setYoutubeFollowers} />
           </div>
 
@@ -169,7 +167,8 @@ export default function FilterModal({ open, onOpenChange, onApply }: FilterModal
             <Slider value={flatFee} min={0} max={200} onValueChange={setFlatFee} />
           </div>
 
-        </div>
+        </div> 
+        */}
         {/* SLIDERS */}
         <p className="font-medium mt-5">Budget</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 ">
