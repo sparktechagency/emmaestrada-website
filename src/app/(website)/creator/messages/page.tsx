@@ -6,7 +6,7 @@ const page = async ({params}: {params: Promise<{id: string}>}) => {
 
   const {id} = await params;
   
-  const response = await myFetch(`/messages/694d28de2c790c489e878187`);
+  const response = await myFetch(`/messages/694d28de2c790c489e878187`, {tags: ["messages"]});
   const chatList = await myFetch("/chats", { tags: ["chats"] });
 
   return (

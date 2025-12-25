@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from "react"
-import Image from "next/image"
 import { Send, EllipsisVertical, ImageIcon, X } from "lucide-react"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -11,22 +10,21 @@ import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
 
-import { imageUrl } from "@/constants"
 import { useProfile } from "@/hooks/context/ProfileContext"
 import { myFetch } from "@/utils/myFetch"
 import { revalidate } from "@/helpers/revalidateHelper"
 import { formatChatTime } from "@/components/shared/FormatChatTime "
-
+import { imageUrl } from "@/constants"
 
 const ChatABox = ({ messages }: any) => {
   const { profile } = useProfile()
 
   const [message, setMessage] = useState("")
-  const [imageFile, setImageFile] = useState<File | null>(null)
+  const [imageFiles, setImageFiles] = useState<File[]>([])
   const [loading, setLoading] = useState(false)
 
   const sendMessage = async () => {
-    if (!message.trim() && !imageFile) return
+    if (!message.trim() && imageFiles.length === 0) return
 
     try {
       setLoading(true)
@@ -34,25 +32,33 @@ const ChatABox = ({ messages }: any) => {
       const formData = new FormData()
       formData.append("text", message)
 
-      if (imageFile) {
-        formData.append("image", imageFile)
-      }
-
-      const res = await myFetch("/messages/send-message/694d28de2c790c489e878187", {
-        method: "POST",
-        body: formData,
+      imageFiles.forEach((file) => {
+        formData.append("images", file) // backend should accept array
       })
+
+      const res = await myFetch(
+        "/messages/send-message/694d28de2c790c489e878187",
+        {
+          method: "POST",
+          body: formData,
+        }
+      )
 
       if (res?.success) {
         setMessage("")
-        setImageFile(null)
+        setImageFiles([])
         revalidate("chats")
+        revalidate("messages")
       }
     } catch (error) {
       console.log(error)
     } finally {
       setLoading(false)
     }
+  }
+
+  const removeImage = (index: number) => {
+    setImageFiles((prev) => prev.filter((_, i) => i !== index))
   }
 
   return (
@@ -94,25 +100,30 @@ const ChatABox = ({ messages }: any) => {
                 )}
 
                 <Card
-                  className={`p-3 rounded-2xl ${isSent
-                      ? "bg-orange-500 text-white"
-                      : "bg-gray-100"
-                    }`}
+                  className={`p-3 rounded-2xl ${
+                    isSent ? "bg-orange-500 text-white" : "bg-gray-100"
+                  }`}
                 >
                   {m?.text && <p>{m.text}</p>}
 
-                  {m?.image && (
-                    <img
-                      src={`${imageUrl}${m.image}`}
-                      className="mt-2 h-32 w-32 rounded-lg object-cover"
-                      alt="message"
-                    />
+                  {m?.images?.length > 0 && (
+                    <div className="mt-2 grid grid-cols-3 gap-2">
+                      {m.images.map((img: string, i: number) => (
+                        <img
+                          key={i}
+                          src={`${imageUrl}${img}`}
+                          className="h-24 w-24 rounded-lg object-cover"
+                          alt="message"
+                        />
+                      ))}
+                    </div>
                   )}
                 </Card>
 
                 <p
-                  className={`text-xs mt-1 text-gray-500 ${isSent ? "text-right" : "text-left"
-                    }`}
+                  className={`text-xs mt-1 text-gray-500 ${
+                    isSent ? "text-right" : "text-left"
+                  }`}
                 >
                   {formatChatTime(m?.createdAt)}
                 </p>
@@ -123,34 +134,29 @@ const ChatABox = ({ messages }: any) => {
       </ScrollArea>
 
       {/* Image Preview */}
-      {/* Attached Image Preview */}
-      {imageFile && (
-        <div className="px-4 pb-3">
-          <div className="relative inline-block rounded-xl border bg-gray-50 p-2 shadow-sm">
-
-            {/* Remove Button */}
-            <button
-              onClick={() => setImageFile(null)}
-              className="absolute -top-2 -right-2 bg-white rounded-full p-1 shadow hover:bg-gray-100 transition"
+      {imageFiles.length > 0 && (
+        <div className="px-4 pb-3 flex gap-3 overflow-x-auto">
+          {imageFiles.map((file, index) => (
+            <div
+              key={index}
+              className="relative rounded-xl border bg-gray-50 p-2"
             >
-              <X size={14} />
-            </button>
+              <button
+                onClick={() => removeImage(index)}
+                className="absolute -top-2 -right-2 bg-white rounded-full p-1 shadow"
+              >
+                <X size={14} />
+              </button>
 
-            {/* Image */}
-            <img
-              src={URL.createObjectURL(imageFile)}
-              alt="attached"
-              className="h-24 w-24 rounded-lg object-cover"
-            />
-
-            {/* Label */}
-            <p className="mt-1 text-center text-[11px] text-gray-500">
-              Image attached
-            </p>
-          </div>
+              <img
+                src={URL.createObjectURL(file)}
+                alt="preview"
+                className="h-24 w-24 rounded-lg object-cover"
+              />
+            </div>
+          ))}
         </div>
       )}
-
 
       {/* Footer */}
       <div className="p-4 border-t flex items-center gap-3">
@@ -160,10 +166,17 @@ const ChatABox = ({ messages }: any) => {
           <input
             type="file"
             hidden
+            multiple
             accept="image/*"
-            onChange={(e) =>
-              e.target.files && setImageFile(e.target.files[0])
-            }
+            onChange={(e) => {
+              if (e.target.files) {
+                setImageFiles((prev) => [
+                  ...prev,
+                  // @ts-ignore
+                  ...Array.from(e.target.files),
+                ])
+              }
+            }}
           />
           <ImageIcon className="text-gray-500 hover:text-gray-700" />
         </label>
@@ -179,7 +192,7 @@ const ChatABox = ({ messages }: any) => {
 
         {/* Send Button */}
         <Button
-          disabled={loading || (!message.trim() && !imageFile)}
+          disabled={loading || (!message.trim() && imageFiles.length === 0)}
           onClick={sendMessage}
           className="rounded-full p-3 bg-orange-500 hover:bg-orange-600"
         >
