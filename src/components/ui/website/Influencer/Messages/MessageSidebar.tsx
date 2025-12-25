@@ -10,14 +10,48 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Music, Search } from 'lucide-react';
 import { CampaignTabGroup } from '../InfluencerCampaign/CampaignTabGroup';
+import { imageUrl } from '@/constants';
+import { myFetch } from '@/utils/myFetch';
 
 
-const MessageSidebar = () => {
+// --------- Time Count ----------
+const timeAgo = (dateString: string): string => {
+
+    console.log("dateString", dateString);
+
+    const now = new Date().getTime();
+    const past = new Date(dateString).getTime();
+
+    const diffInSeconds = Math.floor((now - past) / 1000);
+
+    if (diffInSeconds < 60) return `${diffInSeconds}s ago`;
+
+    const diffInMinutes = Math.floor(diffInSeconds / 60);
+    if (diffInMinutes < 60) return `${diffInMinutes} min ago`;
+
+    const diffInHours = Math.floor(diffInMinutes / 60);
+    if (diffInHours < 24) return `${diffInHours} hr ago`;
+
+    const diffInDays = Math.floor(diffInHours / 24);
+    return `${diffInDays} day${diffInDays > 1 ? "s" : ""} ago`;
+};
+
+
+// const MessageSidebar = ({ chatData }: any) => {
+const MessageSidebar = async () => {
+
+    const chatList = await myFetch("/chats", { tags: ["chats"] });
+    console.log("data dddd", chatList?.data?.data?.chats);
+
+    const data = chatList?.data?.data?.chats
+    // const {data, totalIconUnreadMessages, totalUnreadMessages, unreadChatsCount} = chatData?.data;
+
+
     return (
         <div className="w-full lg:w-[30%] border-r bg-white flex flex-col rounded-2xl ">
 
             {/* Tabs */}
-            <div className=" relative p-2 flex items-center my-5">                
+            <div className=" relative p-2 flex items-center my-5">
                 <Input
                     placeholder="Search campaigns or artists..."
                     className="pl-3 pr-14 bg-white h-12 fo"
@@ -30,38 +64,31 @@ const MessageSidebar = () => {
             <ScrollArea className="flex-1">
 
                 {/* Item */}
-                {[
-                    { name: "Olivia Richards", time: "2 min ago", campaign: "Summer Vibes 2024", msg: "Just posted the first video! Check it out 🎵", badge: 2, isPined: false },
-                    { name: "Marcus Thompson", time: "1 hour ago", campaign: "Rock Revolution", msg: "When is the deadline for submissions?", badge: 0, isPined: true },
-                    { name: "Sofia Martinez", time: "3 hours ago", campaign: "Summer Vibes 2024", msg: "Thanks for the feedback! submissions", badge: 0, isPined: false },
-                    { name: "Luna Rivers", time: "5 hours ago", campaign: "Collaboration Request", msg: "Would love to work together", badge: 1, isPined: false },
-                    { name: "Alex Kim", time: "1 day ago", campaign: "R&B Smooth Sessions", msg: "The video reached 500K views already! 🔥", badge: 0, isPined: false }
-                ].map((item, idx) => (
+                {chatList?.data?.data?.chats.map((item: any, idx: number) => (
                     <div key={idx}>
-                        <div className="flex items-start gap-4 px-5 pb-4 hover:bg-gray-50 cursor-pointer">
-                            <Avatar className='w-12 h-12'>
-                                <AvatarImage
-                                    src="/images/profile21.jpg"
-                                    alt="@evilrabbit"
-                                />
-                                <AvatarFallback>
-                                    {item.name.split(" ").map(n => n[0]).join("")}
-                                </AvatarFallback>
-                            </Avatar>
+                        <div className="flex items-start justify-between gap-4 px-5 py-2 hover:bg-gray-50 cursor-pointer">
+                            <div className="flex items-center gap-2">
+                                <Avatar className='w-12 h-12'>
+                                    <AvatarImage
+                                        src={`${imageUrl + item.participants[0]?.image}`}
+                                        alt="@evilrabbit"
+                                    />
+                                    <AvatarFallback>
+                                        {item.participants[0]?.email.split(" ").map((n: any) => n[0]).join("")}
+                                    </AvatarFallback>
+                                </Avatar>
+                                <div className="">
+                                    <p className="font-semibold">{item.participants[0]?.email}</p>
+                                    <p className="text-sm text-gray-600 text-clip pr-3">{item?.lastMessage?.text ?? 'text'}</p>
 
-                            <div className="">    
-                                <div className="flex items-center justify-between">
-                                <p className="font-semibold">{item.name}</p>
-                                <small className="text-gray-500 whitespace-nowrap self-end">{item.time}</small>
-                                </div>                            
-                                    
-                                <div className="flex items-center justify-between">
-                                <p className="text-sm text-gray-600 text-clip pr-3">{item.msg}</p>
-                                <span className='self-end'>
-                                    <Badge className="bg-primary text-white rounded-full">{item.badge}</Badge>                                
-                                </span>
-                                
                                 </div>
+                            </div>
+
+                            <div className=" flex flex-col h-full">
+                                <small className="text-gray-500 whitespace-nowrap mb-2 self-end">{timeAgo(item?.lastMessageAt)}</small>
+                                <span className='self-end'>
+                                    <Badge className="bg-primary text-white rounded-full">{item.unreadCount}</Badge>
+                                </span>
                             </div>
                         </div>
                         <Separator />

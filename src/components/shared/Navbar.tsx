@@ -19,6 +19,7 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
+import { Button } from "../ui/button";
 
 const Navbar = () => {
   const [mounted, setMounted] = useState(false); // ✅ ADD
@@ -77,7 +78,7 @@ const Navbar = () => {
             {/* Logo */}
             <Link href="/">
               <div className="relative h-12 w-12">
-                <Image src="/logo.png" alt="logo" fill />
+                <Image src="/logo.png" alt="logo" height={50} width={50} />
               </div>
             </Link>
 
@@ -112,16 +113,10 @@ const Navbar = () => {
                 <ViewAsLogin profile={profile} />
               ) :
                 <>
-                  <Link href="/signup">
-                    <button className="bg-primary btn text-white rounded-full">
-                      Sign Up
-                    </button>
-                  </Link>
-
                   <Link href="/login">
-                    <button className="hidden md:block border-primary border btn bg-white text-primary rounded-full">
-                      View as login
-                    </button>
+                    <Button className="bg-primary btn text-white rounded-full">
+                      Log In
+                    </Button>
                   </Link>
                 </>}
 

@@ -6,7 +6,7 @@ import PAllInfluencer from './PAllInfluencer'
 import PFollowedInfluencer from './PFollowedInfluencer'
 import PPopularInfluencer from './PPopularInfluencer'
 
-const InfluencerList = ({type}: any) => {
+const InfluencerList = ({type, PopularCreator, followedCreator, allCreator}: any) => {
     return (
         <Container>
             <CreatorHeader />
@@ -19,7 +19,11 @@ const InfluencerList = ({type}: any) => {
                 queryParam="type"
             />
 
-            {type === 'popular-influencer' ? <PPopularInfluencer/> : type === 'followed-influencer' ? < PFollowedInfluencer />  : type === 'all-influencers' ? < PAllInfluencer/>: <PPopularInfluencer/>}  
+            {
+            type === 'popular-influencer' ? 
+            <PPopularInfluencer popularCreator={PopularCreator}/> : 
+            type === 'followed-influencer' ? < PFollowedInfluencer followedCreator={followedCreator}/>  
+            : type === 'all-influencers' ? < PAllInfluencer allCreator={allCreator}/>: <PPopularInfluencer PopularCreator={PopularCreator}/>}  
         </Container>
     )
 }

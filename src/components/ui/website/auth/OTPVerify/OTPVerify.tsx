@@ -99,7 +99,7 @@ const OTPVerify = () => {
               </div>
 
               <div className="text-center mb-5">
-                <span className="text-xl font-semibold text-red-200">
+                <span className="text-xl font-semibold text-primary">
                   {secondsLeft > 0 ? `${minutes}:${seconds}` : "OTP Expired"}
                 </span>
               </div>

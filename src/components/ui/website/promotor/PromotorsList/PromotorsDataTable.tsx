@@ -13,12 +13,14 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { Plus } from "lucide-react"
+import { Plus, Star } from "lucide-react"
 import Image from "next/image"
 
 import { MdOutlineStar } from "react-icons/md"
 import Link from 'next/link'
 import CreatorPagination from '../../Influencer/Creator/CreatorPagination'
+import Container from '@/components/shared/Container'
+import { imageUrl } from '@/constants'
 
 const influencers = Array.from({ length: 10 }).map(() => ({
     name: "Ava Storm",
@@ -30,84 +32,73 @@ const influencers = Array.from({ length: 10 }).map(() => ({
 }))
 
 
-const PromotorsDataTable = () => {
+const PromotorsDataTable = ({ promotorData }: any) => {
+    console.log("promotorData", promotorData);
+    
     return (
-        <Card className="bg-transparent shadow-none border-0">
-            <CardContent className="overflow-x-auto">
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHead>Promotor</TableHead>
-                            <TableHead>Total Followers</TableHead>
-                            <TableHead>Engagement</TableHead>
-                            <TableHead>Rating</TableHead>
-                            <TableHead>Num. of Campaign</TableHead>
-                            <TableHead className="text-center">Action</TableHead>
-                        </TableRow>
-                    </TableHeader>
-
-                    <TableBody>
-                        {influencers.map((row, idx) => (
-                            <TableRow key={idx}>
-                                <TableCell>
-                                    <div className="flex items-center gap-3">
-                                        <Image
-                                            src={row.profile}
-                                            alt="influencer"
-                                            width={40}
-                                            height={40}
-                                            className="rounded-full"
-                                        />
-                                        <span>{row.name}</span>
-                                    </div>
-                                </TableCell>
-
-                                <TableCell>{row.totalFollowers}</TableCell>
-
-                                <TableCell className="text-green-600 font-semibold">
-                                    {row.engagement}
-                                </TableCell>
-
-                                <TableCell className="flex items-center">
-                                    {Array.from({ length: 5 }).map((_, i) => (
-                                        <MdOutlineStar
-                                            key={i}
-                                            size={15}
-                                            className={
-                                                i < row.rating
-                                                    ? "text-orange-500"
-                                                    : "text-gray-300"
-                                            }
-                                        />
-                                    ))}
-                                </TableCell>
-
-                                <TableCell>{row.totalCampaigns}</TableCell>
-
-                                <TableCell className="text-right md:w-[50px]">
-                                    <div className="flex items-center gap-3">
-                                        <Button>
-                                            <span>Follow</span>
-                                            <Plus />
-                                        </Button>
-
-                                        <Link href={`/promotor/promotor-list/${idx + 1}`}><Button
-                                            className="border border-black/50 text-black/50 hover:bg-white hover:text-black bg-transparent"
-                                        >
-                                            View
-                                        </Button></Link>
-                                    </div>
-                                </TableCell>
+        <Container>
+            <Card className="bg-transparent shadow-none border-0">
+                <CardContent className="overflow-x-auto">
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead>Promotor</TableHead>
+                                <TableHead>Total Followers</TableHead>
+                                <TableHead>Engagement</TableHead>
+                                <TableHead>Rating</TableHead>
+                                <TableHead>Num. of Campaign</TableHead>
+                                <TableHead className="text-center">Action</TableHead>
                             </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
+                        </TableHeader>
 
-                <div className="flex justify-end mt-6 pr-10">
-                    <CreatorPagination />
-                </div>
-            </CardContent>
-        </Card>
+                        <TableBody>
+                            {promotorData?.length > 0 ? promotorData.map((row: any, idx: number) => (
+                                <TableRow key={idx}>
+                                    <TableCell>
+                                        <div className="flex items-center gap-3">
+                                            <img src={`${imageUrl + row?.image}`} className="h-14 w-14 object-cover rounded-full" alt={row?.name} />
+                                            <span>{row?.name}</span>
+                                        </div>
+                                    </TableCell>
+
+                                    <TableCell>{row?.totalFollowers}</TableCell>
+
+                                    <TableCell className="text-green-600 font-semibold">
+                                        {row?.engagement}
+                                    </TableCell>
+
+                                    <TableCell >
+                                        <div className="font-semibold flex gap-.5 text-center">
+                                            {row?.rating < 1 ? <Star className="text-orange-500" size={15} /> :
+                                                Array.from({ length: row?.followingId?.rating + 3 })?.map((_: any, i: number) => <MdOutlineStar key={i} className="text-orange-500" size={15} />)}
+                                        </div>
+                                    </TableCell>
+
+                                    <TableCell>{row?.totalCampaigns}</TableCell>
+
+                                    <TableCell className="text-right md:w-[50px]">
+                                        <div className="flex items-center gap-3">
+                                            <Link href={`/creator/promotor/${row?._id}`}> <Button
+                                                className="border border-black/50 text-black/50 hover:bg-white hover:text-black bg-transparent"
+                                            >
+                                                View
+                                            </Button></Link>
+                                        </div>
+                                    </TableCell>
+                                </TableRow>
+                            )) : <p>Data not Found</p>}
+                        </TableBody>
+                    </Table>
+
+                    <div className="flex justify-end mt-6 pr-10">
+                        <CreatorPagination />
+                    </div>
+                </CardContent>
+            </Card>
+
+
+            {/* {open && <InfluencerDetails />} */}
+        </Container>
     )
 }
 

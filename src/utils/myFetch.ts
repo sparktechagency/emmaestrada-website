@@ -54,8 +54,8 @@ export const myFetch = async (
 
   try {
 
-    console.log('Fetch URL:', `${config.baseURL}${url}`);
-    const response = await fetch(`${config.baseURL}${url}`, {
+    // console.log('Fetch URL:', `${process.env.BASE_URL}${url}`);
+    const response = await fetch(`${process.env.BASE_URL}${url}`, {
       method,
       headers: reqHeaders,
       ...(hasBody && { body: isFormData ? body : JSON.stringify(body) }),

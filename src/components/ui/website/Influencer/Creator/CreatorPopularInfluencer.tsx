@@ -26,54 +26,42 @@ import { useEffect, useState } from "react"
 import { FaSpinner } from "react-icons/fa"
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar"
 import { imageUrl } from "@/constants"
-
-const campaigns = Array.from({ length: 6 }).map((_, i) => ({
-  campaign: "Summer Vibes 2024",
-  profile: "/images/profile21.jpg",
-  artist: "Luna Rivers",
-  totalFollowers: "25K",
-  engagement: "3.5%",
-  rating: 5,
-  platform: "/tiktok.svg", // replace with your icon
-  isFollow: false,
-}))
-
-export default function CreatorPopularInfluencer() {
+import { revalidate } from "@/helpers/revalidateHelper"
+import ManagePagination from "@/components/shared/ManagePagination"
+import { useRouter } from "next/navigation"
 
 
-  const [response, setResponse] = useState<any>(null)
-  const [loading, setLoading] = useState(false);
+const PLATFORM_CONFIG = {
+  tiktok: {
+    src: '/tiktokBlack.png',
+    alt: 'TikTok',
+  },
+  instagram: {
+    src: '/instagram.png',
+    alt: 'Instagram',
+  },
+  youtube: {
+    src: '/youtube.png',
+    alt: 'YouTube',
+  },
+  facebook: {
+    src: '/facebook.png',
+    alt: 'Facebook',
+  },
+} as const;
 
-  useEffect(() => {
-    const fetchingData = async () => {
-      try {
-        setLoading(true)
-        const res = await myFetch("/creators/popular", { tags: ["CREATOR"] });
 
-        if (res?.success) {
-          const { data } = res;
-          setResponse(data)
-          toast.success("followingd Chat Successfully")
-          setLoading(false)
-        } else {
-          toast.success("followingd Chat Successfully")
-          setLoading(false)
-        }
-      } catch (error) {
-        console.log(error)
-        setLoading(false)
-      }
-    }
-    fetchingData()
-  }, [])
-
+export default function CreatorPopularInfluencer({ popularCreator }: any) {    
+  const router = useRouter()
 
   const handleCreateChat = async (participant: string) => {
     try {
-      const res = await myFetch("/chats/create-chat", { method: "POST", body: { participant } });
-
+      const res = await myFetch("/chats/create", { method: "POST", body: { participant } });
       console.log("create chat", res);
-      toast.success("Created Chat Successfully")
+      if (res?.success) {
+        toast.success("Created Chat Successfully")
+        // router.push("/creator/messages")
+      }
     } catch (error) {
       console.log(error)
     }
@@ -81,11 +69,10 @@ export default function CreatorPopularInfluencer() {
 
   const handleFollow = async (id: string) => {
     try {
-      const res = await myFetch("/followers/follow", { method: "POST", body: { followingId: id }, tags: ['Creators'] });
-
-
+      const res = await myFetch("/followers/follow", { method: "POST", body: { followingId: id } });
       console.log("create chat", res);
       if (res?.success) {
+        revalidate("CREATOR")
         toast.success("Created Chat Successfully")
       } else {
         toast.error(res?.message)
@@ -95,11 +82,12 @@ export default function CreatorPopularInfluencer() {
     }
   }
 
-   const handleUnFollow = async (id: string) => {
+  const handleUnFollow = async (id: string) => {
     try {
-      const res = await myFetch("/followers/follow", { method: "DELETE", body: { followingId: id }, tags: ['Followings'] });
+      const res = await myFetch("/followers/follow", { method: "DELETE", body: { followingId: id } });
       console.log("create chat", res);
       if (res?.success) {
+        revalidate("CREATOR")
         toast.success("Created Chat Successfully")
       } else {
         toast.error(res?.message)
@@ -108,16 +96,11 @@ export default function CreatorPopularInfluencer() {
       console.log(error)
     }
   }
-
-
-  console.log("response", response);
-  
 
   return (
-    <>
-      {loading ? <div className="flex items-center justify-center">
-        <FaSpinner className="animate-spin " size={30} /> </div> :
-        response?.following?.length === 0 ? <p className="mb-5 cursor-pointer flex items-center  gap-2">No Data Found</p> :
+    <div>
+      {
+       popularCreator?.data?.length === 0 ? <p className="mb-5 cursor-pointer flex items-center  gap-2">No Data Found</p> :
           <Card className="bg-transparent shadow-none border-0">
             <CardContent className="overflow-x-auto">
               <Table>
@@ -133,7 +116,7 @@ export default function CreatorPopularInfluencer() {
                 </TableHeader>
 
                 <TableBody>
-                  {response && response?.data?.map((row: any, i: number) => (
+                  {popularCreator?.data?.data && popularCreator?.data?.data?.map((row: any, i: number) => (
                     <TableRow key={i}>
                       <TableCell>
                         <div className="flex items-center gap-3">
@@ -152,18 +135,33 @@ export default function CreatorPopularInfluencer() {
                         </div>
                       </TableCell>
                       <TableCell className="flex items-center gap-2">
-                        <Image src="/tiktokBlack.png" alt="platform" width={25} height={25} className="" />
-                        <Image src="/instagram.png" alt="platform" width={25} height={25} />
+                        {row?.platforms?.length > 0 && row?.platforms?.map((platform: any) => {
+                          const key = platform.toLowerCase() as any;
+                          const config = (PLATFORM_CONFIG as any)[key];
+
+                          if (!config) return null;
+
+                          return (
+                            <Image
+                              key={key}
+                              src={config.src}
+                              alt={config.alt}
+                              width={25}
+                              height={25}
+                              loading="lazy"
+                            />
+                          );
+                        })}
                       </TableCell>
                       <TableCell>{row?.totalFollowers}</TableCell>
                       <TableCell className="text-green-600 font-semibold">
-                        {row?.engagement}
+                        {row?.engagement}%
                       </TableCell>
                       <TableCell>
                         <div className="font-semibold flex gap-.5 text-center">
-                        {row?.rating < 1 ? <Star key={i} className="text-orange-500" size={15} /> :
-                         Array.from({length: row?.rating+3})?.map((_: any, i: number) => <MdOutlineStar key={i} className="text-orange-500" size={15} />)}      
-                         </div>                  
+                          {row?.rating < 1 ? <Star key={i} className="text-orange-500" size={15} /> :
+                            Array.from({ length: row?.rating + 3 })?.map((_: any, i: number) => <MdOutlineStar key={i} className="text-orange-500" size={15} />)}
+                        </div>
                       </TableCell>
                       <TableCell className="text-right md:w-[50px]">
                         <div className=" flex items-center gap-3">
@@ -173,7 +171,7 @@ export default function CreatorPopularInfluencer() {
                             <Button onClick={() => handleFollow(row._id)} className="w-24"><span>Follow</span> <Plus /></Button>
                           }
                           <Button variant="outline" onClick={() => handleCreateChat(row?._id)} size="sm" className="cursor-pointer"><MessageCircleMore /></Button>
-                          <Link href={`/creator/creators/${i + 1}`}><Button variant="outline" size="sm" className="cursor-pointer"><Eye /></Button></Link>
+                          <Link href={`/creator/creators/${row?._id}`}><Button variant="outline" size="sm" className="cursor-pointer"><Eye /></Button></Link>
                         </div>
                       </TableCell>
                     </TableRow>
@@ -184,6 +182,9 @@ export default function CreatorPopularInfluencer() {
 
             </CardContent>
           </Card>
-      }</>
+      }
+
+      <ManagePagination meta={popularCreator?.data?.data?.meta} />
+    </div>
   )
 }

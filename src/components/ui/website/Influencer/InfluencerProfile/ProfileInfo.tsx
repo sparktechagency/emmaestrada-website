@@ -1,15 +1,9 @@
 'use client';
 
-import React, { useState, useEffect } from "react";
-import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { Calendar, CalendarIcon, LucideUserPlus, X } from "lucide-react";
-import { AtSign, MapPin, Image as ImageIcon } from "lucide-react";
-import { FcLikePlaceholder } from "react-icons/fc";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -17,14 +11,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
+import { Textarea } from "@/components/ui/textarea";
+import { AtSign, Image as ImageIcon, LucideUserPlus, MapPin, X } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { FcLikePlaceholder } from "react-icons/fc";
 
-import { useProfile } from "@/hooks/context/ProfileContext";
+import DatePicker from "@/components/shared/DatePicker";
 import Loader from "@/components/shared/Loader";
 import { imageUrl } from "@/constants";
+import { useProfile } from "@/hooks/context/ProfileContext";
 import { myFetch } from "@/utils/myFetch";
-import { Popover, PopoverContent, PopoverTrigger } from "@radix-ui/react-popover";
-import { cn } from "@/lib/utils";
-import DatePicker from "@/components/shared/DatePicker";
 
 const CONTENT_TYPES = ["Pop", "Rock", "Jazz", "Hip Hop", "Classical", "Electronic", "Rock1", "Jazz2", "Hip Hop2", "Classical2", "Electronic2"];
 
@@ -48,12 +45,12 @@ export default function ProfileInfo() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [formData, setFormData] = useState<any>({});
-
-  console.log("assdfsdf", formData?.birthday);
+  
   useEffect(() => {
     if (profile) {
       setFormData({
         userName: profile.userName || "",
+        name: profile.name || "",
         email: profile.email || "",
         role: profile.role || "",
         gender: profile.gender || "",
@@ -152,7 +149,7 @@ export default function ProfileInfo() {
             </Avatar>
 
             <div>
-              <h2 className="text-lg font-semibold">{profile?.userName}</h2>
+              <h2 className="text-lg font-semibold">{profile?.name ?? profile?.userName} {profile?.role}</h2>
               <p className="text-gray-500 text-sm mb-1.5">{profile?.email}</p>
               <button disabled
                 className="group flex items-center overflow-hidden rounded-sm border border-gray-200 bg-white transition-all"
@@ -185,12 +182,12 @@ export default function ProfileInfo() {
         {/* Form Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="flex flex-col gap-2">
-            <label className="font-medium">User Name</label>
+            <label className="font-medium">Name</label>
             <Input
-              value={formData.userName}
-              onChange={(e) => handleChange("userName", e.target.value)}
-              className="h-12 rounded-xl bg-slate-100"
-              disabled
+              value={formData.name}
+              onChange={(e) => handleChange("name", e.target.value)}
+              className="h-12 rounded-xl "     
+              disabled={!editMode}         
             />
           </div>
 

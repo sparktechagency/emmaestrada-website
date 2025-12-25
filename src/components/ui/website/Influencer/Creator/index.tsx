@@ -7,8 +7,10 @@ import CreatorAllInfluencer from './CreatorAllInfluencer'
 import { CampaignTabGroup } from '../InfluencerCampaign/CampaignTabGroup'
 import CreatorPopularInfluencer from './CreatorPopularInfluencer'
 import CreatorPagination from './CreatorPagination'
+import ManagePagination from '@/components/shared/ManagePagination'
 
-const Creator = ({ type }: any) => {
+const Creator = ({ type, PopularCreator, followedCreator, allCreator }: any) => {
+
     return (
         <div>
             <Container >
@@ -21,11 +23,7 @@ const Creator = ({ type }: any) => {
                     ]}
                     queryParam="type"
                 />
-                {type === 'popular-influencer' ? <CreatorPopularInfluencer /> : type === 'followed-influencer' ? < CreatorFollowedInfluencer /> : type === 'all-influencers' ? < CreatorAllInfluencer /> : <CreatorPopularInfluencer />}
-
-                <div className="flex justify-end mt-6 pr-10">
-                    <CreatorPagination />
-                </div>
+                {type === 'popular-influencer' ? <CreatorPopularInfluencer popularCreator={PopularCreator}/> : type === 'followed-influencer' ? < CreatorFollowedInfluencer followedCreator={followedCreator}/> : type === 'all-influencers' ? < CreatorAllInfluencer allCreator={allCreator}/> : <CreatorPopularInfluencer PopularCreator={PopularCreator}/>}                
             </Container>
         </div>
     )

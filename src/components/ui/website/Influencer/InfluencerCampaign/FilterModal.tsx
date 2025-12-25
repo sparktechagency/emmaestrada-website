@@ -135,8 +135,8 @@ export default function FilterModal({ open, onOpenChange, onApply }: FilterModal
           </div>
         </div>
 
-        <p className="font-medium mt-5">Follower Filter</p>
         {/*
+        <p className="font-medium mt-5">Follower Filter</p>
          <div className="grid grid-cols-1 md:grid-cols-2 gap-y-5 md:gap-5">
           <div>
             <p className="pb-3 flex items-center justify-between">

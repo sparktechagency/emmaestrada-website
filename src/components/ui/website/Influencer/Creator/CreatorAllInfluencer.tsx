@@ -1,35 +1,30 @@
 'use client'
 
+import ManagePagination from "@/components/shared/ManagePagination"
+import { Button } from "@/components/ui/button"
 import {
   Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
+  CardContent
 } from "@/components/ui/card"
 import {
   Table,
-  TableHead,
-  TableRow,
-  TableHeader,
   TableBody,
   TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@/components/ui/table"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { ArrowLeft, ChevronDown, Eye, MessageCircleMore, Plus } from "lucide-react"
-import Image from "next/image"
-import { MdOutlineStar } from "react-icons/md"
-import Pagination from "./CreatorPagination"
-import CreatorPagination from "./CreatorPagination"
-import { useEffect, useState } from "react"
-import ArtistDetails from "./ArtistDetails"
-import Link from "next/link"
-import { myFetch } from "@/utils/myFetch"
-import { toast } from "sonner"
-import Loader from "@/components/shared/Loader"
-import { FaSpinner } from "react-icons/fa"
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar"
 import { imageUrl } from "@/constants"
+import { myFetch } from "@/utils/myFetch"
+import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar"
+import { Eye, MessageCircleMore, Plus, Star } from "lucide-react"
+import Image from "next/image"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
+import { FaSpinner } from "react-icons/fa"
+import { MdOutlineStar } from "react-icons/md"
+import { toast } from "sonner"
 
 const campaigns = Array.from({ length: 10 }).map((_, i) => ({
   campaign: "Summer Vibes 2024",
@@ -43,33 +38,39 @@ const campaigns = Array.from({ length: 10 }).map((_, i) => ({
   isFollow: false,
 }))
 
-const CreatorAllInfluencer = () => {
-  
-  const [response, setResponse] = useState<any>(null)
-  const [loading, setLoading] = useState(false);
+
+const PLATFORM_CONFIG = {
+  tiktok: {
+    src: '/tiktokBlack.png',
+    alt: 'TikTok',
+  },
+  instagram: {
+    src: '/instagram.png',
+    alt: 'Instagram',
+  },
+  youtube: {
+    src: '/youtube.png',
+    alt: 'YouTube',
+  },
+  facebook: {
+    src: '/facebook.png',
+    alt: 'Facebook',
+  },
+} as const;
 
 
-  useEffect(() => {
-    const fetchCreators = async () => {
-      setLoading(true)
-      try {
-        const { data } = await myFetch("/creators", { cache: "no-cache", tags: ['Creators'] });
-        setResponse(data);
-        setLoading(false)
-      } catch (error) {
-        console.error("Error fetching creators:", error);
-      }
-    };
+const CreatorAllInfluencer = ({ allCreator }: any) => {
 
-    fetchCreators();
-  }, []);
-
+  const router = useRouter()
   const handleCreateChat = async (participant: string) => {
     try {
-      const res = await myFetch("/chats/create-chat", { method: "POST", body: { participant } });
+      const res = await myFetch("/chats/create", { method: "POST", body: { participant } });
 
       console.log("create chat", res);
-      toast.success("Created Chat Successfully")
+      if (res?.success) {
+        toast.success("Created Chat Successfully")
+        router.push("/creator/messages")
+      }
     } catch (error) {
       console.log(error)
     }
@@ -93,9 +94,9 @@ const CreatorAllInfluencer = () => {
   }
   return (
     <div>
-      {loading ? <div className="flex items-center justify-center">
+      {!allCreator?.data ? <div className="flex items-center justify-center">
         <FaSpinner className="animate-spin " size={30} /> </div> :
-        response?.data?.length === 0 ? <p className="mb-5 cursor-pointer flex items-center  gap-2">No Data Found</p> :
+        allCreator?.data?.data?.length === 0 ? <p className="mb-5 cursor-pointer flex items-center  gap-2">No Data Found</p> :
           <Card className="bg-transparent shadow-none border-0">
             <CardContent className="overflow-x-auto">
               <Table>
@@ -111,7 +112,7 @@ const CreatorAllInfluencer = () => {
                 </TableHeader>
 
                 <TableBody>
-                  {response && response?.data?.map((row: any, i: number) => (
+                  {allCreator?.data?.data && allCreator?.data?.data?.map((row: any, i: number) => (
                     <TableRow key={i}>
                       <TableCell>
                         <div className="flex items-center gap-3">
@@ -130,15 +131,33 @@ const CreatorAllInfluencer = () => {
                         </div>
                       </TableCell>
                       <TableCell className="flex items-center gap-2">
-                        <Image src="/tiktokBlack.png" alt="platform" width={25} height={25} className="" />
-                        <Image src="/instagram.png" alt="platform" width={25} height={25} />
+                        {row?.platforms?.length > 0 && row?.platforms.map((platform: any) => {
+                          const key = platform.toLowerCase() as any;
+                          const config = (PLATFORM_CONFIG as any)[key];
+
+                          if (!config) return null;
+
+                          return (
+                            <Image
+                              key={key}
+                              src={config.src}
+                              alt={config.alt}
+                              width={25}
+                              height={25}
+                              loading="lazy"
+                            />
+                          );
+                        })}
                       </TableCell>
                       <TableCell>{row?.totalFollowers}</TableCell>
                       <TableCell className="text-green-600 font-semibold">
-                        {row?.engagement}
+                        {row?.engagement}%
                       </TableCell>
                       <TableCell className=" font-semibold flex ">
-                        {Array.from([1, 2, 3, 4, 5])?.map((_: any, i: number) => <MdOutlineStar className="text-orange-500" size={15} />)}
+                        <div className="font-semibold flex gap-.5 text-center">
+                          {row?.rating < 1 ? <Star key={i} className="text-orange-500" size={15} /> :
+                            Array.from({ length: row?.followingId?.rating + 3 })?.map((_: any, i: number) => <MdOutlineStar key={i} className="text-orange-500" size={15} />)}
+                        </div>
                       </TableCell>
                       <TableCell className="text-right md:w-[50px]">
                         <div className=" flex items-center gap-3">
@@ -148,7 +167,7 @@ const CreatorAllInfluencer = () => {
                             <Button onClick={() => handleFollow(row._id)}><span>Follow</span> <Plus /></Button>
                           }
                           <Button variant="outline" onClick={() => handleCreateChat(row?._id)} size="sm" className="cursor-pointer"><MessageCircleMore /></Button>
-                          <Link href={`/creator/creators/${i + 1}`}><Button variant="outline" size="sm" className="cursor-pointer"><Eye /></Button></Link>
+                          <Link href={`/creator/creators/${row?._id}`}><Button variant="outline" size="sm" className="cursor-pointer"><Eye /></Button></Link>
                         </div>
                       </TableCell>
                     </TableRow>
@@ -159,7 +178,8 @@ const CreatorAllInfluencer = () => {
 
             </CardContent>
           </Card>
-      }     
+      }
+      <ManagePagination meta={allCreator?.data?.meta} />
     </div>
   )
 }
