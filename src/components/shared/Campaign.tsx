@@ -77,18 +77,7 @@ const Campaign: React.FC<CampaignProps> = ({ campaigns }) => {
           >
             {campaigns?.map((campaign: any) => (
               <SwiperSlide key={campaign._id}>
-                <CampaignCard
-                  name={campaign.title}
-                  budget={campaign.budget}
-                  influencers={campaign.influencers}
-                  dateRange={campaign.dateRange}
-                  duration={campaign.duration}
-                  progress={campaign.progress}
-                  profileImg={campaign.profileImg}
-                  rightImg={campaign.rightImg}
-                  username={campaign.username}
-                  displayName={campaign.displayName}
-                />
+                <CampaignCard campaign={campaign} />
               </SwiperSlide>
             ))}
           </Swiper>

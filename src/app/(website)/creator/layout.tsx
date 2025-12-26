@@ -1,12 +1,15 @@
 import InfluencerHeader from "@/components/ui/website/Influencer/InfluencerHeader";
+import getProfile from "@/utils/getProfile";
 
-const layout = ({ children }: { children: React.ReactNode }) => {
-    return (
+const layout = async ({ children }: { children: React.ReactNode }) => {
+  const user = await getProfile();
+
+  return (
     <div className="">
-        <InfluencerHeader />
-        <main className="mb-auto">{children}</main>     
-        </div>
-    );
+      <InfluencerHeader profile={user} />
+      <main className="mb-auto">{children}</main>
+    </div>
+  );
 };
 
 export default layout;

@@ -3,6 +3,7 @@
 import { createContext, useContext, useState, ReactNode } from "react";
 import { setCookie, deleteCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
+import { revalidate } from "@/helpers/revalidateHelper";
 
 // Define the context type
 interface AuthContextType {
@@ -54,7 +55,8 @@ export const AuthProvider = ({
     setUser(null);
     deleteCookie("accessToken");
     deleteCookie("user");
-    router.push("/login");
+    revalidate("user-profile");
+    router.push("/");
   };
 
   return (

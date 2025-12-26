@@ -5,9 +5,8 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Menu, X, Bell, Wallet, Contact, LogOut } from "lucide-react";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { useProfile } from "@/hooks/context/ProfileContext";
 import { imageUrl } from "@/constants";
 import Cookies from "js-cookie";
 import {
@@ -19,6 +18,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Container from "../Container";
 import { Button } from "@/components/ui/button";
+import { deleteCookie } from "cookies-next";
+import { revalidate } from "@/helpers/revalidateHelper";
+import { toast } from "sonner";
 
 const Navbar = ({ profile }: { profile: any }) => {
   const [mounted, setMounted] = useState(false); // ✅ ADD
@@ -183,8 +185,13 @@ export default Navbar;
 
 /* ✅ KEPT your component, just improved usage */
 const ViewAsLogin = ({ profile }: any) => {
+  const router = useRouter();
   const handleLogout = () => {
     Cookies.remove("accessToken");
+    deleteCookie("user");
+    revalidate("user-profile");
+    router.push("/");
+    toast.success("Logged out successfully");
   };
   return (
     <div className="flex items-center gap-3">

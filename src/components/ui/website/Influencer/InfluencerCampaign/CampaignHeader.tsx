@@ -1,5 +1,5 @@
-'use client'
-import React, { useEffect, useState } from 'react'
+"use client";
+import React, { useEffect, useState } from "react";
 
 import {
   Select,
@@ -7,48 +7,43 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from "@/components/ui/select";
 
-import { ArrowUpDown, Music, Search, SlidersHorizontal } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import { ArrowUpDown, Music, Search, SlidersHorizontal } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
-import { bricolage } from '@/constants/bricolage';
-import { useRouter, useSearchParams } from 'next/navigation';
-import FilterModal, { FilterValues } from './FilterModal';
-
+import { bricolage } from "@/constants/bricolage";
+import { useRouter, useSearchParams } from "next/navigation";
+import FilterModal, { FilterValues } from "./FilterModal";
 
 const CampaignHeader = () => {
-
   const [activeCampaignTab, setActiveCampaignTab] = useState("campaigns");
   const [filterModalOpen, setFilterModalOpen] = useState(false);
 
   const [visibility, setVisibility] = useState("all");
   const [sortBy, setSortBy] = useState("all");
-  const router = useRouter()
-  const searchParams = useSearchParams()
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
-    const paramValue = searchParams.get('campaignType')
+    const paramValue = searchParams.get("campaignType");
     if (paramValue && paramValue !== activeCampaignTab) {
-      setActiveCampaignTab(paramValue)
+      setActiveCampaignTab(paramValue);
     }
-  }, [])
+  }, []);
 
   const setCampaignType = (type: string) => {
-    setActiveCampaignTab(type)
-    router.push(`/creator?campaignType=${type}`)
-  }
-
-
+    setActiveCampaignTab(type);
+    router.push(`/creator?campaignType=${type}`);
+  };
 
   const handleApplyFilters = (filters: FilterValues) => {
-
-    console.log("filters", filters)
+    console.log("filters", filters);
   };
 
   return (
-    <div className='pt-10'>
+    <div className="pt-10">
       <div className="mb-6">
         <h1 className={`mb-2 text-3xl font-semibold`}>Campaigns</h1>
         <p className="textPara">Browse and join music campaigns</p>
@@ -58,19 +53,21 @@ const CampaignHeader = () => {
       <div className="flex items-center justify-center md:inline-block mb-6  bg-secondary rounded-full p-1">
         <button
           onClick={() => setCampaignType("campaigns")}
-          className={`flex-1 sm:flex-none md:px-14 py-3 rounded-full transition-colors ${activeCampaignTab === "campaigns"
-            ? "bg-white text-gray-900 "
-            : " text-white"
-            }`}
+          className={`flex-1 sm:flex-none md:px-14 py-3 rounded-full transition-colors ${
+            activeCampaignTab === "campaigns"
+              ? "bg-white text-gray-900 "
+              : " text-white"
+          }`}
         >
           Campaigns
         </button>
         <button
           onClick={() => setCampaignType("my-campaigns")}
-          className={`flex-1 sm:flex-none md:px-14 py-3 rounded-full transition-colors ${activeCampaignTab === "my-campaigns"
-            ? "bg-white text-gray-900 "
-            : " text-white"
-            }`}
+          className={`flex-1 sm:flex-none md:px-14 py-3 rounded-full transition-colors ${
+            activeCampaignTab === "my-campaigns"
+              ? "bg-white text-gray-900 "
+              : " text-white"
+          }`}
         >
           My campaigns
         </button>
@@ -116,8 +113,8 @@ const CampaignHeader = () => {
                   variant="secondary"
                   size="sm"
                   onClick={(e) => {
-                    e.stopPropagation()
-                    setSortBy("")                    
+                    e.stopPropagation();
+                    setSortBy("");
                   }}
                 >
                   Clear
@@ -127,14 +124,14 @@ const CampaignHeader = () => {
           </div>
         </div>
       </div>
-    
+
       <FilterModal
         open={filterModalOpen}
         onOpenChange={setFilterModalOpen}
         onApply={handleApplyFilters}
       />
     </div>
-  )
-}
+  );
+};
 
-export default CampaignHeader
+export default CampaignHeader;

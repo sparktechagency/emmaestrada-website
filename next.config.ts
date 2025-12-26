@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['10.10.7.48'],
+    domains: ["10.10.7.48"],
 
     remotePatterns: [
       {
@@ -12,12 +12,11 @@ const nextConfig = {
         protocol: "https",
         hostname: "**",
       },
-
     ],
   },
 
   experimental: {
-    serverSourceMaps: false,  // ✅ Fixes invalid source map error
+    serverSourceMaps: false, // ✅ Fixes invalid source map error
     serverActions: {
       // Increase the maximum request body size
       bodySizeLimit: "10mb",

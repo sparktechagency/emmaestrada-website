@@ -5,6 +5,7 @@ import { StatusBadge } from "./StatusBadge";
 import Image from "next/image";
 import { Gift } from "lucide-react";
 import { Button } from "../ui/button";
+import { imageUrl } from "@/constants";
 
 type CampaignStatus =
   | "upcoming"
@@ -13,22 +14,35 @@ type CampaignStatus =
   | "canceled"
   | "active"
   | "pactive"
-  | "pcompleted"
+  | "pcompleted";
 
 interface CampaignCardProps {
-  name?: string;
-  budget?: string;
-  influencers?: string;
-  dateRange?: string;
-  duration?: string;
-  progress?: number;
-  profileImg?: string;
-  rightImg?: string;
-  username?: string;
-  displayName?: string;
-  isPrivate?: boolean;
-  status?: CampaignStatus;
-  paid?: number;
+  campaign: {
+    _id: string;
+    title: string;
+    budget: {
+      rewardRate: number;
+      perViews: number;
+      minPayout: number;
+      maxPayout: number;
+      flatPrice: number;
+    };
+    platforms: string[];
+    campaignAmount: number;
+    paidAmount: number;
+    totalPaidOutAmount: number;
+    contentType: string;
+    genre?: string;
+    category?: string;
+    thumbnail?: string;
+    profileImg?: string;
+    username?: string;
+    displayName?: string;
+    status: CampaignStatus;
+    isJoined?: boolean;
+    // Add other fields as optional if uncertain, but strict based on requirements
+    [key: string]: any;
+  };
 }
 
 /* -------------------- STATUS CONFIG -------------------- */
@@ -47,12 +61,14 @@ const statusButtonConfig: Record<
   },
   pactive: {
     label: "Manage Campaigns",
-    className: "bg-transparent! border! border-secondary! text-black! text-xs! ",
+    className:
+      "bg-transparent! border! border-secondary! text-black! text-xs! ",
     disabled: false,
   },
   pcompleted: {
     label: "Delete",
-    className: "bg-transparent! border! border-secondary! text-red-600! text-xs! ",
+    className:
+      "bg-transparent! border! border-secondary! text-red-600! text-xs! ",
     disabled: true,
   },
   pending: {
@@ -78,117 +94,24 @@ const statusButtonConfig: Record<
 };
 /* ------------------------------------------------------- */
 
-const CampaignCard: React.FC<CampaignCardProps> = ({
-  name,
-  budget,
-  influencers,
-  dateRange,
-  duration,
-  progress = 0,
-  profileImg,
-  rightImg,
-  username,
-  displayName,
-  isPrivate,
-  paid = 0,
-  status = "active",
-}) => {
-  const buttonConfig =
-    statusButtonConfig[status] ?? statusButtonConfig.active;
+const platformIcons: Record<string, string> = {
+  TikTok: "/tiktokBlack.png",
+  Instagram: "/instagram.png",
+  YouTube: "/youtube.png",
+};
+
+const CampaignCard = ({ campaign }: CampaignCardProps) => {
+  const status = campaign?.status || "active";
+  const buttonConfig = statusButtonConfig[status];
+  const progress = campaign?.campaignAmount
+    ? Math.round(
+        (campaign?.totalPaidOutAmount / campaign?.campaignAmount) * 100
+      )
+    : 0;
 
   return (
-
-    // <div className="rounded-2xl shadow-md bg-[#FFF8F3] p-5 space-y-4">
-
-    //   {/* Top Section */}      
-    //     <div className="flex justify-between gap-3">
-    //       <Image
-    //         src={"/images/profile21.jpg"}
-    //         alt="profile"
-    //         width={56}
-    //         height={56}
-    //         className="rounded-xl object-cover"
-    //       />
-
-    //       <div>
-    //         <div className="flex gap-2 mt-1">
-    //           <span className="px-3 py-1 text-xs rounded-full border border-purple-400 text-purple-600">
-    //             CLIPPING
-    //           </span>              
-    //         </div>
-
-    //         <p className="text-xs text-gray-500 mt-1 text-end">1 day ago</p>
-    //       </div>
-    //     </div>      
-
-    //   {/* Creator Row */}
-    //   <div className="">
-    //     <h3 className="font-semibold text-lg leading-tight">{name}</h3>
-    //     <div className="flex items-center gap-2">
-    //       <span className="font-medium text-sm">{displayName}</span>
-    //       <img src="/tiktokBlack.png" width={16} />
-    //       <img src="/instagram.png" width={16} />
-    //     </div>
-    //   </div>
-
-    //   {/* Budget & Rate */}
-    //   <div className="flex justify-between text-sm font-medium">
-    //     <span className="text-gray-700">
-    //       ${paid} / {budget}
-    //     </span>
-    //     <span className="text-gray-700">
-    //       $5.00 / 1k views
-    //     </span>
-    //   </div>
-
-    //   {/* Progress Bar */}
-    //   <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-    //     <div
-    //       className="h-full bg-orange-500"
-    //       style={{ width: `${progress}%` }}
-    //     />
-    //   </div>
-
-    //   {/* Bottom Stats */}
-    //   <div className="grid grid-cols-3 gap-4 text-center text-sm">
-    //     <div>
-    //       <p className="font-semibold">18%</p>
-    //       <p className="text-gray-500 text-xs">Approval</p>
-    //     </div>
-    //     <div>
-    //       <p className="font-semibold">343k</p>
-    //       <p className="text-gray-500 text-xs">Views</p>
-    //     </div>
-    //     <div>
-    //       <p className="font-semibold">${paid}</p>
-    //       <p className="text-gray-500 text-xs">Paid</p>
-    //     </div>
-    //   </div>
-
-    //   {/* Action Button */}
-    //   <button
-    //     className={`${buttonConfig.className}
-    //   w-full py-3 rounded-full text-sm font-medium text-white`}
-    //   >
-    //     {buttonConfig.label}
-    //   </button>
-    // </div>
-
-
-    <div
-      // className="rounded-2xl shadow-md grid grid-cols-1 md:grid-cols-2  gap-4 p-5 bg-[#FFF8F3]"
-      className="rounded-2xl relative shadow-md grid grid-cols-1 gap-4 bg-[#FFF8F3]"
-    // style={{
-    //   width: "100%",
-    //   height: "421px",
-    //   padding: "18px 20px",
-    //   backgroundColor: "#FFF8F3",
-    // }}
-    >
-
-      {/* <div className="flex-1 flex flex-col order-2 md:order-1"> */}
+    <div className="rounded-2xl relative shadow-md grid grid-cols-1 gap-4 bg-[#FFF8F3]">
       <div className="flex-1 flex flex-col order-2 px-3 pb-3">
-
         <div className="absolute top-3 left-3 z-20 flex w-[90%] justify-between items-center ">
           <div className="flex items-center gap-2">
             <span className="flex items-center gap-2 bg-red-500 text-white px-3 py-1 rounded-full text-sm">
@@ -196,88 +119,125 @@ const CampaignCard: React.FC<CampaignCardProps> = ({
               Live
             </span>
 
-            {isPrivate && (
+            {/* {campaign.isPrivate && (
               <img src="/lockSign.png" width={20} height={20} alt="lock" />
-            )}
+            )} */}
           </div>
           <div className="flex gap-2 bg-white/50 p-2 rounded-lg">
-            <Image src="/tiktokBlack.png" height={20} width={20} className="h-5 w-5" alt="" />
-            <Image src="/instagram.png" height={20} width={20} className="h-5 w-5" alt="" />
-            <Image src="/youtube.png" height={20} width={20} className="h-5 w-7" alt="" />
+            {campaign?.platforms?.map((platform) =>
+              platformIcons[platform] ? (
+                <Image
+                  key={platform}
+                  src={platformIcons[platform]}
+                  height={20}
+                  width={20}
+                  className="h-5 w-5 object-contain"
+                  alt={platform}
+                />
+              ) : null
+            )}
           </div>
         </div>
         <div className="flex justify-between gap-3">
           <div className="flex items-center gap-3">
             <Image
               src={
+                campaign?.profileImg ||
                 "https://images.pexels.com/photos/3756767/pexels-photo-3756767.jpeg"
               }
               alt="profile"
               height={200}
               width={200}
-              className="w-12 h-12 rounded-full"
+              className="w-12 h-12 rounded-full  object-cover"
             />
             <div>
-              <h3 className="font-semibold text-lg blur-[10px]">{displayName}</h3>
-              <p className="text-gray-600 text-sm">@{username}</p>
+              <h3 className="font-semibold text-lg blur-[10px]">
+                {campaign?.displayName || "Unknown User"}
+              </h3>
+              <p className="text-gray-600 text-sm">
+                @{campaign?.username || "unknown"}
+              </p>
             </div>
           </div>
-          {["pending", "accepted", "canceled", "pcompleted"].includes(status) && (
+          {["pending", "accepted", "canceled", "pcompleted"].includes(
+            campaign?.status
+          ) && (
             <div className="">
-              <StatusBadge status={status as "pending" | "accepted" | "canceled" | "pcompleted"} />
+              <StatusBadge
+                status={
+                  campaign?.status as
+                    | "pending"
+                    | "accepted"
+                    | "canceled"
+                    | "pcompleted"
+                }
+              />
             </div>
           )}
         </div>
 
-
         <hr className="my-3 border-gray-300" />
-
 
         <div className="space-y-1 text-[14px]">
           <p>
             <span className="font-normal text-lg">Title:</span>{" "}
-            <span className="text-orange-500 text-lg">{name}</span>
+            <span className="text-orange-500 text-lg">{campaign?.title}</span>
           </p>
           <div className="grid grid-cols-2 gap-y-2">
             <p>
               <span className="font-normal">Types:</span>{" "}
-              <span className="text-orange-500 ">Pop</span>
+              <span className="text-orange-500 ">
+                {campaign?.genre || campaign?.category}
+              </span>
             </p>
 
             <p>
               <span className="font-normal">Flat Fee:</span>{" "}
-              <span className="text-orange-500 ">$150</span>
+              <span className="text-orange-500 ">
+                ${campaign?.budget?.flatPrice}
+              </span>
             </p>
 
             <p>
               <span className="font-normal">Content Type:</span>{" "}
-              <span className="text-orange-500 ">
-                UCG
-              </span>
+              <span className="text-orange-500 ">{campaign?.contentType}</span>
             </p>
             <p className="flex items-center gap-3">
-              <span className="font-normal flex items-center gap-2"> <Gift strokeWidth={1} size={16} color="var(--color-primary)" /> Rewards-:</span>{" "}
+              <span className="font-normal flex items-center gap-2">
+                {" "}
+                <Gift
+                  strokeWidth={1}
+                  size={16}
+                  color="var(--color-primary)"
+                />{" "}
+                Rewards-:
+              </span>{" "}
               <span className="text-orange-500 ">
-                $0.25/1K
+                ${campaign?.budget?.rewardRate}/
+                {campaign?.budget?.perViews
+                  ? campaign.budget.perViews / 1000 + "K"
+                  : "1K"}
               </span>
             </p>
           </div>
-
         </div>
 
         <div className="grid grid-cols-2 gap-y-2 mt-3 pb-1 text-sm">
           <p>
             <span className="font-normal">Budget:</span>{" "}
-            <span className="text-orange-500 ">$150</span>
+            <span className="text-orange-500 ">
+              ${campaign?.campaignAmount}
+            </span>
           </p>
-          <p className="font-semibold  mb-2 text-gray-600 ">$700.60 of $8000.00 </p>
+          <p className="font-semibold  mb-2 text-gray-600 ">
+            ${campaign?.totalPaidOutAmount} of ${campaign?.campaignAmount}
+          </p>
         </div>
 
         <div className="relative h-4 rounded-full bg-gray-300">
           <div
             className="h-4 bg-black/60 rounded-full"
-            // style={{ width: `${progress}%` }}
-            style={{ width: `50%` }}
+            style={{ width: `${progress}%` }}
           />
           <p
             className="absolute z-20 top-1/2 left-1/2 text-xs -translate-1/2 capitalize mb-2 text-white"
@@ -287,18 +247,18 @@ const CampaignCard: React.FC<CampaignCardProps> = ({
           </p>
         </div>
 
-        <Button className="mt-3 py-5!"
-        >
+        <Button className="mt-3 py-5!" disabled={buttonConfig.disabled}>
           {buttonConfig.label}
         </Button>
       </div>
-
 
       {/* <div className="relative order-1 md:order-2"> */}
       <div className="relative order-1 p-1">
         <Image
           src={
-            "/images/campaign-img.png"
+            campaign?.thumbnail
+              ? imageUrl + campaign.thumbnail
+              : "/images/campaign-img.png"
           }
           // style={{
           //   width: "329px",
@@ -311,20 +271,14 @@ const CampaignCard: React.FC<CampaignCardProps> = ({
           width={500}
           className="max-h-[200px] h-full w-full object-cover rounded-t-[12px]"
           draggable={false}
+          unoptimized
         />
-
-        {/* {["pending", "accepted", "canceled", "pcompleted"].includes(status) && (
-          <div className="absolute top-3 right-2">
-            <StatusBadge status={status as "pending" | "accepted" | "canceled" | "pcompleted"} />
-          </div>
-        )} */}
       </div>
     </div>
   );
 };
 
 export default CampaignCard;
-
 
 // -- horiZONTALL SHAPE --
 /*
