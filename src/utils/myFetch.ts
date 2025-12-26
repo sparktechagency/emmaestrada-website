@@ -4,7 +4,6 @@
 import { config } from "@/config/env-config";
 import { getToken } from "./get-token";
 
-
 export interface FetchResponse {
   success: boolean;
   message?: string;
@@ -37,7 +36,7 @@ export const myFetch = async (
     tags,
     token,
     headers = {},
-    cache = "force-cache",    
+    cache = "force-cache",
   }: FetchOptions = {}
 ): Promise<FetchResponse> => {
   const accessToken = token || (await getToken());
@@ -53,7 +52,6 @@ export const myFetch = async (
   };
 
   try {
-
     // console.log('Fetch URL:', `${process.env.BASE_URL}${url}`);
     const response = await fetch(`${process.env.BASE_URL}${url}`, {
       method,
@@ -66,7 +64,6 @@ export const myFetch = async (
     const data = await response.json();
 
     if (response.ok) {
-      
       return {
         success: data?.success ?? true,
         message: data?.message,

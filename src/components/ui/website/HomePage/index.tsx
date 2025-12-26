@@ -8,10 +8,13 @@ import Statics from "./Statics";
 import FooterBanner from "@/components/shared/FooterBanner";
 import Testimonial from "./Testimonial";
 import WhyChooseUs from "./WhyChooseUs";
+import { myFetch } from "@/utils/myFetch";
 
 const HomePage = async ({ searchParams }: any) => {
   // const {role} = await searchParams;
   // console.log('role', role);
+  const { data: campaigns } = await myFetch("/campaigns/active-campaigns");
+  // console.log(campaigns?.data?.result);
 
   return (
     <div className="">
@@ -19,10 +22,10 @@ const HomePage = async ({ searchParams }: any) => {
       <Container>
         <ArtAndInfluencerBanner />
         <ArtistsSection />
-      <WhyChooseUs />
+        <WhyChooseUs />
       </Container>
       <BehindProcess />
-      <Campaign />
+      <Campaign campaigns={campaigns?.data?.result} />
       <Testimonial />
       <Statics />
       <FooterBanner />

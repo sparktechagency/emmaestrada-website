@@ -20,16 +20,23 @@ import Container from "./Container";
 import Link from "next/link";
 import { Button } from "../ui/button";
 
-const Campaign: React.FC = () => {
+interface CampaignProps {
+  campaigns: any;
+}
+
+const Campaign: React.FC<CampaignProps> = ({ campaigns }) => {
+  console.log(campaigns);
   return (
     <section className="bottomPadding">
       <Container>
         <div>
           <h1 className="title text-center mb-3">
-            <span className="text-primary">Campaigns</span>  on the Horizon
+            <span className="text-primary">Campaigns</span> on the Horizon
           </h1>
           <p className="textPara text-center max-w-6xl mx-auto">
-            Explore our handpicked campaigns that are driving real impact, inspiring communities, and shaping the future. Stay updated with the initiatives that matter most.
+            Explore our handpicked campaigns that are driving real impact,
+            inspiring communities, and shaping the future. Stay updated with the
+            initiatives that matter most.
           </p>
         </div>
         <div className="relative w-full md:w-4/5 mx-auto flex justify-center py-10">
@@ -68,19 +75,19 @@ const Campaign: React.FC = () => {
             }}
             className="campaign-swiper w-full"
           >
-            {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-              <SwiperSlide key={i}>
+            {campaigns?.map((campaign: any) => (
+              <SwiperSlide key={campaign._id}>
                 <CampaignCard
-                  name="Feel the Vibe"
-                  budget="$1000"
-                  influencers="25/25"
-                  dateRange="01/06/2024 - 30/06/2024"
-                  duration="30 days"
-                  progress={20}
-                  profileImg="/dj.jpg"
-                  rightImg="/dj-right.jpg"
-                  username="rikodj890"
-                  displayName="DJ Nadir"
+                  name={campaign.title}
+                  budget={campaign.budget}
+                  influencers={campaign.influencers}
+                  dateRange={campaign.dateRange}
+                  duration={campaign.duration}
+                  progress={campaign.progress}
+                  profileImg={campaign.profileImg}
+                  rightImg={campaign.rightImg}
+                  username={campaign.username}
+                  displayName={campaign.displayName}
                 />
               </SwiperSlide>
             ))}
@@ -92,7 +99,14 @@ const Campaign: React.FC = () => {
           </div>
         </div>
         <div className="flex justify-center mt-10">
-          <Link href="/campaigns"><Button size="lg" className="rounded-full !w-[200px] cursor-pointer">View All</Button></Link>
+          <Link href="/campaigns">
+            <Button
+              size="lg"
+              className="rounded-full w-[200px]! cursor-pointer"
+            >
+              View All
+            </Button>
+          </Link>
         </div>
       </Container>
     </section>

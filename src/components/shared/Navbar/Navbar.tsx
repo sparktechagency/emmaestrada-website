@@ -1,27 +1,26 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Container from "./Container";
+
 import Link from "next/link";
-import { Search, Menu, X, Bell, Wallet, Contact, LogOut } from "lucide-react";
+import { Menu, X, Bell, Wallet, Contact, LogOut } from "lucide-react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { IoNotifications } from "react-icons/io5";
 import { useProfile } from "@/hooks/context/ProfileContext";
 import { imageUrl } from "@/constants";
 import Cookies from "js-cookie";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuShortcut,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "../ui/button";
+import Container from "../Container";
+import { Button } from "@/components/ui/button";
 
-const Navbar = () => {
+const Navbar = ({ profile }: { profile: any }) => {
   const [mounted, setMounted] = useState(false); // ✅ ADD
   const [scrolled, setScrolled] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
@@ -30,7 +29,7 @@ const Navbar = () => {
   const darkBgRoutes = ["creator", "promotor"];
   const hasDarkBackground = darkBgRoutes.includes(pathname.split("/")[1]);
 
-  const { profile, loading, error } = useProfile();
+  // const { profile, loading, error } = useProfile();
 
   // ✅ Mount guard
   useEffect(() => {
@@ -62,16 +61,18 @@ const Navbar = () => {
   // ⛔ CRITICAL: prevent SSR/CSR mismatch
   if (!mounted) return null;
 
+  // console.log(profile);
   return (
     <div>
       <nav
         className={`fixed w-full z-50 px-2 py-2 md:py-6 md:px-8 lg:px-12 transition-all duration-300
-        ${scrolled && !openMenu
+        ${
+          scrolled && !openMenu
             ? "backdrop-blur-xl bg-[#15141A]/70 shadow-lg"
             : hasDarkBackground || openMenu
-              ? "bg-black"
-              : "md:transparent"
-          }`}
+            ? "bg-black"
+            : "md:transparent"
+        }`}
       >
         <Container>
           <div className="flex items-center justify-between relative">
@@ -84,14 +85,15 @@ const Navbar = () => {
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex absolute top-1/2 left-1/2 -translate-1/2 items-center gap-2 glassBg rounded-full px-8 py-3">
-              {links.map(link => (
+              {links.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   className={`px-4 py-2 transition-colors
-                    ${isActive(link.href)
-                      ? "text-orange-500 font-semibold"
-                      : "text-white/80 hover:text-orange-500"
+                    ${
+                      isActive(link.href)
+                        ? "text-orange-500 font-semibold"
+                        : "text-white/80 hover:text-orange-500"
                     }`}
                 >
                   {link.name}
@@ -102,25 +104,22 @@ const Navbar = () => {
             {/* Right Side */}
             <div className="flex items-center gap-4">
               {/* 🔧 Loading/Error moved INSIDE navbar */}
-              {loading && (
+              {/* {loading && (
                 <span className="text-xs text-white/70">Loading...</span>
               )}
-              {error && (
-                <span className="text-xs text-red-500">{error}</span>
-              )}
+              {error && <span className="text-xs text-red-500">{error}</span>} */}
 
               {profile ? (
                 <ViewAsLogin profile={profile} />
-              ) :
+              ) : (
                 <>
                   <Link href="/login">
                     <Button className="bg-primary btn text-white rounded-full">
                       Log In
                     </Button>
                   </Link>
-                </>}
-
-
+                </>
+              )}
 
               {/* Mobile Menu Button */}
               <button
@@ -149,15 +148,16 @@ const Navbar = () => {
                 />
 
                 <div className="flex flex-col gap-2 mt-6">
-                  {links.map(link => (
+                  {links.map((link) => (
                     <Link
                       key={link.href}
                       href={link.href}
                       onClick={() => setOpenMenu(false)}
                       className={`px-4 py-3 rounded-lg
-                        ${isActive(link.href)
-                          ? "bg-orange-500 text-white"
-                          : "text-white/80 hover:bg-white/5"
+                        ${
+                          isActive(link.href)
+                            ? "bg-orange-500 text-white"
+                            : "text-white/80 hover:bg-white/5"
                         }`}
                     >
                       {link.name}
@@ -183,37 +183,44 @@ export default Navbar;
 
 /* ✅ KEPT your component, just improved usage */
 const ViewAsLogin = ({ profile }: any) => {
-
-  const handleLogout = ()=>{
-    Cookies.remove("accessToken")
-  }
+  const handleLogout = () => {
+    Cookies.remove("accessToken");
+  };
   return (
     <div className="flex items-center gap-3">
       <Wallet strokeWidth={1} size={30} color="#ededed" />
       <Bell strokeWidth={1} size={30} color="white" />
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger>
-          <Avatar className="rounded-lg ">
+          <Avatar className="rounded-lg cursor-pointer">
             <div className="border-2 border-slate-300/50 rounded-full p-1">
               <AvatarImage
-                src={`${imageUrl}${profile?.image}` || "/placeholder.png"}
+                src={
+                  profile?.image
+                    ? `${imageUrl}${profile?.image}`
+                    : "https://www.svgrepo.com/show/452030/avatar-default.svg"
+                }
                 alt={profile?.name}
-                className="w-10 h-10 object-fill rounded-full "
+                className="w-8 h-8 object-fill rounded-full "
               />
             </div>
-            <AvatarFallback>
-              {profile?.name?.[0]?.toUpperCase()}
-            </AvatarFallback>
+            <AvatarFallback>{profile?.name?.[0]?.toUpperCase()}</AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="center">
-          <Link href={profile?.role == "CREATOR" ? "/creator" : "promotor"} ><DropdownMenuItem className="cursor-pointer">
-            Profile
-            <DropdownMenuShortcut><Contact /></DropdownMenuShortcut>
-          </DropdownMenuItem></Link>
+          <Link href={profile?.role == "CREATOR" ? "/creator" : "promotor"}>
+            <DropdownMenuItem className="cursor-pointer">
+              Profile
+              <DropdownMenuShortcut>
+                <Contact />
+              </DropdownMenuShortcut>
+            </DropdownMenuItem>
+          </Link>
           <DropdownMenuItem onSelect={handleLogout}>
             Logout
-            <DropdownMenuShortcut><LogOut /></DropdownMenuShortcut>
+            <DropdownMenuShortcut>
+              <LogOut />
+            </DropdownMenuShortcut>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

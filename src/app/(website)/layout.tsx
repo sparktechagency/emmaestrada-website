@@ -1,10 +1,10 @@
 import Footer from "@/components/shared/Footer";
-import Navbar from "@/components/shared/Navbar";
+import NavServer from "@/components/shared/Navbar/NavServer";
 
 const layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />      
+      <NavServer />
       <main className=" mb-auto">{children}</main>
       <Footer />
     </div>
