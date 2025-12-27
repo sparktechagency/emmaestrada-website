@@ -188,7 +188,7 @@
   display: flex;
   width: max-content;
   gap: 20;
-  animation: marquee 30s linear infinite;
+  animation: marquee 10s linear infinite;
 }
 
 .marquee-item {

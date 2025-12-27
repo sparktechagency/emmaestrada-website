@@ -24,8 +24,8 @@ const ArtistDetails = () => {
             <ArtistDetailsStatics />
             <h1 className='text-2xl font-semibold mt-10 mb-5'>Campaigns by Ariana Grande</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
-            <CampaignCard />
-            <CampaignCard />
+            {/* <CampaignCard />
+            <CampaignCard /> */}
             </div>            
             <div className="flex items-center justify-end mt-10">
             <button className="md:self-end btn bg-secondary text-white px-10 py-5 rounded-full shadow-md">Request to become partner</button>

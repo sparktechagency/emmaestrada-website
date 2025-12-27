@@ -1,9 +1,10 @@
-import Messages from '@/components/ui/website/Influencer/Messages'
+
+import PMessages from '@/components/ui/website/promotor/PMessages'
 import React from 'react'
 
 const page = () => {
   return (
-    <div><Messages /></div>
+    <div><PMessages /></div>
   )
 }
 

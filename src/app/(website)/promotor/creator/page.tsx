@@ -1,34 +1,43 @@
+import Creator from "@/components/ui/website/Influencer/Creator";
+import { myFetch } from "@/utils/myFetch";
 
-import InfluencerList from '@/components/ui/website/promotor/InfluencerList'
-import { myFetch } from '@/utils/myFetch'
-import React from 'react'
 type PageProps = {
-  searchParams: Promise<{
-    type?: string
-  }>
-}
+  searchParams: {
+    type?: "popular" | "followed" | "all";
+  };
+};
 
 const page = async ({ searchParams }: PageProps) => {
-  const { type } = await searchParams;
+  const {type} = await searchParams;
+  
+  console.log("type111", type);
+  
+  let data;
 
-  const [
-    PopularCreator,
-    followedCreator,
-    allCreator
-  ] = await Promise.all([
-    myFetch("/creators/popular", { tags: ["CREATOR"] }),
-    myFetch("/followers/following", { tags: ["CREATOR"] }),
-    myFetch("/creators", { tags: ["CREATOR"] }),
-  ])
+switch (type) {
+  case "followed":
+    data = await myFetch("/followers/following", { tags: ["CREATOR"] });
+    console.log("followed", data);
+    break;
 
-  return (
-    <InfluencerList
-      type={type}
-      PopularCreator={PopularCreator}
-      followedCreator={followedCreator}
-      allCreator={allCreator}
-    />
-  )
+  case "all":
+    data = await myFetch("/creators", { tags: ["CREATOR"] });
+    console.log("all", data);
+    break;
+
+  case "popular":
+  default:
+    data = await myFetch("/creators/popular", { tags: ["CREATOR"] });
+    console.log("popular", data);
+    break;
 }
+  
+  return (
+    <Creator
+      type={type}
+      data={data}
+    />
+  );
+};
 
-export default page
+export default page;

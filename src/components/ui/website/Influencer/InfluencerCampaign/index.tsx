@@ -4,17 +4,16 @@ import Container from "@/components/shared/Container";
 import MyCampaigns from "./MyCampaigns";
 import CreatorPagination from "../Creator/CreatorPagination";
 
-const InfluencerCampaign = ({ campaignType, status }: any) => {
-  console.log(campaignType, status);
+const InfluencerCampaign = ({ campaignType, status }: any) => {  
   return (
     <div>
       <Container>
         <CampaignHeader />
         <div className="mb-10">
           {campaignType === "my-campaigns" ? (
-            <MyCampaigns status={status} campaignType={campaignType} />
+            <MyCampaigns status={status} />
           ) : (
-            <AllCampaigns status={status} campaignType={campaignType} />
+            <AllCampaigns />
           )}
         </div>
         <CreatorPagination />

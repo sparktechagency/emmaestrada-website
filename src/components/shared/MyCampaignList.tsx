@@ -1,0 +1,22 @@
+// MyCampaignList.tsx
+import CampaignCard from "./CampaignCard";
+
+interface Props {
+  campaigns: any[];
+}
+
+const MyCampaignList = ({ campaigns }: Props) => {
+  if (!campaigns?.length) {
+    return <p className="text-center text-gray-500">No campaigns found</p>;
+  }
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {campaigns.map((campaign) => (
+        <CampaignCard key={campaign._id} campaign={campaign} />
+      ))}
+    </div>
+  );
+};
+
+export default MyCampaignList;

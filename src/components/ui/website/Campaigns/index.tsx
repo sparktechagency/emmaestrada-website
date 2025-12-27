@@ -5,6 +5,7 @@ import Container from '@/components/shared/Container';
 import CampaignsList from './CampaignsList';
 import FooterBanner from '@/components/shared/FooterBanner';
 
+// const Campaigns = ({campaigns}: {campaigns: }) => {
 const Campaigns = () => {
     return (
         <div>

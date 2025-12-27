@@ -3,35 +3,16 @@ import { CampaignTabGroup } from "./CampaignTabGroup";
 import ActiveCampaigns from "./ActiveCampaigns";
 import AllUpcomingCampaigns from "./AllUpcomingCampaigns";
 import { myFetch } from "@/utils/myFetch";
+import MyCampaignList from "@/components/shared/MyCampaignList";
 
-const AllCampaigns = async ({
-  status,
-  campaignType,
-}: {
-  status: string;
-  campaignType: string;
-}) => {
-  console.log("status", status);
+const AllCampaigns = async () => {  
   const { data: campaigns } = await myFetch(
-    `/campaigns/active-campaigns?status=${status ? status : "active"}`
+    `/campaigns/active-campaigns`
   );
 
   return (
     <div>
-      <CampaignTabGroup
-        tabs={[
-          { label: "Active", value: "active" },
-          { label: "Upcoming", value: "upcoming" },
-        ]}
-        queryParam="status"
-      />
-      {status === "active" ? (
-        <ActiveCampaigns campaigns={campaigns?.data?.result} />
-      ) : status === "upcoming" ? (
-        <AllUpcomingCampaigns campaigns={campaigns?.data?.result} />
-      ) : (
-        <ActiveCampaigns campaigns={campaigns?.data?.result} />
-      )}
+       <MyCampaignList campaigns={campaigns?.data?.result} />
     </div>
   );
 };

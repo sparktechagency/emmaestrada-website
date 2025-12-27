@@ -9,19 +9,20 @@ import FooterBanner from "@/components/shared/FooterBanner";
 import Testimonial from "./Testimonial";
 import WhyChooseUs from "./WhyChooseUs";
 import { myFetch } from "@/utils/myFetch";
+import getProfile from "@/utils/getProfile";
 
 const HomePage = async ({ searchParams }: any) => {
   // const {role} = await searchParams;
   // console.log('role', role);
   const { data: campaigns } = await myFetch("/campaigns/active-campaigns");
-  // console.log(campaigns?.data?.result);
+  const { data: creators } = await myFetch("/creators");  
 
   return (
     <div className="">
       <HeroSection />
       <Container>
         <ArtAndInfluencerBanner />
-        <ArtistsSection />
+        <ArtistsSection creators={creators}/>
         <WhyChooseUs />
       </Container>
       <BehindProcess />

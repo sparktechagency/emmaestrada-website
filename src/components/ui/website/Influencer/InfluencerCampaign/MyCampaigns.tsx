@@ -1,17 +1,11 @@
-import React from "react";
-import { CampaignTabGroup } from "./CampaignTabGroup";
-import MyPendingCampaigns from "./MyPendingCampaigns";
-import MyCanceledCampaigns from "./MyCanceledCampaigns";
-import MyAcceptedCampaigns from "./MyAcceptedCampaigns";
-import MyCompletedCampaign from "./MyCompletedCampaign";
+import MyCampaignList from "@/components/shared/MyCampaignList";
 import { myFetch } from "@/utils/myFetch";
+import { CampaignTabGroup } from "./CampaignTabGroup";
 
 const MyCampaigns = async ({
-  status,
-  campaignType,
+  status,  
 }: {
-  status: string;
-  campaignType: string;
+  status: string;  
 }) => {
   const { data: campaigns } = await myFetch(
     `/campaigns/active-campaigns?status=${status ? status : "active"}`
@@ -28,17 +22,8 @@ const MyCampaigns = async ({
         ]}
         queryParam="status"
       />
-      {status === "pending" ? (
-        <MyPendingCampaigns campaigns={campaigns?.data?.result} />
-      ) : status === "accepted" ? (
-        <MyAcceptedCampaigns campaigns={campaigns?.data?.result} />
-      ) : status === "canceled" ? (
-        <MyCanceledCampaigns campaigns={campaigns?.data?.result} />
-      ) : status === "completed" ? (
-        <MyCompletedCampaign campaigns={campaigns?.data?.result} />
-      ) : (
-        <MyPendingCampaigns campaigns={campaigns?.data?.result} />
-      )}
+
+      <MyCampaignList campaigns={campaigns?.data?.result} />
     </div>
   );
 };

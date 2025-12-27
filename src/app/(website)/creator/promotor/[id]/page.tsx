@@ -37,7 +37,7 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-5 mb-5">
                     {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
                         <div className="" key={i}>
-                            <CampaignCard
+                            {/* <CampaignCard
                                 name="Feel the Vibe"
                                 budget="$1000"
                                 influencers="25/25"
@@ -50,7 +50,8 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
                                 displayName="DJ Nadir"
                                 isPrivate={i % 2 !== 0}
                                 status="pending"
-                            />
+                            /> */}
+                            514451
                         </div>))}
                 </div>
 

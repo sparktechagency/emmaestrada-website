@@ -2,11 +2,14 @@ import { IoLogoTiktok } from "react-icons/io5";
 import { IoIosStar } from "react-icons/io";
 import { Button } from "../ui/button";
 import { FaPlus } from "react-icons/fa6";
+import { IUser } from "@/types/profile";
+import { imageUrl } from "@/constants";
+import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 
-const ArtistCard = ({ data }: any) => {
-    // Custom style to mimic the image background
+const ArtistCard = ({ data , profile}: { data?: IUser, profile?: any }) => {    
+        
     const cardStyle = {
-        backgroundImage: `url('${data.imageUrl}')`,
+        backgroundImage: `url(${data?.image ? imageUrl + data?.image  : "/placeholder.png"})`
     };
 
     return (
@@ -31,17 +34,26 @@ const ArtistCard = ({ data }: any) => {
                     </div>
                     <Button size="sm" className=" right-5 glassBg">Follow <FaPlus size={2} /></Button>
                 </div>
-            
+
                 <div className="absolute bottom-0 w-full bg-white p-3 border-t border-white/10 flex items-center justify-between">
                     <div className="flex items-center space-x-3 ">
-                        {/* Avatar */}
-                        <div className={`w-8 h-8 rounded-full ${data.avatarColor} flex items-center justify-center text-xs font-semibold text-white ring-2 ring-white ring-offset-2 ring-offset-black/50`}>
-                            {data.creator.charAt(0)}
-                        </div>
+
+                        <Avatar className="w-10 h-10 border-2 relative">
+                            <AvatarImage
+                                src={`${imageUrl + data?.image}`}
+                                alt={data?.name}
+                                className="w-full h-full object-cover border-2 border-slate-300"
+                            />
+                            <AvatarFallback className="bg-orange-500 text-white text-2xl">
+                                {data?.name?.[0]?.toUpperCase()}
+                            </AvatarFallback>
+                        </Avatar>
                         {/* Creator Name */}
-                        <span className="text-lg font-medium text-black blur-[4px]">
-                            {data.creator}
+                        
+                        <span className={`text-lg font-medium text-black ${!profile && "blur-xs"}`}>
+                            {data?.name ?? data?.userName}
                         </span>
+
                     </div>
                     {/* Social Icon */}
                     <div className="border p-1">
@@ -54,3 +66,4 @@ const ArtistCard = ({ data }: any) => {
 };
 
 export default ArtistCard;
+

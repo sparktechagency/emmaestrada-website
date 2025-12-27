@@ -4,10 +4,10 @@ import MessageSidebar from './MessageSidebar'
 import ChatABox from './ChatABox'
 import { myFetch } from '@/utils/myFetch'
 
-const Messages = async ({chatList, response}:any) => {
+const Messages = async ({ chatList, response }: any) => {
+
     console.log("response", response);
-    
-    
+
     return (
         <div>
             <Container >
@@ -18,7 +18,7 @@ const Messages = async ({chatList, response}:any) => {
                 <div className="flex flex-col lg:flex-row min-h-screen overflow-hidden md:gap-5 pb-20">
                     {/* <MessageSidebar chatData={chatList} /> */}
                     <MessageSidebar />
-                    <ChatABox messages={response?.data?.messages}/>
+                    <ChatABox messages={response?.data?.data?.messages} />
                 </div>
             </Container>
         </div>

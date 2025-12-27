@@ -9,10 +9,11 @@ import React, {
   useRef,
 } from "react";
 import { myFetch } from "@/utils/myFetch";
-import { Profile } from "@/types/profile";
+import { IUser } from "@/types/profile";
+
 
 interface ProfileContextType {
-  profile: Profile | null;
+  profile: IUser | null;
   loading: boolean;
   error: string | null;
   refetchProfile: () => Promise<void>;
@@ -22,7 +23,7 @@ interface ProfileContextType {
 const ProfileContext = createContext<ProfileContextType | undefined>(undefined);
 
 export const ProfileProvider = ({ children }: { children: ReactNode }) => {
-  const [profile, setProfile] = useState<Profile | null>(null);
+  const [profile, setProfile] = useState<IUser | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -37,6 +38,8 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
       const res = await myFetch("/users/profile", {cache: "no-cache"});
 
       if (res?.success) {
+        console.log("resres", res);
+        
         setProfile(res?.data?.data);
       } else {
         setError(res?.message || "Failed to load profile");

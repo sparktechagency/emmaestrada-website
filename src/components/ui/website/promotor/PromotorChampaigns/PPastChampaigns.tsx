@@ -7,7 +7,7 @@ const PPastChampaigns = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-7 md:gap-10">
                 {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
                     <div className="" key={i}>
-                        <CampaignCard
+                        {/* <CampaignCard
                             name="Feel the Vibe"
                             budget="$1000"
                             influencers="25/25"
@@ -20,7 +20,7 @@ const PPastChampaigns = () => {
                             displayName="DJ Nadir"
                             isPrivate={i % 2 !== 0}
                             status="pcompleted"
-                        />
+                        /> */}
                     </div>
                 ))}
             </div>

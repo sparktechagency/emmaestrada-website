@@ -2,6 +2,7 @@ import Container from "@/components/shared/Container";
 import { Star, ArrowUpRight } from "lucide-react";
 import BrandLogos from "./BrandLogos";
 import { myFetch } from "@/utils/myFetch";
+import Link from "next/link";
 
 const HeroSection = async () => {
   // brands data
@@ -75,12 +76,13 @@ const HeroSection = async () => {
           </p>
 
           {/* CTA Button */}
-          <button className="group bg-white text-gray-900 px-8 py-4 rounded-full inline-flex items-center gap-2 hover:bg-gray-100 transition-all transform hover:scale-105">
+          <Link href="/login"><button className="group bg-white cursor-pointer text-gray-900 px-8 py-4 rounded-full inline-flex items-center gap-2 hover:bg-gray-100 transition-all transform hover:scale-105">
             <span className="text-base md:text-lg">Get Started</span>
             <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-          </button>
+          </button></Link>
         </div>
       </Container>
+      
       <BrandLogos brands={brands?.data} />
       <style>{`
         @keyframes float {

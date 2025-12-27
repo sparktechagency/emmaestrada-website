@@ -1,4 +1,5 @@
-"use client";
+
+import Marquee from "react-fast-marquee";
 
 interface Brand {
   name: string;
@@ -6,7 +7,10 @@ interface Brand {
   link: string;
   _id: string;
 }
-const BrandLogos = ({ brands }: { brands: Brand[] }) => {
+const BrandLogos = ({ brands }: { brands: any }) => {
+
+  console.log("brand", brands);
+  
   return (
     <>
       <section
@@ -14,22 +18,12 @@ const BrandLogos = ({ brands }: { brands: Brand[] }) => {
         className="border-t border-white/10 glassBg backdrop-blur-xl rounded-t-none! rounded-b-none! absolute w-full mt-10 md:bottom-10 z-20"
       >
         <div className="py-6 overflow-hidden">
-          <div
-            className="marquee-track"
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.animationPlayState = "paused")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.animationPlayState = "running")
-            }
-          >
-            {[...brands, ...brands, ...brands].map((brand, idx) => (
-              <div key={idx} className="marquee-item bg-transparent">
-                <span className="text-slate-300 text-2xl uppercase">
-                  {brand.name}
-                </span>
-              </div>
-            ))}
+          <div className="flex items-center">
+            {brands && brands?.result?.map((brand:Brand, idx:number) => <Marquee key={idx} speed={50}> <div key={idx} className="marquee-item bg-transparent">
+              <span className="text-slate-300 text-2xl uppercase">
+                {brand.name}
+              </span>
+            </div></Marquee>)}
           </div>
         </div>
       </section>

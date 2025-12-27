@@ -1,15 +1,10 @@
-import React from 'react'
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Separator } from "@/components/ui/separator";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Textarea } from "@/components/ui/textarea";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Music, Search } from 'lucide-react';
-import { CampaignTabGroup } from '../InfluencerCampaign/CampaignTabGroup';
+import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
+import { Search } from 'lucide-react';
+
 import { imageUrl } from '@/constants';
 import { myFetch } from '@/utils/myFetch';
 import Link from 'next/link';
@@ -39,15 +34,13 @@ const timeAgo = (dateString: string): string => {
 
 
 // const MessageSidebar = ({ chatData }: any) => {
-const MessageSidebar = async () => {
+const PMessageSidebar = async () => {
 
     const chatList = await myFetch("/chats", { tags: ["chats"] });
     console.log("data dddd", chatList?.data?.data?.chats);
 
     return (
         <div className="w-full lg:w-[30%] border-r bg-white flex flex-col rounded-2xl ">
-
-            {/* Tabs */}
             <div className=" relative p-2 flex items-center my-5">
                 <Input
                     placeholder="Search campaigns or artists..."
@@ -55,9 +48,6 @@ const MessageSidebar = async () => {
                 />
                 <button className='absolute right-2 top-1/2 transform -translate-y-1/2 bg-secondary h-12 w-12  rounded-r-md'><Search className="  text-white w-5 h-5 mx-auto" /></button>
             </div>
-
-
-            {/* Conversation List */}
             <ScrollArea className="flex-1">
 
                 {/* Item */}
@@ -75,7 +65,7 @@ const MessageSidebar = async () => {
                                     </AvatarFallback>
                                 </Avatar>
                                 <div className="">
-                                    <p className="font-semibold capitalize">{item.participants[0]?.name  ?? item.participants[0]?.userName}</p>
+                                    <p className="font-semibold capitalize">{item.participants[0]?.name ?? item.participants[0]?.userName}</p>
                                     <p className="text-sm text-gray-600 text-clip pr-3">{item?.lastMessage?.text ?? 'text'}</p>
 
                                 </div>
@@ -97,4 +87,4 @@ const MessageSidebar = async () => {
     )
 }
 
-export default MessageSidebar
+export default PMessageSidebar

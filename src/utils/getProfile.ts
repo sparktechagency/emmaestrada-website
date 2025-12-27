@@ -16,7 +16,6 @@ const getProfile = async (): Promise<any | null> => {
     },
   });
   const { data } = await res?.json();
-
   return data;
 };
 

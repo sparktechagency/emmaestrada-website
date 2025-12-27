@@ -10,9 +10,9 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { formatChatTime } from "@/components/shared/FormatChatTime "
 import { imageUrl } from "@/constants"
 import getProfile from "@/utils/getProfile"
-import ChatBoxFooter from "./ChatBoxFooter"
+import PChatBoxFooter from "./PChatBoxFooter"
 
-const ChatABox = async({ messages }: any) => {
+const PChatBox = async({ messages }: any) => {
   const user = await getProfile();
 
   return (
@@ -85,9 +85,9 @@ const ChatABox = async({ messages }: any) => {
         })}
       </ScrollArea>
       {/* Footer */}
-      <ChatBoxFooter />
+      <PChatBoxFooter />
     </div>
   )
 }
 
-export default ChatABox
+export default PChatBox

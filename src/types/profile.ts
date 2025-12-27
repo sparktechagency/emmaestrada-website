@@ -1,5 +1,5 @@
 // types/profile.ts
-export interface Profile {
+export interface IUser {
   _id: string;
   name: string;                     // Full name
   userName: string;                 // Username
@@ -8,7 +8,7 @@ export interface Profile {
   phone?: string;                   // Phone number
   location?: string;                // Location
   country?: string;                 // Country
-  image: string;                    // Avatar image URL
+  image?: string;                    // Avatar image URL
   bio?: string;                     // Artist bio
   gender?: "male" | "female" | "other";
   birthday?: string;                // ISO date string
@@ -34,5 +34,5 @@ export interface Profile {
 export interface ProfileResponse {
   success: boolean;
   message: string;
-  data: Profile;
+  data: IUser;
 }

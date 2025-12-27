@@ -46,6 +46,10 @@ export default function ProfileInfo() {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [formData, setFormData] = useState<any>({});
   
+  
+  console.log("profile", profile);
+  
+
   useEffect(() => {
     if (profile) {
       setFormData({

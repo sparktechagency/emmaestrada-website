@@ -31,8 +31,6 @@ const Navbar = ({ profile }: { profile: any }) => {
   const darkBgRoutes = ["creator", "promotor"];
   const hasDarkBackground = darkBgRoutes.includes(pathname.split("/")[1]);
 
-  // const { profile, loading, error } = useProfile();
-
   // ✅ Mount guard
   useEffect(() => {
     setMounted(true);
