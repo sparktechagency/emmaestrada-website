@@ -44,6 +44,8 @@
     "react-icons": "^5.5.0",
     "react-vertical-timeline-component": "^3.5.3",
     "recharts": "^3.5.0",
+    "shadcn": "^3.6.2",
+    "socket.io-client": "^4.8.3",
     "sonner": "^2.0.7",
     "sweetalert2": "^11.26.17",
     "swiper": "^12.0.3",

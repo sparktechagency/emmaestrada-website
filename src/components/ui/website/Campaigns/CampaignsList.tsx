@@ -1,8 +1,13 @@
+import Campaign from "@/components/shared/Campaign";
 import CampaignCard from "@/components/shared/CampaignCard";
+import getProfile from "@/utils/getProfile";
 import Link from "next/link";
 import React from "react";
 
-const CampaignsList = () => {
+const CampaignsList = async({data}: {data:any}) => {
+  const user = await  getProfile()  
+    console.log("Campaigns user", user);
+      
   return (
     <div>
       <div>
@@ -16,37 +21,9 @@ const CampaignsList = () => {
         </p>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 md:gap-x-4 gap-y-5">
-        {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-          <div className="" key={i}>
-            <Link href={`/creator/${i}`}>
-              <CampaignCard
-                campaign={{
-                  _id: `${i}`,
-                  title: "Feel the Vibe",
-                  budget: {
-                    rewardRate: 25,
-                    perViews: 1000,
-                    minPayout: 100,
-                    maxPayout: 1000,
-                    flatPrice: 150,
-                  },
-                  platforms: ["TikTok", "Instagram"],
-                  campaignAmount: 1000,
-                  paidAmount: 200,
-                  totalPaidOutAmount: 200,
-                  contentType: "UGC",
-                  genre: "Pop",
-                  thumbnail: "/images/campaign-img.png",
-                  profileImg: "/dj.jpg",
-                  username: "rikodj890",
-                  displayName: "DJ Nadir",
-                  status: "active",
-                  isJoined: false,
-                }}
-              />
-            </Link>
-          </div>
-        ))}
+           {data?.result?.map((campaign: any) => (              
+                <CampaignCard role={user?.role} key={campaign._id} campaign={campaign} />              
+            ))}        
       </div>
     </div>
   );

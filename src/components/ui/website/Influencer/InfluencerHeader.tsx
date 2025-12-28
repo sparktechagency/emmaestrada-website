@@ -35,8 +35,7 @@ const displayLinks = [
 
 const InfluencerHeader = ({ profile }: { profile: any }) => {
   const pathname = usePathname();
-  const route = useRouter();
-  console.log(profile);
+  const route = useRouter();  
 
   const isActive = (path: string) => {
     if (path === "/creator") {

@@ -7,6 +7,7 @@ import { Gift } from "lucide-react";
 import { Button } from "../ui/button";
 import { imageUrl } from "@/constants";
 import { useProfile } from "@/hooks/context/ProfileContext";
+import Link from "next/link";
 
 type CampaignStatus =
   | "upcoming"
@@ -20,7 +21,7 @@ type CampaignStatus =
 interface CampaignCardProps {
   campaign: {
     _id: string;
-    title: string;
+    title: string;    
     budget: {
       rewardRate: number;
       perViews: number;
@@ -43,6 +44,7 @@ interface CampaignCardProps {
     isJoined?: boolean;    
     [key: string]: any;
   };
+  role?: string;
 }
 
 /* -------------------- STATUS CONFIG -------------------- */
@@ -100,7 +102,7 @@ const platformIcons: Record<string, string> = {
   YouTube: "/youtube.png",
 };
 
-const CampaignCard = ({ campaign }: CampaignCardProps) => {
+const CampaignCard = ({ campaign,  role}: CampaignCardProps) => {
   const status = campaign?.status || "active";
   const buttonConfig = statusButtonConfig[status];
   const progress = campaign?.campaignAmount
@@ -108,7 +110,6 @@ const CampaignCard = ({ campaign }: CampaignCardProps) => {
         (campaign?.totalPaidOutAmount / campaign?.campaignAmount) * 100
       )
     : 0;
-
     const {profile} = useProfile()
 
   return (
@@ -245,9 +246,9 @@ const CampaignCard = ({ campaign }: CampaignCardProps) => {
           </p>
         </div>
 
-        <Button className="mt-3 py-5!" disabled={buttonConfig.disabled}>
+        <Link href={`/${role === "PROMOTOR" ? "promotor": "creator"}/${campaign?._id}`}><Button className="mt-3 w-full! py-5!" disabled={buttonConfig.disabled}>
           {buttonConfig.label}
-        </Button>
+        </Button></Link>
       </div>
 
       {/* <div className="relative order-1 md:order-2"> */}

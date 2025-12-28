@@ -1,13 +1,16 @@
+'use client'
 import React from 'react'
 import { DataProvider } from './DataContext'
-import { ProfileProvider } from './ProfileContext'
+import { ProfileProvider, useProfile } from './ProfileContext'
 
-const ContextProviders = ({ children }: { children: React.ReactNode }) => {
+
+const ContextProviders = async({ children }: { children: React.ReactNode }) => {
+       
     return (
         <>
             <DataProvider>
-                <ProfileProvider>
-                    {children}
+                <ProfileProvider>                    
+                        {children}                    
                 </ProfileProvider>
             </DataProvider>
         </>
