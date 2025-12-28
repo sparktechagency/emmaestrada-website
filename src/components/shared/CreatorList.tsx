@@ -63,7 +63,7 @@ const CreatorList = ({ creatorData }: { creatorData: any }) => {
                                 </TableHeader>
 
                                 <TableBody>
-                                    {creatorData?.data?.data && creatorData?.data?.data?.map((row: any, i: number) => (
+                                    {creatorData?.data && creatorData?.data?.map((row: any, i: number) => (
                                         <TableRow key={i}>
                                             <TableCell>
                                                 <div className="flex items-center gap-3">

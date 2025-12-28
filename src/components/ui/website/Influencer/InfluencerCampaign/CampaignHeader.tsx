@@ -26,6 +26,7 @@ const CampaignHeader = () => {
   const [visibility, setVisibility] = useState("all");
   const [sortBy, setSortBy] = useState("all");
   const searchParams = useSearchParams();
+  const [searchValue, setSearchValue] = useState('');  
   const params = new URLSearchParams(searchParams.toString());
   
   const router = useRouter();
@@ -46,7 +47,6 @@ const CampaignHeader = () => {
     console.log("filters", filters);
   };
 
-  const [searchValue, setSearchValue] = useState('');  
 
   useEffect(() => {
     const params = new URLSearchParams(searchParams.toString());

@@ -5,12 +5,14 @@ import { myFetch } from "@/utils/myFetch";
 
 const Page = async ({ searchParams }: any) => {
   const params = await searchParams;
-  const queryString = new URLSearchParams(params).toString();
+  
+  const {campaignType, status, ...rest} = params;
+  const queryString = new URLSearchParams(rest).toString();
 
   return (
     <InfluencerCampaign
-      campaignType={params.campaignType}
-      status={params.status}
+      campaignType={campaignType}
+      status={status}
       queryString={queryString}
     />
   );

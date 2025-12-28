@@ -15,13 +15,13 @@ import { Button } from '@/components/ui/button';
 
 import { bricolage } from '@/constants/bricolage';
 import { useRouter, useSearchParams } from 'next/navigation';
-import FilterModal, { FilterValues } from '../../Influencer/InfluencerCampaign/FilterModal';
+import FilterModal from '../../Influencer/InfluencerCampaign/FilterModal';
 
 const CampaignHeader = () => {
   const [filterModalOpen, setFilterModalOpen] = useState(false);
   const [visibility, setVisibility] = useState("");
   const [sortBy, setSortBy] = useState("");
-  const handleApplyFilters = (filters: FilterValues) => {
+  const handleApplyFilters = (filters:any) => {
     console.log("filters", filters)
   };
 

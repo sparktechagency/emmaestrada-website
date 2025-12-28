@@ -7,22 +7,42 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useState } from 'react';
-import { FilterValues } from '../InfluencerCampaign/FilterModal';
+import { useEffect, useState } from 'react';
 
 import { Input } from '@/components/ui/input';
 import { ArrowUpDown, Search, SlidersHorizontal } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import CreatorFilterModal from '@/components/shared/CreatorFilterModal';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-
-const CreatorHeader = () => {  
+const CreatorHeader = () => {
   const [sortBy, setSortBy] = useState("");
   const [filterModalOpen, setFilterModalOpen] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
 
-  const handleApplyFilters = (filters: FilterValues) => {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const handleApplyFilters = (filters: any) => {
     console.log("filters", filters)
   };
+
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    if (searchValue) {
+      params.set('searchTerm', searchValue);
+    } else {
+      params.delete('searchTerm');
+    }
+    if (sortBy) {
+      params.set('sort', sortBy);
+    } else {
+      params.delete('sort');
+    }
+    router.push(`${pathname}?${params.toString()}`);
+  }, [searchValue, sortBy]);
 
   return (
     <div className='mt-10'>
@@ -38,6 +58,8 @@ const CreatorHeader = () => {
           <div className="flex-1 relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
             <Input
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
               placeholder="Search creator..."
               className="pl-10 bg-white h-12"
             />
@@ -62,10 +84,10 @@ const CreatorHeader = () => {
                 </div>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="followers">No of Follower</SelectItem>
-                <SelectItem value="instagram-follower">Instragram Follower</SelectItem>
-                <SelectItem value="youtube-follower">Youtube Follower</SelectItem>
-                <SelectItem value="tiktok-followers">Tiktok Follower</SelectItem>                
+                <SelectItem value="totalFollowers">No of Follower</SelectItem>
+                <SelectItem value="instagramFollowers">Instragram Follower</SelectItem>
+                <SelectItem value="youtubeFollowers">Youtube Follower</SelectItem>
+                <SelectItem value="tiktokFollowers">Tiktok Follower</SelectItem>
                 <SelectItem value="rating">Rating</SelectItem>
                 <SelectItem value="engagement">Engagement</SelectItem>
                 <Button

@@ -7,16 +7,43 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Input } from '@/components/ui/input';
 import { ArrowUpDown, Search } from 'lucide-react';
 import { SelectSeparator } from '@radix-ui/react-select';
 import { Button } from '@/components/ui/button';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 
 const CPromotorHeader = () => {
   const [sortBy, setSortBy] = useState("");
+
+    const [searchValue, setSearchValue] = useState('');
+  
+    const searchParams = useSearchParams();
+    const router = useRouter();
+    const pathname = usePathname();
+
+
+      useEffect(() => {
+        const params = new URLSearchParams(searchParams.toString());
+    
+        if (searchValue) {
+          params.set('searchTerm', searchValue);
+        } else {
+          params.delete('searchTerm');
+        }
+
+        if (sortBy) {
+          params.set('sort', sortBy);
+        } else {
+          params.delete('sort');
+        }
+    
+        router.push(`${pathname}?${params.toString()}`);
+      }, [searchValue, sortBy]);
+
   return (
     <div className='mt-10'>
       <div className="mb-6">
@@ -30,6 +57,8 @@ const CPromotorHeader = () => {
           <div className="flex-1 relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
             <Input
+             value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
               placeholder="Search promotor..."
               className="pl-10 bg-white h-12"
             />
@@ -45,8 +74,8 @@ const CPromotorHeader = () => {
                 </div>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="campaigns">No of Campaigns</SelectItem>
-                <SelectItem value="follower">No of Follower</SelectItem>
+                <SelectItem value="totalCampaigns">No of Campaigns</SelectItem>
+                <SelectItem value="totalFollowers">No of Follower</SelectItem>
                 <SelectItem value="rating">Rating</SelectItem>
                 <SelectSeparator />
                 <Button
