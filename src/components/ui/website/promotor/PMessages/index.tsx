@@ -13,7 +13,7 @@ const PMessages = async ({ chatList, response }: any) => {
                 </div>
                 <div className="flex flex-col lg:flex-row min-h-screen overflow-hidden md:gap-5 pb-20">                    
                     <PMessageSidebar />
-                    <PChatBox messages={response?.data?.data?.messages} />
+                    <PChatBox  />
                 </div>
             </Container>
         </div>
