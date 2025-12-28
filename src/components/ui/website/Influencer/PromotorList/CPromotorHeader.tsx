@@ -26,23 +26,23 @@ const CPromotorHeader = () => {
     const pathname = usePathname();
 
 
-      useEffect(() => {
-        const params = new URLSearchParams(searchParams.toString());
+      // useEffect(() => {
+      //   const params = new URLSearchParams(searchParams.toString());
     
-        if (searchValue) {
-          params.set('searchTerm', searchValue);
-        } else {
-          params.delete('searchTerm');
-        }
+      //   if (searchValue) {
+      //     params.set('searchTerm', searchValue);
+      //   } else {
+      //     params.delete('searchTerm');
+      //   }
 
-        if (sortBy) {
-          params.set('sort', sortBy);
-        } else {
-          params.delete('sort');
-        }
+      //   if (sortBy) {
+      //     params.set('sort', sortBy);
+      //   } else {
+      //     params.delete('sort');
+      //   }
     
-        router.push(`${pathname}?${params.toString()}`);
-      }, [searchValue, sortBy]);
+      //   router.push(`${pathname}?${params.toString()}`);
+      // }, [searchValue, sortBy]);
 
   return (
     <div className='mt-10'>

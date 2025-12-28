@@ -15,8 +15,6 @@ const Creator = ({
   allCreator,
 }: any) => {
 
-  console.log("Creator", data);
-  
   return (
     <div>
       <Container>

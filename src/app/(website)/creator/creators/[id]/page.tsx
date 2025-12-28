@@ -16,10 +16,6 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
     const creatorData = await myFetch(`/creators/get-single/${id}`);
 
     const { data: creator } = creatorData?.data;
-
-    console.log("creator", creator);
-
-
     const platformData = [
         { title: "Total Followers", color: "text-[#69C9D0]", followers: creator?.totalFollowers ?? 0, icon: <FaTiktok /> },
         { title: "Engagement", color: "text-[#FF0000]", followers: creator?.engagement ?? 0, icon: <FaYoutube /> },

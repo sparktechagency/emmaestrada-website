@@ -21,7 +21,7 @@ const CampaignHeader = () => {
   const [filterModalOpen, setFilterModalOpen] = useState(false);
   const [visibility, setVisibility] = useState("");
   const [sortBy, setSortBy] = useState("");
-  const handleApplyFilters = (filters:any) => {
+  const handleApplyFilters = (filters: any) => {
     console.log("filters", filters)
   };
 
