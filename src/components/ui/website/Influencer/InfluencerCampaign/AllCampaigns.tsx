@@ -1,18 +1,19 @@
 import React from "react";
-import { CampaignTabGroup } from "./CampaignTabGroup";
-import ActiveCampaigns from "./ActiveCampaigns";
-import AllUpcomingCampaigns from "./AllUpcomingCampaigns";
 import { myFetch } from "@/utils/myFetch";
 import MyCampaignList from "@/components/shared/MyCampaignList";
 
-const AllCampaigns = async () => {  
-  const { data: campaigns } = await myFetch(
-    `/campaigns/active-campaigns`
-  );
+const AllCampaigns = async ({ queryString }: { queryString: string }) => {
+
+
+  const url2 = queryString
+    ? `/campaigns/active-campaigns?${queryString}`
+    : `/campaigns/active-campaigns`;
+
+  const { data: campaigns2 } = await myFetch(url2);
 
   return (
     <div>
-       <MyCampaignList campaigns={campaigns?.data?.result} />
+      <MyCampaignList campaigns={campaigns2?.data?.result} />
     </div>
   );
 };

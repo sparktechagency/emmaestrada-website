@@ -52,9 +52,9 @@ const SetBusinessName = () => {
 
       if (result?.data) {
         toast.success(result.data.message)
-        clearData()
         router.push("/")
         router.refresh()
+        clearData()
       }
     } catch (error) {
       console.error("Error creating user:", error)

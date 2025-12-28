@@ -14,8 +14,10 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 import { bricolage } from "@/constants/bricolage";
-import { useRouter, useSearchParams } from "next/navigation";
-import FilterModal, { FilterValues } from "./FilterModal";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import FilterModal from "./FilterModal";
+
+
 
 const CampaignHeader = () => {
   const [activeCampaignTab, setActiveCampaignTab] = useState("campaigns");
@@ -23,9 +25,11 @@ const CampaignHeader = () => {
 
   const [visibility, setVisibility] = useState("all");
   const [sortBy, setSortBy] = useState("all");
-  const router = useRouter();
   const searchParams = useSearchParams();
-
+  const params = new URLSearchParams(searchParams.toString());
+  
+  const router = useRouter();
+  const pathname = usePathname();
   useEffect(() => {
     const paramValue = searchParams.get("campaignType");
     if (paramValue && paramValue !== activeCampaignTab) {
@@ -38,9 +42,24 @@ const CampaignHeader = () => {
     router.push(`/creator?campaignType=${type}`);
   };
 
-  const handleApplyFilters = (filters: FilterValues) => {
+  const handleApplyFilters = (filters: any) => {
     console.log("filters", filters);
   };
+
+  const [searchValue, setSearchValue] = useState('');  
+
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    if (searchValue) {
+      params.set('searchTerm', searchValue);
+    } else {
+      params.delete('searchTerm');
+    }
+
+    router.push(`${pathname}?${params.toString()}`);
+  }, [searchValue]);
+
 
   return (
     <div className="pt-10">
@@ -53,21 +72,19 @@ const CampaignHeader = () => {
       <div className="flex items-center justify-center md:inline-block mb-6  bg-secondary rounded-full p-1">
         <button
           onClick={() => setCampaignType("campaigns")}
-          className={`flex-1 sm:flex-none md:px-14 py-3 rounded-full transition-colors ${
-            activeCampaignTab === "campaigns"
-              ? "bg-white text-gray-900 "
-              : " text-white"
-          }`}
+          className={`flex-1 sm:flex-none md:px-14 py-3 rounded-full transition-colors ${activeCampaignTab === "campaigns"
+            ? "bg-white text-gray-900 "
+            : " text-white"
+            }`}
         >
           Campaigns
         </button>
         <button
           onClick={() => setCampaignType("my-campaigns")}
-          className={`flex-1 sm:flex-none md:px-14 py-3 rounded-full transition-colors ${
-            activeCampaignTab === "my-campaigns"
-              ? "bg-white text-gray-900 "
-              : " text-white"
-          }`}
+          className={`flex-1 sm:flex-none md:px-14 py-3 rounded-full transition-colors ${activeCampaignTab === "my-campaigns"
+            ? "bg-white text-gray-900 "
+            : " text-white"
+            }`}
         >
           My campaigns
         </button>
@@ -80,6 +97,8 @@ const CampaignHeader = () => {
           <div className="flex-1 relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
             <Input
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
               placeholder="Search creator..."
               className="pl-10 bg-white h-12"
             />

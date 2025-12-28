@@ -3,14 +3,15 @@ import { myFetch } from "@/utils/myFetch";
 import { CampaignTabGroup } from "./CampaignTabGroup";
 
 const MyCampaigns = async ({
-  status,  
+  status,   
 }: {
   status: string;  
 }) => {
+  
   const { data: campaigns } = await myFetch(
-    `/campaigns/active-campaigns?status=${status ? status : "active"}`
+    `/submissions/my-submissions?status=${status ? status : "pending"}`
   );
-  console.log(campaigns?.data?.result);
+  console.log("campaigns?.data?.result", campaigns?.data);
   return (
     <div>
       <CampaignTabGroup
@@ -23,7 +24,7 @@ const MyCampaigns = async ({
         queryParam="status"
       />
 
-      <MyCampaignList campaigns={campaigns?.data?.result} />
+      <MyCampaignList campaigns={campaigns?.data?.data} />
     </div>
   );
 };
