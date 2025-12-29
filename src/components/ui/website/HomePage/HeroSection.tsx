@@ -6,7 +6,8 @@ import Link from "next/link";
 
 const HeroSection = async () => {
   // brands data
-  const { data: brands } = await myFetch(`/sliders/all`);
+  const  sliders = await myFetch(`/sliders/all`);
+    
   return (
     <section className="relative h-screen md:py-20 pb-30 pt-24">
       <div className="absolute top-0 left-0 w-full h-full inset-0 pointer-events-none -z-10">
@@ -83,7 +84,7 @@ const HeroSection = async () => {
         </div>
       </Container>
       
-      <BrandLogos brands={brands?.data} />
+      <BrandLogos brands={sliders?.data} />
       <style>{`
         @keyframes float {
           0%, 100% {

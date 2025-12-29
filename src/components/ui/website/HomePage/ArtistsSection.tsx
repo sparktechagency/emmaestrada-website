@@ -59,7 +59,7 @@ function ArtistsSection({ creators }: any) {
               1280: { slidesPerView: 3.5 }, // Desktop
             }}
           >
-            {creators?.data?.length !== 0 && creators?.data?.map((data: IUser) => ( 
+            {creators?.length !== 0 && creators?.map((data: IUser) => ( 
               <SwiperSlide key={data._id}>
                 <ArtistCard data={data} profile={profile}/>
               </SwiperSlide>

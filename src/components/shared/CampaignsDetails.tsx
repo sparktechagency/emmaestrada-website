@@ -5,8 +5,9 @@ import Link from "next/link";
 import SubmitButton from "../ui/website/Campaigns/ChampaignDetails/SubmitButton";
 import Container from "./Container";
 import { imageUrl } from "@/constants";
+import getProfile from "@/utils/getProfile";
 
-export default function CampaignsDetails({ data }: { data: any }) {
+const  CampaignsDetails = async ({ data }: { data: any })=> {
 
     console.log("CampaignsDetails", data);
 const platformIcons: Record<string, string> = {
@@ -15,6 +16,8 @@ const platformIcons: Record<string, string> = {
   YouTube: "/youtube.png",
 };
 
+  const user = await getProfile();        
+  console.log("CampaignsDetails", user);
     return (
         <Container>
             <div className="glassBg p-4 my-10">
@@ -88,7 +91,7 @@ const platformIcons: Record<string, string> = {
                     
                         {data?.assets?.contentRequirement && data?.assets?.contentRequirement?.map((item:string)=><span key={item} className="text-xl">{item}</span>)}                
                 </div>
-                <SubmitButton />
+                <SubmitButton userId={user?._id} />
 
                 {/* <div className="flex justify-end mt-5">
                     <Modal
@@ -130,3 +133,5 @@ const platformIcons: Record<string, string> = {
         </Container>
     );
 }
+
+export default  CampaignsDetails;

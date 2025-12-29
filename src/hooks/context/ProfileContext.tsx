@@ -40,7 +40,7 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
       if (res?.success) {
         console.log("resres", res);
         
-        setProfile(res?.data?.data);
+        setProfile(res?.data);
       } else {
         setError(res?.message || "Failed to load profile");
       }

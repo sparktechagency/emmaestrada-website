@@ -8,7 +8,7 @@ export interface FetchResponse {
   success: boolean;
   message?: string;
   data?: any;
-  pagination?: {
+  meta?: {
     total: number;
     page: number;
     limit: number;
@@ -52,7 +52,6 @@ export const myFetch = async (
   };
 
   try {
-    // console.log('Fetch URL:', `${process.env.BASE_URL}${url}`);
     const response = await fetch(`${process.env.BASE_URL}${url}`, {
       method,
       headers: reqHeaders,
@@ -61,23 +60,23 @@ export const myFetch = async (
       ...(!(method === "GET") ? { cache: "no-store" } : { cache: cache }),
     });
 
-    const {data} = await response.json();
+    const responseData = await response.json();
 
     if (response.ok) {
       return {
-        success: data?.success ?? true,
-        message: data?.message,
-        data: data,
-        pagination: data?.pagination,
+        success: responseData?.success ?? true,
+        message: responseData?.message,
+        data: responseData?.data,
+        meta: responseData?.meta,
         error: null,
       };
     }
 
     return {
       success: false,
-      message: data?.message,
+      message: responseData?.message,
       data: null,
-      error: data?.errorMessages || "Request failed",
+      error: responseData?.errorMessages || "Request failed",
     };
   } catch (error) {
     return {

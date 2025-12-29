@@ -55,10 +55,10 @@ const LoginVerify = () => {
     try {
       const result = await myFetch('/auth/verify-otp', { method: "POST", body: { email, oneTimeCode: Number(otpValue) } });      
       
-      console.log("LOGIN result", result);
+      console.log("LOGIN result", result?.data);
       
-      if (result?.data?.success) {
-        const {data} = result?.data;
+      if (result?.success) {
+        const {data} = result;
         Cookies.set("accessToken", data?.accessToken)
         toast.success(data?.message)
         route.push("/")

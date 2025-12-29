@@ -4,9 +4,7 @@ import FooterBanner from '@/components/shared/FooterBanner';
 import CampaignHeader from './CampaignHeader';
 import CampaignsList from './CampaignsList';
 
-const Campaigns = async ({data}: {data: any}) => {  
-    console.log("data", data);
-    
+const Campaigns = async ({data}: {data: any}) => {      
     return (
         <div>
             <CommonHeader title="Campaigns" />

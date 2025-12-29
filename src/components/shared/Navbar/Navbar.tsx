@@ -28,7 +28,7 @@ const Navbar = ({ profile }: { profile: any }) => {
   const [openMenu, setOpenMenu] = useState(false);
 
   const pathname = usePathname();
-  const darkBgRoutes = ["creator", "promotor"];
+  const darkBgRoutes = ["creator", "promotor", "success"];
   const hasDarkBackground = darkBgRoutes.includes(pathname.split("/")[1]);
 
   // ✅ Mount guard

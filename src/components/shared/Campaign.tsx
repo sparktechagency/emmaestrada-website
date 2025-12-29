@@ -25,7 +25,7 @@ interface CampaignProps {
   campaigns: any;
 }
 
-const Campaign = ({ campaigns }: {campaigns: ICampaign[]}) => {
+const Campaign = ({ campaigns }: {campaigns: any}) => {
   
   return (
     <section className="bottomPadding">

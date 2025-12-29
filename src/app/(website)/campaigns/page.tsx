@@ -4,11 +4,11 @@ import React from 'react'
 
 const page = async() => {
 
-  const { data: campaigns } = await myFetch("/campaigns/active-campaigns");
-
+  const  data  = await myFetch("/campaigns/active-campaigns");  
+  
   return (
     <div>
-      <Campaigns data={campaigns} />
+      // <Campaigns data={data?.data} />
       {/* <Campaigns  /> */}
     </div>
   )
