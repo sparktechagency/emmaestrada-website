@@ -9,8 +9,9 @@ import ViewAllSubmittionBtn from './ViewAllSubmittionBtn'
 import CampaignSubmission from './CampaignSubmission'
 import CampaignData from './CampaignData'
 import { DropDownMenu } from './DropDownMenu'
+import { imageUrl } from '@/constants'
 
-const PromotorCampaignDetails = ({ status, openTab }: { status?: string, openTab?: string }) => {
+const PromotorCampaignDetails = ({data, status, openTab }: {data:any,  status?: string, openTab?: string }) => {    
     return (
         <Container>
             <div className="glassBg p-4 my-10">
@@ -20,18 +21,16 @@ const PromotorCampaignDetails = ({ status, openTab }: { status?: string, openTab
             <div className="relative w-full  px-0 py-4 md:p-8 flex flex-col items-center">
                 <div className="w-full">
                     {/* Image */}                    
-                        <Image
-                            src="https://img.freepik.com/free-photo/3d-music-related-scene_23-2151125037.jpg?semt=ais_hybrid&w=740&q=80"
-                            alt="Feel The Vibe"
-                            width={1000}
-                            height={400}
+                        <img
+                            src={`${imageUrl}${data?.thumbnail}`}                            
+                            alt="Feel The Vibe"                           
                             className="w-full md:w-3/5 h-[250px] mx-auto rounded-2xl"
                         />       
                         
 
                     {/* Title */}
                     <h1 className="text-center text-2xl md:text-3xl font-bold mt-4 text-primary">
-                        "Feel the Vibe"
+                        {data?.title}
                     </h1>
 
                     {/* Info Banner */}

@@ -28,7 +28,7 @@ const SubmitButton = () => {
             >
                 <CampaignSubmitForm closeModal={() => setOpen(false)} setOpenAccVerifyModal={setOpenAccVerifyModal} />
             </Modal>
-            {!open && !openVerifiedModal && openAccVerifyModal &&
+            {/* {!open && !openVerifiedModal && openAccVerifyModal &&
                 <Modal
                     dialogTitle="Link Account"
                     open={openAccVerifyModal}
@@ -47,7 +47,7 @@ const SubmitButton = () => {
                 >
                     <AccountVerified closeModal={() => setOpen(false)} />
                 </Modal>
-            }
+            } */}
         </div>
     )
 }

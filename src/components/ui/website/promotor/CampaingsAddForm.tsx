@@ -158,9 +158,7 @@ const CampaignsAddForm = ({ editData }: { editData?: any }) => {
       }
     } catch (error) {
       console.error('Error:', error);
-    }
-
-    alert("Campaign submitted! Check console for payload.");
+    }    
   };
 
   const views: any = {

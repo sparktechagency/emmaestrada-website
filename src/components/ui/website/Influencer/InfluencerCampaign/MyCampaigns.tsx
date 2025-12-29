@@ -4,14 +4,19 @@ import { CampaignTabGroup } from "./CampaignTabGroup";
 
 const MyCampaigns = async ({
   status,   
+  queryString
 }: {
-  status: string;  
+  status: string,  
+  queryString: string
 }) => {
-  
+
   const { data: campaigns } = await myFetch(
-    `/submissions/my-submissions?status=${status ? status : "pending"}`
+    `/submissions/my-submissions?status=${status ? status : "pending"}${queryString}`
   );
-  console.log("campaigns?.data?.result", campaigns?.data);
+  
+  const filteredData = campaigns?.data?.length > 0 ? campaigns?.data?.map((c:any)=>c.campaignId) : []
+  
+  console.log("filteredData", filteredData);
   return (
     <div>
       <CampaignTabGroup
@@ -24,7 +29,7 @@ const MyCampaigns = async ({
         queryParam="status"
       />
 
-      <MyCampaignList campaigns={campaigns?.data?.data} />
+      <MyCampaignList campaigns={filteredData} />
     </div>
   );
 };

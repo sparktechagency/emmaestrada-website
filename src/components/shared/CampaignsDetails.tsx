@@ -4,27 +4,34 @@ import Image from "next/image";
 import Link from "next/link";
 import SubmitButton from "../ui/website/Campaigns/ChampaignDetails/SubmitButton";
 import Container from "./Container";
+import { imageUrl } from "@/constants";
 
-export default function CampaignsDetails() {
+export default function CampaignsDetails({ data }: { data: any }) {
 
-    return (        
-            <Container>
-                <div className="glassBg p-4 my-10">
+    console.log("CampaignsDetails", data);
+const platformIcons: Record<string, string> = {
+  TikTok: "/tiktokBlack.png",
+  Instagram: "/instagram.png",
+  YouTube: "/youtube.png",
+};
+
+    return (
+        <Container>
+            <div className="glassBg p-4 my-10">
                 {/* Image */}
                 <div className="w-full rounded-2xl overflow-hidden">
-                    <Image
-                        src="https://img.freepik.com/free-photo/3d-music-related-scene_23-2151125037.jpg?semt=ais_hybrid&w=740&q=80"
+                    <img
+                        src={`${imageUrl}${data?.thumbnail}`}
                         alt="Feel The Vibe"
-                        width={1200}
-                        height={700}
-                        className="md:w-3/5 w-full mx-auto rounded-xl"
+                        className="w-full md:w-3/5 h-[250px] mx-auto rounded-2xl"
                     />
                 </div>
 
                 {/* Title */}
                 <h1 className="text-center text-2xl md:text-3xl font-bold mt-4 text-primary">
-                    "Feel the Vibe"
+                    {data?.title}
                 </h1>
+
 
                 {/* Info Banner */}
                 <div className="bg-secondary  shadow-md text-white rounded-xl p-4 mt-4 text-sm text-center">
@@ -35,62 +42,55 @@ export default function CampaignsDetails() {
                 <div className="mt-6 text-lg font-semibold">Paid Out</div>
                 <div className="flex items-end gap-1">
                     <span className="text-3xl font-semibold">$2087.40</span>
-                    <span className="text-slate-400  text-xl font-medium">of $4087.40 paid out</span>
+                    <span className="text-slate-400  text-xl font-medium">of ${data?.totalPaidOutAmount} paid out</span>
                 </div>
                 <Progress value={55} className="h-3 mt-2" />
                 <div className="p-5 mt-7 glassBg shadow-lg!">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center  items-start ">
                         <div className="text-start">
                             <p className="text-lg pb-1">Reward</p>
-                            <span className="text-sm p-1 rounded bg-blue-700 text-white">$0.10 / 1K</span>
+                            <span className="text-sm p-1 rounded bg-blue-700 text-white">${data?.budget?.rewardRate} / {data?.budget?.perViews} views</span>
                         </div>
                         <div className="text-start">
                             <p className="text-lg pb-1">Maximum Profit</p>
-                            <p className="font-semibold text-lg text-primary">$100.00</p>
+                            <p className="font-semibold text-lg text-primary">${data?.budget?.maxPayout}</p>
                         </div>
                         <div className="text-start">
                             <p className="text-lg pb-1">Minimum Profit</p>
-                            <p className="font-semibold text-lg text-primary">$0.50</p>
+                            <p className="font-semibold text-lg text-primary">${data?.budget?.minPayout}</p>
                         </div>
                     </div>
                     <div className="mt-6">
-                        <div className="mt-6 text-lg font-semibold">Paid Out</div>
-                        <div className="flex gap-3">
-                            <Image src="/tiktokBlack.png" height={20} width={40} alt="logo" className="rounded-md" />
-                            <Image src="/instagram.png" height={20} width={40} alt="logo" className="rounded-md" />
-                        </div>
+                        <div className="mt-6 text-lg font-semibold">Platforms</div>
+                        <div className="flex gap-2 bg-white/50 p-2 rounded-lg">
+                                    {data?.platforms?.map((platform:string) =>
+                                      platformIcons[platform] ? (
+                                        <Image
+                                          key={platform}
+                                          src={platformIcons[platform]}
+                                          height={20}
+                                          width={20}
+                                          className="h-5 w-5 object-contain"
+                                          alt={platform}
+                                        />
+                                      ) : null
+                                    )}
+                                  </div>
                     </div>
                 </div>
-                <p className="font-semibold  text-2xl mt-7 mb-6">Requirements</p>
-                <div className="p-5  glassBg shadow-lg!">
-                    <ul className="text-md text-gray-500 list-disc ml-5 space-y-1">
-                        <li>Same guidelines as the standard audio clipping in "learn" tab</li>
-                        <li>5k min views to be eligible for payout</li>
-                        <li>Must adhere to content types in "learn" tab</li>
-                    </ul>
-                </div>
-
                 <p className="font-semibold  text-2xl mt-7 mb-6">Assets</p>
                 <div className="p-5  glassBg shadow-lg! text-blue-600 font-semibold">
-                    <a href="https://whop.com/dashboard/biz_uYZpwzLVni7EDx" className="text-wrap">https://whop.com/dashboard/biz_uYZpwzLVni7EDx</a>
+                    <a href={data?.assets?.availableContentLink} className="text-wrap">{data?.assets?.availableContentLink}</a>
                 </div>
 
-                <p className="font-semibold  text-2xl mt-7 mb-6">Audio Requirements</p>
+                <p className="font-semibold  text-2xl mt-7 mb-6">Content Requirements</p>
                 <div className="p-5  glassBg shadow-lg! text-gray-500 font-semibold flex items-center gap-5">
-                    <a href="https://www.tiktok.com/en/" className="flex items-center gap-2">
-                        <Image src="/instagram.png" height={20} width={30} alt="logo" className="rounded-sm" />
-                        <span className="text-xl">Sound</span>
-                        <SquareArrowOutUpRight size={20} />
-                    </a>
-                    <a href="https://www.tiktok.com/en/" className="flex items-center gap-2">
-                        <Image src="/tiktokBlack.png" height={20} width={30} alt="logo" className="rounded-sm" />
-                        <span className="text-xl">Audio</span>
-                        <SquareArrowOutUpRight size={20} />
-                    </a>
+                    
+                        {data?.assets?.contentRequirement && data?.assets?.contentRequirement?.map((item:string)=><span key={item} className="text-xl">{item}</span>)}                
                 </div>
                 <SubmitButton />
 
-                 {/* <div className="flex justify-end mt-5">
+                {/* <div className="flex justify-end mt-5">
                     <Modal
                         dialogTitle="Campaign Form"
                         open={open}
@@ -126,7 +126,7 @@ export default function CampaignsDetails() {
                         <AccountVerified closeModal={() => setOpen(false)} />
                     </Modal>
                 } */}
-                </div>
-            </Container>        
+            </div>
+        </Container>
     );
 }

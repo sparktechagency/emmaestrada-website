@@ -97,16 +97,6 @@ const CampaignSubmitForm = ({ closeModal, setOpenAccVerifyModal, campaignId }: a
                 <p>Only views after you submit count towards payout. Submit as soon as you post to get paid for all of your views.</p>
             </div>
 
-            <div onClick={()=>{setOpenAccVerifyModal(true); closeModal()}} className="p-5 bg-red-600 rounded-lg shadow-lg text-white mt-5 cursor-pointer hover:bg-red-700 transition">
-                <p className='flex items-center justify-between text-justify'>
-                    <span className='flex gap-1 items-center'>
-                        <CircleAlert color='white' /> 
-                        Confirm account ownership to submit this post. Click to verify.
-                    </span>
-                    <ArrowRight color='white'/>
-                </p>
-            </div>
-
             <p className="font-semibold text-lg mt-7 mb-6">Submit your social media post</p>
             <div className="mb-4">
                 <p>Only views after you submit count towards payout. Submit as soon as you post to get paid for all of your views.</p>

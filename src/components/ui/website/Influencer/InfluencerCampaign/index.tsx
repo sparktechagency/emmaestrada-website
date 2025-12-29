@@ -11,7 +11,7 @@ const InfluencerCampaign = ({campaignType, status, queryString }: any) => {
         <CampaignHeader />
         <div className="mb-10">
           {campaignType === "my-campaigns" ? (
-            <MyCampaigns status={status}/>
+            <MyCampaigns status={status} queryString={queryString}/>
           ) : (
             <AllCampaigns queryString={queryString}/>
           )}

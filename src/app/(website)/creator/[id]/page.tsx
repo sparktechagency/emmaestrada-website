@@ -1,10 +1,23 @@
-import CampaignsDetails from '@/components/shared/CampaignsDetails'
-import React from 'react'
+import CampaignsDetails from "@/components/shared/CampaignsDetails";
+import { myFetch } from "@/utils/myFetch";
 
-const page = () => {
-  return (
-    <div><CampaignsDetails /></div>
-  )
+type pageProps = {
+   params: {
+    id?: string;
+  };
 }
+const page = async ({    
+  params
+}: pageProps) => {    
+  const {id} = await params;
 
-export default page
+  const res = await myFetch(`/campaigns/get-campaign/${id}`)  
+  
+  return (
+    <div>
+      <CampaignsDetails data={res?.data?.data}/>
+    </div>
+  );
+};
+
+export default page;

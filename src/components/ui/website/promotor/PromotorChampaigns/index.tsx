@@ -14,12 +14,10 @@ import MyCampaignList from '@/components/shared/MyCampaignList'
 import PMyCampaigns from './PMyCampaigns'
 
 const PromotorChampaigns = async ({ queryString, status }: { queryString?: string, status?: string }) => {
-  const url2 = queryString
-    ? `/campaigns/my-campaigns?${queryString}`
-    : `/campaigns/my-campaigns`;
+  const baseUrl = status === "upcoming" ? "/campaigns/unpaid-campaigns" : "/campaigns/my-campaigns";
 
-  const { data: campaigns2 } = await myFetch(url2);
-  console.log("campaigns2",);
+  const url = queryString ? `${baseUrl}?${queryString}` : baseUrl;
+  const { data: campaigns } = await myFetch(url);
 
   return (
     <Container>
@@ -38,7 +36,7 @@ const PromotorChampaigns = async ({ queryString, status }: { queryString?: strin
         </div>
 
         {status === 'create-campaign' ? <CampaingsAddForm /> :
-          <PMyCampaigns campaigns={campaigns2?.data?.result} />}
+          <PMyCampaigns campaigns={campaigns?.data?.result} />}
       </div>
 
       {/* { !['upcoming', 'create-campaign'].includes(status?.toString()) && <CreatorPagination />} */}
