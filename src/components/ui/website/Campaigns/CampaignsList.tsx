@@ -22,7 +22,7 @@ const CampaignsList = async({data}: {data:any}) => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 md:gap-x-4 gap-y-5">
            {data?.result?.map((campaign: any) => (              
-                <CampaignCard role={user?.role} key={campaign._id} campaign={campaign} />              
+                <CampaignCard  key={campaign._id} campaign={campaign} />              
             ))}        
       </div>
     </div>

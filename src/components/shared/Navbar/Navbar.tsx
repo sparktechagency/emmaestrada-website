@@ -213,7 +213,7 @@ const ViewAsLogin = ({ profile }: any) => {
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="center">
-          <Link href={profile?.role == "CREATOR" ? "/creator" : "promotor"}>
+          <Link href={profile?.role == "CREATOR" ? "/creator" : "/promotor"}>
             <DropdownMenuItem className="cursor-pointer">
               Profile
               <DropdownMenuShortcut>

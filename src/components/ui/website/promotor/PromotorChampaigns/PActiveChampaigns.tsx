@@ -9,7 +9,7 @@ const PActiveChampaigns = () => {
         {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
           <div className="" key={i}>
             <Link href={`/promotor/campaigns/${i}`}>
-              <CampaignCard
+              {/* <CampaignCard
                 campaign={{
                   _id: `${i}`,
                   title: "Feel the Vibe",
@@ -29,12 +29,11 @@ const PActiveChampaigns = () => {
                   thumbnail: "/images/campaign-img.png",
                   profileImg: "/dj.jpg",
                   username: "rikodj890",
-                  displayName: "DJ Nadir",
-                  status: "pactive",
+                  displayName: "DJ Nadir",                  
                   isJoined: false,
                   isPrivate: i % 2 !== 0,
                 }}
-              />
+              /> */}
             </Link>
           </div>
         ))}

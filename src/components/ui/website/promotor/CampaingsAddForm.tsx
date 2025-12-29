@@ -7,6 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
+import { myFetch } from "@/utils/myFetch";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const steps = [
   { id: 1, name: "Basic & Budget", subtitle: "Campaign details" },
@@ -23,6 +26,9 @@ const platforms = [
 const CampaignsAddForm = ({ editData }: { editData?: any }) => {
   const [step, setStep] = useState(1);
   const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
+  const [categories, setCategories] = useState([])
+  const [genries, setGenries] = useState([])
+  const route = useRouter()
 
   const [formData, setFormData] = useState({
     title: "",
@@ -44,6 +50,34 @@ const CampaignsAddForm = ({ editData }: { editData?: any }) => {
       contentRequirement: "",
     },
   });
+
+  const fetchingCategories = async () => {
+    try {
+      const category = await myFetch('/categories?type=CATEGORY');      
+      setCategories(category?.data?.data)
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+  const fetchingGenries = async () => {
+    try {
+      const category = await myFetch('/categories?type=GENRE');     
+      setGenries(category?.data?.data)
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+
+
+  useEffect(() => {
+
+
+    fetchingCategories()
+    fetchingGenries()
+  }, [])
+
 
   useEffect(() => {
     if (editData) {
@@ -110,15 +144,18 @@ const CampaignsAddForm = ({ editData }: { editData?: any }) => {
 
     console.log("SUBMITTED PAYLOAD:", payload);
     console.log("SUBMITTED FORMDATA:", submitFormData);
-    
+
     // Example API call:
     try {
-      const response = await fetch('/campaigns/create', {
+      const response = await myFetch('/campaigns/create', {
         method: 'POST',
         body: submitFormData,
       });
-      const result = await response.json();
-      console.log('Success:', result);
+      if(response?.success){
+        console.log('Success:', response);
+        toast.success(response?.data?.message)
+        route.push("/promotor?status=upcoming")
+      }
     } catch (error) {
       console.error('Error:', error);
     }
@@ -132,6 +169,8 @@ const CampaignsAddForm = ({ editData }: { editData?: any }) => {
         formData={formData}
         updateFormData={updateFormData}
         updateBudget={updateBudget}
+        categories={categories}
+        genries={genries}
         thumbnailPreview={thumbnailPreview}
         handleThumbnailUpload={handleThumbnailUpload}
         removeThumbnail={removeThumbnail}
@@ -179,20 +218,18 @@ const Stepper = ({ currentStep }: { currentStep: number }) => (
       <div key={step.id} className="z-10 flex flex-col items-center w-full">
         <div
           className={`h-10 w-10 flex items-center justify-center rounded-full text-white text-sm font-semibold
-          ${
-            step.id === currentStep
+          ${step.id === currentStep
               ? "bg-orange-500 ring-4 ring-orange-200"
               : step.id < currentStep
-              ? "bg-orange-500"
-              : "bg-gray-300"
-          }`}
+                ? "bg-orange-500"
+                : "bg-gray-300"
+            }`}
         >
           {step.id < currentStep ? <Check className="h-5 w-5" /> : step.id}
         </div>
         <p
-          className={`mt-2 text-[10px] md:text-lg font-medium ${
-            step.id === currentStep ? "text-orange-600" : "text-gray-500"
-          }`}
+          className={`mt-2 text-[10px] md:text-lg font-medium ${step.id === currentStep ? "text-orange-600" : "text-gray-500"
+            }`}
         >
           {step.name}
         </p>
@@ -254,12 +291,16 @@ const Step1 = ({
   updateFormData,
   updateBudget,
   thumbnailPreview,
+  categories,
+  genries,
   handleThumbnailUpload,
   removeThumbnail,
   next,
 }: any) => {
   const valid = formData.title && formData.categoryId && formData.genreId;
 
+  console.log("formData", formData);
+  
   const handleNext = () => {
     if (valid) next();
   };
@@ -267,19 +308,18 @@ const Step1 = ({
   return (
     <div>
       <p className="text-lg font-semibold mb-5">Campaign Basic Information</p>
-      
-      <div className="space-y-6 p-3 md:p-6 border rounded-xl bg-white mb-5">
-        <div className="mt-5">
-          <p className="text-md font-md font-semibold mb-2">Campaign Title</p>
-          <Input
-            className="h-[45px]"
-            placeholder="Smart Gadget Awareness Campaign"
-            value={formData.title}
-            onChange={(e) => updateFormData({ title: e.target.value })}
-          />
-        </div>
 
+      <div className="space-y-6 p-3 md:p-6 border rounded-xl bg-white mb-5">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-6">
+          <div className="">
+            <p className="text-md font-md font-semibold mb-2">Campaign Title</p>
+            <Input
+              className="h-[45px]"
+              placeholder="Campaign Title"
+              value={formData.title}
+              onChange={(e) => updateFormData({ title: e.target.value })}
+            />
+          </div>
           <div>
             <label className="text-sm font-medium">Content Type</label>
             <select
@@ -293,26 +333,39 @@ const Step1 = ({
               <option value="Clipping">Clipping</option>
             </select>
           </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-6">
+
           <div>
-            <label className="text-sm font-medium">Category ID</label>
-            <Input
-              className="mt-2 h-12"
-              placeholder="6943ee7c5a9b22032b841334"
+            <label className="text-sm font-medium">Category</label>
+            <select
+              className="mt-2 w-full h-12 border rounded-xl px-3"
               value={formData.categoryId}
-              onChange={(e) => updateFormData({ categoryId: e.target.value })}
-            />
+              onChange={(e) =>
+                updateFormData({ categoryId: e.target.value })
+              }
+            >
+              {categories?.map((c: any) => <option key={c?._id} value={c?._id}>{c?.name}</option>)}
+
+            </select>
+          </div>
+          <div>
+            <label className="text-sm font-medium">Genre</label>
+            <select
+              className="mt-2 w-full h-12 border rounded-xl px-3"
+              value={formData.genreId}
+              onChange={(e) =>
+                updateFormData({ genreId: e.target.value })
+              }
+            >
+              <option value="">Select</option>
+              {genries?.map((g: any) => <option key={g?._id} value={g?._id}>{g?.name}</option>)}
+            </select>
           </div>
         </div>
 
-        <div>
-          <label className="text-sm font-medium">Genre ID</label>
-          <Input
-            className="mt-2 h-12"
-            placeholder="6943ee725a9b22032b841330"
-            value={formData.genreId}
-            onChange={(e) => updateFormData({ genreId: e.target.value })}
-          />
-        </div>
+
 
         <div>
           <p className="text-md text-slate-400 font-md font-medium mb-2">
@@ -437,7 +490,7 @@ const Step2 = ({
   return (
     <div>
       <p className="text-lg font-semibold mb-5">Platform & Assets</p>
-      
+
       <div className="space-y-6 p-2 md:p-6 border rounded-xl bg-white mb-5">
         <p className="text-lg font-semibold mb-4">Select Platforms *</p>
 

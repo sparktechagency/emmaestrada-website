@@ -3,7 +3,7 @@ export interface IUser {
   _id: string;
   name: string;                     // Full name
   userName: string;                 // Username
-  role: "USER" | "ADMIN" | "CREATOR";
+  role: "USER" | "ADMIN" | "CREATOR"|"PROMOTER";
   email: string;
   phone?: string;                   // Phone number
   location?: string;                // Location

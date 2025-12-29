@@ -1,4 +1,4 @@
-'use client'
+
 import React from 'react'
 import { DataProvider } from './DataContext'
 import { ProfileProvider, useProfile } from './ProfileContext'

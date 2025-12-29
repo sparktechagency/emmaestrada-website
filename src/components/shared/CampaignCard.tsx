@@ -14,8 +14,8 @@ type CampaignStatus =
   | "pending"
   | "accepted"
   | "canceled"
-  | "active"
-  | "pactive"
+  | "inactive"
+  | "active"  
   | "pcompleted";
 
 interface CampaignCardProps {
@@ -43,8 +43,7 @@ interface CampaignCardProps {
     status: CampaignStatus;
     isJoined?: boolean;    
     [key: string]: any;
-  };
-  role?: string;
+  };  
 }
 
 /* -------------------- STATUS CONFIG -------------------- */
@@ -61,8 +60,8 @@ const statusButtonConfig: Record<
     className: "bg-black",
     disabled: true,
   },
-  pactive: {
-    label: "Manage Campaigns",
+  inactive: {
+    label: "Add Budget",
     className:
       "bg-transparent! border! border-secondary! text-black! text-xs! ",
     disabled: false,
@@ -102,15 +101,18 @@ const platformIcons: Record<string, string> = {
   YouTube: "/youtube.png",
 };
 
-const CampaignCard = ({ campaign,  role}: CampaignCardProps) => {
-  const status = campaign?.status || "active";
+const CampaignCard = ({ campaign}: CampaignCardProps) => {
+  const status = campaign?.status;
   const buttonConfig = statusButtonConfig[status];
+  
   const progress = campaign?.campaignAmount
     ? Math.round(
         (campaign?.totalPaidOutAmount / campaign?.campaignAmount) * 100
       )
     : 0;
     const {profile} = useProfile()
+    console.log("profile", profile);
+    
 
   return (
     <div className="rounded-2xl relative shadow-md grid grid-cols-1 gap-4 bg-[#FFF8F3]">
@@ -242,12 +244,12 @@ const CampaignCard = ({ campaign,  role}: CampaignCardProps) => {
             className="absolute z-20 top-1/2 left-1/2 text-xs -translate-1/2 capitalize mb-2 text-white"
             style={{ textShadow: "0 1px 2px rgba(0,0,0,0.9)" }}
           >
-            paid out {progress}%
+            paid out {progress}% 
           </p>
         </div>
 
-        <Link href={`/${role === "PROMOTOR" ? "promotor": "creator"}/${campaign?._id}`}><Button className="mt-3 w-full! py-5!" disabled={buttonConfig.disabled}>
-          {buttonConfig.label}
+        <Link href={`/${profile?.role === "PROMOTER" ? "promotor/campaigns": "creator"}/${campaign?._id}`}><Button className="mt-3 w-full! py-5!">
+          {buttonConfig?.label}
         </Button></Link>
       </div>
 

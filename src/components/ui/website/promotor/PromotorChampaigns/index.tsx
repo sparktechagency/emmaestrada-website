@@ -8,8 +8,19 @@ import CreatorPagination from '../../Influencer/Creator/CreatorPagination'
 import { CampaignTabGroup } from '../../Influencer/InfluencerCampaign/CampaignTabGroup'
 import CampaingsAddForm from '../CampaingsAddForm'
 import CampaignCreateButton from '../../Influencer/InfluencerCampaign/CampaignCreateButton'
+import { myFetch } from '@/utils/myFetch'
+import CampaignCard from '@/components/shared/CampaignCard'
+import MyCampaignList from '@/components/shared/MyCampaignList'
+import PMyCampaigns from './PMyCampaigns'
 
-const PromotorChampaigns = ({ status }: { status?: string }) => {
+const PromotorChampaigns = async ({ queryString, status }: { queryString?: string, status?: string }) => {
+  const url2 = queryString
+    ? `/campaigns/my-campaigns?${queryString}`
+    : `/campaigns/my-campaigns`;
+
+  const { data: campaigns2 } = await myFetch(url2);
+  console.log("campaigns2",);
+
   return (
     <Container>
       <div className="pb-16">
@@ -26,12 +37,8 @@ const PromotorChampaigns = ({ status }: { status?: string }) => {
           <CampaignCreateButton />
         </div>
 
-
-        {status === 'active' ? <PActiveChampaigns /> :
-          status === 'upcoming' ? < PUpcomingChampaigns /> :
-            status === 'past' ? < PPastChampaigns /> :
-              status === 'create-campaign' ? <CampaingsAddForm /> :
-                <PActiveChampaigns />}
+        {status === 'create-campaign' ? <CampaingsAddForm /> :
+          <PMyCampaigns campaigns={campaigns2?.data?.result} />}
       </div>
 
       {/* { !['upcoming', 'create-campaign'].includes(status?.toString()) && <CreatorPagination />} */}

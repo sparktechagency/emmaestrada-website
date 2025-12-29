@@ -28,7 +28,6 @@ const CampaignHeader = () => {
    const searchParams = useSearchParams()
  
   const status = searchParams.get('status')
-  console.log('status', status)
 
   return (
     <div className='pt-10'>

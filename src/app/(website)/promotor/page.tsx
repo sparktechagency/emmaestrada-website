@@ -7,9 +7,12 @@ type pageProps = {
   }>
 }
 const page = async ({ searchParams }: pageProps) => {
-  const {status} = await searchParams;
+  const params = await searchParams;
+
+  const { status, ...rest} = params;
+  const queryString = new URLSearchParams(rest).toString();
   return (
-    <div><PromotorChampaigns status={status}/></div>
+    <div><PromotorChampaigns queryString={queryString} status={status}/></div>
   )
 }
 
