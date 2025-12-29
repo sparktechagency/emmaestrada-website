@@ -5,6 +5,7 @@ import CampaignHeader from './CampaignHeader';
 import CampaignsList from './CampaignsList';
 
 const Campaigns = async ({data}: {data: any}) => {  
+    console.log("data", data);
     
     return (
         <div>

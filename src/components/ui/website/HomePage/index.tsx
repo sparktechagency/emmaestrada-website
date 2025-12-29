@@ -17,6 +17,9 @@ const HomePage = async ({ searchParams }: any) => {
   const { data: campaigns } = await myFetch("/campaigns/active-campaigns");
   const { data: creators } = await myFetch("/creators");  
 
+  console.log("campaigns home", campaigns);
+  console.log("campaigns creators", creators);
+  
   return (
     <div className="">
       <HeroSection />

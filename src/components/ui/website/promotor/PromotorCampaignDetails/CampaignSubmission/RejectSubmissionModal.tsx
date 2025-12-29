@@ -13,6 +13,7 @@ import {
 
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
+import { myFetch } from '@/utils/myFetch'
 
 const RejectSubmissionForm = ({ closeModal }: { closeModal: () => void }) => {
   const form = useForm({
@@ -26,8 +27,7 @@ const RejectSubmissionForm = ({ closeModal }: { closeModal: () => void }) => {
     try {
       console.log('Reject Data:', values)
 
-      // 👉 call API here
-      // await rejectSubmission(values)
+      const res = await myFetch("/submissions/update-status")
 
       closeModal()
     } catch (error) {

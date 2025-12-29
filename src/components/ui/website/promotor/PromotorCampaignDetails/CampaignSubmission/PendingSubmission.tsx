@@ -5,10 +5,13 @@ import ProfileImageWithUserData from "./ProfileImageWithUserData"
 import ReelsAnalyticsChart from "./ReelsAnalyticsChart"
 import RejectButtonWithForm from "./RejectButtonWithForm"
 import PendingDropDown from "./PendingDropDown"
+import { myFetch } from "@/utils/myFetch"
 
 
-export default function PendingSubmission() {
+const PendingSubmission = async () =>{
+const res = await  myFetch("/submissions/my-submissions");
 
+  console.log("PendingSubmission", res);
   const user = {
     name: "Sarah Jhonson",
     profileImage: "/images/profile21.jpg",
@@ -17,7 +20,7 @@ export default function PendingSubmission() {
   return (
     <div>
 
-      <Card className="bg-transparent shadow-none border-0 ">
+      {<Card className="bg-transparent shadow-none border-0 ">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between md:p-3 ">
           <div className="flex items-center gap-3">
             <ProfileImageWithUserData user={user} />
@@ -56,9 +59,10 @@ export default function PendingSubmission() {
         </div>
 
 
-      </Card>
+      </Card>}
     </div>
   )
 }
 
 
+export default PendingSubmission;

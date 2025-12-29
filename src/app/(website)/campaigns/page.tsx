@@ -8,7 +8,7 @@ const page = async() => {
 
   return (
     <div>
-      <Campaigns data={campaigns?.data} />
+      <Campaigns data={campaigns} />
       {/* <Campaigns  /> */}
     </div>
   )

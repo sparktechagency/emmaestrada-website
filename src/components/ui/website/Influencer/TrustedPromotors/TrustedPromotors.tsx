@@ -22,18 +22,6 @@ import Container from "@/components/shared/Container"
 import Link from "next/link"
 import ManagePagination from "@/components/shared/ManagePagination"
 
-
-// Trusted Creator Dummy Data
-const trustedCreators = Array.from({ length: 10 }).map(() => ({
-    name: "Ethan Blaze",
-    profile: "/images/profile21.jpg",
-    platform: "/tiktok.svg",
-    totalFollowers: "60K",
-    engagement: "4.8%",
-    rating: 5,
-    verified: true,
-}))
-
 export default function TrustedPromotors({ data }: any) {
     return (
         <Container>

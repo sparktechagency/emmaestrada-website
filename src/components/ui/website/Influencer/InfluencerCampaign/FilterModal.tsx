@@ -1,11 +1,12 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Slider } from "@/components/ui/slider";
 import { X } from "lucide-react";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { myFetch } from "@/utils/myFetch";
 
 interface FilterModalProps { 
   open: boolean; 
@@ -22,7 +23,32 @@ export default function FilterModal({ open, onOpenChange, onApply }: FilterModal
   const [contentType, setContentType] = useState("UGC");
   const [genres, setGenres] = useState<string[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
-  const [platforms, setPlatforms] = useState<string[]>([]);
+  const [platforms, setPlatforms] = useState<string[]>([]);  
+    const [genries, setGenries] = useState([])
+  
+
+    const fetchingCategories = async () => {
+      try {
+        const category = await myFetch('/categories?type=CATEGORY');      
+        setCategories(category?.data?.data)
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+  
+    const fetchingGenries = async () => {
+      try {
+        const category = await myFetch('/categories?type=GENRE');     
+        setGenries(category?.data?.data)
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+
+    useEffect(()=>{
+      fetchingCategories();
+      fetchingGenries()
+    },[])
 
   const musicGenres = [
     "Pop", "Rock", "R&B", "Jazz", "EDM", "Electronic", "Hip-Hop", "Indie", "Country", "Classical"

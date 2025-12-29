@@ -1,7 +1,7 @@
 
 const page = () => {
   return (
-    <div className="flex min-h-[60vh] bg-white flex-col items-center justify-center text-center px-4 rounded-xl">
+    <div className="flex h-full bg-white flex-col items-center justify-center text-center px-4 rounded-xl">
       <div className="">
         <img
           src="/emptyMessage.png"

@@ -13,7 +13,7 @@ const AllCampaigns = async ({ queryString }: { queryString: string }) => {
 
   return (
     <div>
-      <MyCampaignList campaigns={campaigns2?.data?.result} />
+      <MyCampaignList campaigns={campaigns2?.data} />
     </div>
   );
 };

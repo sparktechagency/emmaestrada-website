@@ -1,4 +1,4 @@
-import Campaign from "@/components/shared/Campaign";
+
 import CampaignCard from "@/components/shared/CampaignCard";
 import getProfile from "@/utils/getProfile";
 import Link from "next/link";
@@ -21,7 +21,7 @@ const CampaignsList = async({data}: {data:any}) => {
         </p>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 md:gap-x-4 gap-y-5">
-           {data?.result?.map((campaign: any) => (              
+           {data?.map((campaign: any) => (              
                 <CampaignCard  key={campaign._id} campaign={campaign} />              
             ))}        
       </div>

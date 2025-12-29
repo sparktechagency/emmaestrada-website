@@ -39,7 +39,8 @@ const page = async ({ searchParams }: PageProps) => {
       console.log("popular", data);
       break;
   }
-
+  console.log("data111111", data?.data);
+  
   
   return (
     <Creator

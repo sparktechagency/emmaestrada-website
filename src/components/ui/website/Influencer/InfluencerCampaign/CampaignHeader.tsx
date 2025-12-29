@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   Select,
@@ -9,11 +9,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { ArrowUpDown, Music, Search, SlidersHorizontal } from "lucide-react";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { ArrowUpDown, Search, SlidersHorizontal } from "lucide-react";
 
-import { bricolage } from "@/constants/bricolage";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import FilterModal from "./FilterModal";
 
@@ -22,12 +21,10 @@ import FilterModal from "./FilterModal";
 const CampaignHeader = () => {
   const [activeCampaignTab, setActiveCampaignTab] = useState("campaigns");
   const [filterModalOpen, setFilterModalOpen] = useState(false);
-
-  const [visibility, setVisibility] = useState("all");
+  
   const [sortBy, setSortBy] = useState("all");
   const searchParams = useSearchParams();
   const [searchValue, setSearchValue] = useState('');  
-  const params = new URLSearchParams(searchParams.toString());
   
   const router = useRouter();
   const pathname = usePathname();

@@ -54,8 +54,8 @@ const CPromotorList = async ({ promotorData }: any) => {
                                 <TableRow key={idx}>
                                     <TableCell>
                                         <div className="flex items-center gap-3">
-                                            <img src={`${imageUrl + row?.image}`} className="h-14 w-14 object-cover rounded-full" alt={row?.name} />
-                                            <span>{row?.name}</span>
+                                            <img src={`${imageUrl + row?.image}`} className="h-10 w-10 object-cover rounded-full" alt={row?.name} />
+                                            <span className="capitalize">{row?.userName}</span>
                                         </div>
                                     </TableCell>
 

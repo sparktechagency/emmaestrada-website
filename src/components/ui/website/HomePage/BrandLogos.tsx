@@ -19,7 +19,7 @@ const BrandLogos = ({ brands }: { brands: any }) => {
       >
         <div className="py-6 overflow-hidden">
           <div className="flex items-center">
-            {brands && brands?.result?.map((brand:Brand, idx:number) => <Marquee key={idx} speed={50}> <div key={idx} className="marquee-item bg-transparent">
+            {brands && brands?.map((brand:Brand, idx:number) => <Marquee key={idx} speed={50}> <div key={idx} className="marquee-item bg-transparent">
               <span className="text-slate-300 text-2xl uppercase">
                 {brand.name}
               </span>

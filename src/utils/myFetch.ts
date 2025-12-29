@@ -61,7 +61,7 @@ export const myFetch = async (
       ...(!(method === "GET") ? { cache: "no-store" } : { cache: cache }),
     });
 
-    const data = await response.json();
+    const {data} = await response.json();
 
     if (response.ok) {
       return {
