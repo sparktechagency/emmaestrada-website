@@ -7,17 +7,14 @@ import Container from "./Container";
 import { imageUrl } from "@/constants";
 import getProfile from "@/utils/getProfile";
 
-const  CampaignsDetails = async ({ data }: { data: any })=> {
+const CampaignsDetails = async ({ data }: { data: any }) => {
 
-    console.log("CampaignsDetails", data);
-const platformIcons: Record<string, string> = {
-  TikTok: "/tiktokBlack.png",
-  Instagram: "/instagram.png",
-  YouTube: "/youtube.png",
-};
-
-  const user = await getProfile();        
-  console.log("CampaignsDetails", user);
+    const platformIcons: Record<string, string> = {
+        TikTok: "/tiktokBlack.png",
+        Instagram: "/instagram.png",
+        YouTube: "/youtube.png",
+    };
+    const user = await getProfile();    
     return (
         <Container>
             <div className="glassBg p-4 my-10">
@@ -66,19 +63,19 @@ const platformIcons: Record<string, string> = {
                     <div className="mt-6">
                         <div className="mt-6 text-lg font-semibold">Platforms</div>
                         <div className="flex gap-2 bg-white/50 p-2 rounded-lg">
-                                    {data?.platforms?.map((platform:string) =>
-                                      platformIcons[platform] ? (
-                                        <Image
-                                          key={platform}
-                                          src={platformIcons[platform]}
-                                          height={20}
-                                          width={20}
-                                          className="h-5 w-5 object-contain"
-                                          alt={platform}
-                                        />
-                                      ) : null
-                                    )}
-                                  </div>
+                            {data?.platforms?.map((platform: string) =>
+                                platformIcons[platform] ? (
+                                    <Image
+                                        key={platform}
+                                        src={platformIcons[platform]}
+                                        height={20}
+                                        width={20}
+                                        className="h-5 w-5 object-contain"
+                                        alt={platform}
+                                    />
+                                ) : null
+                            )}
+                        </div>
                     </div>
                 </div>
                 <p className="font-semibold  text-2xl mt-7 mb-6">Assets</p>
@@ -88,8 +85,8 @@ const platformIcons: Record<string, string> = {
 
                 <p className="font-semibold  text-2xl mt-7 mb-6">Content Requirements</p>
                 <div className="p-5  glassBg shadow-lg! text-gray-500 font-semibold flex items-center gap-5">
-                    
-                        {data?.assets?.contentRequirement && data?.assets?.contentRequirement?.map((item:string)=><span key={item} className="text-xl">{item}</span>)}                
+
+                    {data?.assets?.contentRequirement && data?.assets?.contentRequirement?.map((item: string) => <span key={item} className="text-xl">{item}</span>)}
                 </div>
                 <SubmitButton userId={user?._id} />
 
@@ -134,4 +131,4 @@ const platformIcons: Record<string, string> = {
     );
 }
 
-export default  CampaignsDetails;
+export default CampaignsDetails;

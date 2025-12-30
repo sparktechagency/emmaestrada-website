@@ -6,13 +6,18 @@ import { IUser } from '@/types/profile'
 import { myFetch } from '@/utils/myFetch';
 import { Eye,  MessageCircleMore, Plus } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import React from 'react'
 import { toast } from 'sonner';
 
 const CreatorListActionBtns = ({ row }: { row: any }) => {
 
-  const router = useRouter()
+  const router = useRouter();
+  const searchParams = useSearchParams()
+
+  const type  = searchParams.get("type");
+  
+
      const handleCreateChat = async (participant: string) => {
     try {
       const res = await myFetch("/chats/create", { method: "POST", body: { participant } });
@@ -56,16 +61,17 @@ const CreatorListActionBtns = ({ row }: { row: any }) => {
       console.log(error)
     }
   }
+  const isFollowing = row?.isFollowing || type === "followed";
 
     return (
         <div className=" flex items-center gap-3">
-            {row?.isFollowing ? <Button onClick={() => handleUnFollow(row._id)} variant="outline" className="w-24 border border-primary text-primary bg-transparent"
+            {isFollowing ? <Button onClick={() => handleUnFollow(row._id)} variant="outline" className="w-24 border border-primary text-primary bg-transparent"
             >Following
             </Button> :
                 <Button onClick={() => handleFollow(row._id)} className="w-24"><span>Follow</span> <Plus /></Button>
             }
             <Button variant="outline" onClick={() => handleCreateChat(row?._id)} size="sm" className="cursor-pointer"><MessageCircleMore /></Button>
-            <Link href={`/promotors/creators/${row?._id}`}><Button variant="outline" size="sm" className="cursor-pointer"><Eye /></Button></Link>
+            <Link href={`/creator/creators/${row?._id}`}><Button variant="outline" size="sm" className="cursor-pointer"><Eye /></Button></Link>
         </div>
     )
 }

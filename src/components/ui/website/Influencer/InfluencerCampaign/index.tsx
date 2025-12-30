@@ -2,7 +2,6 @@ import AllCampaigns from "./AllCampaigns";
 import CampaignHeader from "./CampaignHeader";
 import Container from "@/components/shared/Container";
 import MyCampaigns from "./MyCampaigns";
-import CreatorPagination from "../Creator/CreatorPagination";
 
 const InfluencerCampaign = ({campaignType, status, queryString }: any) => {  
   return (
@@ -16,7 +15,7 @@ const InfluencerCampaign = ({campaignType, status, queryString }: any) => {
             <AllCampaigns queryString={queryString}/>
           )}
         </div>
-        <CreatorPagination />
+        
       </Container>
     </div>
   );

@@ -12,8 +12,6 @@ const page = async ({ searchParams }: PageProps) => {
 
   const {  type, ...rest } = params;
   
-  console.log("type111", rest);
-
   const queryString = new URLSearchParams(rest).toString();
 
   let data;
@@ -39,13 +37,11 @@ const page = async ({ searchParams }: PageProps) => {
       console.log("popular", data);
       break;
   }
-  console.log("data111111", data?.data);
-  
   
   return (
     <Creator
       type={type}
-      data={data?.data}
+      data={data}
     />
   );
 };

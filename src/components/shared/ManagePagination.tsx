@@ -15,7 +15,7 @@ interface CreatorPaginationProps {
   meta: PaginationMeta;
 }
 
-const ManagePagination: React.FC<CreatorPaginationProps> = ({ meta }) => {
+const ManagePagination = ({ meta }:any) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 

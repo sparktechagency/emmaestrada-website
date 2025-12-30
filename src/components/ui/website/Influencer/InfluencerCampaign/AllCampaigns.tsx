@@ -1,6 +1,7 @@
 import React from "react";
 import { myFetch } from "@/utils/myFetch";
 import MyCampaignList from "@/components/shared/MyCampaignList";
+import ManagePagination from "@/components/shared/ManagePagination";
 
 const AllCampaigns = async ({ queryString }: { queryString: string }) => {
 
@@ -9,11 +10,12 @@ const AllCampaigns = async ({ queryString }: { queryString: string }) => {
     ? `/campaigns/active-campaigns?${queryString}`
     : `/campaigns/active-campaigns`;
 
-  const { data: campaigns2 } = await myFetch(url2);
+  const data = await myFetch(url2);
 
   return (
     <div>
-      <MyCampaignList campaigns={campaigns2?.data} />
+      <MyCampaignList campaigns={data?.data} />
+      <ManagePagination meta={data?.meta} />
     </div>
   );
 };

@@ -10,13 +10,13 @@ const MyCampaigns = async ({
   queryString: string
 }) => {
 
-  const { data: campaigns } = await myFetch(
+  const  data = await myFetch(
     `/submissions/my-submissions?status=${status ? status : "pending"}${queryString}`
   );
+  console.log("filteredData", data);
   
-  const filteredData = campaigns?.data?.length > 0 ? campaigns?.data?.map((c:any)=>c.campaignId) : []
+  // const filteredData = campaigns?.data?.length > 0 ? campaigns?.data?.map((c:any)=>c.campaignId) : []
   
-  console.log("filteredData", filteredData);
   return (
     <div>
       <CampaignTabGroup
@@ -29,7 +29,7 @@ const MyCampaigns = async ({
         queryParam="status"
       />
 
-      <MyCampaignList campaigns={filteredData} />
+      <MyCampaignList campaigns={[]} />
     </div>
   );
 };

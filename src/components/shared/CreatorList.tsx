@@ -44,8 +44,6 @@ const PLATFORM_CONFIG = {
 
 const CreatorList = ({ creatorData }: { creatorData: any }) => {
 
-    console.log("creatorData", creatorData);
-    
     return (
         <div>
             {
@@ -120,7 +118,7 @@ const CreatorList = ({ creatorData }: { creatorData: any }) => {
                                                 })
                                                 }
                                             </TableCell>
-                                            <TableCell>{row?.totalFollowers}</TableCell>
+                                            <TableCell>{row?.totalFollowers ?? row?.followingId?.totalFollowers}</TableCell>
                                             <TableCell className="text-green-600 font-semibold">
                                                 {row?.engagement ?? row?.followingId?.engagement}%
                                             </TableCell>
@@ -149,7 +147,7 @@ const CreatorList = ({ creatorData }: { creatorData: any }) => {
                     </Card>
             }
 
-            <ManagePagination meta={creatorData?.data.meta} />
+            <ManagePagination meta={creatorData?.meta} />
         </div>)
 }
 
