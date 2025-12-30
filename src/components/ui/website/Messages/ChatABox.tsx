@@ -11,12 +11,13 @@ import { formatChatTime } from "@/components/shared/FormatChatTime "
 import { imageUrl } from "@/constants"
 import getProfile from "@/utils/getProfile"
 import ChatBoxFooter from "./ChatBoxFooter"
+import ImageViewer from "@/components/shared/ImageViewer"
 
-const ChatABox = async({ messages }: any) => {
+const ChatABox = async ({ messages }: any) => {
   const user = await getProfile();
 
   return (
-    <div className="flex-1 bg-white flex flex-col rounded-2xl">
+    <div className="flex-1 h-full min-h-[70vh] max-h-[70vh]  bg-white flex flex-col rounded-2xl">
 
       {/* Header */}
       <div className="p-4 border-b flex justify-between items-center">
@@ -36,7 +37,7 @@ const ChatABox = async({ messages }: any) => {
       </div>
 
       {/* Messages */}
-      <ScrollArea className="flex-1 px-6 py-4">
+      <ScrollArea className="flex-1 px-6 py-4 overflow-y-auto">
         {messages?.map((m: any) => {
           const isSent = m?.sender?._id === user?._id
 
@@ -60,15 +61,20 @@ const ChatABox = async({ messages }: any) => {
                   {m?.text && <p>{m.text}</p>}
 
                   {m?.images?.length > 0 && (
-                    <div className="mt-2 grid grid-cols-3 gap-2">
+                    <div className="mt-2 flex flex-wrap gap-2">
                       {m.images.map((img: string, i: number) => (
-                        <img
-                          key={i}
-                          src={`${imageUrl}${img}`}
-                          className="h-24 w-24 rounded-lg object-cover"
-                          alt="message"
+                        <ImageViewer
+                          images={img}
+                          imageUrl={imageUrl}
+                          className="mt-2"
                         />
                       ))}
+
+                      {/* <ImageViewer
+                        images={['image1.jpg', 'image2.jpg']}
+                        imageUrl="/path/to/images/"
+                        className="mt-2"
+                      /> */}
                     </div>
                   )}
                 </Card>
@@ -91,3 +97,7 @@ const ChatABox = async({ messages }: any) => {
 }
 
 export default ChatABox
+
+
+
+

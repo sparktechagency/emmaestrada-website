@@ -86,7 +86,7 @@ const PromotorsDataTable = ({ promotorData }: any) => {
                                         </div>
                                     </TableCell>
                                 </TableRow>
-                            )) : <p>Data not Found</p>}
+                            )) :  <TableRow><TableCell colSpan={6}><p className="text-center text-lg textPara">Data not Found</p></TableCell> </TableRow> }
                         </TableBody>
                     </Table>
 

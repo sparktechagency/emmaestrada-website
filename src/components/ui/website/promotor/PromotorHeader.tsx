@@ -32,7 +32,7 @@ import Cookies from "js-cookie";
     { link: "/promotor/creator", label: "Creator", icon: UsersRound },
     { link: "/promotor/promotor-list", label: "Promotor", icon: UsersRound },
     { link: "/promotor/analytics", label: "Analytics", icon: BarChart3 },
-    { link: "/promotor/messages", label: "Messages", icon: MessageSquare },
+    { link: "/creator/messages", label: "Messages", icon: MessageSquare },
     { link: "/promotor/trusted-creators", label: "Trusted Creator", icon: Handshake },    
     { link: "/promotor/profile", label: "Profile", icon: UserCircle },
   ];

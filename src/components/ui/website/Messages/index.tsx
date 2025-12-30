@@ -6,8 +6,6 @@ import { myFetch } from '@/utils/myFetch'
 
 const Messages = async ({ chatList, response }: any) => {
 
-    console.log("response", response);
-
     return (
         <div>
             <Container >
@@ -15,7 +13,7 @@ const Messages = async ({ chatList, response }: any) => {
                     <h1 className={`mb-2 text-3xl font-semibold`}>Messages</h1>
                     <p className="textPara">Connection between music promoter and creator</p>
                 </div>
-                <div className="flex flex-col lg:flex-row min-h-screen overflow-hidden md:gap-5 pb-20">
+                <div className="flex flex-col lg:flex-row min-h-screen overflow-hidden md:gap-5 pb-20 bg-transparent">
                     {/* <MessageSidebar chatData={chatList} /> */}
                     <MessageSidebar />
                     <ChatABox messages={response?.data?.data?.messages} />

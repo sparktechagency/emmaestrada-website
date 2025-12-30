@@ -9,47 +9,50 @@ import { MdOutlineStar } from 'react-icons/md';
 import FollowButton from './FollowButton';
 import { imageUrl } from '@/constants';
 
-
-
-const ProgressBar = ({ }: any) => {
+const ProgressBar = ({ percentage }: { percentage: number }) => {
     return (
         <div className="h-2 bg-gray-200 rounded-full shadow-md overflow-hidden">
             <div
-                className={`h-full bg-primary transition-all duration-300`}
-                style={{ width: `100%` }}
+                className="h-full bg-primary transition-all duration-300"
+                style={{ width: `${percentage}%` }}
             />
         </div>
     );
 };
 
-
 const CreatorDetails = ({ creator }: { creator: any }) => {
-
-    
-
     const platformData = [
         { title: "Total Followers", color: "text-[#69C9D0]", followers: creator?.totalFollowers ?? 0, icon: <FaTiktok /> },
         { title: "Engagement", color: "text-[#FF0000]", followers: creator?.engagement ?? 0, icon: <FaYoutube /> },
         { title: "Total Campaigns", color: "text-[#C13584]", followers: creator?.totalCampaigns ?? 0, icon: <FaInstagram /> },
     ];
+
+    // Calculate total followers across all platforms
+    const tiktokFollowers = creator?.tiktokFollowers ?? 0;
+    const instagramFollowers = creator?.instagramFollowers ?? 0;
+    const youtubeFollowers = creator?.youtubeFollowers ?? 0;
+    const totalPlatformFollowers = tiktokFollowers + instagramFollowers + youtubeFollowers;
+
+    // Calculate percentages
+    const tiktokPercentage = totalPlatformFollowers > 0 ? (tiktokFollowers / totalPlatformFollowers) * 100 : 0;
+    const instagramPercentage = totalPlatformFollowers > 0 ? (instagramFollowers / totalPlatformFollowers) * 100 : 0;
+    const youtubePercentage = totalPlatformFollowers > 0 ? (youtubeFollowers / totalPlatformFollowers) * 100 : 0;
+
     return (
         <Container>
-            <div className=' glassBg px-2 md:px-10 my-10 py-10'>
+            <div className='glassBg px-2 md:px-10 my-10 py-10'>
                 <div className="text-center">
-                    <Image src={`${imageUrl + creator?.image}`} unoptimized height={200} width={200} className='mx-auto h-28 md:h-44 w-28 md:w-44 rounded-full object-cover' alt='profile' />                    
+                    <img src={`${imageUrl}${creator?.image}`} className='mx-auto h-28 md:h-44 w-28 md:w-44 rounded-full object-cover' alt='profile' />
                     <h1 className='text-3xl font-semibold mt-5'>{creator?.name}</h1>
                     <p className='text-center text-md flex justify-center items-center'><IoLocationOutline /> {creator?.location ? <span> {creator?.location} {creator?.country}</span> : "N/A"} </p>
 
                     <div className="font-semibold flex gap-.5 text-center justify-center my-1">
-                        {/* {creator?.rating < 1 ? <Star className="text-orange-500" size={20} /> :
-                            Array.from({ length: creator?.rating + 3 })?.map((_: any, i: number) => <MdOutlineStar key={i} className="text-orange-500" size={20} />)} */}
-                        {creator?.rating && !creator?.rating  ? <Star className="text-orange-500" size={15} /> :
+                        {creator?.rating === 0 ? <Star className="text-orange-500" size={15} /> :
                             Array.from({ length: creator?.rating })?.map((_: any, i: number) => <MdOutlineStar key={i} className="text-orange-500" size={15} />)}
                     </div>
                     <p className='text-center text-lg text-slate-500 flex justify-center items-center'><span> {creator?.bio ?? "N/A"}</span> </p>
-                    {/* <p>Category:</p> */}
                     <div className="flex items-center gap-5 justify-center my-5">
-                        {creator?.contentTypes?.length > 0 ? creator?.contentTypes?.map((t: string) => <Badge key={t} className=' rounded-full '>{t}</Badge>) : 'N/A'}
+                        {creator?.contentTypes?.length > 0 ? creator?.contentTypes?.map((t: string) => <Badge key={t} className='rounded-full'>{t}</Badge>) : 'N/A'}
                     </div>
                     <FollowButton creatorId={creator?._id} isFollowing={creator?.isFollowing} />
                 </div>
@@ -58,57 +61,51 @@ const CreatorDetails = ({ creator }: { creator: any }) => {
                 </div>
 
                 {/* ----------- Platform Distribution --------- */}
-
                 <div className="bg-white p-5 rounded-lg mt-10">
-                    <p className='text-lg  font-semibold'>Platform Distribution</p>
-                    {/* Tiktalk */}
+                    <p className='text-lg font-semibold'>Platform Distribution</p>
+                    
+                    {/* TikTok */}
                     <div className="flex justify-between text-sm font-medium my-5">
                         <div className="flex items-center gap-2">
-                            <Image src="/tiktokBlack.png" height={50} width={50} className='w-5! h-5! rounded-md' alt='logo' />
-                            <span>Tiktalk</span> <CircleCheckBig className='text-blue-400' size={20} />
+                            <Image src="/tiktokBlack.png" height={50} width={50} className='w-5 h-5 rounded-md' alt='logo' />
+                            <span>TikTok</span> <CircleCheckBig className='text-blue-400' size={20} />
                         </div>
                         <span className="text-gray-700">
-                            {creator?.tiktokFollowers}
+                            {tiktokFollowers.toLocaleString()} ({tiktokPercentage.toFixed(1)}%)
                         </span>
                     </div>
-                    <ProgressBar followers={creator?.tiktokFollowers} />
+                    <ProgressBar percentage={tiktokPercentage} />
 
-                    {/* Tiktalk */}
+                    {/* Instagram */}
                     <div className="flex justify-between text-sm font-medium my-5">
                         <div className="flex items-center gap-2">
                             <Image src="/instagram.png" height={50} width={50} className='w-6 h-6 rounded-md' alt='logo' />
                             <span>Instagram</span> <CircleCheckBig className='text-blue-400' size={20} />
                         </div>
                         <span className="text-gray-700">
-                            {creator?.instagramFollowers}
+                            {instagramFollowers.toLocaleString()} ({instagramPercentage.toFixed(1)}%)
                         </span>
                     </div>
+                    <ProgressBar percentage={instagramPercentage} />
 
-                    {/* Progress Bar */}
-                    <ProgressBar followers={creator?.instagramFollowers} />
-
-                    {/* Tiktalk */}
+                    {/* YouTube */}
                     <div className="flex justify-between text-sm font-medium my-5">
                         <div className="flex items-center gap-2">
                             <Image src="/youtube.png" height={50} width={50} className='w-6 h-6 rounded-md' alt='logo' />
-                            <span>Youtube</span>
+                            <span>YouTube</span>
                         </div>
                         <span className="text-gray-700">
-                            {creator?.youtubeFollowers}
+                            {youtubeFollowers.toLocaleString()} ({youtubePercentage.toFixed(1)}%)
                         </span>
                     </div>
-
-                    {/* Progress Bar */}
-                    <div className="h-2 bg-gray-200 rounded-full shadow-md overflow-hidden">
-                        <ProgressBar followers={creator?.youtubeFollowers} />
-                    </div>
+                    <ProgressBar percentage={youtubePercentage} />
                 </div>
             </div>
         </Container>
-    )
-}
+    );
+};
 
-export default CreatorDetails
+export default CreatorDetails;
 
 const PlatformCard = ({ platform }: any) => {
     const { title, color, icon, followers } = platform;

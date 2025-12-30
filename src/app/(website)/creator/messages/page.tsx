@@ -1,23 +1,26 @@
-import Messages from '@/components/ui/website/Influencer/Messages'
-import { myFetch } from '@/utils/myFetch'
-import React from 'react'
 
-const page = async ({params, searchParams }: {params: Promise<{id: string}>, searchParams: Promise<{chatId: string}>}) => {
-  const {id} = await params;
-  const {chatId} = await searchParams;
-
-  console.log("searchParams",chatId);
-  
-  
-  const response = await myFetch(`/messages/${chatId}`, {tags: ["messages"]});
-  const chatList = await myFetch("/chats", { tags: ["chats"] });
-
-  
-  console.log("chatList", chatList);
-  
+const page = () => {
   return (
-    // <div><Messages chatList={chatList} response={response}/></div>
-    <div><Messages chatList={chatList} response={response?.data}/></div>
+    <div className="flex h-full bg-white flex-col items-center justify-center text-center px-4 rounded-xl">
+      <div className="">
+        <img
+          src="/emptyMessage.png"
+          alt="Empty"
+          className="w-30  object-contain"
+        />
+      </div>
+
+      {/* <!-- Title --> */}
+      <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+        No Projects Yet
+      </h2>
+
+      {/* <!-- Description --> */}
+      <p className="text-gray-500 max-w-md mb-6">
+        You haven&apos;t created any projects yet. Get started by creating your
+        first project.
+      </p>     <div />
+    </div>
   )
 }
 

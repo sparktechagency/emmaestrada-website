@@ -20,12 +20,16 @@ const CreatorListActionBtns = ({ row }: { row: any }) => {
 
      const handleCreateChat = async (participant: string) => {
     try {
+
+      console.log("handleCreateChat0",{participant} );
+      
+      return;
       const res = await myFetch("/chats/create", { method: "POST", body: { participant } });
       console.log("create chat", res);
       if (res?.success) {
         toast.success("Created Chat Successfully")
         revalidate("chats")
-        router.push("/promotor/messages")
+        router.push("/creator/messages")
       }
     } catch (error) {
       console.log(error)

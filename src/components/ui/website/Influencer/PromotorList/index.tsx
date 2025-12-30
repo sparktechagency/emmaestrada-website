@@ -4,6 +4,7 @@ import CPromotorHeader from './CPromotorHeader';
 import CPromotorList from './CPromotorList';
 import ManagePagination from '@/components/shared/ManagePagination';
 
+
 const CreatorPromotorList = ({promotorData}:any) => {
 
   return (

@@ -55,7 +55,7 @@ const CPromotorList = async ({ promotorData }: any) => {
                                     <TableCell>
                                         <div className="flex items-center gap-3">
                                             <img src={`${imageUrl + row?.image}`} className="h-10 w-10 object-cover rounded-full" alt={row?.name} />
-                                            <span className="capitalize">{row?.userName}</span>
+                                            <span className="capitalize">{row?.name ?? row?.userName }</span>
                                         </div>
                                     </TableCell>
 
@@ -84,18 +84,11 @@ const CPromotorList = async ({ promotorData }: any) => {
                                         </div>
                                     </TableCell>
                                 </TableRow>
-                            )) : <p>Data not Found</p>}
+                            )) :  <TableRow><TableCell colSpan={6}><p className="text-center text-lg textPara">Data not Found</p></TableCell> </TableRow> }
                         </TableBody>
                     </Table>
-
-                    <div className="flex justify-end mt-6 pr-10">
-                        <CreatorPagination />
-                    </div>
                 </CardContent>
             </Card>
-
-
-            {/* {open && <InfluencerDetails />} */}
         </Container>
     )
 }

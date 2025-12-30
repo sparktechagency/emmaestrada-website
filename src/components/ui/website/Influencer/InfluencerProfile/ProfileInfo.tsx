@@ -153,7 +153,7 @@ export default function ProfileInfo() {
             </Avatar>
 
             <div>
-              <h2 className="text-lg font-semibold">{profile?.name ?? profile?.userName} {profile?.role}</h2>
+              <h2 className="text-lg font-semibold">{profile?.name ?? profile?.userName}</h2>
               <p className="text-gray-500 text-sm mb-1.5">{profile?.email}</p>
               <button disabled
                 className="group flex items-center overflow-hidden rounded-sm border border-gray-200 bg-white transition-all"

@@ -8,10 +8,10 @@ const page = async({ searchParams }: any) => {
   const {  type, ...rest } = params;
   
   
-  const queryString = new URLSearchParams(rest).toString();
+  const queryString = new URLSearchParams(rest).toString();  
   const promotorData = await myFetch(queryString ? `/promoters?${queryString}` : '/promoters', {tags: ["promotors"]})  
-    
-  return <CreatorPromotorList promotorData={promotorData?.data}/>
+
+  return <CreatorPromotorList promotorData={promotorData}/>
 }
 
 export default page

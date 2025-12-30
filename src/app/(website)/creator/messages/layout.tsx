@@ -4,7 +4,7 @@ import Container from "@/components/shared/Container";
 import MessageSidebar from "@/components/ui/website/Messages/MessageSidebar";
 
 import { useParams } from "next/navigation";
-import React, { Suspense } from "react";
+import React from "react";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   // useParams returns an object. We'll extract 'chatId' if present in current route.
@@ -23,9 +23,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <Container>
     <section className="h-full grid grid-cols-1 sm:grid-cols-9 py-5 gap-3">
       <aside className="col-span-1 sm:col-span-3">
-          <Suspense fallback={<div>Loading...</div>}>
         <MessageSidebar />
-        </Suspense>
       </aside>
       <main className="hidden sm:block sm:col-span-6">{children}</main>
     </section>

@@ -6,7 +6,7 @@ import { Plus } from 'lucide-react'
 import React from 'react'
 import { toast } from 'sonner';
 
-const FollowButton = ({creatorId, isFollowing}: {creatorId:string, isFollowing: boolean}) => {
+const PromotorFollowButton = ({promotorId, isFollowing}: {promotorId:string, isFollowing: boolean}) => {
 
     const handleFollow = async (id: string) => {
         try {
@@ -41,9 +41,9 @@ const FollowButton = ({creatorId, isFollowing}: {creatorId:string, isFollowing: 
 
   return (
     <>
-    {isFollowing ? <Button onClick={()=>handleUnFollow(creatorId)} variant="outline" size="lg" className='min-w-[200px]! text-primary! text-lg border-primary/50 border'>Following</Button> 
-    : <Button onClick={()=>handleFollow(creatorId)} size="lg" className='min-w-[200px]! text-lg '>Follow <Plus size={30} /></Button>}
+    {isFollowing ? <Button onClick={()=>handleUnFollow(promotorId)} variant="outline" size="lg" className='min-w-[200px]! text-primary! text-lg border-primary/50 border'>Following</Button> 
+    : <Button onClick={()=>handleFollow(promotorId)} size="lg" className='min-w-[200px]! text-lg '>Follow <Plus size={30} /></Button>}
   </>)
 }
 
-export default FollowButton
+export default PromotorFollowButton
