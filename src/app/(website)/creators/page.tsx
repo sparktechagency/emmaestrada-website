@@ -3,11 +3,13 @@ import { myFetch } from '@/utils/myFetch';
 import React from 'react'
 
 const page = async() => {
-        const { data: creators } = await myFetch("/creators");
+        const  data = await myFetch("/creators");
 
+        console.log("creators", data);
+        
     return (
         <div>
-            <AllCreators data={creators}/>
+            <AllCreators data={data}/>
         </div>
     )
 }

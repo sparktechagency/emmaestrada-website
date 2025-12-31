@@ -5,10 +5,10 @@ import { IUser } from '@/types/profile'
 import ArtHeader from './ArtHeader'
 import ArtistCard from '@/components/shared/ArtistCard'
 import ManagePagination from '@/components/shared/ManagePagination'
+import getProfile from '@/utils/getProfile'
 
-const AllCreators = ({ data }: { data: any }) => {
-
-  
+const AllCreators = async ({ data }: { data: any }) => {
+  const user = await getProfile()
   return (
     <div className="">
       <CommonHeader title="Creators" />
@@ -17,7 +17,7 @@ const AllCreators = ({ data }: { data: any }) => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-3 md:mt-20">
 
           {data?.data && data?.data?.map((d:IUser) => (
-            <ArtistCard data={d} />            
+            <ArtistCard data={d} userRole={user?.role}/>            
           ))}
         </div>
         <ManagePagination meta={data?.meta}/>

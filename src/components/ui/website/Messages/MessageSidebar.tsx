@@ -16,28 +16,30 @@ import { myFetch } from '@/utils/myFetch';
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useProfile } from '@/hooks/context/ProfileContext';
+import useSocket from '@/hooks/useSocket';
+import { formatChatTime } from '@/components/shared/FormatChatTime ';
 
 
 // --------- Time Count ----------
-const timeAgo = (dateString: string): string => {
-    console.log("dateString", dateString);
+// const timeAgo = (dateString: string): string => {
+//     console.log("dateString", dateString);
 
-    const now = new Date().getTime();
-    const past = new Date(dateString).getTime();
+//     const now = new Date().getTime();
+//     const past = new Date(dateString).getTime();
 
-    const diffInSeconds = Math.floor((now - past) / 1000);
+//     const diffInSeconds = Math.floor((now - past) / 1000);
 
-    if (diffInSeconds < 60) return `${diffInSeconds}s ago`;
+//     if (diffInSeconds < 60) return `${diffInSeconds}s ago`;
 
-    const diffInMinutes = Math.floor(diffInSeconds / 60);
-    if (diffInMinutes < 60) return `${diffInMinutes} min ago`;
+//     const diffInMinutes = Math.floor(diffInSeconds / 60);
+//     if (diffInMinutes < 60) return `${diffInMinutes} min ago`;
 
-    const diffInHours = Math.floor(diffInMinutes / 60);
-    if (diffInHours < 24) return `${diffInHours} hr ago`;
+//     const diffInHours = Math.floor(diffInMinutes / 60);
+//     if (diffInHours < 24) return `${diffInHours} hr ago`;
 
-    const diffInDays = Math.floor(diffInHours / 24);
-    return `${diffInDays} day${diffInDays > 1 ? "s" : ""} ago`;
-};
+//     const diffInDays = Math.floor(diffInHours / 24);
+//     return `${diffInDays} day${diffInDays > 1 ? "s" : ""} ago`;
+// };
 
 
 // Empty State Component
@@ -85,18 +87,19 @@ const LoadingSkeleton = () => (
 const MessageSidebar = () => {
     const [chats, setChats] = useState([]);
     const [loading, setLoading] = useState(true);
-    const searchParams = useSearchParams();    
+    const searchParams = useSearchParams();
     const router = useRouter();
     const pathname = usePathname();
     const { profile } = useProfile();
 
+    // --- Socket -------
+    const socket = useSocket()
     // Get searchTerm from URL params
     const searchTerm = searchParams.get('searchTerm') || '';
-
+    
     const getChats = async () => {
         try {
-            // setLoading(true);
-            const { data } = await myFetch("/chats", { tags: ["chats"] });
+            const { data } = await myFetch("/chats", { tags: ["chats"], cache: "no-cache" });
             setChats(data?.chats || []);
             setLoading(false);
         } catch (error) {
@@ -106,8 +109,21 @@ const MessageSidebar = () => {
     }
 
     useEffect(() => {
+        setLoading(true);
         getChats();
     }, [])
+
+    const handleChatUpdate = async (data: any) => {
+        console.log("chat update", data);
+        await getChats();
+    };
+
+    socket.on(`newChat::${profile?._id}`, handleChatUpdate);
+    socket.on(`chatListUpdate::${profile?._id}`, handleChatUpdate);
+
+
+
+
 
     // Filter chats based on searchTerm
     const filteredChats = useMemo(() => {
@@ -145,7 +161,6 @@ const MessageSidebar = () => {
             {/* Search Bar */}
             <div className="relative p-2 flex items-center my-5">
                 <Input
-                    value={searchTerm}
                     onChange={handleOnChange}
                     placeholder="Search conversations..."
                     className="pl-3 pr-14 bg-white h-12"
@@ -194,7 +209,7 @@ const MessageSidebar = () => {
 
                                     <div className="flex flex-col h-full">
                                         <small className="text-gray-500 whitespace-nowrap mb-2 self-end">
-                                            {timeAgo(item?.lastMessageAt)}
+                                            {formatChatTime(item?.lastMessageAt)}
                                         </small>
                                         {item.unreadCount > 0 && (
                                             <span className='self-end'>

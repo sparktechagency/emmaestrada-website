@@ -31,7 +31,7 @@ export default function AnalyticsPlatformDistribution() {
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie
-              data={data}            
+              data={demoPlatformDistribution}            
               outerRadius={100}
               dataKey="value"
               cx="50%"
@@ -61,3 +61,10 @@ export default function AnalyticsPlatformDistribution() {
     </Card>
   )
 }
+
+
+const demoPlatformDistribution = [
+  { name: "TikTok", value: 52, color: "#111" },
+  { name: "Instagram", value: 28, color: "#fb7185" },
+  { name: "YouTube", value: 20, color: "#f97316" },
+];

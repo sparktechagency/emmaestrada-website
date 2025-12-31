@@ -1,26 +1,23 @@
 "use client"
 
+import Container from "@/components/shared/Container"
+import ManagePagination from "@/components/shared/ManagePagination"
+import { Button } from "@/components/ui/button"
 import {
     Card,
     CardContent,
 } from "@/components/ui/card"
 import {
     Table,
-    TableHead,
-    TableRow,
-    TableHeader,
     TableBody,
     TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
 } from "@/components/ui/table"
-import { Button } from "@/components/ui/button"
-import { ArrowLeft, Plus } from "lucide-react"
 import Image from "next/image"
-import { MdOutlineStar } from "react-icons/md"
-import { useState } from "react"
-import CreatorPagination from "../Creator/CreatorPagination"
-import Container from "@/components/shared/Container"
 import Link from "next/link"
-import ManagePagination from "@/components/shared/ManagePagination"
+import { MdOutlineStar } from "react-icons/md"
 
 export default function TrustedPromotors({ data }: any) {
     return (

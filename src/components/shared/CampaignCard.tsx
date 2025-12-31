@@ -111,7 +111,6 @@ const CampaignCard = ({ campaign}: CampaignCardProps) => {
       )
     : 0;
     const {profile} = useProfile()
-    console.log("profile", profile);
     
 
   return (
@@ -142,21 +141,21 @@ const CampaignCard = ({ campaign}: CampaignCardProps) => {
         <div className="flex justify-between gap-3">
           <div className="flex items-center gap-3">
             <Image
-              src={
-                campaign?.profileImg ||
-                "https://images.pexels.com/photos/3756767/pexels-photo-3756767.jpeg"
-              }
+              src={`${campaign?.userId?.image &&  
+                campaign?.userId?.image.startsWith('http') ? `${campaign?.userId?.image}` 
+              : campaign?.userId?.image?   `${imageUrl}${campaign?.userId?.image}` : "/placeholder.png"}`}
               alt="profile"
+              unoptimized
               height={200}
               width={200}
               className="w-12 h-12 rounded-full  object-cover"
-            />
+            />                       
             <div>
               <h3 className={`font-semibold text-lg ${!profile && "blur-[10px]"}`}>
-                {campaign?.displayName || "Unknown User"}
+                {campaign?.userId?.name || "Unknown User"}
               </h3>
-              <p className="text-gray-600 text-sm">
-                @{campaign?.username || "unknown"}
+              <p className="text-gray-600 text-sm lowercase">
+                @{campaign?.userId?.userName || "unknown"}
               </p>
             </div>
           </div>

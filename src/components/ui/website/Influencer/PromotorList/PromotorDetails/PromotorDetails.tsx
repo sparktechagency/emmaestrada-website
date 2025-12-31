@@ -1,21 +1,27 @@
+import CampaignCard from '@/components/shared/CampaignCard'
 import Container from '@/components/shared/Container'
+import ManagePagination from '@/components/shared/ManagePagination'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import { imageUrl } from '@/constants'
+import { myFetch } from '@/utils/myFetch'
 import { Star } from 'lucide-react'
 import { FaInstagram, FaTiktok, FaYoutube } from 'react-icons/fa'
 import { IoLocationOutline } from 'react-icons/io5'
 import { MdOutlineStar } from 'react-icons/md'
-import CreatorPagination from '../../Creator/CreatorPagination'
-import PromotorFollowButton from './PromotorFollowButton'
 
-const PromotorDetails = ({ promotor }: any) => {
+const PromotorDetails = async ({ promotor }: any) => {
 
     const platformData = [
         { title: "Total Followers", color: "text-[#69C9D0]", followers: promotor?.totalFollowers ?? 0, icon: <FaTiktok /> },
         { title: "Engagement", color: "text-[#FF0000]", followers: promotor?.engagement ?? 0, icon: <FaYoutube /> },
         { title: "Total Campaigns", color: "text-[#C13584]", followers: promotor?.totalCampaigns ?? 0, icon: <FaInstagram /> },
     ];
+
+    const promotorCampaign = await myFetch(`/campaigns/get-promoter-campaigns/${promotor?._id}`);
+
+    console.log("promotorCampaign", promotorCampaign);
+
 
     return (
         <Container>
@@ -37,31 +43,24 @@ const PromotorDetails = ({ promotor }: any) => {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-10">
                     {platformData && platformData?.map((platform: any, i: any) => <PlatformCard key={i} platform={platform} />)}
-                </div>                
+                </div>
                 <h1 className='text-xl font-semibold mt-10 mb-5 text-primary'>Campaigns by {promotor?.name}:</h1>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-5 mb-5">
-                    {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-                        <div className="" key={i}>
-                            {/* <CampaignCard
-                                name="Feel the Vibe"
-                                budget="$1000"
-                                influencers="25/25"
-                                dateRange="01/06/2024 - 30/06/2024"
-                                duration="30 days"
-                                progress={20}
-                                profileImg="/dj.jpg"
-                                rightImg="/dj-right.jpg"
-                                username="rikodj890"
-                                displayName="DJ Nadir"
-                                isPrivate={i % 2 !== 0}
-                                status="pending"
-                            /> */}
-
-                        </div>))}
+                    {promotorCampaign?.data?.length > 0 ? (
+                        promotorCampaign.data.map((campaign: any, i: number) => (
+                            <CampaignCard key={i} campaign={campaign} />
+                        ))
+                    ) : (
+                        <div className="col-span-1 md:col-span-3 flex flex-col items-center justify-center py-12 text-center">
+                            <p className="text-gray-500 text-lg">
+                                Promoter has not added any campaigns yet.
+                            </p>
+                        </div>
+                    )}
                 </div>
 
-                <CreatorPagination />
+                <ManagePagination meta={promotorCampaign?.meta} />
                 <div className="flex items-center justify-end mt-10">
                     <button className="md:self-end btn bg-secondary text-white px-10 py-5 rounded-full shadow-md">Request to become partner</button>
                 </div>

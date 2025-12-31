@@ -5,13 +5,13 @@ import { FaPlus } from "react-icons/fa6";
 import { IUser } from "@/types/profile";
 import { imageUrl } from "@/constants";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import Link from "next/link";
 
-const ArtistCard = ({ data , profile}: { data?: IUser, profile?: any }) => {    
+const ArtistCard = ({ data , userRole}: { data?: IUser, userRole?: any }) => {    
         
     const cardStyle = {
         backgroundImage: `url(${data?.image ? imageUrl + data?.image  : "/placeholder.png"})`
-    };
-
+    };    
     return (
         <div
             className={`
@@ -35,7 +35,7 @@ const ArtistCard = ({ data , profile}: { data?: IUser, profile?: any }) => {
                     <Button size="sm" className=" right-5 glassBg">Follow <FaPlus size={2} /></Button>
                 </div>
 
-                <div className="absolute bottom-0 w-full bg-white p-3 border-t border-white/10 flex items-center justify-between">
+                <Link href={`/${userRole === "PROMOTER" ? "promotor/campaigns": "creator/creators"}/${data?._id}`}><div className="absolute bottom-0 w-full bg-white p-3 border-t border-white/10 flex items-center justify-between">
                     <div className="flex items-center space-x-3 ">
 
                         <Avatar className="w-10 h-10 border-2 relative">
@@ -50,7 +50,7 @@ const ArtistCard = ({ data , profile}: { data?: IUser, profile?: any }) => {
                         </Avatar>
                         {/* Creator Name */}
                         
-                        <span className={`text-lg font-medium text-black ${!profile && "blur-xs"}`}>
+                        <span className={`text-lg font-medium text-black ${!userRole && "blur-xs"}`}>
                             {data?.name ?? data?.userName}
                         </span>
 
@@ -59,7 +59,7 @@ const ArtistCard = ({ data , profile}: { data?: IUser, profile?: any }) => {
                     <div className="border p-1">
                         <IoLogoTiktok size={20} />
                     </div>
-                </div>
+                </div></Link>
             </div>
         </div>
     );

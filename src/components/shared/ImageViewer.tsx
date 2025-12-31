@@ -24,7 +24,6 @@ const ImageViewer: React.FC<ImageViewerProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [zoom, setZoom] = useState(1);
-  const [imageLoaded, setImageLoaded] = useState(false);
 
   // Normalize images to always be an array
   const imageArray = Array.isArray(images) ? images : [images];
@@ -32,26 +31,22 @@ const ImageViewer: React.FC<ImageViewerProps> = ({
   const openViewer = (index: number) => {
     setCurrentIndex(index);
     setZoom(1);
-    setImageLoaded(false);
     setIsOpen(true);
   };
 
   const closeViewer = () => {
     setIsOpen(false);
     setZoom(1);
-    setImageLoaded(false);
   };
 
   const goToNext = () => {
     setCurrentIndex((prev) => (prev + 1) % imageArray.length);
     setZoom(1);
-    setImageLoaded(false);
   };
 
   const goToPrevious = () => {
     setCurrentIndex((prev) => (prev - 1 + imageArray.length) % imageArray.length);
     setZoom(1);
-    setImageLoaded(false);
   };
 
   const handleZoomIn = () => {
@@ -73,19 +68,19 @@ const ImageViewer: React.FC<ImageViewerProps> = ({
   return (
     <>
       {/* Thumbnail Grid */}
-      <div className={`flex flex-wrap gap-2 ${className}`}>
+      <div className={`flex flex-col md:flex-row md:flex-wrap gap-2 ${className}`}>
         {imageArray.map((img: string, i: number) => (
           <div
             key={i}
-            className={`relative cursor-pointer overflow-hidden rounded-lg transition-transform hover:scale-105 ${thumbnailClassName}`}
+            className={`relative cursor-pointer overflow-hidden rounded-lg transition-transform hover:scale-105 ${thumbnailClassName} ${thumbnailHeight} ${thumbnailWidth}`}
             onClick={() => openViewer(i)}
           >
             <img
               src={`${imageUrl}${img}`}
-              className={`${thumbnailHeight} ${thumbnailWidth} object-cover`}
+              className="w-full h-full object-cover"
               alt={`Thumbnail ${i + 1}`}
             />
-            <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 transition-opacity hover:bg-opacity-30">
+            <div className="absolute inset-0 flex items-center justify-center  bg-opacity-0 transition-opacity hover:bg-opacity-30">
               <ZoomIn className="text-white opacity-0 transition-opacity hover:opacity-100" size={24} />
             </div>
           </div>
@@ -95,20 +90,14 @@ const ImageViewer: React.FC<ImageViewerProps> = ({
       {/* Lightbox Dialog */}
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent 
-          className="max-w-screen-xl p-0 bg-black border-none"
+          className="max-w-screen-xl p-0 bg-black/95 border-none"
           onKeyDown={handleKeyDown}
         >
-          <div className="relative w-full h-full flex items-center justify-center">
-            {/* Loading Spinner */}
-            {!imageLoaded && (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-12 h-12 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
-              </div>
-            )}
+          <div className="relative w-full h-[90vh] flex items-center justify-center">
             {/* Close Button */}
             <button
               onClick={closeViewer}
-              className="absolute top-4 right-4 z-50 p-2 rounded-full bg-black bg-opacity-50 text-white hover:bg-opacity-70 transition-all"
+              className="absolute top-4 right-4 z-50 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-all"
               aria-label="Close"
             >
               <X size={24} />
@@ -119,14 +108,14 @@ const ImageViewer: React.FC<ImageViewerProps> = ({
               <>
                 <button
                   onClick={goToPrevious}
-                  className="absolute left-4 z-50 p-3 rounded-full bg-black bg-opacity-50 text-white hover:bg-opacity-70 transition-all"
+                  className="absolute left-4 z-50 p-3 rounded-full bg-black/50 text-white hover:bg-black/70 transition-all"
                   aria-label="Previous"
                 >
                   <ChevronLeft size={32} />
                 </button>
                 <button
                   onClick={goToNext}
-                  className="absolute right-4 z-50 p-3 rounded-full bg-black bg-opacity-50 text-white hover:bg-opacity-70 transition-all"
+                  className="absolute right-4 z-50 p-3 rounded-full bg-black/50 text-white hover:bg-black/70 transition-all"
                   aria-label="Next"
                 >
                   <ChevronRight size={32} />
@@ -138,18 +127,18 @@ const ImageViewer: React.FC<ImageViewerProps> = ({
             <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-50 flex gap-2">
               <button
                 onClick={handleZoomOut}
-                className="p-2 rounded-full bg-black bg-opacity-50 text-white hover:bg-opacity-70 transition-all"
+                className="p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-all disabled:opacity-50"
                 aria-label="Zoom out"
                 disabled={zoom <= 0.5}
               >
                 <ZoomOut size={20} />
               </button>
-              <span className="px-4 py-2 rounded-full bg-black bg-opacity-50 text-white">
+              <span className="px-4 py-2 rounded-full bg-black/50 text-white">
                 {Math.round(zoom * 100)}%
               </span>
               <button
                 onClick={handleZoomIn}
-                className="p-2 rounded-full bg-black bg-opacity-50 text-white hover:bg-opacity-70 transition-all"
+                className="p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-all disabled:opacity-50"
                 aria-label="Zoom in"
                 disabled={zoom >= 3}
               >
@@ -159,7 +148,7 @@ const ImageViewer: React.FC<ImageViewerProps> = ({
 
             {/* Image Counter */}
             {imageArray.length > 1 && (
-              <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-50 px-4 py-2 rounded-full bg-black bg-opacity-50 text-white">
+              <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-50 px-4 py-2 rounded-full bg-black/50 text-white">
                 {currentIndex + 1} / {imageArray.length}
               </div>
             )}
@@ -168,10 +157,9 @@ const ImageViewer: React.FC<ImageViewerProps> = ({
             <div className="overflow-auto w-full h-full flex items-center justify-center p-8">
               <img
                 src={`${imageUrl}${imageArray[currentIndex]}`}
-                className={`max-w-full max-h-full object-contain transition-transform duration-200 ${!imageLoaded ? 'opacity-0' : 'opacity-100'}`}
+                className="max-w-full max-h-full object-contain transition-transform duration-200"
                 style={{ transform: `scale(${zoom})` }}
                 alt={`Image ${currentIndex + 1}`}
-                onLoad={() => setImageLoaded(true)}
               />
             </div>
           </div>
@@ -180,6 +168,5 @@ const ImageViewer: React.FC<ImageViewerProps> = ({
     </>
   );
 };
-
 
 export default ImageViewer;

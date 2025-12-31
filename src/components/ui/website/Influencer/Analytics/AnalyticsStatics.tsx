@@ -9,42 +9,53 @@ import {
   Music,
   TrendingUp,
 } from "lucide-react"
+import { myFetch } from '@/utils/myFetch'
 
 
-const AnalyticsStatics = () => {
+const AnalyticsStatics = async () => {
+
+  const analyticsData = await myFetch("/analytics");
+  const { data } = analyticsData;
+
   return (
     <div className="my-5">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
           icon={<DollarSign />}
           iconBg="bg-green-500"
           title="Total Revenue"
-          value="$42,350"
-          badge="+12.5%"
+          value={`$${data?.totalRevenue?.value}`}
+          badge={`$${data?.totalRevenue?.growthRate}`}
         />
         <StatCard
           icon={<Eye />}
           iconBg="bg-blue-500"
-          title="Total Views"
-          value="4.5K"
-          badge="+18.2%"
+          title="Active Users"
+          value={`$${data?.activeUsers?.value}`}
+          badge={`$${data?.activeUsers?.growthRate}`}
         />
         <StatCard
           icon={<Music />}
           iconBg="bg-purple-500"
           title="Joined Campaigns"
-          value="12"
-          badge="-3"
-          negative
+          value={`$${data?.activeCampaigns?.value}`}
+          badge={`$${data?.activeCampaigns?.growthRate}`}
         />
+        {/* <StatCard
+          icon={<TrendingUp />}
+          iconBg="bg-red-500"
+          title="Total Submission"
+          value={`$${data?.totalSubmissions?.value}`}
+          badge={`$${data?.totalSubmissions?.growthRate}`}
+        /> */}
         <StatCard
           icon={<TrendingUp />}
           iconBg="bg-red-500"
-          title="Growth Rate"
-          value="23.4%"
-          badge="+5.2%"
+          title="Total Growth"
+          value={`$${data?.totalGrowth?.value}`}
+          badge={`$${data?.totalGrowth?.growthRate}`}
         />
-      </div>        
+      </div>
 
     </div>
   )
@@ -84,9 +95,8 @@ function StatCard({
 
           <Badge
             variant="secondary"
-            className={`bg-white ${
-              negative ? "text-red-500" : "text-green-600"
-            }`}
+            className={`bg-white ${negative ? "text-red-500" : "text-green-600"
+              }`}
           >
             {badge}
           </Badge>

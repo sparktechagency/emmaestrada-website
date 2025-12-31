@@ -61,7 +61,7 @@ function ArtistsSection({ creators }: any) {
           >
             {creators?.length !== 0 && creators?.map((data: IUser) => ( 
               <SwiperSlide key={data._id}>
-                <ArtistCard data={data} profile={profile}/>
+                <ArtistCard data={data} userRole={profile?.role}/>
               </SwiperSlide>
             ))} 
           </Swiper>

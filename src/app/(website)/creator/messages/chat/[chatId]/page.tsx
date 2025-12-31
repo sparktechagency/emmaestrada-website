@@ -1,20 +1,19 @@
+
 import ChatABox from "@/components/ui/website/Messages/ChatABox";
 import { myFetch } from "@/utils/myFetch";
 
 
-export default async function ChatPage({params}: {params:Promise<{
-  chatId: string
-}>}) {  
+export default async function ChatPage({ params }: {
+  params: Promise<{
+    chatId: string
+  }>
+}) {
 
-  const {chatId} = await params;
-  
-  const messages = await myFetch(`/messages/${chatId}`, {tags: ["messages"]})
-  const {data} = messages;
-  console.log("messages", messages);
-  
+  const { chatId } = await params;
+
   return (
     <div className="">
-      <ChatABox messages={data?.messages?.reverse()}/>
+      <ChatABox chatId={chatId} />
     </div>
 
   );

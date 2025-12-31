@@ -27,6 +27,8 @@ interface CampaignProps {
 
 const Campaign = ({ campaigns }: {campaigns: any}) => {
   
+  console.log("campaigns", campaigns);
+  
   return (
     <section className="bottomPadding">
       <Container>
