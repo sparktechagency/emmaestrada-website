@@ -1,27 +1,18 @@
-import React from 'react'
-import PCampaignHeader from './PCampaignHeader'
-import PActiveChampaigns from './PActiveChampaigns'
-import PUpcomingChampaigns from './PUpcomingChampaigns'
-import PPastChampaigns from './PPastChampaigns'
 import Container from '@/components/shared/Container'
-import CreatorPagination from '../../Influencer/Creator/CreatorPagination'
+import ManagePagination from '@/components/shared/ManagePagination'
+import { myFetch } from '@/utils/myFetch'
+import CampaignCreateButton from '../../Influencer/InfluencerCampaign/CampaignCreateButton'
 import { CampaignTabGroup } from '../../Influencer/InfluencerCampaign/CampaignTabGroup'
 import CampaingsAddForm from '../CampaingsAddForm'
-import CampaignCreateButton from '../../Influencer/InfluencerCampaign/CampaignCreateButton'
-import { myFetch } from '@/utils/myFetch'
-import CampaignCard from '@/components/shared/CampaignCard'
-import MyCampaignList from '@/components/shared/MyCampaignList'
+import PCampaignHeader from './PCampaignHeader'
 import PMyCampaigns from './PMyCampaigns'
 
 const PromotorChampaigns = async ({ queryString, status }: { queryString?: string, status?: string }) => {
-  // const baseUrl = status === "upcoming" ? "/campaigns/unpaid-campaigns" : "/campaigns/my-campaigns";
-  // const baseUrl =  "/campaigns/my-campaigns";
+   const baseUrl = status === "upcoming" ? "/campaigns/unpaid-campaigns" : status ? `/campaigns/my-campaigns?status=${status}` : "/campaigns/my-campaigns?status=active";
 
-  // const url = queryString ? `${baseUrl}?${queryString}` : baseUrl;
-  const { data: campaigns } = await myFetch("/campaigns/my-campaigns");
-
-  console.log("baseUrl", campaigns);
-  
+  const url = queryString ? `${baseUrl}?${queryString}` : baseUrl;
+  const campaignsData = await myFetch(url);
+    
   return (
     <Container>
       <div className="pb-16">
@@ -38,14 +29,12 @@ const PromotorChampaigns = async ({ queryString, status }: { queryString?: strin
           <CampaignCreateButton />
         </div>
 
-        {status === 'create-campaign' ? <CampaingsAddForm /> :
-          // <PMyCampaigns campaigns={campaigns?.data?.result} />}
-          <PMyCampaigns campaigns={campaigns} />}
+        {status === 'create-campaign' ? <CampaingsAddForm /> :          
+          <PMyCampaigns campaigns={campaignsData?.data} />}
       </div>
-
-      {/* { !['upcoming', 'create-campaign'].includes(status?.toString()) && <CreatorPagination />} */}
-      {status && !['upcoming', 'create-campaign'].includes(status) && (
-        <CreatorPagination />
+      
+      {status && !['create-campaign'].includes(status) && (
+        <ManagePagination meta={campaignsData?.meta} />
       )}
 
     </Container>

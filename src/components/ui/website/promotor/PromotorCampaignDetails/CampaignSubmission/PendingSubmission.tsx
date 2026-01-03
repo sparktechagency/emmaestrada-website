@@ -7,6 +7,7 @@ import RejectButtonWithForm from "./RejectButtonWithForm"
 import PendingDropDown from "./PendingDropDown"
 import { myFetch } from "@/utils/myFetch"
 import { formatChatTime } from "@/components/shared/FormatChatTime "
+import { imageUrl } from "@/constants"
 
 
 const PendingSubmission = async ({campaignId}: {campaignId: string}) =>{
@@ -21,10 +22,10 @@ const PendingSubmission = async ({campaignId}: {campaignId: string}) =>{
   return (
     <div>
 
-      {res?.data?.data &&  res?.data?.data.map((submission: any) => <Card className="bg-transparent shadow-none border-0 ">
+      {res?.data?.data &&  res?.data?.data.map((submission: any, i: number) => <Card key={i} className="bg-transparent shadow-none border-0 ">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between md:p-3 ">
           <div className="flex items-center gap-3">
-            <ProfileImageWithUserData campaign={submission?.campaignId} user={submission?.influencerId} />
+            <ProfileImageWithUserData submission={submission} />
             <div className="">
               <p className="text-lg font-semibold text-black">{submission?.influencerId?.name}</p>
               <p className="text-md text-slate-400"> {formatChatTime(submission?.createdAt)} ago by <span className="font-semibold text-primary">Pokiee Ttv</span></p>
@@ -36,7 +37,7 @@ const PendingSubmission = async ({campaignId}: {campaignId: string}) =>{
               <Image src="/tiktokBlack.png" height={15} width={40} alt="logo" className="h-6 object-contain w-full md:w-7 rounded-md" />
             </div>
             <div className="">              
-              <PendingDropDown />
+              <PendingDropDown submission={submission} />
             </div>
           </div>
         </div>
@@ -44,18 +45,17 @@ const PendingSubmission = async ({campaignId}: {campaignId: string}) =>{
           <div className="flex justify-center items-center w-full md:w-1/2 h-60 min-h-66">
              <video
               controls
-              preload="metadata"
-              poster="https://images.pexels.com/photos/33597/guitar-classical-guitar-acoustic-guitar-electric-guitar.jpg"
+              preload="metadata"              
               className="w-full h-full object-cover rounded-lg"
               aria-label="Video player"
-              src="/reels-3.mp4"
+              src={`${imageUrl}${submission?.video}`}
             >
               Your browser does not support the video tag.
             </video>
           </div>
 
           <div className="w-full md:w-1/2">
-            <ReelsAnalyticsChart />
+            <ReelsAnalyticsChart views={submission?.metrics?.views}/>
           </div>
         </div>
 

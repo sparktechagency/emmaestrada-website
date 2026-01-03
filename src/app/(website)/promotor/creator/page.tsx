@@ -22,25 +22,27 @@ const page = async ({ searchParams }: any) => {
   switch (type) {
     case "followed":
 
-      data = await myFetch(queryString ? `/followers/following?${queryString}`
+      const campaignData = await myFetch(queryString ? `/followers/following?${queryString}`
         : `/followers/following`, { tags: ["CREATOR"] });
-      console.log("followed", data);
+      console.log("followed", campaignData);
       break;
 
     case "all":
-      data = await myFetch(queryString ? `/creators?${queryString}`
+      const campaignData2 = await myFetch(queryString ? `/creators?${queryString}`
         : `/creators`, { tags: ["CREATOR"] });
-      console.log("all", data);
+      console.log("all", campaignData2);
       break;
 
     case "popular":
     default:
-      data = await myFetch(queryString ? `/creators/popular?${queryString}`
+      const campaignData3  = await myFetch(queryString ? `/creators/popular?${queryString}`
         : `/creators/popular`, { tags: ["CREATOR"] });
-      console.log("popular", data);
+      console.log("popular", campaignData3);
       break;
   }
 
+  
+  console.log("pcreator", data);
   
   return (
     <Creator

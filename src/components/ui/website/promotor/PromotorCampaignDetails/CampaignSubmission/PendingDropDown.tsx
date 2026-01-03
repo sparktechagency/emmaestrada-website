@@ -18,11 +18,26 @@ import CreatorReportForm from "@/components/shared/CreatorReportForm"
 import RejectSubmissionForm from "./RejectSubmissionModal"
 import { IoIosStar } from "react-icons/io"
 import ReviewModal from "@/components/shared/ReviewModal"
+import { myFetch } from "@/utils/myFetch"
 
-const PendingDropDown = () => {
+
+const PendingDropDown = ({submission}: {submission: any }) => {
     const [showRejectForm, setShowRejectForm] = useState(false);
     const [openReport, setOpenReport] = useState(false);
     const [openReview, setOpenReview] = useState(false);
+
+    const handleAcceptSubmission = async ()=>{
+        try {
+            await myFetch(`/submissions/accept-submission/${submission?._id}`, {
+                method: "PATCH",
+                body: { status: "accepted" },
+            });
+        } catch (error) {
+            console.log("Error accepting submission:", error);
+        }
+    }
+
+
 
     return (
         <>
@@ -34,7 +49,7 @@ const PendingDropDown = () => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-40 p-3 inset-0 shadow z-10" align="end">
                     <DropdownMenuGroup >
-                        <DropdownMenuItem className="bg-green-600 hover:bg-green-700! text-white! mb-2">
+                        <DropdownMenuItem onClick={handleAcceptSubmission} className="bg-green-600 hover:bg-green-700! text-white! mb-2">
                             Accept
                             <DropdownMenuShortcut><Check color="white" /></DropdownMenuShortcut>
                         </DropdownMenuItem>
@@ -59,7 +74,7 @@ const PendingDropDown = () => {
                 open={showRejectForm}
                 setOpen={setShowRejectForm}
                 className='md:max-w-md! w-[90%]! md:w-full!'>
-                <RejectSubmissionForm closeModal={() => setShowRejectForm(false)} />
+                <RejectSubmissionForm submission={submission} closeModal={() => setShowRejectForm(false)} />
             </Modal>
 
             {/* -------------- Report Form -------------- */}

@@ -6,6 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+
 import {
   LineChart,
   Line,
@@ -14,36 +15,37 @@ import {
   Tooltip,
   ResponsiveContainer,
   CartesianGrid,
+  BarChart,
+  Bar,
 } from "recharts"
 
-const data = [
-  { month: "Jan", value: 1000 },
-  { month: "Mar", value: 1400 },
-  { month: "Jun", value: 2600 },
-  { month: "Sep", value: 3400 },
-  { month: "Nov", value: 4000 },
-  { month: "Dec", value: 4200 },
-]
 
-export default function ReelsAnalyticsChart() {
+
+export default function ReelsAnalyticsChart({views}: {views?: number}) {
+
+  const data = [
+  { name: "View", total: views || 0 },
+]
   return (
     <Card className="bg-orange-50/50 rounded-lg h-full p-2">
-
       <CardContent className="h-[250px] p-0">
-        <ResponsiveContainer width="100%" height="100%" >
-          <LineChart data={data}  margin={{ top: 10, right: 0, left: 0, bottom: 0 }}>
-            <XAxis dataKey="month" />
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart
+            data={data}
+            margin={{ top: 10, right: 0, left: 0, bottom: 0 }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
             <YAxis />
             <Tooltip />
-            <CartesianGrid strokeDasharray="3 3" />
-            <Line
-              type="monotone"
-              dataKey="value"
-              stroke="#f97316"
-              strokeWidth={3}
-              dot={{ fill: "#111" }}
+            <Bar              
+              dataKey="total"
+              fill="var(--color-secondary)"
+              barSize={32}
+              width={0.5}
+              radius={[6, 6, 0, 0]}
             />
-          </LineChart>
+          </BarChart>
         </ResponsiveContainer>
       </CardContent>
     </Card>

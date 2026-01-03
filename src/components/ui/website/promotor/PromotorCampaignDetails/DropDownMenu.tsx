@@ -17,13 +17,14 @@ import CampaingsAddForm from "../CampaingsAddForm";
 import { AddBudgetDialog } from "./AddBudgetDialog";
 import { RefundDialog } from "./RefundDialog";
 
-    export function DropDownMenu() {
+    export function DropDownMenu({campaignData}: {campaignData:any}) {
     const [showRefund, setShowRefund] = useState(false);
     const [showAddBudget, setShowAddBudget] = useState(false);
-    const [showEdit, setShowEdit] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
     const [budget, setBudget] = useState(5000);
-
+    
+    const [showEdit, setShowEdit] = useState(false);
+    const [selectCampaign, setSelectCampaign] = useState(null);
 
 
     return (
@@ -34,7 +35,7 @@ import { RefundDialog } from "./RefundDialog";
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56" align="end">
                     <DropdownMenuGroup>
-                        <DropdownMenuItem onSelect={() => setShowEdit(true)}>
+                        <DropdownMenuItem onSelect={() => {setShowEdit(true); setSelectCampaign(campaignData)}}>
                             Edit
                             <DropdownMenuShortcut><Edit /></DropdownMenuShortcut>
                         </DropdownMenuItem>
@@ -55,7 +56,7 @@ import { RefundDialog } from "./RefundDialog";
             </DropdownMenu>
             {showEdit && <Dialog open={showEdit} onOpenChange={setShowEdit}>
                 <DialogContent className="md:min-w-[800px] h-[85vh] overflow-y-auto">
-                    <CampaingsAddForm editData={demoEditData} />
+                    <CampaingsAddForm editData={selectCampaign} />
                 </DialogContent> </Dialog>}
 
             <ConfirmDialog
@@ -96,31 +97,3 @@ import { RefundDialog } from "./RefundDialog";
         </div >
     )
 }
-
-const demoEditData = {
-    campaignTitle: "Summer Music Blast",
-    campaignDescription: "Promote the latest summer hits with influencers.",
-    genre: "Pop",
-    influencersNeeded: "25",
-    startDate: "2025-01-10",
-    endDate: "2025-02-01",
-    audioTrack: "/audio/sample-track.mp3",
-    totalCampaignBudget: "5000",
-    rewardType: "Fixed",
-    rewardAmount: "200",
-    minimumPayout: "50",
-    maximumPayout: "500",
-    targetPlatform: ["TikTok", "Instagram", "YouTube"],
-    contentGuidelines: [
-        "Use the official audio",
-        "Tag @musicbrand",
-        "Use hashtag #SummerBlast",
-    ],
-    ageRestriction: "18+",
-    location: "USA, Canada",
-    campaignRequirements: [
-        "Influencers must have at least 10k followers",
-        "Content should be posted within 48 hours of acceptance",
-    ],
-    campaignAssets: "/assets/campaign-images/banner.jpg",
-};

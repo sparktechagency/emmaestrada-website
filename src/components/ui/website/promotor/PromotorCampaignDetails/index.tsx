@@ -17,7 +17,7 @@ const PromotorCampaignDetails = ({data, status, openTab }: {data:any,  status?: 
         <Container>
             <div className="glassBg p-4 my-10">
             <div className="flex justify-end mt-5">
-            <DropDownMenu />
+            <DropDownMenu campaignData={data} />
             </div>
             <div className="relative w-full  px-0 py-4 md:p-8 flex flex-col items-center">
                 <div className="w-full">

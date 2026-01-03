@@ -24,6 +24,7 @@ const InfluencerList = ({type, PopularCreator, followedCreator, allCreator}: any
             <PPopularInfluencer popularCreator={PopularCreator}/> : 
             type === 'followed-influencer' ? < PFollowedInfluencer followedCreator={followedCreator}/>  
             : type === 'all-influencers' ? < PAllInfluencer allCreator={allCreator}/>: <PPopularInfluencer PopularCreator={PopularCreator}/>}  
+            
         </Container>
     )
 }

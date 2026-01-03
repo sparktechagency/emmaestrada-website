@@ -10,6 +10,7 @@ import Image from "next/image";
 import { myFetch } from "@/utils/myFetch";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { imageUrl } from "@/constants";
 
 const steps = [
   { id: 1, name: "Basic & Budget", subtitle: "Campaign details" },
@@ -29,6 +30,10 @@ const CampaignsAddForm = ({ editData }: { editData?: any }) => {
   const [categories, setCategories] = useState([])
   const [genries, setGenries] = useState([])
   const route = useRouter()
+
+
+
+  console.log("editData campaign:", editData);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -53,8 +58,11 @@ const CampaignsAddForm = ({ editData }: { editData?: any }) => {
 
   const fetchingCategories = async () => {
     try {
-      const category = await myFetch('/categories?type=CATEGORY');      
-      setCategories(category?.data?.data)
+      const category = await myFetch('/categories?type=CATEGORY');
+
+      console.log("category", category);
+      
+      setCategories(category?.data)
     } catch (error) {
       console.error('Error:', error);
     }
@@ -62,8 +70,9 @@ const CampaignsAddForm = ({ editData }: { editData?: any }) => {
 
   const fetchingGenries = async () => {
     try {
-      const category = await myFetch('/categories?type=GENRE');     
-      setGenries(category?.data?.data)
+      const category = await myFetch('/categories?type=GENRE');
+      console.log("genre", category);
+      setGenries(category?.data)
     } catch (error) {
       console.error('Error:', error);
     }
@@ -72,8 +81,6 @@ const CampaignsAddForm = ({ editData }: { editData?: any }) => {
 
 
   useEffect(() => {
-
-
     fetchingCategories()
     fetchingGenries()
   }, [])
@@ -81,10 +88,12 @@ const CampaignsAddForm = ({ editData }: { editData?: any }) => {
 
   useEffect(() => {
     if (editData) {
-      setFormData({ ...formData, ...editData });
+      setFormData({ ...formData, categoryId: editData.categoryId, genreId: editData.genreId, ...editData });
       setStep(1);
     }
   }, [editData]);
+  
+
 
   const updateFormData = (field: any) =>
     setFormData((p) => ({ ...p, ...field }));
@@ -151,20 +160,21 @@ const CampaignsAddForm = ({ editData }: { editData?: any }) => {
         method: 'POST',
         body: submitFormData,
       });
-      if(response?.success){
+      if (response?.success) {
         console.log('Success:', response);
         toast.success(response?.data?.message)
         route.push("/promotor?status=upcoming")
       }
     } catch (error) {
       console.error('Error:', error);
-    }    
+    }
   };
 
   const views: any = {
     1: (
       <Step1
         formData={formData}
+        editData={editData}
         updateFormData={updateFormData}
         updateBudget={updateBudget}
         categories={categories}
@@ -286,6 +296,7 @@ const FileUpload = ({
 
 const Step1 = ({
   formData,
+  editData,
   updateFormData,
   updateBudget,
   thumbnailPreview,
@@ -298,7 +309,7 @@ const Step1 = ({
   const valid = formData.title && formData.categoryId && formData.genreId;
 
   console.log("formData", formData);
-  
+
   const handleNext = () => {
     if (valid) next();
   };
@@ -365,6 +376,18 @@ const Step1 = ({
 
 
 
+        {editData && formData?.thumbnail && <div>
+          <p className="text-md text-slate-400 font-md font-medium mb-2">
+            Campaign Thumbnail
+          </p>
+          {/* <Image src={`${imageUrl}${formData?.thumbnail}`} unoptimized height={200} width={300} className="h-[200px] w-full object-cover rounded-xl" alt="Thumbnail"/> */}
+          <div className="relative">
+          <img src={`${imageUrl}${formData?.thumbnail}`} className="h-[200px] w-full object-cover rounded-xl" alt="Thumbnail"/>
+          <div className="w-10-h-10 border rounded-full">
+            <X className="h-5 w-5 text-white cursor-pointer absolute top-2 right-2 bg-red-500 p-1 rounded-full" onClick={removeThumbnail} />
+          </div>
+          </div>
+        </div>}
         <div>
           <p className="text-md text-slate-400 font-md font-medium mb-2">
             Campaign Thumbnail

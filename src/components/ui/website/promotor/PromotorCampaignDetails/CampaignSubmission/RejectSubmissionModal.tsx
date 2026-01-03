@@ -1,6 +1,5 @@
 'use client'
 
-import React from 'react'
 import { useForm } from 'react-hook-form'
 
 import {
@@ -11,39 +10,37 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 
-import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
+import { Textarea } from '@/components/ui/textarea'
 import { myFetch } from '@/utils/myFetch'
 
-const RejectSubmissionForm = ({ closeModal }: { closeModal: () => void }) => {
+const RejectSubmissionForm = ({submission,  closeModal }: { submission?: any,  closeModal: () => void }) => {
   const form = useForm({
     defaultValues: {
-      reason: '',
-      banUser: false,
+      reason: '',  
     },
   })
 
-  const onSubmit = async (values: any) => {
-    try {
-      console.log('Reject Data:', values)
-
-      const res = await myFetch("/submissions/update-status")
-
-      closeModal()
+  const handleSubmit = async (values: any) => {
+    try {            
+      const response = await myFetch(`/submissions/reject-submission/${submission?._id}`, {method: "PATCH", body: {status: "rejected", reason: values.reason }});
+      console.log("Response:", response);
+      
+      // closeModal()
     } catch (error) {
       console.error('Reject failed:', error)
     }
-  }
+  }    
 
   return (
     <div>
       <h2 className="text-xl font-semibold text-center">
-        Reject submission by Pookie Ttv?
+        Reject submission by <span className='text-primary'>{submission?.influencerId?.name ?? submission?.influencerId?.userName}?</span>
       </h2>
 
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={form.handleSubmit(handleSubmit)}
           className="space-y-4 mt-6"
         >
           <FormField
@@ -64,22 +61,6 @@ const RejectSubmissionForm = ({ closeModal }: { closeModal: () => void }) => {
               </FormItem>
             )}
           />
-
-          <FormField
-            control={form.control}
-            name="banUser"
-            render={({ field }) => (
-              <label className="flex items-center gap-2 text-sm">
-                <input
-                  type="checkbox"
-                  checked={field.value}
-                  onChange={field.onChange}
-                />
-                Also ban this user for botting
-              </label>
-            )}
-          />
-
           <div className="flex justify-end gap-3 pt-4">
             <Button
               type="button"
