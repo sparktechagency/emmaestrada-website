@@ -6,12 +6,13 @@ import ReelsAnalyticsChart from "./ReelsAnalyticsChart"
 import RejectButtonWithForm from "./RejectButtonWithForm"
 import PendingDropDown from "./PendingDropDown"
 import { myFetch } from "@/utils/myFetch"
+import { formatChatTime } from "@/components/shared/FormatChatTime "
 
 
-const PendingSubmission = async () =>{
-const res = await  myFetch("/submissions/my-submissions");
+const PendingSubmission = async ({campaignId}: {campaignId: string}) =>{
+  const res = await  myFetch(`/submissions/campaign-submissions/${campaignId}`);
 
-  console.log("PendingSubmission", res);
+  console.log("PendingSubmission11", res?.data?.data);
   const user = {
     name: "Sarah Jhonson",
     profileImage: "/images/profile21.jpg",
@@ -20,13 +21,13 @@ const res = await  myFetch("/submissions/my-submissions");
   return (
     <div>
 
-      {<Card className="bg-transparent shadow-none border-0 ">
+      {res?.data?.data &&  res?.data?.data.map((submission: any) => <Card className="bg-transparent shadow-none border-0 ">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between md:p-3 ">
           <div className="flex items-center gap-3">
-            <ProfileImageWithUserData user={user} />
+            <ProfileImageWithUserData campaign={submission?.campaignId} user={submission?.influencerId} />
             <div className="">
-              <p className="text-lg font-semibold text-black">Sarah Jhonson</p>
-              <p className="text-md text-slate-400">152 days ago by <span className="font-semibold text-primary">Pokiee Ttv</span></p>
+              <p className="text-lg font-semibold text-black">{submission?.influencerId?.name}</p>
+              <p className="text-md text-slate-400"> {formatChatTime(submission?.createdAt)} ago by <span className="font-semibold text-primary">Pokiee Ttv</span></p>
             </div>
           </div>
           <div className="flex w-full md:w-auto  items-center justify-end md:justify-between gap-3 mt-5 md:mt-0">
@@ -59,7 +60,7 @@ const res = await  myFetch("/submissions/my-submissions");
         </div>
 
 
-      </Card>}
+      </Card>)}
     </div>
   )
 }

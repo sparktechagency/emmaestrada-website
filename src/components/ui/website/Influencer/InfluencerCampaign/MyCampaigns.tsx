@@ -1,6 +1,7 @@
 import MyCampaignList from "@/components/shared/MyCampaignList";
 import { myFetch } from "@/utils/myFetch";
 import { CampaignTabGroup } from "./CampaignTabGroup";
+import ManagePagination from "@/components/shared/ManagePagination";
 
 const MyCampaigns = async ({
   status,   
@@ -10,10 +11,9 @@ const MyCampaigns = async ({
   queryString: string
 }) => {
 
-  const  data = await myFetch(
+  const  campaignsData = await myFetch(
     `/submissions/my-submissions?status=${status ? status : "pending"}${queryString}`
   );
-  console.log("filteredData", data);
   
   // const filteredData = campaigns?.data?.length > 0 ? campaigns?.data?.map((c:any)=>c.campaignId) : []
   
@@ -29,7 +29,8 @@ const MyCampaigns = async ({
         queryParam="status"
       />
 
-      <MyCampaignList campaigns={[]} />
+      <MyCampaignList campaigns={campaignsData?.data} />
+      <ManagePagination meta={campaignsData?.meta} />
     </div>
   );
 };

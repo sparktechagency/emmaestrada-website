@@ -44,7 +44,7 @@ export default function Signup() {
 
       console.log("resultresult", result)
       if (result?.success) {
-        setIsVerified(result?.data?.data?.isAvailable)
+        setIsVerified(result?.data?.isAvailable)
       }
     } catch (error) {
       console.error("Error creating user:", error);

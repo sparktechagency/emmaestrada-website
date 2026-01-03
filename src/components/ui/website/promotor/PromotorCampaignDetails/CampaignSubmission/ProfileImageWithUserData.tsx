@@ -4,14 +4,18 @@ import { Badge } from '@/components/ui/badge'
 import { Calendar } from '@/components/ui/calendar'
 import { Card } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
+import { imageUrl } from '@/constants'
 import Image from 'next/image'
 import React, { useState } from 'react'
 
-const ProfileImageWithUserData = ({ user }: any) => {
+const ProfileImageWithUserData = ({ campaign, user }: any) => {
+
+    console.log("ProfileImageWithUserData", user);
+    
     const [open, setOpen] = useState(false);
     return (
         <div className="">
-            <Modal dialogTitle="Profile" open={open} setOpen={setOpen} className='w-[95%]! md:w-3/5! p-4 md:p-8' dialogTrigger={<Image src={user?.profileImage} alt="profile" width={80} height={50} className="h-12 w-12 rounded-full cursor-pointer" />}>
+            <Modal dialogTitle="Profile" open={open} setOpen={setOpen} className='w-[95%]! md:w-3/5! p-4 md:p-8' dialogTrigger={<Image src={`${imageUrl}${user?.image}`} unoptimized alt="profile" width={80} height={50} className="h-12 w-12 rounded-full cursor-pointer" />}>
                 <div className=" p-6 relative border border-gray-200">
                     {/* Pending Badge */}
                     <Badge className="absolute top-4 right-4 bg-yellow-400 text-white">Pending</Badge>
@@ -19,25 +23,25 @@ const ProfileImageWithUserData = ({ user }: any) => {
                     <div className="flex flex-col md:flex-row gap-6">
                         {/* Profile Image */}
                         <div className="flex-shrink-0">
-                            <Image src={user?.profileImage} alt="profile" width={120} height={120} className="h-30 w-30 rounded-full md:mb-4" />
+                            <Image src={`${imageUrl}${user?.image}`} unoptimized alt="profile" width={120} height={120} className="h-20 w-20 object-cover rounded-full md:mb-4" />
                         </div>
 
                         {/* Profile Info */}
                         <div className="flex-1">
                             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-1">
                                 <div>
-                                    <h3 className="text-lg font-semibold">Sarah Johnson</h3>
-                                    <p className="text-sm text-gray-500">@sarahjmusic</p>
+                                    <h3 className="text-lg font-semibold">{user?.name}</h3>
+                                    <p className="text-sm text-gray-500">@{user?.role}</p>
                                 </div>
                             </div>
 
                             <p className="mt-2 text-gray-600">
-                                Content creator specializing in music and dance.
+                                {user?.bio}
                             </p>
 
                             {/* Tags */}
                             <div className="flex gap-2 mt-2 flex-wrap">
-                                {["Pop", "R&B", "Electronic"].map((genre) => (
+                                {user?.contentTypes?.map((genre: string) => (
                                     <Badge key={genre} variant="outline" className="text-gray-700">
                                         {genre}
                                     </Badge>
@@ -47,7 +51,7 @@ const ProfileImageWithUserData = ({ user }: any) => {
                             <div className="flex flex-col md:flex-row  justify-between">
                             <div className="mt-2">
                                 <span className="text-gray-500">Requesting to join : </span>
-                                <Badge className="bg-black text-white">Summer Vibes 2024</Badge>
+                                <Badge className="bg-black text-white">{campaign?.title}</Badge>
                             </div>
                             {/* Requesting to join */}
                             <div className="mt-2">
@@ -63,12 +67,12 @@ const ProfileImageWithUserData = ({ user }: any) => {
                     {/* Stats */}
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center bg-secondary/30 p-4 rounded-lg">
                         <div>
-                            <p className="text-lg font-semibold">520K</p>
+                            <p className="text-lg font-semibold">{user?.totalFollowers}</p>
                             <p className="text-gray-500 text-sm">Total Followers</p>
                         </div>
                         <div>
-                            <p className="text-lg font-semibold">6.8%</p>
-                            <p className="text-gray-500 text-sm">Avg. Engagement</p>
+                            <p className="text-lg font-semibold">{user?.totalCampaigns}</p>
+                            <p className="text-gray-500 text-sm">Total Campaign</p>
                         </div>
                         <div>
                             <p className="text-lg font-semibold">156</p>

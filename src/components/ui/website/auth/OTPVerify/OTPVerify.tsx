@@ -54,9 +54,9 @@ const OTPVerify = () => {
     const otpValue = otp.join('')
 
     try {
-      const result = await myFetch('/auth/verify-otp', { method: "POST", body: { email, oneTimeCode: Number(otpValue) } });      
-      if (result?.data?.success) {
-        Cookies.set("accessToken", result?.data?.data?.accessToken)
+      const result = await myFetch('/auth/verify-otp', { method: "POST", body: { email, oneTimeCode: Number(otpValue) } });            
+      if (result?.success) {
+        Cookies.set("accessToken", result?.data?.accessToken)
         toast.success(result?.data?.message)
         route.push("/set-username")
       }else{

@@ -32,7 +32,7 @@ const page = async ({
   const res = await myFetch(`/campaigns/get-campaign/${id}`)  
   return (
     <div>
-      <PromotorCampaignDetails data={res?.data?.data} status={status} openTab={openTab} />
+      <PromotorCampaignDetails data={res?.data} status={status} openTab={openTab} />
     </div>
   );
 };

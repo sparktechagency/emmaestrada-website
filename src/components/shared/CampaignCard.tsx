@@ -22,6 +22,7 @@ interface CampaignCardProps {
   campaign: {
     _id: string;
     title: string;    
+    
     budget: {
       rewardRate: number;
       perViews: number;
@@ -44,6 +45,7 @@ interface CampaignCardProps {
     isJoined?: boolean;    
     [key: string]: any;
   };  
+  label?: string;
 }
 
 /* -------------------- STATUS CONFIG -------------------- */
@@ -101,7 +103,7 @@ const platformIcons: Record<string, string> = {
   YouTube: "/youtube.png",
 };
 
-const CampaignCard = ({ campaign}: CampaignCardProps) => {
+const CampaignCard = ({ campaign, label}: CampaignCardProps) => {
   const status = campaign?.status;
   const buttonConfig = statusButtonConfig[status];
   
@@ -248,7 +250,7 @@ const CampaignCard = ({ campaign}: CampaignCardProps) => {
         </div>
 
         <Link href={`/${profile?.role === "PROMOTER" ? "promotor/campaigns": "creator"}/${campaign?._id}`}><Button className="mt-3 w-full! py-5!">
-          {buttonConfig?.label}
+          {label ?? buttonConfig?.label}
         </Button></Link>
       </div>
 

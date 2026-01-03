@@ -12,6 +12,7 @@ import { DropDownMenu } from './DropDownMenu'
 import { imageUrl } from '@/constants'
 
 const PromotorCampaignDetails = ({data, status, openTab }: {data:any,  status?: string, openTab?: string }) => {    
+    
     return (
         <Container>
             <div className="glassBg p-4 my-10">
@@ -24,7 +25,7 @@ const PromotorCampaignDetails = ({data, status, openTab }: {data:any,  status?: 
                         <img
                             src={`${imageUrl}${data?.thumbnail}`}                            
                             alt="Feel The Vibe"                           
-                            className="w-full md:w-3/5 h-[250px] mx-auto rounded-2xl"
+                            className="w-full md:w-3/5 h-[250px] mx-auto rounded-2xl object-cover"
                         />       
                         
 
@@ -38,7 +39,7 @@ const PromotorCampaignDetails = ({data, status, openTab }: {data:any,  status?: 
                         Only views after you submit count towards payout. Submit as soon as you post to get paid for all of your views.
                     </div>
                     <ViewAllSubmittionBtn />
-                    {openTab ? <CampaignSubmission status={status} /> :
+                    {openTab ? <CampaignSubmission status={status} campaignId={data?._id}/> :
                         <CampaignData />
                     }                   
                 </div>

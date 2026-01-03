@@ -40,7 +40,7 @@ const PromotorChampaigns = async ({ queryString, status }: { queryString?: strin
 
         {status === 'create-campaign' ? <CampaingsAddForm /> :
           // <PMyCampaigns campaigns={campaigns?.data?.result} />}
-          <PMyCampaigns campaigns={campaigns?.data} />}
+          <PMyCampaigns campaigns={campaigns} />}
       </div>
 
       {/* { !['upcoming', 'create-campaign'].includes(status?.toString()) && <CreatorPagination />} */}

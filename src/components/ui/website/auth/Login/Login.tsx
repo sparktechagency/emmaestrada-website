@@ -41,9 +41,9 @@ export default function Login() {
   const checkAvailablelity = async () => {
     try {
       const result = await myFetch(`/users/check-field?email=${email}`,{cache:'no-store'});
-
+      
       if (result?.success) {
-        setIsVerified(!result?.data?.data?.isAvailable)
+        setIsVerified(!result?.data?.isAvailable)
       }
     } catch (error) {
       console.error("Error creating user:", error);

@@ -16,8 +16,6 @@ const SetBusinessName = () => {
   const [businessName, setBusinessName] = useState('')
    const { data, image, clearData} = useData();
 
-   console.log("useData", image);
-   
   const router = useRouter()
   const isValid = !!businessName
 
@@ -50,6 +48,9 @@ const SetBusinessName = () => {
         body: formData
       })
 
+
+      console.log("formData", result);
+      
       if (result?.data) {
         toast.success(result.data.message)
         router.push("/")

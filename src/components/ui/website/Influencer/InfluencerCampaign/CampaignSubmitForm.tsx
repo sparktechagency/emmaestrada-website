@@ -9,7 +9,8 @@ import {
 } from "@/components/ui/form";
 import { useForm } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
-import { ArrowRight, CircleAlert, Upload, X } from 'lucide-react';
+import { Upload, X, AlertCircle } from 'lucide-react';
+import Swal from 'sweetalert2';
 import {
     Select,
     SelectContent,
@@ -21,19 +22,26 @@ import { useParams } from 'next/navigation';
 import { myFetch } from '@/utils/myFetch';
 import { toast } from 'sonner';
 
-
 type FormValues = {
     platform: string;
     postUrl: string;
 };
 
-const CampaignSubmitForm = ({ closeModal, setOpenAccVerifyModal, campaignId }: any) => {
+const platforms = [
+    { value: 'tiktok', label: 'TikTok' },
+    { value: 'youtube', label: 'YouTube' },
+    { value: 'instagram', label: 'Instagram' },
+];
 
-  const params = useParams() as {id?: string}
-  console.log("params", params?.id);
-  
+const CampaignSubmitForm = ({ user, closeModal, setOpenAccVerifyModal, campaignId }: any) => {
+    const params = useParams() as { id?: string }
     const [uploadedMedia, setUploadedMedia] = useState<File | null>(null);
-    
+
+    // Get connected platforms from user data
+    const connectedPlatforms = new Set(
+        (user?.connectedPlatforms || []).map((platform: string) => platform.toLowerCase())
+    );
+
     const form = useForm<FormValues>({
         defaultValues: {
             platform: "",
@@ -43,8 +51,12 @@ const CampaignSubmitForm = ({ closeModal, setOpenAccVerifyModal, campaignId }: a
 
     const selectedPlatform = form.watch("platform");
 
+    const isPlatformConnected = (platform: string) => {
+        return connectedPlatforms.has(platform.toLowerCase());
+    };
+
     const getPlaceholderByPlatform = (platform: string) => {
-        switch(platform) {
+        switch (platform) {
             case 'tiktok':
                 return 'https://www.tiktok.com/@username/video/123456789';
             case 'youtube':
@@ -56,100 +68,191 @@ const CampaignSubmitForm = ({ closeModal, setOpenAccVerifyModal, campaignId }: a
         }
     };
 
-    const handleFormSubmit = async (values: FormValues) => {        
+    const handleFormSubmit = async (values: FormValues) => {
         if (!uploadedMedia) {
-            console.error("Submission blocked: Media file is required.");
+            Swal.fire({
+                title: 'Media Required',
+                text: 'Please upload a media file for verification.',
+                icon: 'error',
+                confirmButtonColor: '#2563eb',
+            });
             return;
         }
 
+        if (!isPlatformConnected(values.platform)) {
+            Swal.fire({
+                title: 'Platform Not Connected',
+                html: `Please connect your <strong>${values.platform}</strong> account first.`,
+                icon: 'warning',
+                confirmButtonColor: '#2563eb',
+                confirmButtonText: 'Connect Now',
+                showCancelButton: true,
+                cancelButtonText: 'Cancel',
+                reverseButtons: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    setOpenAccVerifyModal?.(true);
+                }
+            });
+            return;
+        }        
+
         try {
-            // Create FormData to send both JSON and file
             const formData = new FormData();
-            
-            // Append the data object
             const data = {
                 campaignId: params?.id,
                 platform: values.platform,
                 postUrl: values.postUrl
             };
-            
+
             formData.append('data', JSON.stringify(data));
             formData.append('video', uploadedMedia);
 
-            console.log('Submitting:', data);
-            console.log('Video file:', uploadedMedia.name);
-
-            const res = await myFetch("/submissions/create", {method: "POST", body: formData})
-            console.log("resres", res);
-            if(res?.success)            {
-              toast.success("Submit campaign")
+            const res = await myFetch("/submissions/create", {
+                method: "POST",
+                body: formData
+            });            
+            if (res?.success) {
+                toast.success("Campaign submitted successfully");
+                closeModal();
             }
-            closeModal();
         } catch (error) {
             console.error("Error submitting campaign:", error);
+            console.log("error", error);
+                        
         }
     };
 
     return (
         <div className=''>
-            <p className="font-semibold text-xl mt-7 pb-3">Disclaimer</p>
-            <div className="p-5 text-justify bg-secondary rounded-lg shadow-lg text-white">
-                <p>Only views after you submit count towards payout. Submit as soon as you post to get paid for all of your views.</p>
+            <p className="font-semibold text-xl mb-3 text-center">Submit your social media post</p>
+            <div className="mb-4 text-center w-4/5 mx-auto">
+                <p className='text-center text-slate-500'>
+                    Only views after you submit count towards payout. Submit as soon as you post to get paid for all of your views.
+                </p>
             </div>
 
-            <p className="font-semibold text-lg mt-7 mb-6">Submit your social media post</p>
-            <div className="mb-4">
-                <p>Only views after you submit count towards payout. Submit as soon as you post to get paid for all of your views.</p>
-            </div>
+            {/* Warning message for unconnected platforms */}
+            {connectedPlatforms.size === 0 && (
+                <div className="flex items-start gap-2 mt-2 p-3 bg-red-200 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-md mb-2">
+                    <AlertCircle className="h-4 w-4 text-orange-600 dark:text-orange-400 mt-0.5 flex-shrink-0" />
+                    <div className="text-sm text-orange-800 dark:text-orange-300">
+                        <p className="font-medium">No platforms connected</p>
+                        <p className="text-xs mt-1">
+                            Please connect at least one social media platform to submit your campaign.
+                        </p>
+                    </div>
+                </div>
+            )}
+
 
             <Form {...form}>
-                <div className="space-y-4 mt-6">
-                    <FormField
-                        control={form.control}
-                        name="platform"
-                        rules={{ required: "Platform is required" }}
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel className='text-lg'>Select Platform</FormLabel>
-                                <Select 
-                                    onValueChange={field.onChange} 
-                                    defaultValue={field.value}                                    
-                                >
-                                    <FormControl>
-                                        <SelectTrigger className='bg-secondary/20 h-12'>
-                                            <SelectValue placeholder="Choose a platform" />
-                                        </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                        <SelectItem value="tiktok">TikTok</SelectItem>
-                                        <SelectItem value="youtube">YouTube</SelectItem>
-                                        <SelectItem value="instagram">Instagram</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
+                <div className="space-y-4">
+                    <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
+                        <FormField
+                            control={form.control}
+                            name="platform"
+                            rules={{ required: "Platform is required" }}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="text-lg">Select Platform</FormLabel>
+                                    <Select
+                                        onValueChange={field.onChange}
+                                        defaultValue={field.value}
+                                    >
+                                        <FormControl>
+                                            <SelectTrigger className="bg-secondary/20 h-[45px] w-full">
+                                                <SelectValue placeholder="Choose a platform" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            {platforms.map((platform) => {
+                                                const isConnected = isPlatformConnected(platform.value);
+                                                return (
+                                                    <SelectItem
+                                                        key={platform.value}
+                                                        className="h-10"
+                                                        value={platform.value}
+                                                        disabled={!isConnected}
+                                                        onClick={() => {
+                                                            if (!isConnected) {
+                                                                Swal.fire({
+                                                                    title: 'Platform Not Connected',
+                                                                    html: `Please connect your <strong>${platform.label}</strong> account before submitting a post.`,
+                                                                    icon: 'warning',
+                                                                    confirmButtonColor: '#2563eb',
+                                                                    confirmButtonText: 'Connect Now',
+                                                                    showCancelButton: true,
+                                                                    cancelButtonText: 'Later',
+                                                                    reverseButtons: true,
+                                                                }).then((result) => {
+                                                                    if (result.isConfirmed) {
+                                                                        setOpenAccVerifyModal?.(true);
+                                                                    }
+                                                                });
+                                                            }
+                                                        }}
+                                                    >
+                                                        <div className="flex items-center justify-between w-full">
+                                                            <span className={!isConnected ? 'text-gray-400' : ''}>
+                                                                {platform.label}
+                                                            </span>
+                                                            {!isConnected && (
+                                                                <span className="ml-2 text-xs text-orange-600 font-medium">
+                                                                    Not Connected
+                                                                </span>
+                                                            )}
+                                                        </div>
+                                                    </SelectItem>
+                                                );
+                                            })}
+                                        </SelectContent>
+                                    </Select>
+                                    <FormMessage />
 
-                    <FormField
-                        control={form.control}
-                        name="postUrl"
-                        rules={{ required: "Post URL is required" }}
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel className='text-lg'>Post URL</FormLabel>
-                                <FormControl>
-                                    <Input 
-                                        placeholder={getPlaceholderByPlatform(selectedPlatform)}
-                                        {...field} 
-                                        className='bg-secondary/20 h-12'
-                                        disabled={!selectedPlatform}
-                                    />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
+                                    {/* Message for selected unconnected platform */}
+                                    {selectedPlatform && !isPlatformConnected(selectedPlatform) && (
+                                        <div className="flex items-start gap-2 mt-2 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md">
+                                            <AlertCircle className="h-4 w-4 text-red-600 dark:text-red-400 mt-0.5 flex-shrink-0" />
+                                            <div className="text-sm text-red-800 dark:text-red-300">
+                                                <p className="font-medium">Platform not connected</p>
+                                                <p className="text-xs mt-1">
+                                                    Connect your {selectedPlatform} account to submit posts.
+                                                </p>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setOpenAccVerifyModal?.(true)}
+                                                    className="text-xs text-red-600 dark:text-red-400 underline hover:no-underline mt-1"
+                                                >
+                                                    Connect {selectedPlatform.charAt(0).toUpperCase() + selectedPlatform.slice(1)}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    )}
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="postUrl"
+                            rules={{ required: "Post URL is required" }}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="text-lg">Post URL</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            placeholder={getPlaceholderByPlatform(selectedPlatform)}
+                                            {...field}
+                                            className="bg-secondary/20 h-[45px]"
+                                            disabled={!selectedPlatform}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
 
                     <div className="space-y-2">
                         <FormLabel>Required Media File</FormLabel>
@@ -162,10 +265,11 @@ const CampaignSubmitForm = ({ closeModal, setOpenAccVerifyModal, campaignId }: a
                         )}
                     </div>
 
-                    <button 
+                    <button
                         onClick={form.handleSubmit(handleFormSubmit)}
                         type="button"
-                        className="w-full bg-blue-700 hover:bg-blue-800 text-white py-3 rounded-lg font-medium transition"
+                        disabled={!uploadedMedia || !selectedPlatform || !isPlatformConnected(selectedPlatform)}
+                        className="w-full bg-blue-700 hover:bg-blue-800 text-white py-3 rounded-lg font-medium transition disabled:bg-gray-400 disabled:cursor-not-allowed"
                     >
                         Submit Campaign
                     </button>
@@ -176,7 +280,6 @@ const CampaignSubmitForm = ({ closeModal, setOpenAccVerifyModal, campaignId }: a
 }
 
 export default CampaignSubmitForm
-
 
 const MediaUploadArea = ({ uploadedFile, setUploadedFile }: {
     uploadedFile: File | null

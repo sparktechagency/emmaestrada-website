@@ -7,6 +7,7 @@ import Container from "./Container";
 import { imageUrl } from "@/constants";
 import getProfile from "@/utils/getProfile";
 
+
 const CampaignsDetails = async ({ data }: { data: any }) => {
 
     const platformIcons: Record<string, string> = {
@@ -14,7 +15,7 @@ const CampaignsDetails = async ({ data }: { data: any }) => {
         Instagram: "/instagram.png",
         YouTube: "/youtube.png",
     };
-    const user = await getProfile();    
+    const user = await getProfile();
     return (
         <Container>
             <div className="glassBg p-4 my-10">
@@ -88,7 +89,7 @@ const CampaignsDetails = async ({ data }: { data: any }) => {
 
                     {data?.assets?.contentRequirement && data?.assets?.contentRequirement?.map((item: string) => <span key={item} className="text-xl">{item}</span>)}
                 </div>
-                <SubmitButton userId={user?._id} />
+                <SubmitButton user={user} />
 
                 {/* <div className="flex justify-end mt-5">
                     <Modal

@@ -5,31 +5,30 @@ import CampaignSubmitForm from '../../Influencer/InfluencerCampaign/CampaignSubm
 import AcccountConnectModal from '../../Influencer/InfluencerCampaign/AcccountConnectModal';
 import AccountVerified from '../../Influencer/InfluencerCampaign/AccountVerified';
 import ConnectAccountModal from '@/components/shared/ConnectAccountModal';
+import { Button } from '@/components/ui/button';
 
-const SubmitButton = ({userId}: {userId?: string}) => {
-    const [open, setOpen] = useState(false);
-    
-    const [openAccVerifyModal, setOpenAccVerifyModal] = useState(false);
-    const [openVerifiedModal, setOpenVerifiedModal] = useState(false);
+const SubmitButton = ({user}: any) => {
+    const [open, setOpen] = useState(false);    
+
+    const [openAccConnect, setOpenAccConnect] = useState(false);    
     return (
-        <div className='mt-10'>            
-            {/* <Modal
+        <div className='mt-10 flex items-center justify-end gap-5'>
+            <Modal
                 dialogTitle="Campaign Form"
                 open={open}
                 setOpen={setOpen}
-                width="900px"
-                height="85vh"
+                width="900px"                
                 dialogTrigger={
                     <div className='flex items-center justify-end'>
-                    <button className="btn px-20 text-white bg-blue-700 rounded-full">
-                        Submit
-                    </button>
+                        <Button className="btn px-20 text-white ">
+                            Submit
+                        </Button>
                     </div>
                 }
             >
-                <CampaignSubmitForm closeModal={() => setOpen(false)} setOpenAccVerifyModal={setOpenAccVerifyModal} />
-            </Modal> */}
-                <ConnectAccountModal userId={userId} open={open} setOpen={setOpen}/>
+                <CampaignSubmitForm user={user} closeModal={() => setOpen(false)} setOpenAccConnect={true} />
+            </Modal>
+            <ConnectAccountModal user={user} open={openAccConnect} setOpen={setOpenAccConnect} />
         </div>
     )
 }
