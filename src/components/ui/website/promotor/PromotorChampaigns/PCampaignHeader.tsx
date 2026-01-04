@@ -19,14 +19,10 @@ import FilterModal from '../../Influencer/InfluencerCampaign/FilterModal';
 
 const CampaignHeader = () => {
   const [filterModalOpen, setFilterModalOpen] = useState(false);
-  const [visibility, setVisibility] = useState("");
+  
   const [sortBy, setSortBy] = useState("");
-  const handleApplyFilters = (filters: any) => {
-    console.log("filters", filters)
-  };
 
-   const searchParams = useSearchParams()
- 
+  const searchParams = useSearchParams()
   const status = searchParams.get('status')
 
   return (
@@ -36,8 +32,8 @@ const CampaignHeader = () => {
         <p className="textPara">Browse and join music campaigns</p>
       </div>
 
-      
-    {status !== 'create-campaign' &&  <div className="bg-secondary rounded-xl p-4 mb-6">
+
+      {status !== 'create-campaign' && <div className="bg-secondary rounded-xl p-4 mb-6">
         <div className="flex flex-col lg:flex-row gap-4">
           {/* Search Input */}
           <div className="flex-1 relative">
@@ -66,7 +62,7 @@ const CampaignHeader = () => {
                   <SelectValue placeholder="Sort by" />
                 </div>
               </SelectTrigger>
-              <SelectContent>                
+              <SelectContent>
                 <SelectItem value="followers">No of Followers</SelectItem>
                 <SelectItem value="engagement">Engagement</SelectItem>
                 <SelectItem value="rating">Rating</SelectItem>
@@ -76,7 +72,7 @@ const CampaignHeader = () => {
                   size="sm"
                   onClick={(e) => {
                     e.stopPropagation()
-                    setSortBy("")                    
+                    setSortBy("")
                   }}
                 >
                   Clear
@@ -86,11 +82,10 @@ const CampaignHeader = () => {
           </div>
         </div>
       </div>}
-    
+
       <FilterModal
         open={filterModalOpen}
         onOpenChange={setFilterModalOpen}
-        onApply={handleApplyFilters}
       />
     </div>
   )

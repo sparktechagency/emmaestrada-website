@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
-import { AtSign, Image as ImageIcon, LucideUserPlus, MapPin, X } from "lucide-react";
+import { AtSign, Camera, LucideUserPlus, MapPin, X, Check } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { FcLikePlaceholder } from "react-icons/fc";
 
@@ -22,6 +22,7 @@ import Loader from "@/components/shared/Loader";
 import { imageUrl } from "@/constants";
 import { useProfile } from "@/hooks/context/ProfileContext";
 import { myFetch } from "@/utils/myFetch";
+import { toast } from "sonner";
 
 const CONTENT_TYPES = ["Pop", "Rock", "Jazz", "Hip Hop", "Classical", "Electronic", "Rock1", "Jazz2", "Hip Hop2", "Classical2", "Electronic2"];
 
@@ -40,20 +41,21 @@ export default function ProfileInfo() {
   const { profile, refetchProfile, loading: profileLoading } = useProfile();
 
   const [loading, setLoading] = useState(false);
+  const [imageLoading, setImageLoading] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [selected, setSelected] = useState<string[]>([]);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [hasImageChanged, setHasImageChanged] = useState(false);
   const [formData, setFormData] = useState<any>({});
-  
-  
+
+
   console.log("profile", profile);
-  
+
 
   useEffect(() => {
     if (profile) {
       setFormData({
-        userName: profile.userName || "",
         name: profile.name || "",
         email: profile.email || "",
         role: profile.role || "",
@@ -71,6 +73,8 @@ export default function ProfileInfo() {
       });
       setSelected(profile.contentTypes || []);
       setPreviewUrl(profile.image ? `${imageUrl}${profile.image}` : null);
+      setImageFile(null);
+      setHasImageChanged(false);
     }
   }, [profile]);
 
@@ -83,7 +87,43 @@ export default function ProfileInfo() {
     if (file) {
       setImageFile(file);
       setPreviewUrl(URL.createObjectURL(file));
+      setHasImageChanged(true);
     }
+  };
+
+  const handleImageUpload = async () => {
+    if (!imageFile) return;
+
+    try {
+      setImageLoading(true);
+      const body = new FormData();
+      body.append("image", imageFile);
+
+      const res = await myFetch("/users/profile/image", {
+        method: "PATCH",
+        body,
+      });
+
+      if (res?.success) {
+        refetchProfile();
+        setImageFile(null);
+        setHasImageChanged(false);
+        alert("Profile picture updated successfully!");
+      } else {
+        console.log("res", res);
+        alert(res?.message || "Failed to update profile picture");
+      }
+    } catch (err: any) {
+      alert(err?.message || "Something went wrong");
+    } finally {
+      setImageLoading(false);
+    }
+  };
+
+  const cancelImageChange = () => {
+    setImageFile(null);
+    setPreviewUrl(profile?.image ? `${imageUrl}${profile.image}` : null);
+    setHasImageChanged(false);
   };
 
   const addItem = (value: string) => {
@@ -95,23 +135,24 @@ export default function ProfileInfo() {
   };
 
   const saveProfile = async () => {
+    const formData = new FormData();
     try {
-
-      setLoading(true);      
+      setLoading(true);
       const dataToUpdate = { ...formData, contentTypes: selected };
-      const body = new FormData();
-      if (imageFile) body.append("image", imageFile);
-      body.append("data", JSON.stringify(dataToUpdate));
-
+      formData.append("data", JSON.stringify(dataToUpdate));
       const res = await myFetch("/users/profile", {
         method: "PATCH",
-        body,
+        body: formData,
       });
+
+      console.log("update usernfo", res);
+      
       if (res?.success) {
         refetchProfile();
         setEditMode(false);
+        toast.success(res?.message);
       } else {
-        console.log("res", res)
+        console.log("res", res);
         alert(res?.message || "Failed to update profile");
       }
     } catch (err: any) {
@@ -129,28 +170,63 @@ export default function ProfileInfo() {
         {/* Top User Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex items-center gap-5">
-            <Avatar className="w-20 h-20 border-2 relative">
-              <AvatarImage
-                src={previewUrl || "/placeholder.png"}
-                alt={profile?.userName}
-                className="w-full h-full object-cover rounded-full border-2 border-slate-300"
-              />
-              <AvatarFallback className="bg-orange-500 text-white text-2xl">
-                {profile?.userName?.[0]?.toUpperCase()}
-              </AvatarFallback>
+            <div className="relative">
+              <Avatar className="w-20 h-20 border-2">
+                <AvatarImage
+                  src={previewUrl || "/placeholder.png"}
+                  alt={profile?.userName}
+                  className="w-full h-full object-cover rounded-full border-2 border-slate-300"
+                />
+                <AvatarFallback className="bg-orange-500 text-white text-2xl">
+                  {profile?.userName?.[0]?.toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
 
-              {editMode && (
-                <label className="absolute bottom-0 right-0 p-1 rounded-full bg-white cursor-pointer border shadow-md">
-                  <ImageIcon size={18} />
-                  <input
-                    type="file"
-                    className="hidden"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                  />
-                </label>
+              {/* Image Upload Button */}
+              <label className="absolute bottom-0 right-0 p-1.5 rounded-full bg-orange-500 hover:bg-orange-600 cursor-pointer border-2 border-white shadow-md transition-colors">
+                <Camera size={16} className="text-white" />
+                <input
+                  type="file"
+                  className="hidden"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                />
+              </label>
+
+              {/* Image Action Buttons */}
+              {hasImageChanged && (
+                <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 translate-y-full flex gap-2 mt-2">
+                  <Button
+                    size="sm"
+                    className="h-8 px-3 rounded-full bg-green-500 hover:bg-green-600"
+                    onClick={handleImageUpload}
+                    disabled={imageLoading}
+                  >
+                    {imageLoading ? (
+                      <span className="flex items-center gap-1">
+                        <span className="animate-spin">⏳</span>
+                        Saving...
+                      </span>
+                    ) : (
+                      <span className="flex items-center gap-1">
+                        <Check size={14} />
+                        Save
+                      </span>
+                    )}
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="h-8 px-3 rounded-full"
+                    onClick={cancelImageChange}
+                    disabled={imageLoading}
+                  >
+                    <X size={14} />
+                    Cancel
+                  </Button>
+                </div>
               )}
-            </Avatar>
+            </div>
 
             <div>
               <h2 className="text-lg font-semibold">{profile?.name ?? profile?.userName}</h2>
@@ -158,13 +234,10 @@ export default function ProfileInfo() {
               <button disabled
                 className="group flex items-center overflow-hidden rounded-sm border border-gray-200 bg-white transition-all"
               >
-                {/* Label Section */}
                 <span className="flex items-center gap-2 px-5 py-1 text-xs font-semibold text-gray-700 transition-colors ">
                   <LucideUserPlus size={12} />
                   Followers
                 </span>
-
-                {/* Count Badge Section */}
                 <span className="bg-gray-100 px-4 py-1 text-xs font-bold text-gray-900 transition-colors group-hover:bg-blue-50  border-l border-gray-200">
                   {profile?.totalFollowers}
                 </span>
@@ -190,8 +263,8 @@ export default function ProfileInfo() {
             <Input
               value={formData.name}
               onChange={(e) => handleChange("name", e.target.value)}
-              className="h-12 rounded-xl "     
-              disabled={!editMode}         
+              className="h-12 rounded-xl "
+              disabled={!editMode}
             />
           </div>
 
@@ -235,7 +308,7 @@ export default function ProfileInfo() {
 
           <div className="col-span-1">
             <label className="font-medium ">Gender</label>
-            <Select disabled={!editMode} value={formData?.gender}>
+            <Select disabled={!editMode} value={formData?.gender} onValueChange={(value) => handleChange("gender", value)}>
               <SelectTrigger className="h-12! py-2! w-full  rounded-xl mt-2">
                 <SelectValue placeholder="Select Gender" />
               </SelectTrigger>
@@ -245,13 +318,12 @@ export default function ProfileInfo() {
                     { value: "male", label: "Male" },
                     { value: "female", label: "Female" },
                     { value: "other", label: "Other" },
-                  ]?.map((item, index) => <SelectItem key={index} value={item?.value} disabled={selected.includes(item?.value)}>{item?.label}</SelectItem>)}
+                  ]?.map((item, index) => <SelectItem key={index} value={item?.value}>{item?.label}</SelectItem>)}
               </SelectContent>
             </Select>
           </div>
 
           <div aria-disabled={!editMode} className="col-span-1 space-y-2">
-            {/* <label className="font-medium">Date of Birth</label> */}
             <p className="font-medium mb-2">Date of Birth</p>
             <DatePicker
               disabledDays={!editMode}
@@ -265,10 +337,6 @@ export default function ProfileInfo() {
             />
           </div>
 
-
-          {/* Content Types */}
-
-
           {/* Social Media Section */}
           <div className="mt-3 md:mt-10 grid grid-cols-1 md:grid-cols-3  md:col-span-2 gap-6">
 
@@ -278,7 +346,6 @@ export default function ProfileInfo() {
                 <div className="flex w-full md:w-3/5 h-12 overflow-y-auto flex-wrap items-center gap-2 rounded-xl border px-3 py-2">
                   {selected.length === 0 && <span className="text-sm text-muted-foreground">Select content types</span>}
                   {selected.map((item) => (
-                    // <span key={item} className="bg-primary/80 text-xs flex items-center gap-1 text-white rounded-full px-3 py-1 uppercase">
                     <span key={item} className="border-primary/80 border text-xs flex items-center gap-1 text-primary rounded-full px-2 uppercase">
                       {item}
                       {editMode && <X className="h-3 w-3 cursor-pointer" onClick={() => removeItem(item)} />}
@@ -300,10 +367,7 @@ export default function ProfileInfo() {
               </div>
             </div>
 
-
-
             <div className="">
-
               <div className="flex flex-col gap-2 mb-2">
                 <label className="font-medium">Tiktok</label>
                 <div className="relative">
@@ -314,7 +378,6 @@ export default function ProfileInfo() {
                     onChange={(e) => handleChange("tiktokUserName", e.target.value)}
                     className="h-12 pl-10 rounded-xl"
                     disabled={!editMode} />
-
                 </div>
               </div>
 
@@ -332,6 +395,7 @@ export default function ProfileInfo() {
                 </div>
               </div>
             </div>
+
             <div className="">
               <div className="flex flex-col gap-2 mb-2">
                 <label className="font-medium">Instagram</label>
@@ -360,7 +424,6 @@ export default function ProfileInfo() {
               </div>
             </div>
 
-
             <div className="">
               <div className="flex flex-col gap-2 mb-2">
                 <label className="font-medium">YouTube</label>
@@ -388,6 +451,7 @@ export default function ProfileInfo() {
               </div>
             </div>
           </div>
+
           {/* Artist Bio */}
           <div className="mt-10 flex flex-col gap-3 md:col-span-2">
             <label className="font-medium">Artist Bio</label>
@@ -415,62 +479,3 @@ export default function ProfileInfo() {
     </div>
   );
 }
-
-
-/* Reusable Settings Row Component */
-// function SettingsRow({ title, desc, action }: any) {
-//   return (
-//     <div className="flex flex-col md:flex-row md:items-center justify-between gap-2">
-//       <div>
-//         <p className="font-medium">{title}</p>
-//         <p className="text-gray-500 text-sm">{desc}</p>
-//       </div>
-
-//       <Button variant="ghost" className="text-orange-500 font-medium">
-//         {action}
-//       </Button>
-//     </div>
-//   );
-// }
-
-
-
-{/* ACCOUNT SETTINGS */ }
-// <Card className="hidden p-6 md:p-10 rounded-3xl shadow-sm">
-
-//   <h2 className="text-xl font-semibold mb-6">Account Settings</h2>
-
-//   <div className="space-y-6">
-
-//     <SettingsRow
-//       title="Email Notifications"
-//       desc="Receive updates about campaigns and requests"
-//       action="Configure"
-//     />
-
-//     <Separator />
-
-//     <SettingsRow
-//       title="Privacy Settings"
-//       desc="Manage your profile visibility"
-//       action="Manage"
-//     />
-
-//     <Separator />
-
-//     <SettingsRow
-//       title="Payment Methods"
-//       desc="Update your payment information"
-//       action="Edit"
-//     />
-
-//     <Separator />
-
-//     <SettingsRow
-//       title="Account Security"
-//       desc="Change password and enable 2FA"
-//       action="Update"
-//     />
-
-//   </div>
-// </Card>

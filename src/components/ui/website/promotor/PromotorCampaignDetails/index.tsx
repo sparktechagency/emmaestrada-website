@@ -11,9 +11,7 @@ import CampaignData from './CampaignData'
 import { DropDownMenu } from './DropDownMenu'
 import { imageUrl } from '@/constants'
 
-const PromotorCampaignDetails = ({data, status, openTab }: {data:any,  status?: string, openTab?: string }) => {    
-    
-    console.log("promotor campaign data", data);
+const PromotorCampaignDetails = ({data, status, openTab }: {data:any,  status?: string, openTab?: string }) => {        
     return (
         <Container>
             <div className="glassBg p-4 my-10">

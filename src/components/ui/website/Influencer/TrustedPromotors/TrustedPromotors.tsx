@@ -15,6 +15,8 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
+import { imageUrl } from "@/constants"
+import { Star } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { MdOutlineStar } from "react-icons/md"
@@ -32,10 +34,10 @@ export default function TrustedPromotors({ data }: any) {
                         <TableHeader>
                             <TableRow>
                                 <TableHead>Trusted Creators</TableHead>
-                                <TableHead>Platform</TableHead>
                                 <TableHead>Total Followers</TableHead>
                                 <TableHead>Engagement</TableHead>
                                 <TableHead>Rating</TableHead>
+                                <TableHead>Campaign</TableHead>
                                 <TableHead className="text-center">Action</TableHead>
                             </TableRow>
                         </TableHeader>
@@ -46,53 +48,23 @@ export default function TrustedPromotors({ data }: any) {
                                     <TableRow key={idx}>
                                         <TableCell>
                                             <div className="flex items-center gap-3">
-                                                <Image
-                                                    src={row.profile}
-                                                    alt="creator"
-                                                    width={40}
-                                                    height={40}
-                                                    className="rounded-full"
-                                                />
-
-                                                <div className="flex items-center gap-2">
-                                                    <span>{row.name}</span>
-                                                </div>
+                                                <img src={`${imageUrl + row?.promoterId?.image}`} className="h-10 w-10 object-cover rounded-full" alt="Profile" />
+                                                <span className="capitalize">{row?.promoterId?.name ?? row?.promoterId?.userName}</span>
                                             </div>
                                         </TableCell>
 
-                                        <TableCell className="flex items-center gap-2">
-                                            <Image
-                                                src="/tiktokBlack.png"
-                                                alt="platform"
-                                                width={22}
-                                                height={22}
-                                            />
-                                            <Image
-                                                src="/instagram.png"
-                                                alt="platform"
-                                                width={22}
-                                                height={22}
-                                            />
-                                        </TableCell>
+                                        <TableCell>{row?.promoterId?.totalFollowers}</TableCell>
 
-                                        <TableCell>{row.totalFollowers}</TableCell>
-
+                                        <TableCell className="text-green-600 font-semibold">{row?.promoterId?.engagement}</TableCell>
                                         <TableCell className="text-green-600 font-semibold">
-                                            {row.engagement}
+                                            <div className="font-semibold flex gap-.5 text-center">
+                                                {row?.promoterId?.rating === 0 ? <Star className="text-orange-500" size={15} /> :
+                                                    Array.from({ length: row?.promoterId?.rating })?.map((_: any, i: number) => <MdOutlineStar key={i} className="text-orange-500" size={15} />)}
+                                            </div>
                                         </TableCell>
 
                                         <TableCell className="flex items-center">
-                                            {Array.from({ length: 5 }).map((_, i) => (
-                                                <MdOutlineStar
-                                                    key={i}
-                                                    size={15}
-                                                    className={
-                                                        i < row.rating
-                                                            ? "text-orange-500"
-                                                            : "text-gray-300"
-                                                    }
-                                                />
-                                            ))}
+                                            <span>{row?.totalCampaigns ?? 0}</span>
                                         </TableCell>
 
                                         <TableCell className="text-right md:w-[50px]">
@@ -117,7 +89,7 @@ export default function TrustedPromotors({ data }: any) {
                     </Table>
 
                     <div className="flex justify-end mt-6 pr-10">
-                        <ManagePagination meta={data?.meta}/>
+                        <ManagePagination meta={data?.meta} />
                     </div>
                 </CardContent>
             </Card>

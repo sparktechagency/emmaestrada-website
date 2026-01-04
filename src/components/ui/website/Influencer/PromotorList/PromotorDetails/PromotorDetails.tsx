@@ -9,6 +9,7 @@ import { Star } from 'lucide-react'
 import { FaInstagram, FaTiktok, FaYoutube } from 'react-icons/fa'
 import { IoLocationOutline } from 'react-icons/io5'
 import { MdOutlineStar } from 'react-icons/md'
+import RequestToPartnerBtn from './RequestToPartnerBtn'
 
 const PromotorDetails = async ({ promotor }: any) => {
 
@@ -19,8 +20,7 @@ const PromotorDetails = async ({ promotor }: any) => {
     ];
 
     const promotorCampaign = await myFetch(`/campaigns/get-promoter-campaigns/${promotor?._id}`);
-
-    console.log("promotorCampaign", promotorCampaign);
+    const {data} = await myFetch(`/followers/promoter/${promotor?._id}/partner-cta`);
 
 
     return (
@@ -61,9 +61,7 @@ const PromotorDetails = async ({ promotor }: any) => {
                 </div>
 
                 <ManagePagination meta={promotorCampaign?.meta} />
-                <div className="flex items-center justify-end mt-10">
-                    <button className="md:self-end btn bg-secondary text-white px-10 py-5 rounded-full shadow-md">Request to become partner</button>
-                </div>
+                {!data?.isTrustedPartner && <RequestToPartnerBtn promoterId={promotor?._id} />}
             </div>
         </Container>
     )

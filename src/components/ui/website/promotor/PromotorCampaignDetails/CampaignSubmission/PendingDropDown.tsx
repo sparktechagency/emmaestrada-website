@@ -19,6 +19,7 @@ import RejectSubmissionForm from "./RejectSubmissionModal"
 import { IoIosStar } from "react-icons/io"
 import ReviewModal from "@/components/shared/ReviewModal"
 import { myFetch } from "@/utils/myFetch"
+import { toast } from "sonner"
 
 
 const PendingDropDown = ({submission}: {submission: any }) => {
@@ -38,6 +39,31 @@ const PendingDropDown = ({submission}: {submission: any }) => {
     }
 
 
+ const submitReview = async (values: any) => {
+
+    console.log("submitReview values", values);
+        try {                        
+            const data = { ratingValue: values.ratingValue, feedback: values.feedback, targetId: submission?.influencerId?._id, type: "CREATOR" }      
+           
+                  
+           const response =  await myFetch(`/reviews`, {
+                method: "POST",
+                body: data
+            })
+
+            console.log("response", response);
+            
+            if(response?.success){
+                setOpenReview(false)
+                toast.success(response?.message)
+            }else{
+                 setOpenReview(false)
+                toast.error(response?.message)
+            }            
+        } catch (error) {
+            console.error(error)
+        }
+    }
 
     return (
         <>
@@ -82,15 +108,15 @@ const PendingDropDown = ({submission}: {submission: any }) => {
                 open={openReport}
                 setOpen={setOpenReport}
                 className='md:max-w-md! w-[90%]! md:w-full!'>            
-                <CreatorReportForm closeModal={() => setOpenReport(false)} />
+                <CreatorReportForm creatorId={submission?.influencerId?._id} closeModal={() => setOpenReport(false)} />
             </Modal>
 
             {/* -------------- Report Form -------------- */}
             <Modal
                 open={openReview}
-                setOpen={setOpenReview}
+                setOpen={setOpenReview}                
                 className='md:max-w-md! w-[90%]! md:w-full!'>
-                <ReviewModal closeModal={() => setOpenReview(false)} />
+                <ReviewModal submitReview={submitReview} closeModal={() => setOpenReview(false)} />
             </Modal>
         </>
     )

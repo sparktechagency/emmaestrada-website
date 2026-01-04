@@ -11,22 +11,21 @@ import { myFetch } from "@/utils/myFetch";
 interface FilterModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onApply: (filters: any) => void;
 }
 
-export default function FilterModal({ open, onOpenChange, onApply }: FilterModalProps) {
+export default function FilterModal({ open, onOpenChange, }: FilterModalProps) {
   // Move hooks to component level
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const [contentType, setContentType] = useState("UGC");
-  const [genres, setGenries] = useState<string[]>([]);
-  
+  const [contentType, setContentType] = useState("");
+  const [genres, setGenres] = useState<string[]>([]);
+
 
   const [categories, setCategories] = useState<string[]>([]);
-  const [platforms, setPlatforms] = useState<string[]>([]);
-  
+  const [selectPlatform, setSelectPlatform] = useState("");
+
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [selectedGenres, setSelectedGenres] = useState<string[]>([])
 
@@ -34,7 +33,7 @@ export default function FilterModal({ open, onOpenChange, onApply }: FilterModal
   const fetchingCategories = async () => {
     try {
       const category = await myFetch('/categories?type=CATEGORY');
-      const uCatagory = category?.data?.map((cat:any)=> cat?.name)      
+      const uCatagory = category?.data?.map((cat: any) => cat?.name)
       setCategories(uCatagory)
     } catch (error) {
       console.error('Error:', error);
@@ -44,8 +43,8 @@ export default function FilterModal({ open, onOpenChange, onApply }: FilterModal
   const fetchingGenries = async () => {
     try {
       const genres = await myFetch('/categories?type=GENRE');
-       const uCatagory = genres?.data?.map((cat:any)=> cat?.name)   
-      setGenries(uCatagory)
+      const uCatagory = genres?.data?.map((cat: any) => cat?.name)
+      setGenres(uCatagory)
     } catch (error) {
       console.error('Error:', error);
     }
@@ -56,14 +55,6 @@ export default function FilterModal({ open, onOpenChange, onApply }: FilterModal
     fetchingGenries()
   }, [])
 
-  const musicGenres = [
-    "Pop", "Rock", "R&B", "Jazz", "EDM", "Electronic", "Hip-Hop", "Indie", "Country", "Classical"
-  ];
-
-  const categoryList = [
-    "Lifestyle", "Beauty & Fashion", "Fitness & Health", "Food & Cooking", "Travel", "Entertainment", "Gaming", "Art & Creativity", "Comedy"
-  ];
-
   const platformList = [
     { name: "TikTok", icon: "/tiktokBlack.png" },
     { name: "Instagram", icon: "/instagram.png" },
@@ -73,23 +64,26 @@ export default function FilterModal({ open, onOpenChange, onApply }: FilterModal
   // Define initial values as constants
   const INITIAL_BUDGET = [0, 10000];
   const INITIAL_FLAT_FEE = [0, 200];
-  const INITIAL_TIKTOK_FOLLOWERS = [0, 100000];
-  const INITIAL_INSTAGRAM_FOLLOWERS = [0, 100000];
-  const INITIAL_YOUTUBE_FOLLOWERS = [0, 100000];
+
   const INITIAL_MIN_PAYOUT = [0, 200];
   const INITIAL_REWARD_RATE = [0, 50];
   const INITIAL_MAX_PAYOUT = [0, 1000];
-
+  {/*  const INITIAL_TIKTOK_FOLLOWERS = [0, 100000];
+  const INITIAL_INSTAGRAM_FOLLOWERS = [0, 100000];
+  const INITIAL_YOUTUBE_FOLLOWERS = [0, 100000];
+  */}
   const [budget, setBudget] = useState(INITIAL_BUDGET);
   const [flatFee, setFlatFee] = useState(INITIAL_FLAT_FEE);
-  const [tiktokFollowers, setTiktokFollowers] = useState(INITIAL_TIKTOK_FOLLOWERS);
-  const [instagramFollowers, setInstagramFollowers] = useState(INITIAL_INSTAGRAM_FOLLOWERS);
-  const [youtubeFollowers, setYoutubeFollowers] = useState(INITIAL_YOUTUBE_FOLLOWERS);
+
   const [minPayout, setMinPayout] = useState(INITIAL_MIN_PAYOUT);
   const [rewardRate, setRewardRate] = useState(INITIAL_REWARD_RATE);
   const [maxPayout, setMaxPayout] = useState(INITIAL_MAX_PAYOUT);
+  /*
+    const [tiktokFollowers, setTiktokFollowers] = useState(INITIAL_TIKTOK_FOLLOWERS);
+    const [instagramFollowers, setInstagramFollowers] = useState(INITIAL_INSTAGRAM_FOLLOWERS);
+    const [youtubeFollowers, setYoutubeFollowers] = useState(INITIAL_YOUTUBE_FOLLOWERS);
+    */
 
-  // Helper function to check if range has changed from initial
   const hasRangeChanged = (current: number[], initial: number[]) => {
     return current[0] !== initial[0] || current[1] !== initial[1];
   };
@@ -104,34 +98,36 @@ export default function FilterModal({ open, onOpenChange, onApply }: FilterModal
     }
     if (filters.contentType) {
       params.set('contentType', filters.contentType);
+    } else if (!filters.visibility) {
+      params.delete('contentType');
     }
 
     // Handle array values (join with comma)
-    if (filters.genres && filters.genres.length > 0) {
-      params.set('genres', filters.genres.join(','));
+    if (filters.selectedGenres && filters.selectedGenres.length > 0) {
+      params.set('selectedGenres', filters.selectedGenres.join(','));
     } else {
-      params.delete('genres');
+      params.delete('selectedGenres');
     }
 
-    if (filters.categories && filters.categories.length > 0) {
-      params.set('categories', filters.categories.join(','));
+    if (filters.selectedCategories && filters.selectedCategories.length > 0) {
+      params.set('selectedCategories', filters.selectedCategories.join(','));
     } else {
-      params.delete('categories');
+      params.delete('selectedCategories');
     }
 
-    if (filters.platforms && filters.platforms.length > 0) {
-      params.set('platforms', filters.platforms.join(','));
+    if (filters.selectPlatform && filters.selectPlatform.length > 0) {
+      params.set('platforms', filters.selectPlatform);
     } else {
       params.delete('platforms');
     }
 
     // Handle range values (min-max) - only add if changed from initial
     if (filters.budget && hasRangeChanged(filters.budget, INITIAL_BUDGET)) {
-      params.set('budgetMin', filters.budget[0].toString());
-      params.set('budgetMax', filters.budget[1].toString());
+      params.set('campaignBudgetMin', filters.budget[0].toString());
+      params.set('campaignBudgetMax', filters.budget[1].toString());
     } else {
-      params.delete('budgetMin');
-      params.delete('budgetMax');
+      params.delete('campaignBudgetMin');
+      params.delete('campaignBudgetMax');
     }
 
     if (filters.flatFee && hasRangeChanged(filters.flatFee, INITIAL_FLAT_FEE)) {
@@ -177,9 +173,9 @@ export default function FilterModal({ open, onOpenChange, onApply }: FilterModal
   const apply = () => {
     const filters = {
       contentType,
-      genres,
-      categories,
-      platforms,
+      selectedCategories,
+      selectedGenres,
+      selectPlatform,
       budget,
       flatFee,
       minPayout,
@@ -188,24 +184,23 @@ export default function FilterModal({ open, onOpenChange, onApply }: FilterModal
     };
 
     setFiltersAsSearchParams(filters);
-    onApply(filters);
-    onOpenChange(false); // Close modal after applying
+    onOpenChange(false);
   };
 
   const clear = () => {
-    setContentType("UGC");
-    setGenries([]);
-    setCategories([]);
-    setPlatforms([]);
+    setContentType("");
+    setSelectedGenres([]);
+    setSelectedCategories([]);
+    setSelectPlatform("");
     setBudget(INITIAL_BUDGET);
     setFlatFee(INITIAL_FLAT_FEE);
-    setTiktokFollowers(INITIAL_TIKTOK_FOLLOWERS);
-    setInstagramFollowers(INITIAL_INSTAGRAM_FOLLOWERS);
-    setYoutubeFollowers(INITIAL_YOUTUBE_FOLLOWERS);
     setMinPayout(INITIAL_MIN_PAYOUT);
     setRewardRate(INITIAL_REWARD_RATE);
     setMaxPayout(INITIAL_MAX_PAYOUT);
-
+    {/*setTiktokFollowers(INITIAL_TIKTOK_FOLLOWERS);
+    setInstagramFollowers(INITIAL_INSTAGRAM_FOLLOWERS);
+    setYoutubeFollowers(INITIAL_YOUTUBE_FOLLOWERS);
+    */}
     // Clear URL params
     router.push(pathname);
   };
@@ -224,11 +219,15 @@ export default function FilterModal({ open, onOpenChange, onApply }: FilterModal
           <label className="text-sm font-medium">Content Type</label>
           <select
             value={contentType}
-            onChange={e => setContentType(e.target.value)}
+            onChange={(e) => setContentType(e.target.value)}
             className="mt-2 w-full h-12 border rounded-xl px-3"
           >
-            <option>UGC</option>
-            <option>Clipping</option>
+            {/* <option value="" disabled hidden> */}
+            <option value=""  >
+              Select
+            </option>
+            <option value="UGC">UGC</option>
+            <option value="Clipping">Clipping</option>
           </select>
         </div>
 
@@ -239,8 +238,8 @@ export default function FilterModal({ open, onOpenChange, onApply }: FilterModal
             {genres && genres?.map(g => (
               <button
                 key={g}
-                onClick={() => toggleItem(genres, setGenries, g)}
-                className={`border rounded-xl py-2 transition-colors ${genres.includes(g) ? "bg-black text-white" : "bg-white hover:bg-gray-50"
+                onClick={() => toggleItem(genres, setSelectedGenres, g)}
+                className={`border rounded-xl py-2 transition-colors ${selectedGenres.includes(g) ? "bg-black text-white" : "bg-white hover:bg-gray-50"
                   }`}
               >
                 {g}
@@ -253,11 +252,11 @@ export default function FilterModal({ open, onOpenChange, onApply }: FilterModal
         <div className="mt-5">
           <p className="font-medium mb-3">Category</p>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-            {categoryList.map(cat => (
+            {categories?.map(cat => (
               <button
                 key={cat}
-                onClick={() => toggleItem(categories, setCategories, cat)}
-                className={`border rounded-xl py-2 transition-colors ${categories.includes(cat) ? "bg-black text-white" : "bg-white hover:bg-gray-50"
+                onClick={() => toggleItem(categories, setSelectedCategories, cat)}
+                className={`border rounded-xl py-2 transition-colors ${selectedCategories.includes(cat) ? "bg-black text-white" : "bg-white hover:bg-gray-50"
                   }`}
               >
                 {cat}
@@ -273,8 +272,8 @@ export default function FilterModal({ open, onOpenChange, onApply }: FilterModal
             {platformList.map(p => (
               <div key={p.name} className="flex items-center gap-3 border rounded-xl p-4">
                 <Checkbox
-                  checked={platforms.includes(p.name)}
-                  onCheckedChange={() => toggleItem(platforms, setPlatforms, p.name)}
+                  checked={selectPlatform === p.name}
+                  onCheckedChange={() => setSelectPlatform(selectPlatform === p.name ? "" : p.name)}
                 />
                 <img src={p.icon} alt={p.name} className="w-8 h-8" />
                 <span>{p.name}</span>

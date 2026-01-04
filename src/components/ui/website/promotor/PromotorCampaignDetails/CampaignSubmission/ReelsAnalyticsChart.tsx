@@ -28,7 +28,7 @@ export default function ReelsAnalyticsChart({views}: {views?: number}) {
 ]
   return (
     <Card className="bg-orange-50/50 rounded-lg h-full p-2">
-      <CardContent className="h-[250px] p-0">
+      <CardContent className="h-full p-0">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
             data={data}

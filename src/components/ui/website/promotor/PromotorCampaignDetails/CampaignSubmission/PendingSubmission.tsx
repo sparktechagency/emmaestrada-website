@@ -8,12 +8,13 @@ import PendingDropDown from "./PendingDropDown"
 import { myFetch } from "@/utils/myFetch"
 import { formatChatTime } from "@/components/shared/FormatChatTime "
 import { imageUrl } from "@/constants"
+import PlatformSubmissionTabs from "@/components/shared/PlatformSubmissionTabs"
 
 
-const PendingSubmission = async ({campaignId}: {campaignId: string}) =>{
-  const res = await  myFetch(`/submissions/campaign-submissions/${campaignId}`);
+const PendingSubmission = async ({ campaignId }: { campaignId: string }) => {
+  const res = await myFetch(`/submissions/campaign-submissions/${campaignId}`);
 
-  console.log("PendingSubmission11", res?.data?.data);
+
   const user = {
     name: "Sarah Jhonson",
     profileImage: "/images/profile21.jpg",
@@ -21,7 +22,7 @@ const PendingSubmission = async ({campaignId}: {campaignId: string}) =>{
 
   return (
     <div>
-
+      {/* 
       {res?.data?.data &&  res?.data?.data.map((submission: any, i: number) => <Card key={i} className="bg-transparent shadow-none border-0 ">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between md:p-3 ">
           <div className="flex items-center gap-3">
@@ -60,10 +61,18 @@ const PendingSubmission = async ({campaignId}: {campaignId: string}) =>{
         </div>
 
 
-      </Card>)}
+      </Card>)} */}
+
+      {res?.data?.data && (
+        <PlatformSubmissionTabs
+          submissions={res.data.data}
+          connectedPlatforms={["instagram", "tiktok", "youtube"]}
+        />
+      )}
     </div>
   )
 }
 
 
 export default PendingSubmission;
+

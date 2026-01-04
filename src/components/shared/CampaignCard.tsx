@@ -118,13 +118,13 @@ const CampaignCard = ({ campaign, label}: CampaignCardProps) => {
   return (
     <div className="rounded-2xl relative shadow-md grid grid-cols-1 gap-4 bg-[#FFF8F3]">
       <div className="flex-1 flex flex-col order-2 px-3 pb-3">
-        <div className="absolute top-3 left-3 z-20 flex w-[90%] justify-between items-center ">
-          <div className="flex items-center gap-2">
+        <div className="absolute top-3 left-3 z-20 flex w-[90%] justify-end items-center ">
+          {/* <div className="flex items-center gap-2">
             <span className="flex items-center gap-2 bg-red-500 text-white px-3 py-1 rounded-full text-sm">
               <span className="w-2 h-2 bg-white rounded-full" />
               Live
             </span>
-          </div>
+          </div> */}
           <div className="flex gap-2 bg-white/50 p-2 rounded-lg">
             {campaign?.platforms?.map((platform) =>
               platformIcons[platform] ? (

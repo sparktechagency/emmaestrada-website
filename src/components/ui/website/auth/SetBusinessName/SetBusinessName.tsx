@@ -46,13 +46,9 @@ const SetBusinessName = () => {
       const result = await myFetch(`/users/complete-registration`, {
         method: "POST",
         body: formData
-      })
-
-
-      console.log("formData", result);
-      
-      if (result?.data) {
-        toast.success(result.data.message)
+      })      
+      if (result?.success) {
+        toast.success(result?.message)
         router.push("/")
         router.refresh()
         clearData()

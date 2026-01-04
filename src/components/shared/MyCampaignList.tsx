@@ -6,6 +6,8 @@ interface Props {
 }
 
 const MyCampaignList = ({ campaigns }: Props) => {
+  console.log("MyCampaignList", campaigns);
+  
   if (!campaigns?.length) {
     return <p className="text-center text-gray-500">No campaigns found</p>;
   }
@@ -13,7 +15,7 @@ const MyCampaignList = ({ campaigns }: Props) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       {campaigns.map((campaign) => (
-        <CampaignCard key={campaign._id} campaign={campaign} />
+        <CampaignCard key={campaign._id} campaign={campaign ?? campaign?.campaignId} />
       ))}
     </div>
   );

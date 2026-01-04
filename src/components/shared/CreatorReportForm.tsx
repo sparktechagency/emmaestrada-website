@@ -13,7 +13,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 
-const CreatorReportForm = ({ closeModal }: { closeModal: () => void }) => {
+const CreatorReportForm = ({creatorId, closeModal }: {creatorId?: string, closeModal: () => void }) => {
   const form = useForm({
     defaultValues: {
       message: '',
@@ -23,7 +23,7 @@ const CreatorReportForm = ({ closeModal }: { closeModal: () => void }) => {
 
   const onSubmit = async (values: any) => {
     try {
-      console.log('Report to creator:', values)
+      console.log('Report to creator:', {target: creatorId, type: "CREATOR", ...values})
 
       // 👉 call API here
       // await sendReportToCreator(values)

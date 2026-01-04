@@ -18,7 +18,7 @@ import clsx from 'clsx'
 import { Avatar } from '../ui/avatar'
 import { AvatarFallback, AvatarImage } from '@radix-ui/react-avatar'
 
-const ReviewModal = ({ closeModal }: { closeModal: () => void }) => {
+const ReviewModal = ({ closeModal, submitReview }: {  closeModal: () => void, submitReview?:any}) => {
     const [rating, setRating] = useState(0)
 
     const form = useForm({
@@ -28,15 +28,10 @@ const ReviewModal = ({ closeModal }: { closeModal: () => void }) => {
     })
 
     const onSubmit = async (values: any) => {
-        try {
-            console.log({
-                rating,
-                review: values.review,
-            })
-
-            // 👉 API call here
-            // await submitReview({ rating, review: values.review })
-
+        try {                        
+            const data = { ratingValue: rating, feedback: values.review, type: "CREATOR" }
+            
+            await submitReview(data)
             closeModal()
         } catch (error) {
             console.error(error)

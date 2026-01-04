@@ -37,9 +37,7 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
 
       const res = await myFetch("/users/profile", {cache: "no-cache"});
 
-      if (res?.success) {
-        console.log("resres", res);
-        
+      if (res?.success) {        
         setProfile(res?.data);
       } else {
         setError(res?.message || "Failed to load profile");

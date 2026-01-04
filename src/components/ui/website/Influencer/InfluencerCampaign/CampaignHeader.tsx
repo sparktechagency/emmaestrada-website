@@ -40,9 +40,6 @@ const CampaignHeader = () => {
     router.push(`/creator?campaignType=${type}`);
   };
 
-  const handleApplyFilters = (filters: any) => {
-    console.log("filters", filters);
-  };
 
 
   useEffect(() => {
@@ -143,8 +140,7 @@ const CampaignHeader = () => {
 
       <FilterModal
         open={filterModalOpen}
-        onOpenChange={setFilterModalOpen}
-        onApply={handleApplyFilters}
+        onOpenChange={setFilterModalOpen}        
       />
     </div>
   );

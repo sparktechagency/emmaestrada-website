@@ -40,9 +40,7 @@ export default function Signup() {
 
   const checkAvailablelity = async () => {
     try {
-      const result = await myFetch(`/users/check-field?email=${email}`, {cache:'no-store'});
-
-      console.log("resultresult", result)
+      const result = await myFetch(`/users/check-field?email=${email}`, {cache:'no-store'});      
       if (result?.success) {
         setIsVerified(result?.data?.isAvailable)
       }

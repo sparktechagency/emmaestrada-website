@@ -36,9 +36,9 @@ const SetUsername = () => {
   
   const checkAvailablelity = async () => {
     try {
-      const result = await myFetch(`/users/check-field?username=${username}`);
+      const result = await myFetch(`/users/check-field?userName=${username}`);
 
-      console.log("resultresult", result)
+      console.log("checkAvailablelity", result)
       if (result?.success) {
         setIsVerified(result?.data?.isAvailable)
       }
