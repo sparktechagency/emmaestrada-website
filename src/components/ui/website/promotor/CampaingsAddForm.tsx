@@ -11,6 +11,7 @@ import { myFetch } from "@/utils/myFetch";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { imageUrl } from "@/constants";
+import { revalidate } from "@/helpers/revalidateHelper";
 
 const steps = [
   { id: 1, name: "Basic & Budget", subtitle: "Campaign details" },
@@ -24,16 +25,13 @@ const platforms = [
   { label: "YouTube", value: "YouTube", icon: "/youtube.png" },
 ];
 
-const CampaignsAddForm = ({ editData }: { editData?: any }) => {
+const CampaignsAddForm = ({ editData, onClose }: { editData?: any, onClose?: any }) => {
   const [step, setStep] = useState(1);
   const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
   const [categories, setCategories] = useState([])
   const [genries, setGenries] = useState([])
   const route = useRouter()
 
-
-
-  console.log("editData campaign:", editData);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -56,12 +54,13 @@ const CampaignsAddForm = ({ editData }: { editData?: any }) => {
     },
   });
 
+  // console.log("formData", editData);
+
   const fetchingCategories = async () => {
     try {
       const category = await myFetch('/categories?type=CATEGORY');
 
-      console.log("category", category);
-      
+
       setCategories(category?.data)
     } catch (error) {
       console.error('Error:', error);
@@ -88,11 +87,23 @@ const CampaignsAddForm = ({ editData }: { editData?: any }) => {
 
   useEffect(() => {
     if (editData) {
-      setFormData({ ...formData, categoryId: editData.categoryId, genreId: editData.genreId, ...editData });
+      setFormData(prev => ({
+        ...prev,
+        ...editData,
+        categoryId: editData.categoryId,
+        genreId: editData.genreId,
+        assets: {
+          ...prev.assets,
+          ...editData.assets,
+          contentRequirement: editData?.assets?.contentRequirement[0] || "",
+        },
+      }));
       setStep(1);
     }
   }, [editData]);
+
   
+  console.log("form data", editData);
 
 
   const updateFormData = (field: any) =>
@@ -143,31 +154,54 @@ const CampaignsAddForm = ({ editData }: { editData?: any }) => {
       },
     };
 
-    // Append thumbnail file if exists
-    if (formData.thumbnail) {
+    if (
+      formData.thumbnail &&
+      typeof formData.thumbnail !== "string" &&
+      formData.thumbnail instanceof File
+    ) {
       submitFormData.append("thumbnail", formData.thumbnail);
     }
 
-    // Append the rest of the data as JSON string
     submitFormData.append("data", JSON.stringify(payload));
 
-    console.log("SUBMITTED PAYLOAD:", payload);
-    console.log("SUBMITTED FORMDATA:", submitFormData);
 
-    // Example API call:
-    try {
-      const response = await myFetch('/campaigns/create', {
-        method: 'POST',
-        body: submitFormData,
-      });
-      if (response?.success) {
-        console.log('Success:', response);
-        toast.success(response?.data?.message)
-        route.push("/promotor?status=upcoming")
+    if (editData) {
+      try {
+        const response = await myFetch(`/campaigns/update/${editData._id}`, {
+          method: 'PATCH',
+          body: submitFormData
+        });
+        console.log("update campaign", response);
+
+        if (response?.success) {
+          revalidate("promotor-campaigns")
+          onClose()
+          toast.success(response?.message)
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        onClose()
       }
-    } catch (error) {
-      console.error('Error:', error);
+    } else {
+      try {
+        const response = await myFetch('/campaigns/create', {
+          method: 'POST',
+          body: submitFormData,
+        });
+
+        console.log('create campaign', response);
+
+        if (response?.success) {
+          revalidate("promotor-campaigns")
+          console.log('Success:', response);
+          toast.success(response?.message)
+          route.push("/promotor?status=upcoming")
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
     }
+
   };
 
   const views: any = {
@@ -308,8 +342,6 @@ const Step1 = ({
 }: any) => {
   const valid = formData.title && formData.categoryId && formData.genreId;
 
-  console.log("formData", formData);
-
   const handleNext = () => {
     if (valid) next();
   };
@@ -376,28 +408,29 @@ const Step1 = ({
 
 
 
-        {editData && formData?.thumbnail && <div>
+        {editData && typeof formData?.thumbnail === "string" ? <div>
           <p className="text-md text-slate-400 font-md font-medium mb-2">
             Campaign Thumbnail
           </p>
           {/* <Image src={`${imageUrl}${formData?.thumbnail}`} unoptimized height={200} width={300} className="h-[200px] w-full object-cover rounded-xl" alt="Thumbnail"/> */}
           <div className="relative">
-          <img src={`${imageUrl}${formData?.thumbnail}`} className="h-[200px] w-full object-cover rounded-xl" alt="Thumbnail"/>
-          <div className="w-10-h-10 border rounded-full">
-            <X className="h-5 w-5 text-white cursor-pointer absolute top-2 right-2 bg-red-500 p-1 rounded-full" onClick={removeThumbnail} />
+            <img src={`${imageUrl}${formData?.thumbnail}`} className="h-[200px] w-full object-cover rounded-xl" alt="Thumbnail" />
+            <div className="w-10-h-10 border rounded-full">
+              <X className="h-5 w-5 text-white cursor-pointer absolute top-2 right-2 bg-red-500 p-1 rounded-full" onClick={removeThumbnail} />
+            </div>
           </div>
-          </div>
-        </div>}
-        <div>
-          <p className="text-md text-slate-400 font-md font-medium mb-2">
-            Campaign Thumbnail
-          </p>
-          <FileUpload
-            onChange={handleThumbnailUpload}
-            preview={thumbnailPreview}
-            onRemove={removeThumbnail}
-          />
-        </div>
+        </div> :
+          <div>
+            <p className="text-md text-slate-400 font-md font-medium mb-2">
+              Campaign Thumbnail
+            </p>
+            <FileUpload
+              onChange={handleThumbnailUpload}
+              preview={thumbnailPreview}
+              onRemove={removeThumbnail}
+            />
+          </div>}
+
 
         <div>
           <p className="text-md font-md font-semibold mb-2">

@@ -55,6 +55,8 @@ export default function Login() {
 
     try {
       const result = await myFetch('/auth/login', { method: "POST", body: { email } });      
+      console.log(":result", result);
+      
       if (result?.data) {
         toast.success(result?.data?.message)
         Cookies.set("email", email);

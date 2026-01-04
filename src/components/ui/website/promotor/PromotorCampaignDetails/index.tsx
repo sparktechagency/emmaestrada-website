@@ -13,6 +13,7 @@ import { imageUrl } from '@/constants'
 
 const PromotorCampaignDetails = ({data, status, openTab }: {data:any,  status?: string, openTab?: string }) => {    
     
+    console.log("promotor campaign data", data);
     return (
         <Container>
             <div className="glassBg p-4 my-10">
@@ -40,7 +41,7 @@ const PromotorCampaignDetails = ({data, status, openTab }: {data:any,  status?: 
                     </div>
                     <ViewAllSubmittionBtn />
                     {openTab ? <CampaignSubmission status={status} campaignId={data?._id}/> :
-                        <CampaignData />
+                        <CampaignData campaign={data} />
                     }                   
                 </div>
             </div >

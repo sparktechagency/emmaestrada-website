@@ -11,7 +11,7 @@ const PromotorChampaigns = async ({ queryString, status }: { queryString?: strin
    const baseUrl = status === "upcoming" ? "/campaigns/unpaid-campaigns" : status ? `/campaigns/my-campaigns?status=${status}` : "/campaigns/my-campaigns?status=active";
 
   const url = queryString ? `${baseUrl}?${queryString}` : baseUrl;
-  const campaignsData = await myFetch(url);
+  const campaignsData = await myFetch(url, { tags: ['promotor-campaigns'] });
     
   return (
     <Container>

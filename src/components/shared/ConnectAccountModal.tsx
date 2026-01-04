@@ -51,7 +51,7 @@ type Props = {
 
 export default function ConnectAccountModal({ user, open, setOpen }: Props) {
     console.log("user", user)
-    
+
     const connectedPlatformsSet = new Set(
         (user?.connectedPlatforms || []).map((platform: string) => platform.toLowerCase())
     )
@@ -66,30 +66,6 @@ export default function ConnectAccountModal({ user, open, setOpen }: Props) {
         const url = new URL(platform.link)
         url.searchParams.append('userId', user?._id)
         window.location.href = url.toString()
-    }
-
-    const handleDisconnectClick = async (platformName: string) => {
-        const result = await Swal.fire({
-            title: 'Are you sure?',
-            html: `Do you want to disconnect your <strong>${platformName}</strong> account?<br/>You will need to reconnect it to access your content again.`,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#dc2626',
-            cancelButtonColor: '#6b7280',
-            confirmButtonText: 'Yes, disconnect',
-            cancelButtonText: 'Cancel',
-            reverseButtons: true,
-            customClass: {
-                popup: 'rounded-lg',
-                title: 'text-xl font-semibold',
-                htmlContainer: 'text-sm',
-            }
-        })
-
-        if (result.isConfirmed) {
-            await handleDisconnect(platformName)
-            Swal.close()
-        }
     }
 
     const handleDisconnect = async (platformName: string) => {
@@ -111,10 +87,6 @@ export default function ConnectAccountModal({ user, open, setOpen }: Props) {
                     timer: 2000,
                     timerProgressBar: true,
                 })
-                
-                setOpen(false)
-                Swal.close()
-                console.log("Disconnected successfully")
             } else {
                 // Error from API
                 Swal.fire({
@@ -126,7 +98,7 @@ export default function ConnectAccountModal({ user, open, setOpen }: Props) {
             }
         } catch (error) {
             console.error('Disconnect failed', error)
-            
+
             // Error alert
             Swal.fire({
                 title: 'Error!',
@@ -134,9 +106,39 @@ export default function ConnectAccountModal({ user, open, setOpen }: Props) {
                 icon: 'error',
                 confirmButtonColor: '#2563eb',
             })
-            
+
         }
     }
+
+
+    const handleDisconnectClick = async (platformName: string) => {
+        setOpen(false)
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            html: `Do you want to disconnect your <strong>${platformName}</strong> account?<br/>You will need to reconnect it to access your content again.`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc2626',
+            cancelButtonColor: '#6b7280',
+            confirmButtonText: 'Yes, disconnect',
+            cancelButtonText: 'Cancel',
+            reverseButtons: true,
+            customClass: {
+                popup: 'rounded-lg',
+                title: 'text-xl font-semibold',
+                htmlContainer: 'text-sm',
+            }
+        })
+
+        if (result.isConfirmed) {
+            alert("result.isConfirmed");
+
+            await handleDisconnect(platformName)
+            Swal.close()
+
+        }
+    }
+
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>

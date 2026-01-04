@@ -42,10 +42,10 @@ const CampaignsDetails = async ({ data }: { data: any }) => {
                 {/* Paid Out */}
                 <div className="mt-6 text-lg font-semibold">Paid Out</div>
                 <div className="flex items-end gap-1">
-                    <span className="text-3xl font-semibold">$2087.40</span>
-                    <span className="text-slate-400  text-xl font-medium">of ${data?.totalPaidOutAmount} paid out</span>
+                    <span className="text-3xl font-semibold">${data?.remainingAmount}</span>
+                    <span className="text-slate-400  text-xl font-medium">of <span className='text-primary'>${data?.totalPaidOutAmount}</span> paid out</span>
                 </div>
-                <Progress value={55} className="h-3 mt-2" />
+                <Progress  value={(data?.totalPaidOutAmount / data?.remainingAmount) * 100} className="h-3 mt-2" />
                 <div className="p-5 mt-7 glassBg shadow-lg!">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center  items-start ">
                         <div className="text-start">
