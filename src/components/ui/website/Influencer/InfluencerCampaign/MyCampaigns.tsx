@@ -2,6 +2,8 @@ import MyCampaignList from "@/components/shared/MyCampaignList";
 import { myFetch } from "@/utils/myFetch";
 import { CampaignTabGroup } from "./CampaignTabGroup";
 import ManagePagination from "@/components/shared/ManagePagination";
+import PlatformSubmissionTabs from "@/components/shared/PlatformSubmissionTabs";
+import SubmittedCampaignsTabs from "./SubmittedCampaignsTabs";
 
 const MyCampaigns = async ({
   status,   
@@ -11,26 +13,29 @@ const MyCampaigns = async ({
   queryString: string
 }) => {
 
-  const  campaignsData = await myFetch(
+  const  submissionData = await myFetch(
     `/submissions/my-submissions?status=${status ? status : "pending"}${queryString}`
-  );
-  
-  // const filteredData = campaigns?.data?.length > 0 ? campaigns?.data?.map((c:any)=>c.campaignId) : []
-  
+  );  
   return (
     <div>
       <CampaignTabGroup
         tabs={[
           { label: "Pending", value: "pending" },
           { label: "Accepted", value: "accepted" },
-          { label: "Canceled", value: "canceled" },
+          { label: "Cancelled", value: "cancelled" },
           { label: "Completed", value: "completed" },
         ]}
         queryParam="status"
       />
 
-      <MyCampaignList campaigns={campaignsData?.data} />
-      <ManagePagination meta={campaignsData?.meta} />
+      {submissionData?.data && (
+        <SubmittedCampaignsTabs
+          submissions={submissionData.data}
+          connectedPlatforms={["instagram", "tiktok", "youtube"]}
+        />
+      )}
+      {/* <MyCampaignList campaigns={submissionData?.data} /> */}
+      <ManagePagination meta={submissionData?.meta} />
     </div>
   );
 };

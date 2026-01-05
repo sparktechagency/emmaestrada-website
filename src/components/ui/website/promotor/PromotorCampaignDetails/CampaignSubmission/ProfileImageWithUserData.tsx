@@ -25,7 +25,8 @@ const ProfileImageWithUserData = ({ submission }: any) => {
                     <div className="flex flex-col md:flex-row gap-6">
                         {/* Profile Image */}
                         <div className="flex-shrink-0 md:mx-0 mx-auto">
-                            <Image src={`${imageUrl}${user?.image}`} unoptimized alt="profile" width={120} height={120} className="h-28 md:h-20 w-28 md:w-20 object-cover rounded-md md:rounded-full md:mb-4" />
+                            <Image src={`${user?.image ? imageUrl + user?.image : '/placeholder.png'}`} unoptimized alt="profile" width={120} height={120} className="h-28 md:h-20 w-28 md:w-20 object-cover rounded-md md:rounded-full md:mb-4" />
+                            
                         </div>
 
                         {/* Profile Info */}

@@ -51,7 +51,7 @@ const CreatorDetails = ({ creator }: { creator: any }) => {
                             Array.from({ length: creator?.rating })?.map((_: any, i: number) => <MdOutlineStar key={i} className="text-orange-500" size={15} />)}
                     </div>
                     <p className='text-center text-lg text-slate-500 flex justify-center items-center'><span> {creator?.bio ?? "N/A"}</span> </p>
-                    <div className="flex items-center gap-5 justify-center my-5">
+                    <div className="flex items-center gap-5 justify-center flex-wrap my-5">
                         {creator?.contentTypes?.length > 0 ? creator?.contentTypes?.map((t: string) => <Badge key={t} className='rounded-full'>{t}</Badge>) : 'N/A'}
                     </div>
                     <FollowButton creatorId={creator?._id} isFollowing={creator?.isFollowing} />

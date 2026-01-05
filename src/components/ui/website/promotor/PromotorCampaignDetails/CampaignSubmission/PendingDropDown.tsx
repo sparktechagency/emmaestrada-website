@@ -22,49 +22,79 @@ import { myFetch } from "@/utils/myFetch"
 import { toast } from "sonner"
 
 
-const PendingDropDown = ({submission}: {submission: any }) => {
+const PendingDropDown = ({ submission }: { submission: any }) => {
     const [showRejectForm, setShowRejectForm] = useState(false);
     const [openReport, setOpenReport] = useState(false);
     const [openReview, setOpenReview] = useState(false);
 
-    const handleAcceptSubmission = async ()=>{
+    const handleAcceptSubmission = async () => {
         try {
-            await myFetch(`/submissions/accept-submission/${submission?._id}`, {
+           const response =  await myFetch(`/submissions/accept-submission/${submission?._id}`, {
                 method: "PATCH",
                 body: { status: "accepted" },
             });
+
+            console.log("response", response);
+            
+              if (response?.success) {
+                toast.success("Submission accepted successfully")
+            } else {
+                toast.error(response?.message)
+
+            }
         } catch (error) {
             console.log("Error accepting submission:", error);
         }
     }
 
 
- const submitReview = async (values: any) => {
+    const submitReview = async (values: any) => {
+        try {
+            const data = { ratingValue: values.ratingValue, feedback: values.feedback, targetId: submission?.influencerId?._id, type: "CREATOR" }
 
-    console.log("submitReview values", values);
-        try {                        
-            const data = { ratingValue: values.ratingValue, feedback: values.feedback, targetId: submission?.influencerId?._id, type: "CREATOR" }      
-           
-                  
-           const response =  await myFetch(`/reviews`, {
+
+            const response = await myFetch(`/reviews`, {
                 method: "POST",
                 body: data
             })
 
             console.log("response", response);
-            
-            if(response?.success){
+
+            if (response?.success) {
                 setOpenReview(false)
                 toast.success(response?.message)
-            }else{
-                 setOpenReview(false)
+            } else {
+                setOpenReview(false)
                 toast.error(response?.message)
-            }            
+            }
         } catch (error) {
             console.error(error)
         }
     }
 
+
+    const handleReport = async (values: any) => {        
+        try {
+            const response = await myFetch(`/submission-reports/create`, {
+                method: "POST",
+                body: {
+                    submissionId: submission?._id,
+                    reason: values.reason
+                }
+            });
+            console.log("handleReport response", response);
+            if (response?.success) {
+                setOpenReport(false);
+                toast.success(response?.message);
+            } else {
+                setOpenReport(false);
+                toast.error(response?.message);
+            }
+        } catch (error) {
+            console.log("handleReport", error);            
+        }
+    }
+    
     return (
         <>
             <DropdownMenu modal={false}>
@@ -107,14 +137,14 @@ const PendingDropDown = ({submission}: {submission: any }) => {
             <Modal
                 open={openReport}
                 setOpen={setOpenReport}
-                className='md:max-w-md! w-[90%]! md:w-full!'>            
-                <CreatorReportForm creatorId={submission?.influencerId?._id} closeModal={() => setOpenReport(false)} />
+                className='md:max-w-md! w-[90%]! md:w-full!'>
+                <CreatorReportForm handleReport={handleReport} creatorId={submission?.influencerId?._id} closeModal={() => setOpenReport(false)} />
             </Modal>
 
             {/* -------------- Report Form -------------- */}
             <Modal
                 open={openReview}
-                setOpen={setOpenReview}                
+                setOpen={setOpenReview}
                 className='md:max-w-md! w-[90%]! md:w-full!'>
                 <ReviewModal submitReview={submitReview} closeModal={() => setOpenReview(false)} />
             </Modal>

@@ -86,7 +86,7 @@ export default function CreatorFilterModal({
     const params = new URLSearchParams(searchParams.toString());
 
     if (filters.gender && filters.gender !== "Both") {
-      params.set('gender', filters.gender);
+      params.set('gender', filters?.gender?.toLowerCase());
     } else {
       params.delete('gender');
     }

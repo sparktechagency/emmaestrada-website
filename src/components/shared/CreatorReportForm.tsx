@@ -13,22 +13,17 @@ import {
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 
-const CreatorReportForm = ({creatorId, closeModal }: {creatorId?: string, closeModal: () => void }) => {
+const CreatorReportForm = ({ handleReport, creatorId, closeModal }: { handleReport?: any, creatorId?: string, closeModal: () => void }) => {
   const form = useForm({
     defaultValues: {
-      message: '',
-      requiresAttention: false,
+      reason: '',      
     },
   })
 
   const onSubmit = async (values: any) => {
     try {
-      console.log('Report to creator:', {target: creatorId, type: "CREATOR", ...values})
-
-      // 👉 call API here
-      // await sendReportToCreator(values)
-
-      closeModal()
+      await handleReport(values)      
+      // closeModal()
     } catch (error) {
       console.error('Report failed:', error)
     }
@@ -47,8 +42,8 @@ const CreatorReportForm = ({creatorId, closeModal }: {creatorId?: string, closeM
         >
           <FormField
             control={form.control}
-            name="message"
-            rules={{ required: 'Message is required' }}
+            name="reason"
+            rules={{ required: 'Reason is required' }}
             render={({ field }) => (
               <FormItem>
                 <FormControl>

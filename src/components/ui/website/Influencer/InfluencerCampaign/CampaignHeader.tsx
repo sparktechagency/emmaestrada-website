@@ -28,6 +28,9 @@ const CampaignHeader = () => {
   
   const router = useRouter();
   const pathname = usePathname();
+  const contentType = searchParams.get("campaignType") || "";
+
+  
   useEffect(() => {
     const paramValue = searchParams.get("campaignType");
     if (paramValue && paramValue !== activeCampaignTab) {
@@ -74,18 +77,19 @@ const CampaignHeader = () => {
           Campaigns
         </button>
         <button
-          onClick={() => setCampaignType("my-campaigns")}
-          className={`flex-1 sm:flex-none md:px-14 py-3 rounded-full transition-colors ${activeCampaignTab === "my-campaigns"
+          onClick={() => setCampaignType("my-submissions")}
+          className={`flex-1 sm:flex-none md:px-14 py-3 rounded-full transition-colors ${activeCampaignTab === "my-submissions"
             ? "bg-white text-gray-900 "
             : " text-white"
             }`}
         >
-          My campaigns
+          My Submissions
         </button>
       </div>
+      
+      {contentType !== "my-submissions" && <div className="bg-secondary rounded-xl p-4 mb-6">
 
-      {/* Search and Filters */}
-      <div className="bg-secondary rounded-xl p-4 mb-6">
+      {/* <div className="bg-secondary hidden rounded-xl p-4 mb-6"> */}
         <div className="flex flex-col lg:flex-row gap-4">
           {/* Search Input */}
           <div className="flex-1 relative">
@@ -93,23 +97,23 @@ const CampaignHeader = () => {
             <Input
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
-              placeholder="Search creator..."
+              placeholder="Search Campaign"
               className="pl-10 bg-white h-12"
             />
           </div>
 
           {/* Controls */}
-          <div className="flex flex-col sm:flex-row gap-3">
+           <div className="flex flex-col sm:flex-row gap-3 ">
             <Button
               variant="outline"
               onClick={() => setFilterModalOpen(true)}
-              className="bg-white h-12"
+              className="bg-white h-12 sm:w-[300px]"
             >
               <SlidersHorizontal className="w-4 h-4 mr-2" />
               Filters
             </Button>
 
-            <Select value={sortBy} onValueChange={setSortBy}>
+            {/* <Select value={sortBy} onValueChange={setSortBy}>
               <SelectTrigger className="w-full sm:w-[300px] bg-white h-12!">
                 <div className="flex items-center gap-2">
                   <ArrowUpDown className="w-4 h-4" />
@@ -133,10 +137,11 @@ const CampaignHeader = () => {
                   Clear
                 </Button>
               </SelectContent>
-            </Select>
+            </Select> */}
           </div>
         </div>
-      </div>
+      {/* </div> */}
+      </div>}
 
       <FilterModal
         open={filterModalOpen}

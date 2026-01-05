@@ -5,9 +5,7 @@ interface Props {
   campaigns: any[];
 }
 
-const MyCampaignList = ({ campaigns }: Props) => {
-  console.log("MyCampaignList", campaigns);
-  
+const MyCampaignList = ({ campaigns }: Props) => {  
   if (!campaigns?.length) {
     return <p className="text-center text-gray-500">No campaigns found</p>;
   }

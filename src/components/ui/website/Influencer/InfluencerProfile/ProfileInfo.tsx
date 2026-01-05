@@ -23,6 +23,7 @@ import { imageUrl } from "@/constants";
 import { useProfile } from "@/hooks/context/ProfileContext";
 import { myFetch } from "@/utils/myFetch";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const CONTENT_TYPES = ["Pop", "Rock", "Jazz", "Hip Hop", "Classical", "Electronic", "Rock1", "Jazz2", "Hip Hop2", "Classical2", "Electronic2"];
 
@@ -49,8 +50,7 @@ export default function ProfileInfo() {
   const [hasImageChanged, setHasImageChanged] = useState(false);
   const [formData, setFormData] = useState<any>({});
 
-
-  console.log("profile", profile);
+  const router = useRouter()
 
 
   useEffect(() => {
@@ -99,19 +99,21 @@ export default function ProfileInfo() {
       const body = new FormData();
       body.append("image", imageFile);
 
-      const res = await myFetch("/users/profile/image", {
+      const res = await myFetch("/users/profile", {
         method: "PATCH",
         body,
       });
 
+      
       if (res?.success) {
         refetchProfile();
-        setImageFile(null);
-        setHasImageChanged(false);
+        // setImageFile(null);
+        // setHasImageChanged(false);
         alert("Profile picture updated successfully!");
       } else {
         console.log("res", res);
-        alert(res?.message || "Failed to update profile picture");
+        toast.error(res?.message);
+        router.refresh();
       }
     } catch (err: any) {
       alert(err?.message || "Something went wrong");
@@ -135,25 +137,24 @@ export default function ProfileInfo() {
   };
 
   const saveProfile = async () => {
-    const formData = new FormData();
+    const payload = new FormData();
     try {
       setLoading(true);
-      const dataToUpdate = { ...formData, contentTypes: selected };
-      formData.append("data", JSON.stringify(dataToUpdate));
+      const dataToUpdate = { ...formData, contentTypes: selected };    
+
+      payload.append("data", JSON.stringify(dataToUpdate));
       const res = await myFetch("/users/profile", {
         method: "PATCH",
-        body: formData,
+        body: payload,
       });
 
-      console.log("update usernfo", res);
       
       if (res?.success) {
         refetchProfile();
         setEditMode(false);
         toast.success(res?.message);
-      } else {
-        console.log("res", res);
-        alert(res?.message || "Failed to update profile");
+      } else {        
+        toast.error(res?.message);
       }
     } catch (err: any) {
       alert(err?.message || "Something went wrong");
@@ -195,7 +196,7 @@ export default function ProfileInfo() {
 
               {/* Image Action Buttons */}
               {hasImageChanged && (
-                <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 translate-y-full flex gap-2 mt-2">
+                <div className="absolute -bottom-2 left-1/2 -translate-x-1/4 translate-y-full flex gap-2 mt-2">
                   <Button
                     size="sm"
                     className="h-8 px-3 rounded-full bg-green-500 hover:bg-green-600"
@@ -247,7 +248,7 @@ export default function ProfileInfo() {
 
           <Button
             variant="outline"
-            className="rounded-full flex gap-2"
+            className={`rounded-full flex gap-2 ${hasImageChanged ? "mt-7": "mt-0"} md:mt-0`}
             onClick={() => setEditMode(!editMode)}
           >
             {editMode ? "Cancel Edit" : "Edit Profile"}

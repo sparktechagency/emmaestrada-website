@@ -3,24 +3,36 @@ import PendingSubmission from './PendingSubmission'
 import AcceptedSubmission from './AcceptedSubmission'
 import RejectedSubmission from './RejectedSubmission'
 import { CampaignTabGroup } from '../../../Influencer/InfluencerCampaign/CampaignTabGroup'
+import { myFetch } from '@/utils/myFetch'
+import PlatformSubmissionTabs from '@/components/shared/PlatformSubmissionTabs'
 
-const CampaignSubmission = ({status, campaignId}: {status?: string, campaignId: string}) => {
+const CampaignSubmission = async ({status, campaignId}: {status?: string, campaignId: string}) => {
+    const res = await myFetch(status ? `/submissions/campaign-submissions/${campaignId}?status=${status}` :  `/submissions/campaign-submissions/${campaignId}`);
+
+    console.log("CampaignSubmission", res);
+    
   return (
     <div>
       <div className="mt-5">
       <CampaignTabGroup
         tabs={[
           { label: 'Pending', value: 'pending' },
-          { label: 'Approved', value: 'approved' },
-          { label: 'Rejected', value: 'rejected' },
+          { label: 'Approved', value: 'accepted' },
+          { label: 'Rejected', value: 'cancelled' },
         ]}
         queryParam="status"
       />
       </div>
-       {status === 'pending' ? <PendingSubmission campaignId={campaignId}/> 
+       {/* {status === 'pending' ? <PendingSubmission submissions={res?.data?.data}/> 
        : status === 'approved' ? < AcceptedSubmission /> 
-       : status === 'rejected' ? < RejectedSubmission/> : <PendingSubmission  campaignId={campaignId}/>}  
+       : status === 'rejected' ? < RejectedSubmission/> : <PendingSubmission  submissions={res?.data?.data}/>}   */}
       
+       {res?.data?.data && (
+        <PlatformSubmissionTabs
+          submissions={res?.data?.data}
+          connectedPlatforms={["instagram", "tiktok", "youtube"]}
+        />
+      )}
     </div>
   )
 }

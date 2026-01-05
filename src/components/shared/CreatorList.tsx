@@ -44,6 +44,8 @@ const PLATFORM_CONFIG = {
 
 const CreatorList = ({ creatorData }: { creatorData: any }) => {
 
+    console.log("creatorData", creatorData);
+    
     return (
         <div>
             {

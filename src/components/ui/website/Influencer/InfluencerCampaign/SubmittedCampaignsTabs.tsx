@@ -5,23 +5,25 @@ import { Badge } from '@/components/ui/badge';
 import Image from 'next/image';
 
 import { imageUrl } from '@/constants';
-import ProfileImageWithUserData from '../ui/website/promotor/PromotorCampaignDetails/CampaignSubmission/ProfileImageWithUserData';
-import ReelsAnalyticsChart from '../ui/website/promotor/PromotorCampaignDetails/CampaignSubmission/ReelsAnalyticsChart';
-import PendingDropDown from '../ui/website/promotor/PromotorCampaignDetails/CampaignSubmission/PendingDropDown';
-import { formatChatTime } from './FormatChatTime ';
-import { formatDate } from './DateFormat';
+import ProfileImageWithUserData from '../../promotor/PromotorCampaignDetails/CampaignSubmission/ProfileImageWithUserData';
+import { formatDate } from '@/components/shared/DateFormat';
+import ReelsAnalyticsChart from '../../promotor/PromotorCampaignDetails/CampaignSubmission/ReelsAnalyticsChart';
+import Link from 'next/link';
 
-const PlatformSubmissionTabs = ({ submissions, connectedPlatforms = ["instagram", "tiktok", "youtube"] }: any) => {
-        
-    const submissionsByInfluencer = submissions.reduce((acc: any, submission: any) => {
-        const influencerId = submission.influencerId._id;
-        if (!acc[influencerId]) {
-            acc[influencerId] = {
-                influencer: submission.influencerId,
+
+const SubmittedCampaignsTabs = ({ submissions, connectedPlatforms = ["instagram", "tiktok", "youtube"] }: any) => {
+
+    console.log("submissions", submissions[0]?.campaignId?.campaignOwnerId);
+
+    const submissionsByCampaign = submissions.reduce((acc: any, submission: any) => {
+        const campaignId = submission.campaignId._id;
+        if (!acc[campaignId]) {
+            acc[campaignId] = {
+                campaign: submission.campaignId,
                 submissions: []
             };
         }
-        acc[influencerId].submissions.push(submission);
+        acc[campaignId].submissions.push(submission);
         return acc;
     }, {});
 
@@ -34,68 +36,39 @@ const PlatformSubmissionTabs = ({ submissions, connectedPlatforms = ["instagram"
         return icons[platform as keyof typeof icons] || "/default.png";
     };
 
-    const getPlatformColor = (platform: any) => {
-        const colors = {
-            instagram: "from-purple-500 to-pink-500",
-            tiktok: "from-black to-gray-800",
-            youtube: "from-red-600 to-red-700"
-        };
-        return colors[platform as keyof typeof colors] || "from-gray-500 to-gray-600";
-    };
+    // const getPlatformColor = (platform: any) => {
+    //     const colors = {
+    //         instagram: "from-purple-500 to-pink-500",
+    //         tiktok: "from-black to-gray-800",
+    //         youtube: "from-red-600 to-red-700"
+    //     };
+    //     return colors[platform as keyof typeof colors] || "from-gray-500 to-gray-600";
+    // };
 
-    const formatViews = (views: any) => {
-        if (!views) return '0';
-        if (views >= 1000000) return `${(views / 1000000).toFixed(1)}M`;
-        if (views >= 1000) return `${(views / 1000).toFixed(1)}K`;
-        return views.toString();
-    };
+    // const formatViews = (views: any) => {
+    //     if (!views) return '0';
+    //     if (views >= 1000000) return `${(views / 1000000).toFixed(1)}M`;
+    //     if (views >= 1000) return `${(views / 1000).toFixed(1)}K`;
+    //     return views.toString();
+    // };
 
     return (
         <div className="">
-            {Object.values(submissionsByInfluencer).map((influencerData: any, idx: number) => {
-                const { influencer, submissions } = influencerData;
-
-                // Group submissions by platform for this influencer
+            {Object.values(submissionsByCampaign).map((campaignData: any, idx: number) => {
+                const { campaign, submissions } = campaignData;                
                 const platformSubmissions = connectedPlatforms.reduce((acc: any, platform: any) => {
                     acc[platform] = submissions.filter((s: any) => s.platform === platform);
                     return acc;
                 }, {});
-
-                // Get platforms that have submissions
+                
                 const activePlatforms = connectedPlatforms.filter((p: any) => platformSubmissions[p]?.length > 0);
                 const defaultPlatform = activePlatforms[0] || connectedPlatforms[0];
 
                 return (
-                    <Card key={idx} className="p-3 md:p-4  bg-transparent!">
-                        {/* Influencer Header */}
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b">
-                            <div className="flex items-center gap-3">
-                                <ProfileImageWithUserData submission={submissions[0]} />
-                                <div>
-                                    <h3 className="text-lg font-semibold text-gray-900">{influencer.name}</h3>
-                                    <p className="text-sm text-gray-500">{influencer.email}</p>
-                                </div>
-                            </div>
-
-                            {/* Connected Platforms Badge */}
-                            <div className="flex items-center gap-2 flex-wrap">
-                                {submissions.map((sub: any, i: number) => (
-                                    <div key={i} className="bg-gray-50 p-2 rounded-lg">
-                                        <Image
-                                            src={getPlatformIcon(sub.platform)}
-                                            height={15}
-                                            width={24}
-                                            alt={sub.platform}
-                                            className="h-5 w-6 object-contain"
-                                        />
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-
+                    <Card key={idx} className="p-3 md:p-4 bg-transparent!">
                         {/* Platform Tabs */}
                         <Tabs defaultValue={defaultPlatform} className="w-full bg-secondary/30 p-3 rounded-md">
-                            <TabsList className="grid w-full grid-cols-3 mb-6 h-auto">
+                            <TabsList className="grid w-full grid-cols-3 mb-2 h-auto">
                                 {connectedPlatforms.map((platform: any) => {
                                     const count = platformSubmissions[platform]?.length || 0;
                                     return (
@@ -128,15 +101,28 @@ const PlatformSubmissionTabs = ({ submissions, connectedPlatforms = ["instagram"
                                                     <div className="">
                                                         {/* Submission Header */}
                                                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-                                                            <div className="mt-2 flex md:w-auto w-full justify-between md:justify-center items-center gap-2">
-                                                                <span className="text-gray-800">Submitted Date : </span>
-                                                                <span className="bg-black px-2 py-2 rounded-md text-sm text-white">{formatDate(submission?.createdAt ?? submission?.updatedAt)}</span>
-                                                            </div>
-                                                            <div className="flex items-center gap-3 md:w-auto w-full justify-between md:justify-center">
-                                                                <div className={`px-3 py-2.5 rounded-full bg-gradient-to-r ${getPlatformColor(platform)} text-white text-xs font-semibold capitalize`}>
-                                                                    {platform}
+                                                            <Link href={`/creator/${campaign._id}`}> <div className="flex items-center gap-3">
+                                                                <Image
+                                                                    src={`${campaign.thumbnail ? imageUrl + campaign.thumbnail : "/placeholder.png"}`}
+                                                                    unoptimized
+                                                                    height={40}
+                                                                    width={40}
+                                                                    alt={campaign.title || campaign.name}
+                                                                    className="rounded-md w-11 h-11  object-cover"
+                                                                />
+                                                                <div>
+                                                                    <h4 className="text-sm font-semibold text-gray-900">{campaign.title || campaign.name}</h4>
+                                                                    <p className="text-xs text-gray-500">{submissions.length} submission{submissions.length !== 1 ? 's' : ''}</p>
                                                                 </div>
-                                                                <PendingDropDown submission={submission} />
+                                                            </div>
+                                                            </Link>
+
+
+                                                            <div className="flex md:justify-center justify-between items-center gap-2">
+                                                                <span className="text-sm text-gray-800">Submitted: </span>
+                                                                <span className="bg-black px-2 py-1.5 rounded-md text-xs text-white">
+                                                                    {formatDate(submission?.createdAt ?? submission?.updatedAt)}
+                                                                </span>
                                                             </div>
                                                         </div>
 
@@ -174,7 +160,7 @@ const PlatformSubmissionTabs = ({ submissions, connectedPlatforms = ["instagram"
                                                 </svg>
                                             </div>
                                             <h4 className="text-base md:text-lg font-semibold text-gray-900 mb-2">No {platform} submissions yet</h4>
-                                            <p className="text-sm text-gray-500 max-w-sm">This creator hasn't submitted any content for {platform}</p>
+                                            <p className="text-sm text-gray-500 max-w-sm">This campaign hasn't received any content for {platform}</p>
                                         </div>
                                     )}
                                 </TabsContent>
@@ -187,4 +173,4 @@ const PlatformSubmissionTabs = ({ submissions, connectedPlatforms = ["instagram"
     );
 };
 
-export default PlatformSubmissionTabs;
+export default SubmittedCampaignsTabs;

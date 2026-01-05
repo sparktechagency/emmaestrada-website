@@ -24,7 +24,7 @@ const CampaignsDetails = async ({ data }: { data: any }) => {
                     <img
                         src={`${imageUrl}${data?.thumbnail}`}
                         alt="Feel The Vibe"
-                        className="w-full md:w-3/5 h-[250px] mx-auto rounded-2xl"
+                        className="w-full md:w-3/5 h-[250px] mx-auto object-cover rounded-2xl"
                     />
                 </div>
 
