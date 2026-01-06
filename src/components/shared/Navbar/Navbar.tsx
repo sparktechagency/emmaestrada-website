@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 
 import Link from "next/link";
-import { Menu, X, Bell, Wallet, Contact, LogOut } from "lucide-react";
+import { Menu, X, Bell, Wallet, Contact, LogOut, CircleUser } from "lucide-react";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
@@ -197,20 +197,22 @@ const ViewAsLogin = ({ profile }: any) => {
       <Bell strokeWidth={1} size={30} color="white" />
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger>
-          <Avatar className="rounded-lg cursor-pointer">
-            <div className="border-2 border-slate-300/50 rounded-full p-1">
+          {profile?.image ? 
+          <Avatar className="rounded-lg cursor-pointer">              
+            <div className=" border-slate-300/50 rounded-full">
+              
               <AvatarImage
                 src={
                   profile?.image
                     ? `${imageUrl}${profile?.image}`
-                    : "https://www.svgrepo.com/show/452030/avatar-default.svg"
+                    : "/placeholder.png"
                 }
                 alt={profile?.name}
-                className="w-8 h-8 object-fill rounded-full "
-              />
-            </div>
-            <AvatarFallback>{profile?.name?.[0]?.toUpperCase()}</AvatarFallback>
+                className="w-12 h-12 object-fill rounded-full "
+                />                 
+                </div>
           </Avatar>
+          : <CircleUser strokeWidth={1.25} size={30} color="#ededed"/>}
         </DropdownMenuTrigger>
         <DropdownMenuContent align="center">
           <Link href={profile?.role == "CREATOR" ? "/creator" : "/promotor"}>

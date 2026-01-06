@@ -22,7 +22,7 @@ const PromotorChampaigns = async ({ queryString, status }: { queryString?: strin
             tabs={[
               { label: 'Active', value: 'active' },
               { label: 'Upcoming', value: 'upcoming' },
-              { label: 'Past', value: 'past' },
+              { label: 'Completed', value: 'completed' },
             ]}
             queryParam="status"
           />

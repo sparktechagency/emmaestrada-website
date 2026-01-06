@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 
-export const CampaignTabGroup = ({ tabs, queryParam }:any) => {
+export const CampaignTabGroup = ({ tabs, queryParam }: any) => {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -12,32 +12,35 @@ export const CampaignTabGroup = ({ tabs, queryParam }:any) => {
 
   useEffect(() => {
     const paramValue = searchParams.get(queryParam)
-
     if (paramValue && tabs.some((t: any) => t.value === paramValue)) {
       setActiveTab(paramValue)
     } else {
-      // ❌ DO NOT rewrite URL here; causes infinite re-renders
       setActiveTab(defaultTab)
     }
-  }, [searchParams, queryParam, tabs])
+  }, [searchParams, queryParam, tabs, defaultTab])
 
   const handleTabClick = (value: string) => {
     setActiveTab(value)
-
     const params = new URLSearchParams(searchParams.toString())
     params.set(queryParam, value)
-
     router.push(`${pathname}?${params.toString()}`, { scroll: false })
   }
 
   return (
-    <div className="flex items-center justify-center md:inline-block mb-6 bg-secondary rounded-full p-1">
+    /* 1. Added 'w-full' to ensure it takes up available space.
+      2. 'overflow-x-auto' allows swiping on mobile instead of cutting off.
+      3. 'whitespace-nowrap' prevents labels from breaking into two lines.
+      4. 'scrollbar-hide' (optional) makes it look cleaner.
+    */
+    <div className="w-full md:w-auto flex md:inline-block! mb-6 overflow-scroll no-scrollbar bg-secondary rounded-full p-1 whitespace-nowrap">
       {tabs.map((tab: any) => (
         <button
           key={tab.value}
-          onClick={() => handleTabClick(tab.value)}
-          className={`flex-1 sm:flex-none md:px-14 py-3 rounded-full transition-colors ${
-            activeTab === tab.value ? 'bg-white text-gray-900' : 'text-white'
+          onClick={() => handleTabClick(tab.value)}          
+          className={`shrink-0 flex-1 md:flex-none md:px-14 px-7 py-3   rounded-full transition-all duration-200 text-sm md:text-base font-medium ${
+            activeTab === tab.value 
+              ? 'bg-white text-gray-900 shadow-sm' 
+              : 'text-white hover:bg-white/10'
           }`}
         >
           {tab.label}
@@ -46,8 +49,6 @@ export const CampaignTabGroup = ({ tabs, queryParam }:any) => {
     </div>
   )
 }
-
-
 
 
 

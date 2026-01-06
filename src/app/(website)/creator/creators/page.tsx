@@ -20,20 +20,20 @@ const page = async ({ searchParams }: PageProps) => {
     case "followed":
 
       data = await myFetch(queryString ? `/followers/following?${queryString}`
-        : `/followers/following`, { tags: ["CREATOR"] });
+        : `/followers/following`, { tags: ["CREATOR"], cache: "no-store" });
       console.log("followed", data);
       break;
 
     case "all":
       data = await myFetch(queryString ? `/creators?${queryString}`
-        : `/creators`, { tags: ["CREATOR"] });
+        : `/creators`, { tags: ["CREATOR"], cache: "no-store" });
       console.log("all", data);
       break;
 
     case "popular":
     default:
       data = await myFetch(queryString ? `/creators/popular?${queryString}`
-        : `/creators/popular`, { tags: ["CREATOR"] });
+        : `/creators/popular`, { tags: ["CREATOR"], cache: "no-store" });
       console.log("popular", data);
       break;
   }

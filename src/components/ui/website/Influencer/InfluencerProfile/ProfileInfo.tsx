@@ -48,9 +48,25 @@ export default function ProfileInfo() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [hasImageChanged, setHasImageChanged] = useState(false);
+  const [contentTypes, setContentTypes] = useState<string[]>([]);  
+  
   const [formData, setFormData] = useState<any>({});
-
   const router = useRouter()
+
+
+  const fetchingContentTypes = async () => {
+    try {
+      const contentTypes = await myFetch('/categories?type=USER');
+      const uContent = contentTypes?.data?.map((cat: any) => cat?.name)
+      setContentTypes(uContent)
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+  useEffect(() => {
+    fetchingContentTypes();
+  }, [])
 
 
   useEffect(() => {
@@ -104,7 +120,7 @@ export default function ProfileInfo() {
         body,
       });
 
-      
+
       if (res?.success) {
         refetchProfile();
         // setImageFile(null);
@@ -140,7 +156,7 @@ export default function ProfileInfo() {
     const payload = new FormData();
     try {
       setLoading(true);
-      const dataToUpdate = { ...formData, contentTypes: selected };    
+      const dataToUpdate = { ...formData, contentTypes: selected };
 
       payload.append("data", JSON.stringify(dataToUpdate));
       const res = await myFetch("/users/profile", {
@@ -148,12 +164,12 @@ export default function ProfileInfo() {
         body: payload,
       });
 
-      
+
       if (res?.success) {
         refetchProfile();
         setEditMode(false);
         toast.success(res?.message);
-      } else {        
+      } else {
         toast.error(res?.message);
       }
     } catch (err: any) {
@@ -248,7 +264,7 @@ export default function ProfileInfo() {
 
           <Button
             variant="outline"
-            className={`rounded-full flex gap-2 ${hasImageChanged ? "mt-7": "mt-0"} md:mt-0`}
+            className={`rounded-full flex gap-2 ${hasImageChanged ? "mt-7" : "mt-0"} md:mt-0`}
             onClick={() => setEditMode(!editMode)}
           >
             {editMode ? "Cancel Edit" : "Edit Profile"}
@@ -358,7 +374,7 @@ export default function ProfileInfo() {
                     <SelectValue placeholder="Add type" />
                   </SelectTrigger>
                   <SelectContent>
-                    {CONTENT_TYPES.map((item) => (
+                    {contentTypes?.map((item) => (
                       <SelectItem key={item} value={item} disabled={selected.includes(item)}>
                         {item}
                       </SelectItem>

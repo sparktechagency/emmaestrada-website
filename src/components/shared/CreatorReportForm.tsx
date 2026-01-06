@@ -13,7 +13,9 @@ import {
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 
-const CreatorReportForm = ({ handleReport, creatorId, closeModal }: { handleReport?: any, creatorId?: string, closeModal: () => void }) => {
+const CreatorReportForm = ({ handleReport, promotor, creator, closeModal }: { handleReport?: any, promotor?: any, creator?:any, closeModal: () => void }) => {
+
+
   const form = useForm({
     defaultValues: {
       reason: '',      
@@ -32,7 +34,7 @@ const CreatorReportForm = ({ handleReport, creatorId, closeModal }: { handleRepo
   return (
     <div>
       <h2 className="text-xl font-semibold text-center">
-        Report an issue to the creator
+        Report an issue to the <span className='text-primary'>{promotor ? promotor?.name ?? promotor?.userName : creator?.name ?? creator?.userName}</span>
       </h2>
 
       <Form {...form}>

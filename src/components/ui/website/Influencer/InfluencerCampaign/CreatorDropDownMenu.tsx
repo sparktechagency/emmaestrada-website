@@ -1,6 +1,6 @@
 "use client"
 
-import { Check, CircleAlert, Menu, X } from "lucide-react"
+import { CircleAlert, Menu, X } from "lucide-react"
 import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
@@ -15,53 +15,33 @@ import {
 
 import Modal from "@/components/modals/Modal"
 import CreatorReportForm from "@/components/shared/CreatorReportForm"
-import RejectSubmissionForm from "./RejectSubmissionModal"
-import { IoIosStar } from "react-icons/io"
+
 import ReviewModal from "@/components/shared/ReviewModal"
-import { myFetch } from "@/utils/myFetch"
-import { toast } from "sonner"
 import { revalidate } from "@/helpers/revalidateHelper"
+import { myFetch } from "@/utils/myFetch"
 import { useSearchParams } from "next/navigation"
+import { IoIosStar } from "react-icons/io"
+import { toast } from "sonner"
 
 
-const PendingDropDown = ({ submission }: { submission: any }) => {
+const CreatorDropDownMenu = ({ submission }: { submission: any }) => {
     const [showRejectForm, setShowRejectForm] = useState(false);
     const [openReport, setOpenReport] = useState(false);
     const [openReview, setOpenReview] = useState(false);
 
     const searchParams = useSearchParams();
-
     const status = searchParams.get("status");
 
-    console.log("statusstatusstatus", status);
-    
-    const handleAcceptSubmission = async () => {
-        try {
-            const response = await myFetch(`/submissions/update-status/${submission?._id}`, {
-                method: "PATCH",
-                body: { status: "accepted" },
-            });
 
-            console.log("response", response);
-            
-            if (response?.success) {
-                toast.success("Submission accepted successfully")
-                revalidate("campaign-submissions")
-            } else {
-                toast.error(response?.message)
-
-            }
-        } catch (error) {
-            console.log("Error accepting submission:", error);
-        }
-    }
 
 
     const submitReview = async (values: any) => {
         try {
-            const data = { ratingValue: values.ratingValue, feedback: values.feedback, targetId: submission?.influencerId?._id, type: "CREATOR" }
-
-
+            const data = { 
+                ratingValue: values.ratingValue, 
+                feedback: values.feedback, 
+                targetId: submission?.campaignId?.campaignOwnerId?._id, 
+                type: "PROMOTER" }
             const response = await myFetch(`/reviews`, {
                 method: "POST",
                 body: data
@@ -81,16 +61,15 @@ const PendingDropDown = ({ submission }: { submission: any }) => {
     }
 
 
-    const handleReport = async (values: any) => {
+    const handleReport = async (values: any) => {         
         try {
-            const response = await myFetch(`/submission-reports/create`, {
+            const response = await myFetch(`/reports/create`, {
                 method: "POST",
                 body: {
-                    submissionId: submission?._id,
+                    campaignId: submission?.campaignId?._id,
                     reason: values.reason
                 }
-            });
-            console.log("handleReport response", response);
+            });            
             if (response?.success) {
                 setOpenReport(false);
                 toast.success(response?.message);
@@ -113,11 +92,7 @@ const PendingDropDown = ({ submission }: { submission: any }) => {
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-40 p-3 inset-0 shadow z-10" align="end">
-                    <DropdownMenuGroup >
-                        <DropdownMenuItem hidden={status !== "pending"} onClick={handleAcceptSubmission} className="bg-green-600 hover:bg-green-700! text-white! mb-2">
-                            Accept
-                            <DropdownMenuShortcut><Check color="white" /></DropdownMenuShortcut>
-                        </DropdownMenuItem>
+                    <DropdownMenuGroup >                        
                         <DropdownMenuItem 
                         hidden={status === "cancelled" || status === "completed"} 
                         onSelect={() => setShowRejectForm(true)} className="bg-red-600 hover:bg-red-700! text-white! mb-2">
@@ -135,21 +110,14 @@ const PendingDropDown = ({ submission }: { submission: any }) => {
                     </DropdownMenuGroup>
                 </DropdownMenuContent>
             </DropdownMenu>
-
-            {/* -------------- Reject Form -------------- */}
-            <Modal
-                open={showRejectForm}
-                setOpen={setShowRejectForm}
-                className='md:max-w-md! w-[90%]! md:w-full!'>
-                <RejectSubmissionForm submission={submission} closeModal={() => setShowRejectForm(false)} />
-            </Modal>
-
+            
             {/* -------------- Report Form -------------- */}
             <Modal
                 open={openReport}
                 setOpen={setOpenReport}
                 className='md:max-w-md! w-[90%]! md:w-full!'>
-                <CreatorReportForm handleReport={handleReport} creator={submission?.influencerId?._id} closeModal={() => setOpenReport(false)} />
+                <CreatorReportForm handleReport={handleReport} promotor={submission?.campaignId?.campaignOwnerId} closeModal={() => setOpenReport(false)} />
+                
             </Modal>
 
             {/* -------------- Report Form -------------- */}
@@ -157,11 +125,11 @@ const PendingDropDown = ({ submission }: { submission: any }) => {
                 open={openReview}
                 setOpen={setOpenReview}
                 className='md:max-w-md! w-[90%]! md:w-full!'>
-                <ReviewModal creator={submission?.influencerId} submitReview={submitReview} closeModal={() => setOpenReview(false)} />
+                <ReviewModal promotor={submission?.campaignId?.campaignOwnerId} submitReview={submitReview} closeModal={() => setOpenReview(false)} />
             </Modal>
         </>
     )
 }
 
 
-export default PendingDropDown;
+export default CreatorDropDownMenu;

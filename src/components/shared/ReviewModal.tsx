@@ -17,10 +17,11 @@ import { Button } from '@/components/ui/button'
 import clsx from 'clsx'
 import { Avatar } from '../ui/avatar'
 import { AvatarFallback, AvatarImage } from '@radix-ui/react-avatar'
+import { imageUrl } from '@/constants'
 
-const ReviewModal = ({ closeModal, submitReview }: {  closeModal: () => void, submitReview?:any}) => {
-    const [rating, setRating] = useState(0)
-
+const ReviewModal = ({ promotor, creator, closeModal, submitReview }: {  promotor?: any, creator?: any, closeModal: () => void, submitReview?:any}) => {
+    const [rating, setRating] = useState(0)    
+    
     const form = useForm({
         defaultValues: {
             review: '',
@@ -41,17 +42,17 @@ const ReviewModal = ({ closeModal, submitReview }: {  closeModal: () => void, su
     return (
         <div className='w-full'>
             {/* Header */}
-            <h2 className="text-xl font-semibold text-center">Rate and Review</h2>
+            <h2 className="text-xl font-semibold text-center">Rate and Review to <span className='text-primary'>{promotor ? promotor?.name ?? promotor?.userName : creator?.name ?? creator?.userName}</span> </h2>
 
             {/* Institute Info */}
             <div className="flex items-center gap-2 bg-secondary/40 rounded-lg px-4 py-3 mt-4">
-                <Avatar className="h-10 w-10">
-                    <AvatarImage src="/images/profile21.jpg" />
+                <Avatar className="h-12 w-12">
+                    <AvatarImage src={promotor?.image ? imageUrl + promotor?.image : creator?.image ? imageUrl + creator?.image  : "/images/profile21.jpg"} />
                     <AvatarFallback className="bg-orange-500 text-white text-2xl">LR</AvatarFallback>
                 </Avatar>
                 <div className="gap-3 mb-2">
-                    <p className="text-md font-medium">Sarah Jhonson</p>
-                    <p className="text-sm text-slate-400">152 days ago by <span className="font-semibold text-primary">Pokiee Ttv</span></p>
+                    <p className="text-md font-medium">{promotor ? promotor?.name ?? promotor?.userName : creator?.name ?? creator?.userName}</p>
+                    <p className="text-sm text-slate-400">{promotor ? promotor?.email : creator?.email}</p>
                 </div>
             </div>
 

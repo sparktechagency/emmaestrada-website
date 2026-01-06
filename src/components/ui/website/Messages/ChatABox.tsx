@@ -1,24 +1,20 @@
 "use client"
 
-import { EllipsisVertical, Loader2, MessageCircle } from "lucide-react"
-import { useEffect, useState } from "react"
+import { Loader2, MessageCircle } from "lucide-react"
+import { useEffect, useState, useRef } from "react"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
 import { Card } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
 
-import { imageUrl } from "@/constants"
-import getProfile from "@/utils/getProfile"
-import ChatBoxFooter from "./ChatBoxFooter"
-import ImageViewer from "@/components/shared/ImageViewer"
-import { PhotoView } from "react-photo-view"
-import Image from "next/image"
-import ChatBoxHeader from "./ChatBoxHeader"
-import { useProfile } from "@/hooks/context/ProfileContext"
-import { myFetch } from "@/utils/myFetch"
 import { formatChatTime } from "@/components/shared/FormatChatTime "
+import ImageViewer from "@/components/shared/ImageViewer"
+import { imageUrl } from "@/constants"
+import { useProfile } from "@/hooks/context/ProfileContext"
 import useSocket from "@/hooks/useSocket"
+import { myFetch } from "@/utils/myFetch"
+import ChatBoxFooter from "./ChatBoxFooter"
+import ChatBoxHeader from "./ChatBoxHeader"
 
 interface ChatBoxProps {
   chatId: string
@@ -29,15 +25,23 @@ const ChatBox = ({ chatId }: ChatBoxProps) => {
   const { profile } = useProfile();
   const [messages, setMessage] = useState([]);
   const [participant, setParticipant] = useState(null)
+  const scrollRef = useRef<HTMLDivElement>(null)
 
   const socket = useSocket();
+
+  // Function to scroll to bottom
+  const scrollToBottom = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight
+    }
+  }
 
   const fetchMessages = async () => {
     try {
       const response = await myFetch(`/messages/${chatId}`, {
         tags: ["messages", "chats"], cache: "no-cache"
       })
-      setMessage(response?.data?.messages);
+      setMessage(response?.data?.messages?.reverse());
       setParticipant(response?.data?.participants?.[0]);
       setLoading(false)
     } catch (error) {
@@ -54,6 +58,10 @@ const ChatBox = ({ chatId }: ChatBoxProps) => {
     }
   }, [chatId])
 
+  // Scroll to bottom when messages change
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages])
 
   socket.on(`newMessage::${profile?._id}`, async (data) => {
     console.log("newMessage", data);
@@ -88,11 +96,9 @@ const ChatBox = ({ chatId }: ChatBoxProps) => {
           </div>
         </div>
       ) : (
-        <ScrollArea className="flex-1 px-4 py-2 overflow-y-auto">
-          {messages
-            ?.slice()
-            ?.reverse()
-            ?.map((m: any) => {
+        <ScrollArea className="flex-1 px-4 py-2 overflow-y-auto" ref={scrollRef}>
+          <div className="flex flex-col">
+            {messages?.map((m: any) => {
               const isSent = m?.sender?._id === profile?._id
 
               return (
@@ -135,6 +141,7 @@ const ChatBox = ({ chatId }: ChatBoxProps) => {
                 </div>
               )
             })}
+          </div>
         </ScrollArea>
       )}
 

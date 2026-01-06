@@ -48,6 +48,7 @@ const CampaignHeader = () => {
           <div className="flex flex-col sm:flex-row gap-3">
             <Button
               variant="outline"
+              disabled={status === "upcoming" || status === "completed"}
               onClick={() => setFilterModalOpen(true)}
               className="bg-white h-12"
             >
@@ -55,7 +56,7 @@ const CampaignHeader = () => {
               Filters
             </Button>
 
-            <Select value={sortBy} onValueChange={setSortBy}>
+            <Select disabled={status === "upcoming" || status === "completed"} value={sortBy} onValueChange={setSortBy}>
               <SelectTrigger className="w-full sm:w-[300px] bg-white h-12!">
                 <div className="flex items-center gap-2">
                   <ArrowUpDown className="w-4 h-4" />

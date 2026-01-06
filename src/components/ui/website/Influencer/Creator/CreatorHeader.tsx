@@ -24,10 +24,6 @@ const CreatorHeader = () => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const handleApplyFilters = (filters: any) => {
-    console.log("filters", filters)
-  };
-
   useEffect(() => {
     const params = new URLSearchParams(searchParams.toString());
 
@@ -108,8 +104,7 @@ const CreatorHeader = () => {
       </div>
       <CreatorFilterModal
         open={filterModalOpen}
-        onOpenChange={setFilterModalOpen}
-        onApply={handleApplyFilters}
+        onOpenChange={setFilterModalOpen}        
       />
     </div>
   )

@@ -13,6 +13,8 @@ import {
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { myFetch } from '@/utils/myFetch'
+import { toast } from 'sonner'
+import { revalidate } from '@/helpers/revalidateHelper'
 
 const RejectSubmissionForm = ({submission,  closeModal }: { submission?: any,  closeModal: () => void }) => {
   const form = useForm({
@@ -23,9 +25,16 @@ const RejectSubmissionForm = ({submission,  closeModal }: { submission?: any,  c
 
   const handleSubmit = async (values: any) => {
     try {            
-      const response = await myFetch(`/submissions/reject-submission/${submission?._id}`, {method: "PATCH", body: {status: "rejected", reason: values.reason }});
-      console.log("Response:", response);
+      const response = await myFetch(`/submissions/update-status/${submission?._id}`, {method: "PATCH", body: {status: "cancelled", reason: values.reason }});
       
+      if(response?.success) {
+        console.log("Response:", response);
+        revalidate("campaign-submissions")
+        toast.success(response?.message);
+        closeModal();
+      }else{
+        toast.error(response?.message);
+      }
       // closeModal()
     } catch (error) {
       console.error('Reject failed:', error)

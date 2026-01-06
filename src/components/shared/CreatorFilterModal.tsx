@@ -8,16 +8,16 @@ import {
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { countriesData } from "@/assets/countrydata";
 import Image from "next/image";
 import { ChevronDown, X } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { myFetch } from "@/utils/myFetch";
 
 interface CreatorFilterModalProps {
   open: boolean;
-  onOpenChange: (open: boolean) => void;
-  onApply: (filters: any) => void;
+  onOpenChange: (open: boolean) => void;  
 }
 
 type Country = {
@@ -29,38 +29,28 @@ type Country = {
 
 export default function CreatorFilterModal({
   open,
-  onOpenChange,
-  onApply,
+  onOpenChange,  
 }: CreatorFilterModalProps) {
   // Define initial values as constants
   const INITIAL_RATING = [1, 5];
   const INITIAL_FOLLOWERS = [0, 1000000];
 
-  const [categories, setCategories] = useState<string[]>([]);
+  
   const [gender, setGender] = useState<string>("Both");
   const [rating, setRating] = useState<number[]>(INITIAL_RATING);
   const [followers, setFollowers] = useState<number[]>(INITIAL_FOLLOWERS);
   const [platform, setPlatform] = useState<string>(""); // Changed to single platform
   const [selectedCountries, setSelectedCountries] = useState<Country[]>([]);
-
+  
+  const [categories, setCategories] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const platformList = ["tiktok","instagram" ,"youtube"];
-
-
-  const categoryList = [
-    "Lifestyle",
-    "Beauty",
-    "Fitness",
-    "Gaming",
-    "Music",
-    "Comedy",
-    "Education",
-  ];
 
   const [openDropdown, setOpenDropdown] = useState(false);
   const [search, setSearch] = useState("");
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
+  const searchParams = useSearchParams(); 
 
   // Helper function to check if range has changed from initial
   const hasRangeChanged = (current: number[], initial: number[]) => {
@@ -77,6 +67,23 @@ export default function CreatorFilterModal({
     setSelectedCountries(prev => [...prev, country]);
     setSearch(""); // Clear search after adding
   };
+
+
+  
+    const fetchingGCategories = async () => {
+      try {
+        const genres = await myFetch('/categories?type=USER');
+        const uCatagory = genres?.data?.map((cat: any) => cat?.name)
+        setCategories(uCatagory)
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+  
+    useEffect(() => {
+      fetchingGCategories();      
+    }, [])
+
 
   const filteredCountries = countriesData.filter(country =>
     country.name.toLowerCase().includes(search.toLowerCase())
@@ -104,10 +111,10 @@ export default function CreatorFilterModal({
       params.delete('countries');
     }
 
-    if (filters.categories && filters.categories.length > 0) {
-      params.set('categories', filters.categories.join(','));
+    if (filters.selectedCategories && filters.selectedCategories.length > 0) {
+      params.set('categories', filters.selectedCategories.join(','));
     } else {
-      params.delete('categories');
+      params.delete('categories');      
     }
 
     // Handle range values - only add if changed from initial
@@ -143,29 +150,27 @@ export default function CreatorFilterModal({
     );
   };
 
-  const selectSinglePlatform = (item: string) => {
-    // Toggle: if same platform clicked, deselect it
+  const selectSinglePlatform = (item: string) => {    
     setPlatform(prev => prev === item ? "" : item);
   };
 
   const apply = () => {
     const filterData = {
       platform,
-      categories,
+      selectedCategories,
       gender,
       rating,
       followers,
       countries: selectedCountries.map(c => c.name), // Send ISO2 codes
     };
 
-    setFiltersAsSearchParams(filterData);
-    onApply(filterData);
+    setFiltersAsSearchParams(filterData);    
     onOpenChange(false);
   };
 
   const clear = () => {
     setPlatform("");
-    setCategories([]);
+    setSelectedCategories([]);
     setGender("Both");
     setRating(INITIAL_RATING);
     setFollowers(INITIAL_FOLLOWERS);
@@ -229,12 +234,12 @@ export default function CreatorFilterModal({
         <div className="mt-3">
           <p className="font-medium mb-3">Category</p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            {categoryList.map(cat => (
+            {categories?.map(cat => (
               <button
                 key={cat}
-                onClick={() => toggleItem(categories, setCategories, cat)}
+                onClick={() => toggleItem(categories, setSelectedCategories, cat)}
                 className={`border rounded-xl py-2 text-sm transition-colors ${
-                  categories.includes(cat)
+                  selectedCategories.includes(cat)
                     ? "bg-black text-white"
                     : "bg-white hover:bg-gray-50"
                 }`}

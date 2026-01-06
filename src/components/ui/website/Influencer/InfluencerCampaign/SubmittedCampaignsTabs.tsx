@@ -1,20 +1,15 @@
-import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
 import Image from 'next/image';
 
-import { imageUrl } from '@/constants';
-import ProfileImageWithUserData from '../../promotor/PromotorCampaignDetails/CampaignSubmission/ProfileImageWithUserData';
 import { formatDate } from '@/components/shared/DateFormat';
-import ReelsAnalyticsChart from '../../promotor/PromotorCampaignDetails/CampaignSubmission/ReelsAnalyticsChart';
+import { imageUrl } from '@/constants';
 import Link from 'next/link';
+import ReelsAnalyticsChart from '../../promotor/PromotorCampaignDetails/CampaignSubmission/ReelsAnalyticsChart';
+import CreatorDropDownMenu from './CreatorDropDownMenu';
 
 
 const SubmittedCampaignsTabs = ({ submissions, connectedPlatforms = ["instagram", "tiktok", "youtube"] }: any) => {
-
-    console.log("submissions", submissions[0]?.campaignId?.campaignOwnerId);
-
     const submissionsByCampaign = submissions.reduce((acc: any, submission: any) => {
         const campaignId = submission.campaignId._id;
         if (!acc[campaignId]) {
@@ -55,12 +50,12 @@ const SubmittedCampaignsTabs = ({ submissions, connectedPlatforms = ["instagram"
     return (
         <div className="">
             {Object.values(submissionsByCampaign).map((campaignData: any, idx: number) => {
-                const { campaign, submissions } = campaignData;                
+                const { campaign, submissions } = campaignData;
                 const platformSubmissions = connectedPlatforms.reduce((acc: any, platform: any) => {
                     acc[platform] = submissions.filter((s: any) => s.platform === platform);
                     return acc;
                 }, {});
-                
+
                 const activePlatforms = connectedPlatforms.filter((p: any) => platformSubmissions[p]?.length > 0);
                 const defaultPlatform = activePlatforms[0] || connectedPlatforms[0];
 
@@ -117,12 +112,14 @@ const SubmittedCampaignsTabs = ({ submissions, connectedPlatforms = ["instagram"
                                                             </div>
                                                             </Link>
 
-
-                                                            <div className="flex md:justify-center justify-between items-center gap-2">
-                                                                <span className="text-sm text-gray-800">Submitted: </span>
-                                                                <span className="bg-black px-2 py-1.5 rounded-md text-xs text-white">
-                                                                    {formatDate(submission?.createdAt ?? submission?.updatedAt)}
-                                                                </span>
+                                                            <div className="flex items-center gap-3 md:w-auto w-full justify-between md:justify-center">
+                                                                <div className="flex md:justify-center justify-between items-center gap-2">
+                                                                    <span className="text-sm text-gray-800">Submitted: </span>
+                                                                    <span className="bg-black px-2 py-1.5 rounded-md text-xs text-white">
+                                                                        {formatDate(submission?.createdAt ?? submission?.updatedAt)}
+                                                                    </span>
+                                                                </div>
+                                                                <CreatorDropDownMenu submission={submission}/>
                                                             </div>
                                                         </div>
 

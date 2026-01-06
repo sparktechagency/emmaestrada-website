@@ -39,7 +39,7 @@ const BrandLogos = ({ brands }: { brands: Brand[] }) => {
         className="relative min-h-30 z-20 mt-12 md:mt-16 lg:mt-20"
         aria-label="Brand Logos"
       >
-        <div className="h-16 sm:h-20 z-10 absolute top-12 left-1/2 -translate-y-1/2 -translate-x-1/2  w-[150%] glassBg flex items-center pointer-events-none shadow-lg">
+        <div className="h-20 sm:h-24 z-10 absolute top-12 left-1/2 -translate-y-1/2 -translate-x-1/2  w-[150%] glassBg flex items-center pointer-events-none shadow-lg">
           <Marquee
             speed={50}
             gradient={false}
