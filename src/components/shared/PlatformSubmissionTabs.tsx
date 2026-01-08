@@ -9,7 +9,7 @@ import ProfileImageWithUserData from '../ui/website/promotor/PromotorCampaignDet
 import ReelsAnalyticsChart from '../ui/website/promotor/PromotorCampaignDetails/CampaignSubmission/ReelsAnalyticsChart';
 import PendingDropDown from '../ui/website/promotor/PromotorCampaignDetails/CampaignSubmission/PendingDropDown';
 import { formatChatTime } from './FormatChatTime ';
-import { formatDate } from './DateFormat';
+import { FormatDate } from './FormatDate';
 
 const PlatformSubmissionTabs = ({ submissions, connectedPlatforms = ["instagram", "tiktok", "youtube"] }: any) => {
         
@@ -130,7 +130,7 @@ const PlatformSubmissionTabs = ({ submissions, connectedPlatforms = ["instagram"
                                                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
                                                             <div className="mt-2 flex md:w-auto w-full justify-between md:justify-center items-center gap-2">
                                                                 <span className="text-gray-800">Submitted Date : </span>
-                                                                <span className="bg-black px-2 py-2 rounded-md text-sm text-white">{formatDate(submission?.createdAt ?? submission?.updatedAt)}</span>
+                                                                <span className="bg-black px-2 py-2 rounded-md text-sm text-white">{FormatDate(submission?.createdAt ?? submission?.updatedAt)}</span>
                                                             </div>
                                                             <div className="flex items-center gap-3 md:w-auto w-full justify-between md:justify-center">
                                                                 <div className={`px-3 py-2.5 rounded-full bg-gradient-to-r ${getPlatformColor(platform)} text-white text-xs font-semibold capitalize`}>

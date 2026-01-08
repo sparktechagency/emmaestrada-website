@@ -1,11 +1,9 @@
 import Container from '@/components/shared/Container'
-import React from 'react'
-import AnayticsHeader from './AnayticsSummary'
-import AnalyticsStatics from './AnalyticsStatics'
-import AnalyticsCampaignRankings from './AnalyticsCampaignRankings'
-import AnalyticsRevenueStatistics from './AnalyticsRevenueStatistics'
 import AnalyticsCharts from './AnalyticsCharts'
 import AnalyticsPlatformStatistics from './AnalyticsPlatformStatistics'
+import AnalyticsStatics from './AnalyticsStatics'
+import AnalyticsWithdrawalHistory from './AnalyticsWithdrawalHistory'
+import AnayticsHeader from './AnayticsSummary'
 
 const Analytics = () => {
   return (
@@ -13,7 +11,7 @@ const Analytics = () => {
         <Container>
             <AnayticsHeader />
              <AnalyticsStatics />
-            <AnalyticsCampaignRankings />            
+             <AnalyticsWithdrawalHistory />            
             <AnalyticsCharts />                  
             <AnalyticsPlatformStatistics />
         </Container>

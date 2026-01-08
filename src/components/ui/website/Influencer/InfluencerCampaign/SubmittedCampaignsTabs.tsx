@@ -2,11 +2,12 @@ import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Image from 'next/image';
 
-import { formatDate } from '@/components/shared/DateFormat';
+
 import { imageUrl } from '@/constants';
 import Link from 'next/link';
 import ReelsAnalyticsChart from '../../promotor/PromotorCampaignDetails/CampaignSubmission/ReelsAnalyticsChart';
 import CreatorDropDownMenu from './CreatorDropDownMenu';
+import { FormatDate } from '@/components/shared/FormatDate';
 
 
 const SubmittedCampaignsTabs = ({ submissions, connectedPlatforms = ["instagram", "tiktok", "youtube"] }: any) => {
@@ -100,7 +101,7 @@ const SubmittedCampaignsTabs = ({ submissions, connectedPlatforms = ["instagram"
                                                                 <div className="flex md:justify-center justify-between items-center gap-2">
                                                                     <span className="text-sm text-gray-800">Submitted: </span>
                                                                     <span className="bg-black px-2 py-1.5 rounded-md text-xs text-white">
-                                                                        {formatDate(submission?.createdAt ?? submission?.updatedAt)}
+                                                                        {FormatDate(submission?.createdAt ?? submission?.updatedAt)}
                                                                     </span>
                                                                 </div>
                                                                 <CreatorDropDownMenu submission={submission}/>

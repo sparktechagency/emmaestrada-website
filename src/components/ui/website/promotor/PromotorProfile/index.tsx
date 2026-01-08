@@ -1,6 +1,7 @@
 import Container from '@/components/shared/Container'
 import React from 'react'
 import ProfileInfo from '../../Influencer/InfluencerProfile/ProfileInfo'
+import TransactionsData from '../../Transactions'
 
 const PromotorProfile = () => {
     return (
@@ -11,6 +12,7 @@ const PromotorProfile = () => {
                     <p className="textPara">Manage your account information and documents</p>
                 </div>
                 <ProfileInfo />
+                <TransactionsData />
             </Container>
         </div>
     )

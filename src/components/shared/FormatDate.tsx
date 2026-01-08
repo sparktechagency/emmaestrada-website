@@ -1,5 +1,5 @@
 // utils/formatDate.ts
-export const formatDate = (
+export const FormatDate = (
   date: string | Date,
   locale: string = "en-US"
 ): string => {

@@ -3,25 +3,24 @@
 
 
 import { FormatDate } from "@/components/shared/FormatDate"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { myFetch } from "@/utils/myFetch"
-import { ArrowUpRight, Loader2, AlertCircle } from "lucide-react"
+import { AlertCircle, ArrowUpRight, Loader2 } from "lucide-react"
 import { useEffect, useState } from "react"
 import { toast } from "sonner"
 import Swal from "sweetalert2"
 
-const AnayticsSummary = () => {
+const PAnalyticsSummary = () => {
   const [data, setData] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [accountData, setAccountData] = useState(null)
@@ -330,4 +329,4 @@ const AnayticsSummary = () => {
   )
 }
 
-export default AnayticsSummary
+export default PAnalyticsSummary

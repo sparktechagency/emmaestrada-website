@@ -1,6 +1,8 @@
 'use client'
 import Modal from '@/components/modals/Modal'
-import { formatDate } from '@/components/shared/DateFormat'
+import { FormatDate } from '@/components/shared/FormatDate'
+
+
 import { Badge } from '@/components/ui/badge'
 import { Calendar } from '@/components/ui/calendar'
 import { Card } from '@/components/ui/card'
@@ -59,7 +61,7 @@ const ProfileImageWithUserData = ({ submission }: any) => {
                             {/* Requesting to join */}
                             <div className="mt-2">
                                 <span className="text-gray-500">Requesting Date : </span>
-                                <span className="bg-black/20 px-2 rounded-md text-sm text-black">{formatDate(submission?.createdAt ?? submission?.updatedAt)}</span>
+                                <span className="bg-black/20 px-2 rounded-md text-sm text-black">{FormatDate(submission?.createdAt ?? submission?.updatedAt)}</span>
                             </div>
                             </div>
                         </div>

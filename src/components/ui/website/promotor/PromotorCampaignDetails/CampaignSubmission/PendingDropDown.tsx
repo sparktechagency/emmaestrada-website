@@ -40,7 +40,7 @@ const PendingDropDown = ({ submission }: { submission: any }) => {
             });
 
             console.log("response", response);
-            
+
             if (response?.success) {
                 toast.success("Submission accepted successfully")
                 revalidate("campaign-submissions")
@@ -115,9 +115,9 @@ const PendingDropDown = ({ submission }: { submission: any }) => {
                             Accept
                             <DropdownMenuShortcut><Check color="white" /></DropdownMenuShortcut>
                         </DropdownMenuItem>
-                        <DropdownMenuItem 
-                        hidden={status === "cancelled" || status === "completed"} 
-                        onSelect={() => setShowRejectForm(true)} className="bg-red-600 hover:bg-red-700! text-white! mb-2">
+                        <DropdownMenuItem
+                            hidden={status === "cancelled" || status === "completed"}
+                            onSelect={() => setShowRejectForm(true)} className="bg-red-600 hover:bg-red-700! text-white! mb-2">
                             Reject
                             <DropdownMenuShortcut><X color="white" /></DropdownMenuShortcut>
                         </DropdownMenuItem>

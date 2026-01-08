@@ -29,7 +29,6 @@ const generateNotification = (id:any) => {
   };
 };
 
-
 const NotificationItem = ({ notification, onClick }:any) => {
   const Icon = notification.icon;
   
@@ -59,17 +58,15 @@ const NotificationItem = ({ notification, onClick }:any) => {
 };
 
 const Notifications = () => {
-  const [view, setView] = useState('bar');      
-  const [isBarOpen, setIsBarOpen] = useState(false);
-  const [notifications, setNotifications] = useState([]);
+  const [notifications, setNotifications] = useState<any[]>([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
-  const observerTarget = useRef(null);
+  const scrollContainerRef = useRef(null);
 
   // Initialize notifications
   useEffect(() => {
-    const initial = Array.from({ length: 15 }, (_:any, i:number) => generateNotification(i));
+    const initial = Array.from({ length: 15 }, (_, i) => generateNotification(i));
     // @ts-ignore
     setNotifications(initial);
   }, []);
@@ -85,7 +82,6 @@ const Notifications = () => {
         (_, i) => generateNotification(page * 15 + i)
       );
       
-      // @ts-ignore
       setNotifications(prev => [...prev, ...newNotifications]);
       setPage(newPage);
       setLoading(false);
@@ -95,38 +91,31 @@ const Notifications = () => {
   };
 
   const markAllAsRead = () => {
-    // @ts-ignore
     setNotifications(prev => prev.map(notif => ({ ...notif, read: true })));
   };
 
-  // Intersection Observer for last element
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && hasMore && !loading) {
-          loadMore();
-        }
-      },
-      { threshold: 1.0 }
-    );
-
-    if (observerTarget.current) {
-      observer.observe(observerTarget.current);
+  // Scroll event handler
+  const handleScroll = (e:any) => {
+    const container = e.target;
+    const scrollTop = container.scrollTop;
+    const scrollHeight = container.scrollHeight;
+    const clientHeight = container.clientHeight;
+    
+    // Calculate how close we are to the bottom (trigger when 100px from bottom)
+    const threshold = 100;
+    const isNearBottom = scrollTop + clientHeight >= scrollHeight - threshold;
+    
+    if (isNearBottom && hasMore && !loading) {
+      loadMore();
     }
-
-    return () => {
-      if (observerTarget.current) {
-        observer.unobserve(observerTarget.current);
-      }
-    };
-  }, [hasMore, loading, page]);
+  };
 
   return (
-    <div className=" my-20 ">
-      <div className="max-w-4xl mx-auto  px-4 py-6">
+    <div className="my-20">
+      <div className="max-w-4xl mx-auto px-4 py-6">
         <Card className="bg-white">
-          <header className="bg-orange-50 shadow-sm sticky top-0 z-40">
-            <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+          <header className="shadow-sm sticky top-0 z-40">
+            <div className="max-w-4xl mx-auto px-4 pb-4 flex items-center justify-between">
               <h1 className="text-2xl font-bold">Notifications</h1>
               <Button 
                 variant="ghost" 
@@ -139,35 +128,36 @@ const Notifications = () => {
             </div>
           </header>
       
-          <div className="divide-y min-h-[30vh] max-h-[62vh]! overflow-y-auto overflow-y-auto">
-            {notifications.map((notif:any, index) => (
+          <div 
+            ref={scrollContainerRef}
+            onScroll={handleScroll}
+            className="divide-y min-h-[30vh] max-h-[62vh] overflow-y-auto"
+          >
+            {notifications.map((notif) => (
               <NotificationItem 
                 key={notif.id} 
                 notification={notif}
                 onClick={() => console.log('Clicked:', notif.id)}
               />
             ))}
-            {/* Observer target element */}
-            {hasMore && <div ref={observerTarget} className="h-4" />}
+            
+            {loading && (
+              <div className="flex justify-center p-4">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900" />
+              </div>
+            )}
+            
+            {!hasMore && notifications.length > 0 && (
+              <div className="p-4 text-center text-gray-500">
+                No more notifications
+              </div>
+            )}
           </div>
-          
-          {loading && (
-            <div className="flex justify-center p-4">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900" />
-            </div>
-          )}
-          
-          {!hasMore && notifications.length > 0 && (
-            <div className="px-8 text-center text-gray-500">
-              No more notifications
-            </div>
-          )}
         </Card>
       </div>
     </div>
   );
 };
-
 
 export default Notifications;
 

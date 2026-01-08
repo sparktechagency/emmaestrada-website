@@ -14,8 +14,9 @@ import { Loader2 } from "lucide-react"
 import Image from "next/image"
 import { myFetch } from '@/utils/myFetch'
 import { imageUrl } from '@/constants'
+import { Badge } from '@/components/ui/badge'
 
-export default function AnalyticsCampaignRankings() {
+export default function PAnalyticsCampaignRankings() {
   const [campaigns, setCampaigns] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -142,17 +143,11 @@ export default function AnalyticsCampaignRankings() {
                       </div>
                     </TableCell>
                     <TableCell>
-                      <Button
-                        className={`rounded-full ${
-                          row.status === "completed"
-                            ? "bg-green-600"
-                            : row.status === "upcoming"
-                            ? "bg-black"
-                            : "bg-red-600"
-                        }`}
-                      >
+                      <Badge
+                        className={`rounded-full ${row.status === "completed" ? "bg-green-600" 
+                        : row.status === "upcoming" ? "bg-black" : "bg-red-600"}`}>
                         Active
-                      </Button>
+                      </Badge>
                     </TableCell>
                   </TableRow>
                 ))

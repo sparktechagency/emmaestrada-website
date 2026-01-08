@@ -5,7 +5,7 @@ import { myFetch } from "@/utils/myFetch";
 import Link from "next/link";
 
 const HeroSection = async () => {
-  // brands data
+  
   const  sliders = await myFetch(`/sliders/all`);
     
   return (
@@ -82,9 +82,9 @@ const HeroSection = async () => {
             <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
           </button></Link>
         </div>
+      <BrandLogos brands={sliders?.data} />
       </Container>
       
-      <BrandLogos brands={sliders?.data} />
       <style>{`
         @keyframes float {
           0%, 100% {
