@@ -3,8 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useEffect, useState } from "react";
 import { Slider } from "@/components/ui/slider";
-import { X } from "lucide-react";
-import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { myFetch } from "@/utils/myFetch";
 
@@ -65,7 +63,7 @@ export default function FilterModal({ open, onOpenChange, }: FilterModalProps) {
   const INITIAL_BUDGET = [0, 10000];
   const INITIAL_FLAT_FEE = [0, 200];
 
-  const INITIAL_MIN_PAYOUT = [0, 200];
+  const INITIAL_MIN_PAYOUT = [0, 500];
   const INITIAL_REWARD_RATE = [0, 50];
   const INITIAL_MAX_PAYOUT = [0, 1000];
   {/*  const INITIAL_TIKTOK_FOLLOWERS = [0, 100000];
@@ -110,9 +108,9 @@ export default function FilterModal({ open, onOpenChange, }: FilterModalProps) {
     }
 
     if (filters.selectedCategories && filters.selectedCategories.length > 0) {
-      params.set('selectedCategories', filters.selectedCategories.join(','));
+      params.set('categories', filters.selectedCategories.join(','));
     } else {
-      params.delete('selectedCategories');
+      params.delete('categories');
     }
 
     if (filters.selectPlatform && filters.selectPlatform.length > 0) {
@@ -312,7 +310,7 @@ export default function FilterModal({ open, onOpenChange, }: FilterModalProps) {
             <Slider
               value={minPayout}
               min={0}
-              max={200}
+              max={500}
               onValueChange={setMinPayout}
               className={!hasRangeChanged(minPayout, INITIAL_MIN_PAYOUT) ? 'opacity-50' : ''}
             />

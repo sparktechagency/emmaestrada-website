@@ -10,7 +10,7 @@ const page = async({ searchParams }: any) => {
   
   const queryString = new URLSearchParams(rest).toString();  
   const promotorData = await myFetch(queryString ? `/promoters?${queryString}` : '/promoters', {tags: ["promotors"]})  
-
+  
   return <CreatorPromotorList promotorData={promotorData}/>
 }
 

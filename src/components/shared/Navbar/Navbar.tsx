@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 
 import Link from "next/link";
-import { Menu, X, Bell, Wallet, Contact, LogOut, CircleUser } from "lucide-react";
+import { Menu, X, Bell, Wallet, Contact, LogOut, CircleUser, User, Heart, MessageCircle, UserPlus, Settings, } from "lucide-react";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
@@ -21,15 +21,83 @@ import { Button } from "@/components/ui/button";
 import { deleteCookie } from "cookies-next";
 import { revalidate } from "@/helpers/revalidateHelper";
 import { toast } from "sonner";
+import NotificationBar from "../Notifications/NotificationBar";
+
+
+// Mock notification data generator
+const generateNotification = (id:any) => {
+  const types = [
+    { icon: Heart, text: 'liked your post', color: 'bg-red-100' },
+    { icon: MessageCircle, text: 'commented on your post', color: 'bg-blue-100' },
+    { icon: UserPlus, text: 'started following you', color: 'bg-green-100' },
+    { icon: User, text: 'tagged you in a post', color: 'bg-purple-100' }
+  ];
+  const type = types[Math.floor(Math.random() * types.length)];
+  const names = ['Sarah Johnson', 'Mike Chen', 'Emily Davis', 'Alex Rodriguez', 'Jessica Brown'];
+  
+  return {
+    id,
+    user: names[Math.floor(Math.random() * names.length)],
+    avatar: `https://i.pravatar.cc/150?img=${id % 70}`,
+    type: type.text,
+    icon: type.icon,
+    iconColor: type.color,
+    time: id < 5 ? `${Math.floor(Math.random() * 60)}m` : id < 15 ? `${Math.floor(Math.random() * 24)}h` : `${Math.floor(Math.random() * 30)}d`,
+    read: id > 3 && Math.random() > 0.5
+  };
+};
+
 
 const Navbar = ({ profile }: { profile: any }) => {
   const [mounted, setMounted] = useState(false); // ✅ ADD
   const [scrolled, setScrolled] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
 
+  // -- NOtification State ------------
+  const [view, setView] = useState('bar');
+  const [isBarOpen, setIsBarOpen] = useState(false);
+  const [notifications, setNotifications] = useState<any[]>([]);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+
+  // -- NOtification State End ------------
+
   const pathname = usePathname();
-  const darkBgRoutes = ["creator", "promotor", "success"];
+  const darkBgRoutes = ["creator", "promotor", "success", "notifications"];
+  
   const hasDarkBackground = darkBgRoutes.includes(pathname.split("/")[1]);
+
+
+    const loadMore = () => {
+    if (loading || !hasMore) return;
+    
+    setLoading(true);
+
+    setTimeout(() => {
+      const newPage = page + 1;
+      const newNotifications = Array.from(
+        { length: 10 }, 
+        (_, i) => generateNotification(page * 15 + i)
+      );
+      
+      setNotifications((prev) => [...prev, ...newNotifications]);
+      setPage(newPage);
+      setLoading(false);
+      
+      if (newPage >= 5) setHasMore(false);
+    }, 1000);
+  };
+
+    // Initialize notifications
+    useEffect(() => {
+      const initial = Array.from({ length: 15 }, (_, i) => generateNotification(i));
+      setNotifications(initial);
+    }, []);
+  const markAllAsRead = () => {
+    setNotifications(prev => prev.map(notif => ({ ...notif, read: true })));
+  };
+
 
   // ✅ Mount guard
   useEffect(() => {
@@ -66,13 +134,12 @@ const Navbar = ({ profile }: { profile: any }) => {
     <div>
       <nav
         className={`fixed w-full z-50 px-2 py-2 md:py-6 md:px-8 lg:px-12 transition-all duration-300
-        ${
-          scrolled && !openMenu
+        ${scrolled && !openMenu
             ? "backdrop-blur-xl bg-[#15141A]/70 shadow-lg"
             : hasDarkBackground || openMenu
-            ? "bg-black"
-            : "md:transparent"
-        }`}
+              ? "bg-black"
+              : "md:transparent"
+          }`}
       >
         <Container>
           <div className="flex items-center justify-between relative">
@@ -90,10 +157,9 @@ const Navbar = ({ profile }: { profile: any }) => {
                   key={link.href}
                   href={link.href}
                   className={`px-4 py-2 transition-colors
-                    ${
-                      isActive(link.href)
-                        ? "text-orange-500 font-semibold"
-                        : "text-white/80 hover:text-orange-500"
+                    ${isActive(link.href)
+                      ? "text-orange-500 font-semibold"
+                      : "text-white/80 hover:text-orange-500"
                     }`}
                 >
                   {link.name}
@@ -110,7 +176,7 @@ const Navbar = ({ profile }: { profile: any }) => {
               {error && <span className="text-xs text-red-500">{error}</span>} */}
 
               {profile ? (
-                <ViewAsLogin profile={profile} />
+                <ViewAsLogin profile={profile} setIsBarOpen={setIsBarOpen} />
               ) : (
                 <>
                   <Link href="/login">
@@ -130,6 +196,16 @@ const Navbar = ({ profile }: { profile: any }) => {
               </button>
             </div>
           </div>
+
+          <NotificationBar
+            isOpen={isBarOpen}
+            onClose={() => setIsBarOpen(false)}
+            notifications={notifications}
+            onLoadMore={loadMore}
+            hasMore={hasMore}
+            loading={loading}
+            onMarkAllRead={markAllAsRead}
+          />
 
           {/* Mobile Menu */}
           {openMenu && (
@@ -154,10 +230,9 @@ const Navbar = ({ profile }: { profile: any }) => {
                       href={link.href}
                       onClick={() => setOpenMenu(false)}
                       className={`px-4 py-3 rounded-lg
-                        ${
-                          isActive(link.href)
-                            ? "bg-orange-500 text-white"
-                            : "text-white/80 hover:bg-white/5"
+                        ${isActive(link.href)
+                          ? "bg-orange-500 text-white"
+                          : "text-white/80 hover:bg-white/5"
                         }`}
                     >
                       {link.name}
@@ -182,7 +257,7 @@ const Navbar = ({ profile }: { profile: any }) => {
 export default Navbar;
 
 /* ✅ KEPT your component, just improved usage */
-const ViewAsLogin = ({ profile }: any) => {
+const ViewAsLogin = ({ profile, setIsBarOpen }: any) => {
   const router = useRouter();
   const handleLogout = () => {
     Cookies.remove("accessToken");
@@ -194,25 +269,25 @@ const ViewAsLogin = ({ profile }: any) => {
   return (
     <div className="flex items-center gap-3">
       <Wallet strokeWidth={1} size={30} color="#ededed" />
-      <Bell strokeWidth={1} size={30} color="white" />
+      <Bell onClick={()=>setIsBarOpen(true)} strokeWidth={1} size={30} color="white" />
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger>
-          {profile?.image ? 
-          <Avatar className="rounded-lg cursor-pointer">              
-            <div className=" border-slate-300/50 rounded-full">
-              
-              <AvatarImage
-                src={
-                  profile?.image
-                    ? `${imageUrl}${profile?.image}`
-                    : "/placeholder.png"
-                }
-                alt={profile?.name}
-                className="w-12 h-12 object-fill rounded-full "
-                />                 
-                </div>
-          </Avatar>
-          : <CircleUser strokeWidth={1.25} size={30} color="#ededed"/>}
+          {profile?.image ?
+            <Avatar className="rounded-lg cursor-pointer">
+              <div className=" border-slate-300/50 rounded-full">
+
+                <AvatarImage
+                  src={
+                    profile?.image
+                      ? `${imageUrl}${profile?.image}`
+                      : "/placeholder.png"
+                  }
+                  alt={profile?.name}
+                  className="w-12 h-12 object-fill rounded-full "
+                />
+              </div>
+            </Avatar>
+            : <CircleUser strokeWidth={1.25} size={30} color="#ededed" />}
         </DropdownMenuTrigger>
         <DropdownMenuContent align="center">
           <Link href={profile?.role == "CREATOR" ? "/creator" : "/promotor"}>

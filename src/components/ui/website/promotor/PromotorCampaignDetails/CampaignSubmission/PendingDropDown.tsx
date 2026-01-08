@@ -32,9 +32,6 @@ const PendingDropDown = ({ submission }: { submission: any }) => {
     const searchParams = useSearchParams();
 
     const status = searchParams.get("status");
-
-    console.log("statusstatusstatus", status);
-    
     const handleAcceptSubmission = async () => {
         try {
             const response = await myFetch(`/submissions/update-status/${submission?._id}`, {

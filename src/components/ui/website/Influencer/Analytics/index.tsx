@@ -12,10 +12,10 @@ const Analytics = () => {
     <div>
         <Container>
             <AnayticsHeader />
-            <AnalyticsStatics />
-            <AnalyticsCampaignRankings />
-            <AnalyticsCharts />     
-            <AnalyticsPlatformStatistics />       
+             <AnalyticsStatics />
+            <AnalyticsCampaignRankings />            
+            <AnalyticsCharts />                  
+            <AnalyticsPlatformStatistics />
         </Container>
     </div>
   )

@@ -63,15 +63,15 @@ export default function AnalyticsRevenueStatistics() {
 
   return (
     <Card className="bg-orange-50 rounded-2xl h-full">
-      <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle>Revenue Statistics</CardTitle>
+      <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <CardTitle className="text-lg sm:text-xl">Revenue Statistics</CardTitle>
 
         {/* Year Select (shadcn) */}
         <Select
           value={year.toString()}
           onValueChange={(val) => setYear(Number(val))}
         >
-          <SelectTrigger className="w-[120px] bg-white">
+          <SelectTrigger className="w-full sm:w-[120px] bg-white">
             <SelectValue placeholder="Year" />
           </SelectTrigger>
           <SelectContent>
@@ -84,22 +84,50 @@ export default function AnalyticsRevenueStatistics() {
         </Select>
       </CardHeader>
 
-      <CardContent className="h-[300px]">
+      <CardContent className="h-[250px] sm:h-[300px]  px-2 sm:px-6">
         {loading ? (
           <p className="text-center text-gray-500 mt-20">Loading...</p>
         ) : (
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={data}>
-              <XAxis dataKey="month" />
-              <YAxis />
-              <Tooltip />
-              <CartesianGrid strokeDasharray="3 3" />
+            <LineChart 
+              data={data}
+              margin={{ 
+                top: 5, 
+                right: 5, 
+                left: -20, 
+                bottom: 5 
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+              <XAxis 
+                dataKey="month" 
+                tick={{ fontSize: 12 }}
+                tickMargin={8}
+                angle={-45}
+                textAnchor="end"
+                height={60}
+              />
+              <YAxis 
+                tick={{ fontSize: 12 }}
+                tickMargin={5}
+                width={60}
+              />
+              <Tooltip 
+                contentStyle={{
+                  backgroundColor: 'white',
+                  border: '1px solid #e5e7eb',
+                  borderRadius: '8px',
+                  fontSize: '12px',
+                }}
+                formatter={(value: number) => [`$${value.toFixed(2)}`, 'Revenue']}
+              />
               <Line
                 type="monotone"
                 dataKey="value"
                 stroke="#f97316"
-                strokeWidth={3}
-                dot={{ fill: "#111" }}
+                strokeWidth={2}
+                dot={{ fill: "#111", r: 3 }}
+                activeDot={{ r: 5 }}
               />
             </LineChart>
           </ResponsiveContainer>

@@ -17,6 +17,8 @@ const AnalyticsStatics = async () => {
   const analyticsData = await myFetch("/analytics");
   const { data } = analyticsData;
 
+  console.log("AnalyticsStatics", data);
+  
   return (
     <div className="my-5">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -91,15 +93,7 @@ function StatCard({
             className={`w-12 h-12 rounded-xl flex items-center justify-center text-white ${iconBg}`}
           >
             {icon}
-          </div>
-
-          <Badge
-            variant="secondary"
-            className={`bg-white ${negative ? "text-red-500" : "text-green-600"
-              }`}
-          >
-            {badge}
-          </Badge>
+          </div>          
         </div>
 
         <div className="mt-6">

@@ -92,13 +92,7 @@ const CreatorDropDownMenu = ({ submission }: { submission: any }) => {
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-40 p-3 inset-0 shadow z-10" align="end">
-                    <DropdownMenuGroup >                        
-                        <DropdownMenuItem 
-                        hidden={status === "cancelled" || status === "completed"} 
-                        onSelect={() => setShowRejectForm(true)} className="bg-red-600 hover:bg-red-700! text-white! mb-2">
-                            Reject
-                            <DropdownMenuShortcut><X color="white" /></DropdownMenuShortcut>
-                        </DropdownMenuItem>
+                    <DropdownMenuGroup >                                               
                         <DropdownMenuItem onSelect={() => setOpenReview(true)} className="bg-yellow-600 hover:bg-yellow-700! text-white! mb-2">
                             Review
                             <DropdownMenuShortcut><IoIosStar className="text-yellow-200" /></DropdownMenuShortcut>

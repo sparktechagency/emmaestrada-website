@@ -14,16 +14,33 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
 import { bricolage } from '@/constants/bricolage';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import FilterModal from '../../Influencer/InfluencerCampaign/FilterModal';
 
 const CampaignHeader = () => {
   const [filterModalOpen, setFilterModalOpen] = useState(false);
-  
+
   const [sortBy, setSortBy] = useState("");
 
   const searchParams = useSearchParams()
   const status = searchParams.get('status')
+  const [searchValue, setSearchValue] = useState('');
+  const router = useRouter();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    if (searchValue) {
+      params.set('searchTerm', searchValue);
+    } else {
+      params.delete('searchTerm');
+    }
+
+    router.push(`${pathname}?${params.toString()}`);
+  }, [searchValue]);
+
+
 
   return (
     <div className='pt-10'>
@@ -39,10 +56,13 @@ const CampaignHeader = () => {
           <div className="flex-1 relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
             <Input
-              placeholder="Search campaigns"
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+              placeholder="Search Campaign"
               className="pl-10 bg-white h-12"
             />
           </div>
+
 
           {/* Controls */}
           <div className="flex flex-col sm:flex-row gap-3">

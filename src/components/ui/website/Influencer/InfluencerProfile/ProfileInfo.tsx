@@ -25,18 +25,14 @@ import { myFetch } from "@/utils/myFetch";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
-const CONTENT_TYPES = ["Pop", "Rock", "Jazz", "Hip Hop", "Classical", "Electronic", "Rock1", "Jazz2", "Hip Hop2", "Classical2", "Electronic2"];
-
 const isoToDate = (date: any) => {
   const yyyyMmDd = [
     date.getFullYear(),
     String(date.getMonth() + 1).padStart(2, "0"),
     String(date.getDate()).padStart(2, "0"),
   ].join("-");
-
   return yyyyMmDd;
 }
-
 
 export default function ProfileInfo() {
   const { profile, refetchProfile, loading: profileLoading } = useProfile();

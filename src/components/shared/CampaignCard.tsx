@@ -15,14 +15,14 @@ type CampaignStatus =
   | "accepted"
   | "canceled"
   | "inactive"
-  | "active"  
+  | "active"
   | "pcompleted";
 
 interface CampaignCardProps {
   campaign: {
     _id: string;
-    title: string;    
-    
+    title: string;
+
     budget: {
       rewardRate: number;
       perViews: number;
@@ -42,9 +42,9 @@ interface CampaignCardProps {
     username?: string;
     displayName?: string;
     status: CampaignStatus;
-    isJoined?: boolean;    
+    isJoined?: boolean;
     [key: string]: any;
-  };  
+  };
   label?: string;
 }
 
@@ -103,17 +103,17 @@ const platformIcons: Record<string, string> = {
   YouTube: "/youtube.png",
 };
 
-const CampaignCard = ({ campaign, label}: CampaignCardProps) => {
+const CampaignCard = ({ campaign, label }: CampaignCardProps) => {
   const status = campaign?.status;
   const buttonConfig = statusButtonConfig[status];
-  
+
   const progress = campaign?.campaignAmount
     ? Math.round(
-        (campaign?.totalPaidOutAmount / campaign?.campaignAmount) * 100
-      )
+      (campaign?.totalPaidOutAmount / campaign?.campaignAmount) * 100
+    )
     : 0;
-    const {profile} = useProfile()
-    
+  const { profile } = useProfile()
+
 
   return (
     <div className="rounded-2xl relative shadow-md grid grid-cols-1 gap-4 bg-[#FFF8F3]">
@@ -143,15 +143,15 @@ const CampaignCard = ({ campaign, label}: CampaignCardProps) => {
         <div className="flex justify-between gap-3">
           <div className="flex items-center gap-3">
             <Image
-              src={`${campaign?.userId?.image &&  
-                campaign?.userId?.image.startsWith('http') ? `${campaign?.userId?.image}` 
-              : campaign?.userId?.image?   `${imageUrl}${campaign?.userId?.image}` : "/placeholder.png"}`}
+              src={`${campaign?.userId?.image &&
+                campaign?.userId?.image.startsWith('http') ? `${campaign?.userId?.image}`
+                : campaign?.userId?.image ? `${imageUrl}${campaign?.userId?.image}` : "/placeholder.png"}`}
               alt="profile"
               unoptimized
               height={200}
               width={200}
               className="w-12 h-12 rounded-full  object-cover"
-            />                       
+            />
             <div>
               <h3 className={`font-semibold text-lg ${!profile && "blur-[10px]"}`}>
                 {campaign?.userId?.name || "Unknown User"}
@@ -164,18 +164,18 @@ const CampaignCard = ({ campaign, label}: CampaignCardProps) => {
           {["pending", "accepted", "canceled", "pcompleted"].includes(
             campaign?.status
           ) && (
-            <div className="">
-              <StatusBadge
-                status={
-                  campaign?.status as
+              <div className="">
+                <StatusBadge
+                  status={
+                    campaign?.status as
                     | "pending"
                     | "accepted"
                     | "canceled"
                     | "pcompleted"
-                }
-              />
-            </div>
-          )}
+                  }
+                />
+              </div>
+            )}
         </div>
 
         <hr className="my-3 border-gray-300" />
@@ -221,6 +221,21 @@ const CampaignCard = ({ campaign, label}: CampaignCardProps) => {
                   : "1K"}
               </span>
             </p>
+
+            <p>
+              <span className="font-normal">Min Payout:</span>{" "}
+              <span className="text-orange-500 ">
+                ${(campaign?.budget?.minPayout).toFixed(2)}
+              </span>
+            </p>
+
+
+            <p>
+              <span className="font-normal">Max Payout:</span>{" "}
+              <span className="text-orange-500 ">
+                ${(campaign?.budget?.maxPayout).toFixed(2)}
+              </span>
+            </p>
           </div>
         </div>
 
@@ -245,12 +260,13 @@ const CampaignCard = ({ campaign, label}: CampaignCardProps) => {
             className="absolute z-20 top-1/2 left-1/2 text-xs -translate-1/2 capitalize mb-2 text-white"
             style={{ textShadow: "0 1px 2px rgba(0,0,0,0.9)" }}
           >
-            paid out {progress}% 
+            paid out {progress}%
           </p>
         </div>
 
-        <Link href={`/${profile?.role === "PROMOTER" ? "promotor/campaigns": "creator"}/${campaign?._id}`}><Button className="mt-3 w-full! py-5!">
-          {label ?? buttonConfig?.label}
+        <Link href={`/${profile?.role === "PROMOTER" ? "promotor/campaigns" : "creator"}/${campaign?._id}`}><Button className="mt-3 w-full! py-5!">
+          {/* {label ?? buttonConfig?.label} */}
+          View Details
         </Button></Link>
       </div>
 
@@ -261,7 +277,7 @@ const CampaignCard = ({ campaign, label}: CampaignCardProps) => {
             campaign?.thumbnail
               ? imageUrl + campaign.thumbnail
               : "/images/campaign-img.png"
-          }        
+          }
           alt="campaign"
           height={500}
           width={500}

@@ -20,7 +20,7 @@ const ProgressBar = ({ percentage }: { percentage: number }) => {
     );
 };
 
-const CreatorDetails = ({ creator }: { creator: any }) => {
+const CreatorDetails = ({ creator }: { creator: any }) => {    
     const platformData = [
         { title: "Total Followers", color: "text-[#69C9D0]", followers: creator?.totalFollowers ?? 0, icon: <FaTiktok /> },
         { title: "Engagement", color: "text-[#FF0000]", followers: creator?.engagement ?? 0, icon: <FaYoutube /> },

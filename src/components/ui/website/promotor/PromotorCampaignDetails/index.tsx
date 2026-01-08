@@ -10,8 +10,10 @@ import CampaignSubmission from './CampaignSubmission'
 import CampaignData from './CampaignData'
 import { DropDownMenu } from './DropDownMenu'
 import { imageUrl } from '@/constants'
+import getProfile from '@/utils/getProfile'
 
-const PromotorCampaignDetails = ({data, status, openTab }: {data:any,  status?: string, openTab?: string }) => {        
+const PromotorCampaignDetails = async({data, status, openTab }: {data:any,  status?: string, openTab?: string }) => {   
+    const profile = await getProfile()
     return (
         <Container>
             <div className="glassBg p-4 my-10">
@@ -37,7 +39,7 @@ const PromotorCampaignDetails = ({data, status, openTab }: {data:any,  status?: 
                     <div className="text-blue-500 text-md text-center pt-4">
                         Only views after you submit count towards payout. Submit as soon as you post to get paid for all of your views.
                     </div>
-                    <ViewAllSubmittionBtn />
+                   {profile?._id == data?.userId?._id.toString() && <ViewAllSubmittionBtn />}
                     {openTab ? <CampaignSubmission status={status} campaignId={data?._id}/> :
                         <CampaignData campaign={data} />
                     }                   

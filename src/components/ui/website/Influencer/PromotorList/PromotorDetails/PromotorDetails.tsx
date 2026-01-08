@@ -10,8 +10,11 @@ import { FaInstagram, FaTiktok, FaYoutube } from 'react-icons/fa'
 import { IoLocationOutline } from 'react-icons/io5'
 import { MdOutlineStar } from 'react-icons/md'
 import RequestToPartnerBtn from './RequestToPartnerBtn'
+import { MdOutlineStarPurple500 } from "react-icons/md";
 
 const PromotorDetails = async ({ promotor }: any) => {
+
+
 
     const platformData = [
         { title: "Total Followers", color: "text-[#69C9D0]", followers: promotor?.totalFollowers ?? 0, icon: <FaTiktok /> },
@@ -20,14 +23,17 @@ const PromotorDetails = async ({ promotor }: any) => {
     ];
 
     const promotorCampaign = await myFetch(`/campaigns/get-promoter-campaigns/${promotor?._id}`);
-    const {data} = await myFetch(`/followers/promoter/${promotor?._id}/partner-cta`);
-
+    const { data } = await myFetch(`/followers/promoter/${promotor?._id}/partner-cta`);
 
     return (
         <Container>
             <div className=' glassBg px-2 md:px-10 my-10 py-10'>
                 <div className="text-center">
-                    <img src={`${imageUrl}${promotor?.image}`} className='mx-auto h-28 md:h-44 w-28 md:w-44 rounded-full object-cover' alt='profile' />
+                    <div className={`relative rounded-full border-primary/50 ${data?.isTrustedPartner ? 'border-2 p-1.5' : 'border-0 p-0'} inline-block`}>
+                        <img src={`${imageUrl}${promotor?.image}`} className='mx-auto h-28 md:h-44 w-28 md:w-44 rounded-full object-cover' alt='profile' />
+                        {data?.isTrustedPartner && <div className="absolute p-1 border border-primary/80 flex items-center justify-center bottom-3 right-2 bg-white rounded-full"> 
+                            <MdOutlineStarPurple500 className=" text-primary/80 " size={25} /></div>}
+                    </div>
                     <h1 className='text-3xl font-semibold mt-5'>{promotor?.name}</h1>
                     <div className="font-semibold flex gap-.5 text-center justify-center my-1">
                         {promotor?.rating === 0 ? <Star className="text-orange-500" size={15} /> :
@@ -61,7 +67,7 @@ const PromotorDetails = async ({ promotor }: any) => {
                 </div>
 
                 <ManagePagination meta={promotorCampaign?.meta} />
-                {!data?.isTrustedPartner && <RequestToPartnerBtn promoterId={promotor?._id} />}
+                {data?.showBecomePartner && !data?.isTrustedPartner && <RequestToPartnerBtn promoterId={promotor?._id} />}
             </div>
         </Container>
     )

@@ -31,22 +31,6 @@ const SubmittedCampaignsTabs = ({ submissions, connectedPlatforms = ["instagram"
         return icons[platform as keyof typeof icons] || "/default.png";
     };
 
-    // const getPlatformColor = (platform: any) => {
-    //     const colors = {
-    //         instagram: "from-purple-500 to-pink-500",
-    //         tiktok: "from-black to-gray-800",
-    //         youtube: "from-red-600 to-red-700"
-    //     };
-    //     return colors[platform as keyof typeof colors] || "from-gray-500 to-gray-600";
-    // };
-
-    // const formatViews = (views: any) => {
-    //     if (!views) return '0';
-    //     if (views >= 1000000) return `${(views / 1000000).toFixed(1)}M`;
-    //     if (views >= 1000) return `${(views / 1000).toFixed(1)}K`;
-    //     return views.toString();
-    // };
-
     return (
         <div className="">
             {Object.values(submissionsByCampaign).map((campaignData: any, idx: number) => {

@@ -8,11 +8,17 @@ import PCampaignHeader from './PCampaignHeader'
 import PMyCampaigns from './PMyCampaigns'
 
 const PromotorChampaigns = async ({ queryString, status }: { queryString?: string, status?: string }) => {
-   const baseUrl = status === "upcoming" ? "/campaigns/unpaid-campaigns" : status ? `/campaigns/my-campaigns?status=${status}` : "/campaigns/my-campaigns?status=active";
+   const baseUrl = 
+   status === "upcoming" ? "/campaigns/unpaid-campaigns" 
+   : status ? `/campaigns/my-campaigns?status=${status}` 
+   : `/campaigns/my-campaigns?status=active`
+   ;
 
   const url = queryString ? `${baseUrl}?${queryString}` : baseUrl;
   const campaignsData = await myFetch(url, { tags: ['promotor-campaigns'] });
     
+  console.log("campaignsData", campaignsData);
+  
   return (
     <Container>
       <div className="pb-16">
@@ -22,7 +28,7 @@ const PromotorChampaigns = async ({ queryString, status }: { queryString?: strin
             tabs={[
               { label: 'Active', value: 'active' },
               { label: 'Upcoming', value: 'upcoming' },
-              { label: 'Completed', value: 'completed' },
+              { label: 'Completed', value: 'ended' },
             ]}
             queryParam="status"
           />
