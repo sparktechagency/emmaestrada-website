@@ -3,17 +3,17 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { revalidate } from '@/helpers/revalidateHelper';
 import { myFetch } from '@/utils/myFetch';
-import { ImageIcon, Send, X } from 'lucide-react';
+import { Image, Send, X, Loader2 } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import React, { useState } from 'react'
 
 const ChatBoxFooter = () => {
-
     const [message, setMessage] = useState("")
     const [imageFiles, setImageFiles] = useState<File[]>([])
     const [loading, setLoading] = useState(false);
 
     const params = useParams();
+    
     const sendMessage = async () => {
         if (!message.trim() && imageFiles.length === 0) return
 
@@ -24,10 +24,13 @@ const ChatBoxFooter = () => {
             formData.append("text", message)
 
             imageFiles.forEach((file) => {
-                formData.append("images", file) // backend should accept array
+                formData.append("images", file)
             })
 
-            const res = await myFetch(`/messages/send-message/${params?.chatId}`, { method: "POST", body: formData })
+            const res = await myFetch(`/messages/send-message/${params?.chatId}`, { 
+                method: "POST", 
+                body: formData 
+            })
 
             console.log("send-message", res);
 
@@ -47,6 +50,7 @@ const ChatBoxFooter = () => {
     const removeImage = (index: number) => {
         setImageFiles((prev) => prev.filter((_, i) => i !== index))
     }
+
     return (
         <div className="bg-transparent">
             {/* Image Preview */}
@@ -60,6 +64,7 @@ const ChatBoxFooter = () => {
                             <button
                                 onClick={() => removeImage(index)}
                                 className="absolute top-2 right-2 bg-red-600 text-white rounded-full p-1 shadow"
+                                disabled={loading}
                             >
                                 <X size={14} />
                             </button>
@@ -73,25 +78,26 @@ const ChatBoxFooter = () => {
                     ))}
                 </div>
             )}
+
             <div className="p-4 border-t flex items-center gap-3">
-
-
-
                 {/* Message Input */}
                 <Input
                     className="flex-1"
                     placeholder="Type a message..."
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+                    onKeyDown={(e) => e.key === "Enter" && !loading && sendMessage()}
+                    disabled={loading}
                 />
+
                 {/* Image Upload */}
-                <label className="cursor-pointer">
+                <label className={`cursor-pointer ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}>
                     <input
                         type="file"
                         hidden
                         multiple
                         accept="image/*"
+                        disabled={loading}
                         onChange={(e) => {
                             if (e.target.files) {
                                 setImageFiles((prev) => [
@@ -102,19 +108,23 @@ const ChatBoxFooter = () => {
                             }
                         }}
                     />
-                    <ImageIcon className="text-gray-500 hover:text-gray-700" />
+                    <Image className="text-gray-500 hover:text-gray-700" />
                 </label>
+
                 {/* Send Button */}
                 <Button
                     disabled={loading || (!message.trim() && imageFiles.length === 0)}
                     onClick={sendMessage}
-                    className="rounded-full p-3 bg-orange-500 hover:bg-orange-600"
+                    className="rounded-full p-3 bg-orange-500 hover:bg-orange-600 min-w-[44px]"
                 >
-                    <Send size={18} />
+                    {loading ? (
+                        <Loader2 size={18} className="animate-spin" />
+                    ) : (
+                        <Send size={18} />
+                    )}
                 </Button>
             </div>
         </div>
-
     )
 }
 

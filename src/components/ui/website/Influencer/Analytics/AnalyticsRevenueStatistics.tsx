@@ -61,6 +61,8 @@ export default function AnalyticsRevenueStatistics() {
     getRevenue(year);
   }, [year]);
 
+  console.log("getRevenue", data);
+  
   return (
     <Card className="bg-orange-50 rounded-2xl h-full">
       <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -123,7 +125,7 @@ export default function AnalyticsRevenueStatistics() {
               />
               <Line
                 type="monotone"
-                dataKey="value"
+                dataKey="revenue"
                 stroke="#f97316"
                 strokeWidth={2}
                 dot={{ fill: "#111", r: 3 }}

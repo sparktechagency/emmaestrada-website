@@ -68,38 +68,12 @@ const CampaignHeader = () => {
           <div className="flex flex-col sm:flex-row gap-3">
             <Button
               variant="outline"
-              disabled={status === "upcoming" || status === "completed"}
               onClick={() => setFilterModalOpen(true)}
-              className="bg-white h-12"
+              className="bg-white h-12 sm:w-[300px]"
             >
               <SlidersHorizontal className="w-4 h-4 mr-2" />
               Filters
             </Button>
-
-            <Select disabled={status === "upcoming" || status === "completed"} value={sortBy} onValueChange={setSortBy}>
-              <SelectTrigger className="w-full sm:w-[300px] bg-white h-12!">
-                <div className="flex items-center gap-2">
-                  <ArrowUpDown className="w-4 h-4" />
-                  <SelectValue placeholder="Sort by" />
-                </div>
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="followers">No of Followers</SelectItem>
-                <SelectItem value="engagement">Engagement</SelectItem>
-                <SelectItem value="rating">Rating</SelectItem>
-                <Button
-                  className="w-full px-2"
-                  variant="secondary"
-                  size="sm"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    setSortBy("")
-                  }}
-                >
-                  Clear
-                </Button>
-              </SelectContent>
-            </Select>
           </div>
         </div>
       </div>}

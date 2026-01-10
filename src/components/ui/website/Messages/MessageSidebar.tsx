@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useEffect, useState, useMemo, useCallback } from 'react'
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
@@ -19,30 +19,6 @@ import { useProfile } from '@/hooks/context/ProfileContext';
 import useSocket from '@/hooks/useSocket';
 import { formatChatTime } from '@/components/shared/FormatChatTime ';
 
-
-// --------- Time Count ----------
-// const timeAgo = (dateString: string): string => {
-//     console.log("dateString", dateString);
-
-//     const now = new Date().getTime();
-//     const past = new Date(dateString).getTime();
-
-//     const diffInSeconds = Math.floor((now - past) / 1000);
-
-//     if (diffInSeconds < 60) return `${diffInSeconds}s ago`;
-
-//     const diffInMinutes = Math.floor(diffInSeconds / 60);
-//     if (diffInMinutes < 60) return `${diffInMinutes} min ago`;
-
-//     const diffInHours = Math.floor(diffInMinutes / 60);
-//     if (diffInHours < 24) return `${diffInHours} hr ago`;
-
-//     const diffInDays = Math.floor(diffInHours / 24);
-//     return `${diffInDays} day${diffInDays > 1 ? "s" : ""} ago`;
-// };
-
-
-// Empty State Component
 const EmptyState = () => (
     <div className="flex flex-col items-center justify-center h-full py-12 px-6">
         <div className="relative">
@@ -58,8 +34,6 @@ const EmptyState = () => (
     </div>
 );
 
-
-// Loading Skeleton Component
 const LoadingSkeleton = () => (
     <div className="space-y-4 px-5 py-2">
         {[1, 2, 3, 4, 5].map((item) => (
@@ -97,7 +71,8 @@ const MessageSidebar = () => {
     // Get searchTerm from URL params
     const searchTerm = searchParams.get('searchTerm') || '';
     
-    const getChats = async () => {
+    // ✅ FIX 1: Use useCallback to memoize the function
+    const getChats = useCallback(async () => {
         try {
             const { data } = await myFetch("/chats", { tags: ["chats"], cache: "no-cache" });
             setChats(data?.chats || []);
@@ -106,23 +81,35 @@ const MessageSidebar = () => {
             console.log("get chat error", error);
             setLoading(false);
         }
-    }
+    }, []); // No dependencies needed since myFetch is stable
 
     useEffect(() => {
         setLoading(true);
         getChats();
-    }, [])
+    }, [getChats])
 
-    const handleChatUpdate = async (data: any) => {
-        console.log("chat update", data);
-        await getChats();
-    };
+    // ✅ FIX 2: Move socket listeners inside useEffect with proper cleanup
+    useEffect(() => {
+        if (!socket || !profile?._id) return;
 
-    socket.on(`newChat::${profile?._id}`, handleChatUpdate);
-    socket.on(`chatListUpdate::${profile?._id}`, handleChatUpdate);
+        const handleChatUpdate = async (data: any) => {
+            console.log("chat update", data);
+            await getChats();
+        };
 
+        const newChatEvent = `newChat::${profile._id}`;
+        const chatListUpdateEvent = `chatListUpdate::${profile._id}`;
 
+        // Register listeners
+        socket.on(newChatEvent, handleChatUpdate);
+        socket.on(chatListUpdateEvent, handleChatUpdate);
 
+        // ✅ FIX 3: Cleanup function to remove listeners
+        return () => {
+            socket.off(newChatEvent, handleChatUpdate);
+            socket.off(chatListUpdateEvent, handleChatUpdate);
+        };
+    }, [socket, profile?._id, getChats]); // Include all dependencies
 
 
     // Filter chats based on searchTerm

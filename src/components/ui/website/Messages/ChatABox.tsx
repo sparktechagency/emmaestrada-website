@@ -1,7 +1,7 @@
 "use client"
 
 import { Loader2, MessageCircle } from "lucide-react"
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState, useRef, useCallback } from "react"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Card } from "@/components/ui/card"
@@ -36,7 +36,10 @@ const ChatBox = ({ chatId }: ChatBoxProps) => {
     }
   }
 
-  const fetchMessages = async () => {
+  // ✅ FIX 1: Memoize fetchMessages with useCallback
+  const fetchMessages = useCallback(async () => {
+    if (!chatId) return;
+    
     try {
       const response = await myFetch(`/messages/${chatId}`, {
         tags: ["messages", "chats"], cache: "no-cache"
@@ -46,27 +49,43 @@ const ChatBox = ({ chatId }: ChatBoxProps) => {
       setLoading(false)
     } catch (error) {
       console.error("Error fetching messages:", error)
-    } finally {
       setLoading(false)
     }
-  }
+  }, [chatId]); // Only recreate if chatId changes
 
   useEffect(() => {
     if (chatId) {
       setLoading(true)
       fetchMessages()
     }
-  }, [chatId])
+  }, [chatId, fetchMessages])
 
   // Scroll to bottom when messages change
   useEffect(() => {
     scrollToBottom()
   }, [messages])
 
-  socket.on(`newMessage::${profile?._id}`, async (data) => {
-    console.log("newMessage", data);
-    await fetchMessages()
-  })
+  // ✅ FIX 2: Proper socket listener with cleanup
+  useEffect(() => {
+    if (!profile?._id || !socket || !chatId) return;
+
+    const eventName = `newMessage::${profile._id}`;
+        
+    const handleNewMessage = async (data: any) => {
+      console.log("newMessage", data);
+      
+      if (data?.chatId === chatId) {
+        await fetchMessages();
+      }
+    }
+
+    socket.on(eventName, handleNewMessage);
+
+    // ✅ FIX 4: Cleanup function to remove listener
+    return () => {
+      socket.off(eventName, handleNewMessage);
+    }
+  }, [profile?._id, socket, chatId, fetchMessages])
 
   return (
     <div className="flex-1 h-full min-h-[70vh] max-h-[70vh] bg-white flex flex-col rounded-2xl">
@@ -144,8 +163,6 @@ const ChatBox = ({ chatId }: ChatBoxProps) => {
           </div>
         </ScrollArea>
       )}
-
-      {/* Footer */}
       <ChatBoxFooter />
     </div>
   )

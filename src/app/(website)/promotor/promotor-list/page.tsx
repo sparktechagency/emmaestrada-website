@@ -8,7 +8,9 @@ import React from 'react'
 const page = async () => {
   const promotorData = await myFetch("//promoters", {tags: ["promotors"]})  
 
-  return <PromotorList promotorData={promotorData?.data}/>
+  console.log("promotorData", promotorData);
+  
+  return <PromotorList promotorData={promotorData}/>
 }
 
 export default page

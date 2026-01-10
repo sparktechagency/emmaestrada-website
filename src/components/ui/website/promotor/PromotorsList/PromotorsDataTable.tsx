@@ -34,7 +34,7 @@ const influencers = Array.from({ length: 10 }).map(() => ({
 
 const PromotorsDataTable = ({ promotorData }: any) => {
     console.log("promotorData", promotorData);
-    
+
     return (
         <Container>
             <Card className="bg-transparent shadow-none border-0">
@@ -86,18 +86,11 @@ const PromotorsDataTable = ({ promotorData }: any) => {
                                         </div>
                                     </TableCell>
                                 </TableRow>
-                            )) :  <TableRow><TableCell colSpan={6}><p className="text-center text-lg textPara">Data not Found</p></TableCell> </TableRow> }
+                            )) : <TableRow><TableCell colSpan={6}><p className="text-center text-lg textPara">Data not Found</p></TableCell> </TableRow>}
                         </TableBody>
                     </Table>
-
-                    <div className="flex justify-end mt-6 pr-10">
-                        <CreatorPagination />
-                    </div>
                 </CardContent>
             </Card>
-
-
-            {/* {open && <InfluencerDetails />} */}
         </Container>
     )
 }

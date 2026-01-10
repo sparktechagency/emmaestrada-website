@@ -25,10 +25,6 @@ import {
   CartesianGrid,
 } from "recharts";
 
-interface UserGrowthItem {
-  month: string;
-  value: number;
-}
 
 export default function PCreatorGrowths() {
   const currentYear = new Date().getFullYear();
@@ -40,29 +36,14 @@ export default function PCreatorGrowths() {
   );
 
   const [year, setYear] = useState<number>(currentYear);
-  const [data, setData] = useState<UserGrowthItem[]>([]);
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-
-  const generateDemoData = (selectedYear: number): UserGrowthItem[] => {
-    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    const baseValue = selectedYear === currentYear ? 150 : 100;
-    
-    return months.map((month, index) => ({
-      month,
-      value: Math.floor(baseValue + Math.random() * 200 + index * 15)
-    }));
-  };
-
-
 
   const getUserGrowth = async (selectedYear: number) => {
     try {
-      setLoading(true);
-    //   const res = await myFetch(`/analytics/user-growth?year=${selectedYear}`);
-
-       const demoData = generateDemoData(selectedYear);
-       setData(demoData);
-    //   setData(res?.data || []);
+      setLoading(true);      
+      const res = await myFetch(`/analytics/user-growth-chart?year=${selectedYear}`);            
+      setData(res?.data);
     } catch (err) {
       console.error("Failed to fetch user growth data", err);
       setData([]);
@@ -73,7 +54,7 @@ export default function PCreatorGrowths() {
 
   useEffect(() => {
     getUserGrowth(year);
-  }, [year]);
+  }, []);
 
   return (
     <Card className="bg-orange-50 rounded-2xl h-full mt-6 mb-20">
@@ -114,7 +95,7 @@ export default function PCreatorGrowths() {
             >
               <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
               <XAxis 
-                dataKey="month" 
+                dataKey="label" 
                 tick={{ fontSize: 12 }}
                 tickMargin={8}
                 angle={-45}
@@ -133,11 +114,11 @@ export default function PCreatorGrowths() {
                   borderRadius: '8px',
                   fontSize: '12px',
                 }}
-                formatter={(value: number) => [`${value} users`, 'New Users']}
+                formatter={(value: number) => [`${value} users`, 'Total Users']}
               />
               <Line
                 type="monotone"
-                dataKey="value"
+                dataKey="cumulative"
                 stroke="#3b82f6"
                 strokeWidth={2}
                 dot={{ fill: "#111", r: 3 }}

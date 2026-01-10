@@ -10,7 +10,8 @@ interface Brand {
   _id: string;
 }
 
-const BrandLogos = ({ brands }: { brands: Brand[] }) => {
+const BrandLogos = ({ brands }: { brands: any }) => {
+  
   const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
@@ -47,7 +48,7 @@ const BrandLogos = ({ brands }: { brands: Brand[] }) => {
             direction="right"
             className="w-full flex items-center gap-10"
           >
-            {brands?.map((brand: Brand, idx: number) => (
+            {brands?.data?.map((brand: Brand, idx: number) => (
               <div className="text-slate-300 text-2xl uppercase mx-6">
                 {brand.name}
               </div>

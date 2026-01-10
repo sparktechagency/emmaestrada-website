@@ -14,11 +14,10 @@ import { myFetch } from '@/utils/myFetch'
 
 const PAnalyticsStatics = async () => {
 
-  const analyticsData = await myFetch("/analytics");
+  const analyticsData = await myFetch("/analytics/campaign-analytics");
   const { data } = analyticsData;
 
-  console.log("AnalyticsStatics", data);
-  
+  console.log("analyticsData", data);  
   return (
     <div className="my-5">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -26,29 +25,29 @@ const PAnalyticsStatics = async () => {
           icon={<DollarSign />}
           iconBg="bg-green-500"
           title="Total Budget"
-          value={`${data?.totalRevenue?.value}`}
-          badge={`${data?.totalRevenue?.growthRate}`}
+          value={`${data?.totalBudgetAmount}`}
+          // badge={`${data?.totalRevenue?.growthRate}`}
         />
         <StatCard
           icon={<Eye />}
           iconBg="bg-blue-500"
-          title="Active Campaigns"
-          value={`${data?.activeUsers?.value}`}
-          badge={`${data?.activeUsers?.growthRate}`}
+          title="Total Campaigns"
+          value={`${data?.totalCampaigns}`}
+          // badge={`${data?.activeUsers?.growthRate}`}
         />
         <StatCard
           icon={<Music />}
           iconBg="bg-purple-500"
-          title="Total Campaigns"
-          value={`${data?.activeCampaigns?.value}`}
-          badge={`${data?.activeCampaigns?.growthRate}`}
+          title="Total Creator"
+          value={`${data?.totalCreators}`}
+          // badge={`${data?.activeCampaigns?.growthRate}`}
         />
          <StatCard
           icon={<TrendingUp />}
           iconBg="bg-red-500"
           title="Total Submissions"
-          value={`${data?.totalGrowth?.value}`}
-          badge={`${data?.totalGrowth?.growthRate}`}
+          value={`${data?.totalSubmissions}`}
+          // badge={`${data?.totalGrowth?.growthRate}`}
         />
 
         {/* <StatCard
@@ -71,11 +70,11 @@ export default PAnalyticsStatics
 /* ================= STAT CARD ================= */
 
 type StatCardProps = {
-  icon: React.ReactNode
-  iconBg: string
-  title: string
-  value: string
-  badge: string
+  icon?: React.ReactNode
+  iconBg?: string
+  title?: string
+  value?: string
+  badge?: string
   negative?: boolean
 }
 

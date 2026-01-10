@@ -8,8 +8,9 @@ import AnayticsSummary from '../../Influencer/Analytics/AnayticsSummary'
 import PAnalyticsSummary from './PAnalyticsSummary'
 import PAnalyticsStatics from './PAnalyticsStatics'
 import PCreatorGrowths from './PCreatorGrowths'
+import { myFetch } from '@/utils/myFetch'
 
-const PromotorAnalytics = () => {
+const PromotorAnalytics = async () => {          
     return (
         <div>
             <Container> 

@@ -119,9 +119,7 @@ export default function ProfileInfo() {
 
       if (res?.success) {
         refetchProfile();
-        // setImageFile(null);
-        // setHasImageChanged(false);
-        alert("Profile picture updated successfully!");
+        toast.success("Profile picture updated successfully!");
       } else {
         console.log("res", res);
         toast.error(res?.message);

@@ -21,20 +21,13 @@ const AnalyticsStatics = async () => {
   
   return (
     <div className="my-5">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <StatCard
           icon={<DollarSign />}
           iconBg="bg-green-500"
           title="Total Revenue"
           value={`$${data?.totalRevenue?.value}`}
           badge={`$${data?.totalRevenue?.growthRate}`}
-        />
-        <StatCard
-          icon={<Eye />}
-          iconBg="bg-blue-500"
-          title="Active Users"
-          value={`$${data?.activeUsers?.value}`}
-          badge={`$${data?.activeUsers?.growthRate}`}
         />
         <StatCard
           icon={<Music />}
