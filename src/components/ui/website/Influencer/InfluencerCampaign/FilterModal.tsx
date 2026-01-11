@@ -205,7 +205,7 @@ export default function FilterModal({ open, onOpenChange, }: FilterModalProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="p-8 w-full max-w-[1000px]! h-[80vh]! overflow-y-auto">
+      <DialogContent className="p-8 max-w-[calc(100vw-30px)] w-full md:max-w-[800px]! h-[80vh]! overflow-y-auto">
         <DialogHeader className="text-center">
           <DialogTitle className="text-2xl font-semibold">Filter Campaigns</DialogTitle>
           <DialogDescription className="text-gray-500 text-sm">
@@ -338,16 +338,16 @@ export default function FilterModal({ open, onOpenChange, }: FilterModalProps) {
         </div>
 
         {/* ACTIONS */}
-        <div className="flex justify-between mt-10">
+        <div className="flex justify-between mt-10 gap-3">
           <Button
             variant="outline"
-            className="h-12 w-40 rounded-full"
+            className="h-12 w-1/2 md:w-40 rounded-full"
             onClick={clear}
           >
             Clear filters
           </Button>
           <Button
-            className="bg-orange-500 h-12 w-40 rounded-full text-white hover:bg-orange-600"
+            className="bg-orange-500 h-12 w-1/2 md:w-40 rounded-full text-white hover:bg-orange-600"
             onClick={apply}
           >
             Search result

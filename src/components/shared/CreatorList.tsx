@@ -80,7 +80,8 @@ const CreatorList = ({ creatorData }: { creatorData: any }) => {
 
                                                 </div>
                                             </TableCell>
-                                            <TableCell className="flex items-center gap-2">
+                                            <TableCell >
+                                                <div className="flex items-center gap-2 min-w-[100px]">
                                                 {row?.platforms?.length > 0 ? row?.platforms?.map((platform: any) => {
                                                     const key = platform.toLowerCase() as any;
                                                     const config = (PLATFORM_CONFIG as any)[key];
@@ -116,6 +117,7 @@ const CreatorList = ({ creatorData }: { creatorData: any }) => {
                                                     );
                                                 })
                                                 }
+                                                </div>
                                             </TableCell>
                                             <TableCell>{row?.totalFollowers ?? row?.followingId?.totalFollowers}</TableCell>
                                             <TableCell className="text-green-600 font-semibold">

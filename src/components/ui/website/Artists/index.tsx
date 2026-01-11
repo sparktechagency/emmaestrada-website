@@ -14,7 +14,7 @@ const AllCreators = async ({ data }: { data: any }) => {
       <CommonHeader title="Creators" />
       <Container>
         <ArtHeader />
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-3 md:mt-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 md:mt-20">
 
           {data?.data && data?.data?.map((d:IUser) => (
             <ArtistCard data={d} userRole={user?.role}/>            

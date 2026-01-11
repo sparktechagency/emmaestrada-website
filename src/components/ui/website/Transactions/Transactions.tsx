@@ -61,24 +61,6 @@ export default function Transactions() {
     }
   }
 
-  const formatCurrency = (amount :any) => {
-    const numValue = Number(amount)
-    if (isNaN(numValue)) return '$0.00'
-    return `$${(numValue / 100).toFixed(2)}`
-  }
-
-  const formatDate = (dateString :any) => {
-    if (!dateString) return 'N/A'
-    const date = new Date(dateString)
-    return date.toLocaleDateString('en-US', { 
-      month: 'short', 
-      day: 'numeric', 
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    })
-  }
-
   const getTransactionStatus = (status :any) => {
     const statusUpper = status?.toUpperCase() || ''
     
@@ -92,9 +74,7 @@ export default function Transactions() {
       FAILED: { label: 'Failed', class: 'bg-red-700 hover:bg-red-800 text-white' }
     }
 
-    const config = statusConfig[statusUpper as  keyof typeof statusConfig] || { label: status || 'Unknown', class: 'bg-gray-500 hover:bg-gray-600 text-white' }
-    
-     
+    const config = statusConfig[statusUpper as  keyof typeof statusConfig] || { label: status || 'Unknown', class: 'bg-gray-500 hover:bg-gray-600 text-white' }         
     return (
       <Badge className={`rounded-full ${config.class}`}>
         {config.label}

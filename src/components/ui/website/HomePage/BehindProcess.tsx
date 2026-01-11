@@ -41,7 +41,7 @@ export default function BehindProcess() {
                 {/* Header */}
                 <div className="mb-20 flex flex-col md:flex-row md:items-end ">
                     <div className="md:w-1/2">
-                        <span className="px-10 py-3 bg-white text-primary rounded-md font-extrabold shadow-md text-6xl">
+                        <span className="px-10 py-3 whitespace-nowrap bg-white text-primary rounded-md font-extrabold shadow-md text-3xl md:text-6xl">
                             The Beat
                         </span>
                         <h1 className="text-6xl font-extrabold text-gray-900 mt-10 leading-tight">

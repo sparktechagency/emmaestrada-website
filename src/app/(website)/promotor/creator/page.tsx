@@ -1,4 +1,6 @@
 import Creator from "@/components/ui/website/Influencer/Creator";
+import PCreatorsMain from "@/components/ui/website/promotor/PCreator";
+
 import { myFetch } from "@/utils/myFetch";
 
 type PageProps = {
@@ -10,13 +12,8 @@ type PageProps = {
 const page = async ({ searchParams }: any) => {
 
   const params = await searchParams;
-
   const {  type, ...rest } = params;
-  
-  console.log("type111", rest);
-
   const queryString = new URLSearchParams(rest).toString();
-
   let data;
 
   switch (type) {
@@ -26,8 +23,8 @@ const page = async ({ searchParams }: any) => {
         : `/followers/following`, { tags: ["CREATOR"] });      
       break;
 
-    case "all":
-      data = await myFetch(queryString ? `/creators`
+    case "all":        
+      data = await myFetch(queryString ? `/creators?${queryString}`
         : `/creators`, { tags: ["CREATOR"] });      
       break;
 
@@ -37,15 +34,15 @@ const page = async ({ searchParams }: any) => {
       
       break;
   }
-
-  
-  console.log("pcreator", data);
   
   return (
-    <Creator
-      type={type}
-      data={data}
-    />
+    // <Creator
+    //   type={type}
+    //   data={data}
+    // />
+
+    <PCreatorsMain type={type}
+      data={data}/>
   );
 };
 

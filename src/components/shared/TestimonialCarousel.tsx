@@ -36,8 +36,7 @@ export default function TestimonialCarousel() {
             }}
             transition={{ duration: 0.55, ease: "easeInOut" }}
           >
-            <p className="text-xs md:text-lg text-gray-700 mb-6 leading-relaxed">{item.text}</p>
-
+            <p className="text-xs sm:text-md lg:text-lg text-gray-700 mb-6 leading-relaxed">{item.text}</p>
             <div className="flex items-center gap-4 mt-auto">
               <div className="relative w-10 h-10 sm:w-16 sm:h-16 md:w-[60px] md:h-[60px]">
                 <Image
@@ -62,17 +61,17 @@ export default function TestimonialCarousel() {
         <button
           onClick={handlePrev}
           disabled={index === 0}
-          className="p-3 bg-white shadow text-black rounded-full disabled:opacity-30"
+          className="p-1 md:p-3 bg-white shadow text-black rounded-full disabled:opacity-30"
         >
-          <ArrowLeft size={20} />
+          <ArrowLeft className="text-md md:text-lg" />
         </button>
 
         <button
           onClick={handleNext}
           disabled={index === testimonials.length - 1}
-          className="p-3 bg-white shadow text-black rounded-full disabled:opacity-30"
+          className="p-1 md:p-3 bg-white shadow text-black rounded-full disabled:opacity-30"
         >
-          <ArrowRight size={20} />
+          <ArrowRight className="text-md md:text-lg" />
         </button>
       </div>
     </div>

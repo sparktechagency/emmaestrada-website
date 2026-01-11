@@ -6,8 +6,7 @@ import React from "react";
 
 const CampaignsList = async({data}: {data:any}) => {
   const user = await  getProfile()  
-    console.log("Campaigns user", user);
-      
+    
   return (
     <div>
       <div>
@@ -20,7 +19,7 @@ const CampaignsList = async({data}: {data:any}) => {
           initiatives that matter most.
         </p>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 md:gap-x-4 gap-y-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  md:gap-x-4 gap-y-5">
            {data?.map((campaign: any) => (              
                 <CampaignCard  key={campaign._id} campaign={campaign} />              
             ))}        

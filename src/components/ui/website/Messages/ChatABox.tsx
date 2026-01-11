@@ -39,7 +39,7 @@ const ChatBox = ({ chatId }: ChatBoxProps) => {
   // ✅ FIX 1: Memoize fetchMessages with useCallback
   const fetchMessages = useCallback(async () => {
     if (!chatId) return;
-    
+
     try {
       const response = await myFetch(`/messages/${chatId}`, {
         tags: ["messages", "chats"], cache: "no-cache"
@@ -70,10 +70,10 @@ const ChatBox = ({ chatId }: ChatBoxProps) => {
     if (!profile?._id || !socket || !chatId) return;
 
     const eventName = `newMessage::${profile._id}`;
-        
+
     const handleNewMessage = async (data: any) => {
       console.log("newMessage", data);
-      
+
       if (data?.chatId === chatId) {
         await fetchMessages();
       }
@@ -116,8 +116,8 @@ const ChatBox = ({ chatId }: ChatBoxProps) => {
         </div>
       ) : (
         <ScrollArea className="flex-1 px-4 py-2 overflow-y-auto" ref={scrollRef}>
-          <div className="flex flex-col">
-            {messages?.map((m: any) => {
+          <div className="flex flex-col-reverse">
+            {messages?.slice().reverse().map((m: any) => {
               const isSent = m?.sender?._id === profile?._id
 
               return (

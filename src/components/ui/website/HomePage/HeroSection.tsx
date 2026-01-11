@@ -7,6 +7,7 @@ import Link from "next/link";
 const HeroSection = async () => {
   
   const  sliders = await myFetch(`/sliders/all`);
+  const  planners = await myFetch(`/home-campaign-planners/all`);
     
   return (
     <section className="relative h-screen md:py-20 pb-30 pt-24">
@@ -43,15 +44,15 @@ const HeroSection = async () => {
         <div className=" text-center relative z-10 mt-10 md:mt-32">
           {/* Top Reviews */}
           <div className="flex flex-wrap justify-center gap-4 md:gap-24 mb-8 md:mb-20">
-            {[1, 2, 3].map((item) => (
-              <div key={item} className="flex flex-col items-center gap-2">
+            {planners?.data?.map((item:any, i:number) => (
+              <div key={i} className="flex flex-col items-center gap-2">
                 <p className="text-white text-sm md:text-2xl mb-2">
-                  Campaign Planner
+                  {item?.name}
                 </p>
                 <div className="flex gap-1">
-                  {[1, 2, 3, 4, 5].map((star) => (
+                  {Array.from({length: item?.rating}).map((star, i:number) => (
                     <Star
-                      key={star}
+                      key={i}
                       className="w-4 h-4 md:w-5 md:h-5 fill-yellow-400 text-yellow-400"
                     />
                   ))}
@@ -82,8 +83,8 @@ const HeroSection = async () => {
             <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
           </button></Link>
         </div>
-      <BrandLogos brands={sliders?.data} />
       </Container>
+      <BrandLogos brands={sliders?.data} />
       
       <style>{`
         @keyframes float {

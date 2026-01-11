@@ -11,7 +11,6 @@ const AllCampaigns = async ({ queryString }: { queryString: string }) => {
     : `/campaigns/active-campaigns`;
 
   const data = await myFetch(url2);
-  console.log("AllCampaigns", data);
   
   return (
     <div>

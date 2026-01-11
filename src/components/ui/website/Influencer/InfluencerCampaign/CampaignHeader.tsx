@@ -90,7 +90,7 @@ const CampaignHeader = () => {
       {contentType !== "my-submissions" && <div className="bg-secondary rounded-xl p-4 mb-6">
 
       {/* <div className="bg-secondary hidden rounded-xl p-4 mb-6"> */}
-        <div className="flex flex-col lg:flex-row gap-4">
+        <div className="flex flex-col md:flex-row gap-4">
           {/* Search Input */}
           <div className="flex-1 relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
@@ -107,7 +107,7 @@ const CampaignHeader = () => {
             <Button
               variant="outline"
               onClick={() => setFilterModalOpen(true)}
-              className="bg-white h-12 sm:w-[300px]"
+              className="bg-white h-12 md:w-[200px] lg:w-[300px]"
             >
               <SlidersHorizontal className="w-4 h-4 mr-2" />
               Filters
