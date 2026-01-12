@@ -1,9 +1,12 @@
+// app/(website)/privacy-policy/page.tsx
 import PrivacyPolicy from '@/components/ui/website/PrivacyPolicy'
-import React from 'react'
+import { myFetch } from '@/utils/myFetch'
 
-const page = () => {
+const page = async () => {
+  const response = await myFetch('/settings?key=privacyPolicy')
+
   return (
-    <div><PrivacyPolicy /></div>
+    <PrivacyPolicy content={response.data.data} />
   )
 }
 

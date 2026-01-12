@@ -1,16 +1,22 @@
+// components/ui/website/PrivacyPolicy/index.tsx
 import CommonHeader from '@/components/shared/CommonHeader'
-import React from 'react'
-import PolicyContent from './PolicyContent'
 import Container from '@/components/shared/Container'
 import FooterBanner from '@/components/shared/FooterBanner'
+import PolicyContent from './PolicyContent'
 
-const PrivacyPolicy = () => {
+interface PrivacyPolicyProps {
+  content: string
+}
+
+const PrivacyPolicy = ({ content }: PrivacyPolicyProps) => {
   return (
     <div>
-      <CommonHeader title="Privacy Policy"/>
+      <CommonHeader title="Privacy Policy" />
+
       <Container>
-      <PolicyContent />
+        <PolicyContent content={content} />
       </Container>
+
       <FooterBanner />
     </div>
   )

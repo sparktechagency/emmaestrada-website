@@ -1,10 +1,30 @@
+// import FAQS from '@/components/ui/website/FAQ'
+// import { myFetch } from '@/utils/myFetch'
+// import React from 'react'
+
+// const page = async() => {
+
+//   const response = await myFetch('/faqs')
+//   return (
+//     <div>
+//         <FAQS />
+//     </div>
+//   )
+// }
+
+// export default page
+
+// app/(website)/faqs/page.tsx
 import FAQS from '@/components/ui/website/FAQ'
+import { myFetch } from '@/utils/myFetch'
 import React from 'react'
 
-const page = () => {
+const page = async () => {
+  const response = await myFetch('/faqs')
+
   return (
     <div>
-        <FAQS />
+      <FAQS faqs={response.data.data} />
     </div>
   )
 }
