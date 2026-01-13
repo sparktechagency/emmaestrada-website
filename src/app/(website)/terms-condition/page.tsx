@@ -4,8 +4,7 @@ import { myFetch } from '@/utils/myFetch'
 
 const page = async () => {
   const response = await myFetch('/settings?key=termsOfService')
-
-  return <TermsCondition content={response.data.data} />
+  return <TermsCondition content={response?.data} />
 }
 
 export default page

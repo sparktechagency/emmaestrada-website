@@ -1,9 +1,37 @@
+'use client';
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { myFetch } from "@/utils/myFetch";
+import { toast } from "sonner";
 
 export default function ContactForm() {
+
+  const handleContact = async (e: any) => {
+    e.preventDefault();
+    try {
+      const form = e.target;
+      const data = {
+        name: form.name.value,
+        email: form.email.value,
+        phone: form.phone.value,
+        message: form.message.value,
+      }
+      
+      
+      const response = await myFetch("/contacts/send-message", { method: "POST", body: data})
+      if(response?.success){            
+        toast.success(response?.message)
+      }else{
+        toast.success(response?.message)
+      }
+    } catch (error:any) {
+      console.log("handleContact", error);
+      toast.success(error?.data?.message)
+
+    }
+  }
   return (
     <section className="w-full section">
       <div className="max-w-7xl mx-auto px-4 lg:px-8 grid md:grid-cols-2 gap-10 items-center overflowhidden">
@@ -25,14 +53,15 @@ export default function ContactForm() {
           </h2>
 
           <p className="text-gray-600 text-lg leading-relaxed mb-8">
-            Our mission is to create a seamless platform where artists can easily promote their music 
+            Our mission is to create a seamless platform where artists can easily promote their music
             and influencers can earn by sharing music they love.
           </p>
 
-          <form className="space-y-5">
+          <form onSubmit={handleContact} className="space-y-5">
             {/* Name */}
             <Input
               type="text"
+              name="name"
               placeholder="Name *"
               className="rounded-full h-14 px-6 text-gray-700 bg-white border-gray-300"
             />
@@ -41,11 +70,13 @@ export default function ContactForm() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Input
                 type="email"
+                name="email"
                 placeholder="Email"
                 className="rounded-full h-14 px-6 text-gray-700 bg-white border-gray-300"
               />
               <Input
                 type="text"
+                name="phone"
                 placeholder="Phone"
                 className="rounded-full h-14 px-6 text-gray-700 bg-white border-gray-300"
               />
@@ -53,6 +84,7 @@ export default function ContactForm() {
 
             {/* Message */}
             <Textarea
+              name="message"
               placeholder="Write your message"
               className="rounded-2xl px-6 py-4 text-gray-700 bg-white border-gray-300 h-40"
             />

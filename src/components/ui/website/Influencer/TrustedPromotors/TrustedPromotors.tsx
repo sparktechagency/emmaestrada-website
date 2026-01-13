@@ -63,8 +63,8 @@ export default function TrustedPromotors({ data }: any) {
                                             </div>
                                         </TableCell>
 
-                                        <TableCell className="flex items-center">
-                                            <span>{row?.totalCampaigns ?? 0}</span>
+                                        <TableCell>
+                                            {row?.totalCampaigns ?? 0}
                                         </TableCell>
 
                                         <TableCell className="text-right md:w-[50px]">

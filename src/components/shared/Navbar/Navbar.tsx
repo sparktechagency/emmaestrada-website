@@ -25,7 +25,7 @@ import NotificationBar from "../Notifications/NotificationBar";
 
 
 // Mock notification data generator
-const generateNotification = (id:any) => {
+const generateNotification = (id: any) => {
   const types = [
     { icon: Heart, text: 'liked your post', color: 'bg-red-100' },
     { icon: MessageCircle, text: 'commented on your post', color: 'bg-blue-100' },
@@ -34,7 +34,7 @@ const generateNotification = (id:any) => {
   ];
   const type = types[Math.floor(Math.random() * types.length)];
   const names = ['Sarah Johnson', 'Mike Chen', 'Emily Davis', 'Alex Rodriguez', 'Jessica Brown'];
-  
+
   return {
     id,
     user: names[Math.floor(Math.random() * names.length)],
@@ -61,50 +61,46 @@ const Navbar = ({ profile }: { profile: any }) => {
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
-  // -- NOtification State End ------------
-
   const pathname = usePathname();
   const darkBgRoutes = ["creator", "promotor", "success", "notifications"];
-  
+
   const hasDarkBackground = darkBgRoutes.includes(pathname.split("/")[1]);
 
 
-    const loadMore = () => {
+  const loadMore = () => {
     if (loading || !hasMore) return;
-    
+
     setLoading(true);
 
     setTimeout(() => {
       const newPage = page + 1;
       const newNotifications = Array.from(
-        { length: 10 }, 
+        { length: 10 },
         (_, i) => generateNotification(page * 15 + i)
       );
-      
+
       setNotifications((prev) => [...prev, ...newNotifications]);
       setPage(newPage);
       setLoading(false);
-      
+
       if (newPage >= 5) setHasMore(false);
     }, 1000);
   };
 
-    // Initialize notifications
-    useEffect(() => {
-      const initial = Array.from({ length: 15 }, (_, i) => generateNotification(i));
-      setNotifications(initial);
-    }, []);
+  useEffect(() => {
+    const initial = Array.from({ length: 15 }, (_, i) => generateNotification(i));
+    setNotifications(initial);
+  }, []);
+
   const markAllAsRead = () => {
     setNotifications(prev => prev.map(notif => ({ ...notif, read: true })));
   };
 
-
-  // ✅ Mount guard
+  
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // ✅ Scroll logic AFTER mount
   useEffect(() => {
     if (!mounted) return;
 
@@ -126,10 +122,8 @@ const Navbar = ({ profile }: { profile: any }) => {
 
   const isActive = (href: string) => pathname === href;
 
-  // ⛔ CRITICAL: prevent SSR/CSR mismatch
   if (!mounted) return null;
-
-  // console.log(profile);
+  
   return (
     <div>
       <nav
@@ -142,60 +136,36 @@ const Navbar = ({ profile }: { profile: any }) => {
           }`}
       >
         <Container>
-          <div className="flex items-center justify-between relative">
-            {/* Logo */}
+          <div className="flex items-center justify-between relative">            
             <Link href="/">
               <div className="relative h-12 w-12">
                 <Image src="/logo.png" alt="logo" height={50} width={50} />
               </div>
             </Link>
-
-            {/* Desktop Navigation */}
+            
             <div className="hidden md:flex absolute top-1/2 left-1/2 -translate-1/2 items-center gap-2 glassBg rounded-full px-8 py-3">
               {links.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`px-4 py-2 transition-colors
+                  className={`px-2 py-2 transition-colors
                     ${isActive(link.href)
                       ? "text-orange-500 font-semibold"
                       : "text-white/80 hover:text-orange-500"
-                    }`}
+                    } whitespace-nowrap`}
                 >
                   {link.name}
                 </Link>
               ))}
             </div>
-
-            {/* Right Side */}
+            
             <div className="flex items-center gap-4">
-              {/* 🔧 Loading/Error moved INSIDE navbar */}
-              {/* {loading && (
-                <span className="text-xs text-white/70">Loading...</span>
-              )}
-              {error && <span className="text-xs text-red-500">{error}</span>} */}
-
-              {profile ? (
-                <ViewAsLogin profile={profile} setIsBarOpen={setIsBarOpen} />
-              ) : (
-                <>
-                  <Link href="/login">
-                    <Button className="bg-primary btn text-white rounded-full">
-                      Log In
-                    </Button>
-                  </Link>
-                </>
-              )}
-
-              {/* Mobile Menu Button */}
-              <button
-                onClick={() => setOpenMenu(true)}
-                className="md:hidden p-2 text-white"
-              >
-                <Menu className="w-6 h-6" />
-              </button>
+              {profile ? (<ViewAsLogin profile={profile} setIsBarOpen={setIsBarOpen} />) : 
+              (<><Link href="/login"><Button className="bg-primary btn text-white rounded-full">Log In</Button></Link></>)}
+              
+              <button onClick={() => setOpenMenu(true)} className="md:hidden p-2 text-white"> <Menu className="w-6 h-6" /></button>
             </div>
-          </div>
+            </div>
 
           <NotificationBar
             isOpen={isBarOpen}
@@ -206,8 +176,7 @@ const Navbar = ({ profile }: { profile: any }) => {
             loading={loading}
             onMarkAllRead={markAllAsRead}
           />
-
-          {/* Mobile Menu */}
+          
           {openMenu && (
             <div className="md:hidden absolute w-4/5 left-0 h-screen top-0 backdrop-blur-xl bg-black/50 shadow-lg border border-white/10 p-4">
               <div className="relative flex flex-col h-full">
@@ -229,12 +198,7 @@ const Navbar = ({ profile }: { profile: any }) => {
                       key={link.href}
                       href={link.href}
                       onClick={() => setOpenMenu(false)}
-                      className={`px-4 py-3 rounded-lg
-                        ${isActive(link.href)
-                          ? "bg-orange-500 text-white"
-                          : "text-white/80 hover:bg-white/5"
-                        }`}
-                    >
+                      className={`px-4 py-3 rounded-lg ${isActive(link.href) ? "bg-orange-500 text-white" : "text-white/80 hover:bg-white/5"}`}>
                       {link.name}
                     </Link>
                   ))}
@@ -256,7 +220,6 @@ const Navbar = ({ profile }: { profile: any }) => {
 
 export default Navbar;
 
-/* ✅ KEPT your component, just improved usage */
 const ViewAsLogin = ({ profile, setIsBarOpen }: any) => {
   const router = useRouter();
   const handleLogout = () => {
@@ -269,7 +232,7 @@ const ViewAsLogin = ({ profile, setIsBarOpen }: any) => {
   return (
     <div className="flex items-center gap-3">
       <Wallet strokeWidth={1} size={30} color="#ededed" />
-      <Bell onClick={()=>setIsBarOpen(true)} strokeWidth={1} size={30} color="white" />
+      <Bell onClick={() => setIsBarOpen(true)} strokeWidth={1} size={30} color="white" />
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger>
           {profile?.image ?

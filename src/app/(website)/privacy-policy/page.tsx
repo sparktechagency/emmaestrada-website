@@ -6,7 +6,7 @@ const page = async () => {
   const response = await myFetch('/settings?key=privacyPolicy')
 
   return (
-    <PrivacyPolicy content={response.data.data} />
+    <PrivacyPolicy content={response?.data} />
   )
 }
 

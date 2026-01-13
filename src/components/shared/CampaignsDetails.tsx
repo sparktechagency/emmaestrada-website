@@ -88,8 +88,9 @@ const CampaignsDetails = async ({ data }: { data: any }) => {
                 <div className="p-5  glassBg shadow-lg! text-gray-500 font-semibold flex items-center gap-5">
 
                     {data?.assets?.contentRequirement && data?.assets?.contentRequirement?.map((item: string) => <span key={item} className="text-xl">{item}</span>)}
-                </div>
+                </div>                
                 <SubmitButton user={user} />
+                
 
                 {/* <div className="flex justify-end mt-5">
                     <Modal

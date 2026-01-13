@@ -217,8 +217,9 @@ const CampaignCard = ({ campaign, label }: CampaignCardProps) => {
               <span className="text-orange-500 ">
                 ${campaign?.budget?.rewardRate}/
                 {campaign?.budget?.perViews
-                  ? campaign.budget.perViews / 1000 + "K"
+                  ?((Number(campaign?.budget?.perViews) / 1000)).toFixed(0) + "K"
                   : "1K"}
+                  
               </span>
             </p>
 

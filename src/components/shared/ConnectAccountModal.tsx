@@ -142,12 +142,10 @@ export default function ConnectAccountModal({ user, open, setOpen }: Props) {
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-                <div className="flex justify-end">
-                    <Button size="lg" className="bg-blue-600!">
+            <DialogTrigger asChild>                
+                    <Button size="lg" className="bg-blue-600! ">
                         Connect Account
-                    </Button>
-                </div>
+                    </Button>                
             </DialogTrigger>
 
             <DialogContent className="md:max-w-2xl max-h-[80vh] overflow-y-auto">

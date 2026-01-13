@@ -31,7 +31,7 @@ const PromotorDetails = async ({ promotor }: any) => {
                 <div className="text-center">
                     <div className={`relative rounded-full border-primary/50 ${data?.isTrustedPartner ? 'border-2 p-1.5' : 'border-0 p-0'} inline-block`}>
                         <img src={`${imageUrl}${promotor?.image}`} className='mx-auto h-28 md:h-44 w-28 md:w-44 rounded-full object-cover' alt='profile' />
-                        {data?.isTrustedPartner && <div className="absolute p-1 border border-primary/80 flex items-center justify-center bottom-3 right-2 bg-white rounded-full"> 
+                        {data?.isTrustedPartner && <div className="absolute p-1 border border-primary/80 flex items-center justify-center bottom-3 right-0 md:right-2 bg-white rounded-full"> 
                             <MdOutlineStarPurple500 className=" text-primary/80 " size={25} /></div>}
                     </div>
                     <h1 className='text-3xl font-semibold mt-5'>{promotor?.name}</h1>
@@ -52,7 +52,7 @@ const PromotorDetails = async ({ promotor }: any) => {
                 </div>
                 <h1 className='text-xl font-semibold mt-10 mb-5 text-primary'>Campaigns by {promotor?.name}:</h1>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-5 mb-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  gap-3 md:gap-5 mb-5">
                     {promotorCampaign?.data?.length > 0 ? (
                         promotorCampaign.data.map((campaign: any, i: number) => (
                             <CampaignCard key={i} campaign={campaign} />

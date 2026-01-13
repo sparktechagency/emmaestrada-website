@@ -65,7 +65,7 @@ export default function AnalyticsRevenueStatistics() {
   
   return (
     <Card className="bg-orange-50 rounded-2xl h-full">
-      <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <CardHeader className="flex sm:flex-row items-start sm:items-center justify-between gap-4">
         <CardTitle className="text-lg sm:text-xl">Revenue Statistics</CardTitle>
 
         {/* Year Select (shadcn) */}
@@ -73,7 +73,7 @@ export default function AnalyticsRevenueStatistics() {
           value={year.toString()}
           onValueChange={(val) => setYear(Number(val))}
         >
-          <SelectTrigger className="w-full sm:w-[120px] bg-white">
+          <SelectTrigger className="w-[120px] bg-white">
             <SelectValue placeholder="Year" />
           </SelectTrigger>
           <SelectContent>

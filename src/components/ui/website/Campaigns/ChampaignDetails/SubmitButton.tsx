@@ -12,7 +12,7 @@ const SubmitButton = ({user}: any) => {
 
     const [openAccConnect, setOpenAccConnect] = useState(false);    
     return (
-        <div className='mt-10 flex items-center justify-end gap-5'>
+        <div className='mt-10 flex items-center justify-center md:justify-end gap-5'>
             <Modal
                 dialogTitle="Campaign Form"
                 open={open}
@@ -20,7 +20,7 @@ const SubmitButton = ({user}: any) => {
                 width="900px"                
                 dialogTrigger={
                     <div className='flex items-center justify-end'>
-                        <Button className="btn px-20 text-white ">
+                        <Button size="lg" className="px-14 md:px-20 w-full  text-white ">
                             Submit
                         </Button>
                     </div>

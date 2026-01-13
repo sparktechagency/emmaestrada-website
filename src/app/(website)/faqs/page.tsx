@@ -21,10 +21,10 @@ import React from 'react'
 
 const page = async () => {
   const response = await myFetch('/faqs')
-
+  
   return (
     <div>
-      <FAQS faqs={response.data.data} />
+      <FAQS faqs={response?.data} />
     </div>
   )
 }
