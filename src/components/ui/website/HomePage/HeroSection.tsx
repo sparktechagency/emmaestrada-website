@@ -8,7 +8,7 @@ const HeroSection = async () => {
   
   const  sliders = await myFetch(`/sliders/all`);
   const  planners = await myFetch(`/home-campaign-planners/all`);
-    
+  
   return (
     <section className="relative h-screen md:py-20 pb-30 pt-24">
       <div className="absolute top-0 left-0 w-full h-full inset-0 pointer-events-none -z-10">

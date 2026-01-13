@@ -39,20 +39,26 @@ const SetBusinessName = () => {
     }
 
     try {
+
+      console.log("formData", { businessName, ...data }, image);
+      
       const formData = new FormData()
       formData.append("image", image)
       formData.append("data", JSON.stringify({ businessName, ...data }))
-
-      const result = await myFetch(`/users/complete-registration`, {
+      
+      const response = await myFetch(`/users/complete-registration`, {
         method: "POST",
         body: formData
       })      
-      if (result?.success) {
-        toast.success(result?.message)
-        router.push("/")
-        router.refresh()
-        clearData()
-      }
+
+      console.log("login response", response);
+      
+if (response?.success) {
+  toast.success(response.message)
+  clearData()
+  router.push("/")
+}
+
     } catch (error) {
       console.error("Error creating user:", error)
       toast.error("Failed to create user")
