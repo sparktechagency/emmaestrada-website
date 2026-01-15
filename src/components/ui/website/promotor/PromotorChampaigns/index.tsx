@@ -7,19 +7,16 @@ import CampaingsAddForm from '../CampaingsAddForm'
 import PCampaignHeader from './PCampaignHeader'
 import PMyCampaigns from './PMyCampaigns'
 
-const PromotorChampaigns = async ({ queryString, status }: { queryString?: string, status?: string }) => {
+const PromotorChampaigns = async ({ queryString, status= "active" }: { queryString?: string, status?: string }) => {
 
   
   const baseUrl = 
   status === "upcoming" ? "/campaigns/unpaid-campaigns" 
   : status ? `/campaigns/my-campaigns?status=${status}` 
-  : `/campaigns/my-campaigns?status=active`
-  ;
+  : `/campaigns/my-campaigns?status=active`;
   
   const url = queryString ? `${baseUrl}&${queryString}` : baseUrl;  
-  const campaignsData = await myFetch(url, { tags: ['promotor-campaigns'] });
-    
-  console.log("campaignsData", campaignsData);
+  const campaignsData = await myFetch(url, {tags: ['promotor-campaigns']});
   
   return (
     <Container>

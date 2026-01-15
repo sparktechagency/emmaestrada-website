@@ -42,7 +42,7 @@ export default function PCreatorGrowths() {
   const getUserGrowth = async (selectedYear: number) => {
     try {
       setLoading(true);      
-      const res = await myFetch(`/analytics/user-growth-chart?year=${selectedYear}`);            
+      const res = await myFetch(`/analytics/user-growth-chart?year=${selectedYear}`);                  
       setData(res?.data);
     } catch (err) {
       console.error("Failed to fetch user growth data", err);
@@ -54,12 +54,12 @@ export default function PCreatorGrowths() {
 
   useEffect(() => {
     getUserGrowth(year);
-  }, []);
+  }, [year]);
 
   return (
     <Card className="bg-orange-50 rounded-2xl h-full mt-6 mb-20">
       <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <CardTitle className="text-lg sm:text-xl">User Growth Statistics</CardTitle>
+        <CardTitle className="text-lg sm:text-xl">Creators Growth Statistics</CardTitle>
 
         {/* Year Select (shadcn) */}
         <Select

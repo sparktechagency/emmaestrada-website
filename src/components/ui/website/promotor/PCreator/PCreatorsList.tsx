@@ -45,6 +45,9 @@ const PLATFORM_CONFIG = {
 
 
 const PCreatorsList = ({ creatorData }: { creatorData: any }) => {
+
+  console.log("creatorData", creatorData);
+  
   return (
     <div>
       {

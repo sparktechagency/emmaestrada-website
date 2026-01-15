@@ -2,18 +2,6 @@
 
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import React from 'react';
-
-interface PaginationMeta {
-  page: number;
-  limit: number;
-  total: number;
-  totalPage: number;
-}
-
-interface CreatorPaginationProps {
-  meta: PaginationMeta;
-}
 
 const ManagePagination = ({ meta }:any) => {
   const router = useRouter();
@@ -27,8 +15,6 @@ const ManagePagination = ({ meta }:any) => {
 
     const params = new URLSearchParams(searchParams.toString());
     params.set('page', page.toString());
-    params.set('limit', meta.limit.toString());
-
     router.push(`?${params.toString()}`);
   };
 

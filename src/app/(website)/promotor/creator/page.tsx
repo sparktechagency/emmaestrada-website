@@ -14,6 +14,9 @@ const page = async ({ searchParams }: any) => {
   const params = await searchParams;
   const {  type, ...rest } = params;
   const queryString = new URLSearchParams(rest).toString();
+
+  
+  
   let data;
 
   switch (type) {
@@ -24,7 +27,8 @@ const page = async ({ searchParams }: any) => {
       break;
 
     case "all":        
-      data = await myFetch(queryString ? `/creators?${queryString}`
+      // data = await myFetch(queryString ? `/creators?${queryString}`
+      data = await myFetch(queryString ? `/creators?page=2`
         : `/creators`, { tags: ["CREATOR"] });      
       break;
 

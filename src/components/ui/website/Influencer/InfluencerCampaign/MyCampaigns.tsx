@@ -12,7 +12,7 @@ const MyCampaigns = async ({
   status: string,  
   queryString: string
 }) => {
-
+  
   const  submissionData = await myFetch(
     `/submissions/my-submissions?status=${status ? status : "pending"}${queryString}`
   );  
