@@ -110,7 +110,7 @@ const PromotorTrustedCreators = ({ data }: any) => {
 
                                 <TableCell className="text-right md:w-[50px]">
                                     <div className="flex items-center gap-3">
-                                        <Link href={`/promotor/creator/${row?._id}`}> <Button
+                                        <Link href={`/promotor/creator/${ row?.creatorId?._id}`}> <Button
                                             className="border border-black/50 text-black/50 hover:bg-white hover:text-black bg-transparent"
                                         >
                                             View

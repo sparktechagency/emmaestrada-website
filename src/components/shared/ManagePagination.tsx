@@ -2,6 +2,7 @@
 
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import React from 'react';
 
 const ManagePagination = ({ meta }:any) => {
   const router = useRouter();
@@ -15,6 +16,7 @@ const ManagePagination = ({ meta }:any) => {
 
     const params = new URLSearchParams(searchParams.toString());
     params.set('page', page.toString());
+    params.set('limit', meta.limit.toString());
     router.push(`?${params.toString()}`);
   };
 

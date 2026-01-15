@@ -44,8 +44,8 @@ export default function ProfileInfo() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [hasImageChanged, setHasImageChanged] = useState(false);
-  const [contentTypes, setContentTypes] = useState<string[]>([]);  
-  
+  const [contentTypes, setContentTypes] = useState<string[]>([]);
+
   const [formData, setFormData] = useState<any>({});
   const router = useRouter()
 
@@ -398,6 +398,7 @@ export default function ProfileInfo() {
                   <FcLikePlaceholder className="absolute left-3 top-3.5 text-gray-500" size={18} />
                   <Input
                     placeholder="Total Followers"
+                    type="number"
                     value={formData.tiktokFollowers}
                     onChange={(e) => handleChange("tiktokFollowers", e.target.value)}
                     className="h-12 pl-10 rounded-xl"
@@ -427,6 +428,7 @@ export default function ProfileInfo() {
                   <FcLikePlaceholder className="absolute left-3 top-3.5 text-gray-500" size={18} />
                   <Input
                     placeholder="Total Followers"
+                    type="number"
                     value={formData.instagramFollowers}
                     onChange={(e) => handleChange("instagramFollowers", e.target.value)}
                     disabled={!editMode}
@@ -454,6 +456,7 @@ export default function ProfileInfo() {
                   <FcLikePlaceholder className="absolute left-3 top-3.5 text-gray-500" size={18} />
                   <Input
                     placeholder="Total Followers"
+                    type="number"
                     value={formData.youtubeFollowers}
                     onChange={(e) => handleChange("youtubeFollowers", e.target.value)}
                     className="h-12 pl-10 rounded-xl"

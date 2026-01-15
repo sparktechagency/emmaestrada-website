@@ -10,7 +10,7 @@ import React, {
 } from "react";
 import { myFetch } from "@/utils/myFetch";
 import { IUser } from "@/types/profile";
-
+import Cookies from "js-cookie"
 
 interface ProfileContextType {
   profile: IUser | null;
@@ -39,6 +39,8 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
 
       if (res?.success) {        
         setProfile(res?.data);
+        Cookies.set("role", res?.data?.role)
+
       } else {
         setError(res?.message || "Failed to load profile");
       }

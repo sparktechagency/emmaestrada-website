@@ -9,32 +9,32 @@ import { Star } from 'lucide-react'
 import { FaInstagram, FaTiktok, FaYoutube } from 'react-icons/fa'
 import { IoLocationOutline } from 'react-icons/io5'
 import { MdOutlineStar } from 'react-icons/md'
-import RequestToPartnerBtn from './RequestToPartnerBtn'
 import { MdOutlineStarPurple500 } from "react-icons/md";
 
-const PromotorDetails = async ({ promotor, searchQuery }: any) => {
+const PromotorDetail = async ({ promotor, searchQuery }: any) => {
+
+
+
     const platformData = [
         { title: "Total Followers", color: "text-[#69C9D0]", followers: promotor?.totalFollowers ?? 0, icon: <FaTiktok /> },
         { title: "Engagement", color: "text-[#FF0000]", followers: promotor?.engagement ?? 0, icon: <FaYoutube /> },
         { title: "Total Campaigns", color: "text-[#C13584]", followers: promotor?.totalCampaigns ?? 0, icon: <FaInstagram /> },
     ];
 
-    const promotorCampaign = await myFetch(searchQuery ? `/campaigns/get-promoter-campaigns/${promotor?._id}?${searchQuery}` 
-                                                       : `/campaigns/get-promoter-campaigns/${promotor?._id}`);
-                                                       
-    const { data } = await myFetch(`/followers/promoter/${promotor?._id}/partner-cta`);
+    const promotorCampaign = await myFetch(searchQuery ? `/campaigns/get-promoter-campaigns/${promotor?._id}?${searchQuery}` : `/campaigns/get-promoter-campaigns/${promotor?._id}`);
 
-    const { data: trustedData } = await myFetch(`/partners/check/${promotor?._id}`);
+    console.log("promotorCampaign", promotorCampaign);
+    
+    const { data } = await myFetch(`/followers/promoter/${promotor?._id}/partner-cta`);
 
     return (
         <Container>
             <div className=' glassBg px-2 md:px-10 my-10 py-10'>
                 <div className="text-center">
-                    <div className={`relative rounded-full border-primary/50 ${trustedData?.isPartner ? 'border-2 p-1.5' : 'border-0 p-0'} inline-block`}>
+                    <div className={`relative rounded-full border-primary/50 ${data?.isTrustedPartner ? 'border-2 p-1.5' : 'border-0 p-0'} inline-block`}>
                         <img src={`${imageUrl}${promotor?.image}`} className='mx-auto h-28 md:h-44 w-28 md:w-44 rounded-full object-cover' alt='profile' />
-                        {trustedData?.isPartner &&
-                            <div className="absolute p-1 border border-primary/80 flex items-center justify-center bottom-3 right-0 md:right-2 bg-white rounded-full">
-                                <MdOutlineStarPurple500 className=" text-primary/80 " size={25} /></div>}
+                        {data?.isTrustedPartner && <div className="absolute p-1 border border-primary/80 flex items-center justify-center bottom-3 right-0 md:right-2 bg-white rounded-full"> 
+                            <MdOutlineStarPurple500 className=" text-primary/80 " size={25} /></div>}
                     </div>
                     <h1 className='text-3xl font-semibold mt-5'>{promotor?.name}</h1>
                     <div className="font-semibold flex gap-.5 text-center justify-center my-1">
@@ -68,14 +68,13 @@ const PromotorDetails = async ({ promotor, searchQuery }: any) => {
                     )}
                 </div>
 
-                <ManagePagination meta={promotorCampaign?.meta} />
-                {data?.showBecomePartner && !data?.isTrustedPartner && <RequestToPartnerBtn promoterId={promotor?._id} />}
+                <ManagePagination meta={promotorCampaign?.meta} />                
             </div>
         </Container>
     )
 }
 
-export default PromotorDetails
+export default PromotorDetail
 
 const PlatformCard = ({ platform }: any) => {
     const { title, color, icon, followers } = platform;

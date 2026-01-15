@@ -234,12 +234,7 @@ const PAnalyticsSummary = () => {
                   <p className="text-sm text-muted-foreground">Balance</p>
                   <div className="flex items-center gap-3">
                     <h2 className="text-3xl font-bold">${data?.balance ?? 0}</h2>
-                  </div>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    <span className="text-blue-500 cursor-pointer hover:underline">
-                      View Details
-                    </span>
-                  </p>
+                  </div>                  
                 </div>
 
                 <div className="w-full pt-4 border-t border-white/10">
@@ -248,10 +243,7 @@ const PAnalyticsSummary = () => {
                     <h2 className="text-3xl font-bold">${data?.totalPayout}</h2>
                   </div>
                   <p className="text-sm text-muted-foreground mt-1">
-                    {FormatDate(data?.updatedAt)}{" "}
-                    <span className="text-blue-500 cursor-pointer hover:underline">
-                      View Details
-                    </span>
+                    {FormatDate(data?.updatedAt)}{" "}                    
                   </p>
                 </div>
               </div>

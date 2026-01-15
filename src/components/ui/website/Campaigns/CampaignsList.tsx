@@ -5,7 +5,7 @@ import Link from "next/link";
 import React from "react";
 
 const CampaignsList = async({data}: {data:any}) => {
-  const user = await  getProfile()  
+  const profile = await  getProfile()  
     
   return (
     <div>
@@ -21,7 +21,7 @@ const CampaignsList = async({data}: {data:any}) => {
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  md:gap-x-4 gap-y-5">
            {data?.map((campaign: any) => (              
-                <CampaignCard  key={campaign._id} campaign={campaign} />              
+                <CampaignCard  key={campaign._id} campaign={campaign}  />              
             ))}        
       </div>
     </div>

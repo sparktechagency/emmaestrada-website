@@ -9,6 +9,8 @@ import { MdOutlineStar } from 'react-icons/md';
 
 import { imageUrl } from '@/constants';
 import FollowButton from '../../Influencer/Creator/CreatorDetails/FollowButton';
+import { myFetch } from '@/utils/myFetch';
+import { MdOutlineStarPurple500 } from "react-icons/md";
 
 const ProgressBar = ({ percentage }: { percentage: number }) => {
     return (
@@ -21,10 +23,9 @@ const ProgressBar = ({ percentage }: { percentage: number }) => {
     );
 };
 
-const PCreatorDetails = ({ creator }: { creator: any }) => {  
-    
-    console.log("PCreatorDetails", creator);
-    
+const PCreatorDetails = async ({ creator }: { creator: any }) => {
+
+    const {data:trustedData} = await myFetch(`/partners/check/${creator?._id}`);
     const platformData = [
         { title: "Total Followers", color: "text-[#69C9D0]", followers: creator?.totalFollowers ?? 0, icon: <FaTiktok /> },
         { title: "Engagement", color: "text-[#FF0000]", followers: creator?.engagement ?? 0, icon: <FaYoutube /> },
@@ -46,7 +47,13 @@ const PCreatorDetails = ({ creator }: { creator: any }) => {
         <Container>
             <div className='glassBg px-2 md:px-10 my-10 py-10'>
                 <div className="text-center">
-                    <img src={`${imageUrl}${creator?.image}`} className='mx-auto h-28 md:h-44 w-28 md:w-44 rounded-full object-cover' alt='profile' />
+                    {/* <img src={`${imageUrl}${creator?.image}`} className='mx-auto h-28 md:h-44 w-28 md:w-44 rounded-full object-cover' alt='profile' /> */}
+
+                    <div className={`relative rounded-full border-primary/50 ${trustedData?.isPartner ? 'border-2 p-1.5' : 'border-0 p-0'} inline-block`}>
+                        <img src={`${imageUrl}${creator?.image}`} className='mx-auto h-28 md:h-44 w-28 md:w-44 rounded-full object-cover' alt='profile' />
+                        {trustedData?.isPartner && <div className="absolute p-1 border border-primary/80 flex items-center justify-center bottom-3 right-0 md:right-2 bg-white rounded-full">
+                            <MdOutlineStarPurple500 className=" text-primary/80 " size={25} /></div>}
+                    </div>
                     <h1 className='text-3xl font-semibold mt-5'>{creator?.name}</h1>
                     <p className='text-center text-md flex justify-center items-center'><IoLocationOutline /> {creator?.location ? <span> {creator?.location} {creator?.country}</span> : "N/A"} </p>
 
@@ -67,7 +74,7 @@ const PCreatorDetails = ({ creator }: { creator: any }) => {
                 {/* ----------- Platform Distribution --------- */}
                 <div className="bg-white p-5 rounded-lg mt-10">
                     <p className='text-lg font-semibold'>Platform Distribution</p>
-                    
+
                     {/* TikTok */}
                     <div className="flex justify-between text-sm font-medium my-5">
                         <div className="flex items-center gap-2">

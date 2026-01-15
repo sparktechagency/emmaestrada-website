@@ -27,8 +27,7 @@ const page = async ({ searchParams }: any) => {
       break;
 
     case "all":        
-      // data = await myFetch(queryString ? `/creators?${queryString}`
-      data = await myFetch(queryString ? `/creators?page=2`
+      data = await myFetch(queryString ? `/creators?${queryString}`      
         : `/creators`, { tags: ["CREATOR"] });      
       break;
 

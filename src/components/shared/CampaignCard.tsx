@@ -6,9 +6,9 @@ import Image from "next/image";
 import { Gift } from "lucide-react";
 import { Button } from "../ui/button";
 import { imageUrl } from "@/constants";
-import { useProfile } from "@/hooks/context/ProfileContext";
-import Link from "next/link";
 
+import Link from "next/link";
+import Cookies from "js-cookie";
 type CampaignStatus =
   | "upcoming"
   | "pending"
@@ -46,6 +46,7 @@ interface CampaignCardProps {
     [key: string]: any;
   };
   label?: string;
+  profile?:any
 }
 
 /* -------------------- STATUS CONFIG -------------------- */
@@ -103,7 +104,7 @@ const platformIcons: Record<string, string> = {
   YouTube: "/youtube.png",
 };
 
-const CampaignCard = ({ campaign, label }: CampaignCardProps) => {
+const CampaignCard = ({ campaign, label, profile }: CampaignCardProps) => {
   const status = campaign?.status;
   const buttonConfig = statusButtonConfig[status];
 
@@ -112,8 +113,10 @@ const CampaignCard = ({ campaign, label }: CampaignCardProps) => {
       (campaign?.totalPaidOutAmount / campaign?.campaignAmount) * 100
     )
     : 0;
-  const { profile } = useProfile()
 
+    
+  const token = Cookies.get("accessToken");
+  const role = Cookies.get("role");
 
   return (
     <div className="rounded-2xl relative shadow-md grid grid-cols-1 gap-4 bg-[#FFF8F3]">
@@ -153,7 +156,7 @@ const CampaignCard = ({ campaign, label }: CampaignCardProps) => {
               className="w-12 h-12 rounded-full  object-cover"
             />
             <div>
-              <h3 className={`font-semibold text-lg ${!profile && "blur-[10px]"}`}>
+              <h3 className={`font-semibold text-lg ${!token && "blur-[10px]"}`}>
                 {campaign?.userId?.name || "Unknown User"}
               </h3>
               <p className="text-gray-600 text-sm lowercase">
@@ -265,7 +268,7 @@ const CampaignCard = ({ campaign, label }: CampaignCardProps) => {
           </p>
         </div>
 
-        <Link href={`/${profile?.role === "PROMOTER" ? "promotor/campaigns" : "creator"}/${campaign?._id}`}><Button className="mt-3 w-full! py-5!">
+        <Link href={`/${role === "PROMOTER" ? "promotor/campaigns" : "creator"}/${campaign?._id}`}><Button className="mt-3 w-full! py-5!">
           {/* {label ?? buttonConfig?.label} */}
           View Details
         </Button></Link>

@@ -1,33 +1,28 @@
 "use client";
 
-import React from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
 import {
-  EffectCoverflow,
   Autoplay,
-  Pagination,
+  EffectCoverflow,
   Navigation,
+  Pagination,
 } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 import "swiper/css";
 import "swiper/css/effect-coverflow";
-import "swiper/css/pagination";
 import "swiper/css/navigation";
+import "swiper/css/pagination";
 
+import Link from "next/link";
+import { Button } from "../ui/button";
 import "./campaign.css";
 import CampaignCard from "./CampaignCard";
 import Container from "./Container";
-import Link from "next/link";
-import { Button } from "../ui/button";
-import { ICampaign } from "@/types/campaign";
-
 interface CampaignProps {
   campaigns: any;
 }
 
 const Campaign = ({ campaigns }: {campaigns: any}) => {
-  
-  console.log("campaigns", campaigns);
   
   return (
     <section className="bottomPadding">

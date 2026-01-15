@@ -1,26 +1,23 @@
-import React from 'react'
 import {
   Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
+  CardContent
 } from "@/components/ui/card"
 import {
   Table,
-  TableHead,
-  TableRow,
-  TableHeader,
   TableBody,
   TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@/components/ui/table"
 
-import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar'
-import { imageUrl } from '@/constants'
-import { Star } from 'lucide-react'
-import { MdOutlineStar, MdOutlineStarRate } from 'react-icons/md'
-import Image from 'next/image'
-import CreatorListActionBtns from '../InfluencerList/CreatorListActionBtns'
 import ManagePagination from '@/components/shared/ManagePagination'
+import { imageUrl } from '@/constants'
+import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar'
+import { Star } from 'lucide-react'
+import Image from 'next/image'
+import { MdOutlineStar } from 'react-icons/md'
+import CreatorListActionBtns from '../InfluencerList/CreatorListActionBtns'
 
 
 
@@ -44,10 +41,10 @@ const PLATFORM_CONFIG = {
 } as const;
 
 
-const PCreatorsList = ({ creatorData }: { creatorData: any }) => {
+const PCreatorsList = async({ creatorData }: { creatorData: any }) => {
 
-  console.log("creatorData", creatorData);
-  
+
+      
   return (
     <div>
       {
