@@ -4,8 +4,6 @@ import { cookies } from "next/headers";
 
 const getProfile = async (): Promise<any | null> => {
   const token = (await cookies()).get("accessToken")?.value;
-  console.log('base url', process.env.BASE_URL)
-
   const res = await fetch(`${process.env.BASE_URL}/users/profile`, {
     next: {
       tags: ["user-profile"],
