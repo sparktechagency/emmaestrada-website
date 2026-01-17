@@ -22,6 +22,8 @@ import { deleteCookie } from "cookies-next";
 import { revalidate } from "@/helpers/revalidateHelper";
 import { toast } from "sonner";
 import NotificationBar from "../Notifications/NotificationBar";
+import { myFetch } from "@/utils/myFetch";
+import { Badge } from "@/components/ui/badge";
 
 
 // Mock notification data generator
@@ -52,51 +54,15 @@ const Navbar = ({ profile }: { profile: any }) => {
   const [mounted, setMounted] = useState(false); // ✅ ADD
   const [scrolled, setScrolled] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
-
-  // -- NOtification State ------------
-  const [view, setView] = useState('bar');
   const [isBarOpen, setIsBarOpen] = useState(false);
-  const [notifications, setNotifications] = useState<any[]>([]);
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
+
+
 
   const pathname = usePathname();
   const darkBgRoutes = ["creator", "promotor", "success", "notifications"];
-
   const hasDarkBackground = darkBgRoutes.includes(pathname.split("/")[1]);
 
 
-  const loadMore = () => {
-    if (loading || !hasMore) return;
-
-    setLoading(true);
-
-    setTimeout(() => {
-      const newPage = page + 1;
-      const newNotifications = Array.from(
-        { length: 10 },
-        (_, i) => generateNotification(page * 15 + i)
-      );
-
-      setNotifications((prev) => [...prev, ...newNotifications]);
-      setPage(newPage);
-      setLoading(false);
-
-      if (newPage >= 5) setHasMore(false);
-    }, 1000);
-  };
-
-  useEffect(() => {
-    const initial = Array.from({ length: 15 }, (_, i) => generateNotification(i));
-    setNotifications(initial);
-  }, []);
-
-  const markAllAsRead = () => {
-    setNotifications(prev => prev.map(notif => ({ ...notif, read: true })));
-  };
-
-  
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -121,9 +87,10 @@ const Navbar = ({ profile }: { profile: any }) => {
   ];
 
   const isActive = (href: string) => pathname === href;
-
   if (!mounted) return null;
-  
+
+
+
   return (
     <div>
       <nav
@@ -136,13 +103,13 @@ const Navbar = ({ profile }: { profile: any }) => {
           }`}
       >
         <Container>
-          <div className="flex items-center justify-between relative">            
+          <div className="flex items-center justify-between relative">
             <Link href="/">
               <div className="relative h-12 w-12">
                 <Image src="/logo.png" alt="logo" height={50} width={50} />
               </div>
             </Link>
-            
+
             <div className="hidden md:flex absolute top-1/2 left-1/2 -translate-1/2 items-center gap-2 glassBg rounded-full px-8 py-3">
               {links.map((link) => (
                 <Link
@@ -158,25 +125,17 @@ const Navbar = ({ profile }: { profile: any }) => {
                 </Link>
               ))}
             </div>
-            
+
             <div className="flex items-center gap-4">
-              {profile ? (<ViewAsLogin profile={profile} setIsBarOpen={setIsBarOpen} />) : 
-              (<><Link href="/login"><Button className="bg-primary btn text-white rounded-full">Log In</Button></Link></>)}
-              
+              {profile ? (<ViewAsLogin profile={profile} isBarOpen={isBarOpen} setIsBarOpen={setIsBarOpen} />) :
+                (<><Link href="/login"><Button className="bg-primary btn text-white rounded-full">Log In</Button></Link></>)}
+
               <button onClick={() => setOpenMenu(true)} className="md:hidden p-2 text-white"> <Menu className="w-6 h-6" /></button>
             </div>
-            </div>
+          </div>
 
-          <NotificationBar
-            isOpen={isBarOpen}
-            onClose={() => setIsBarOpen(false)}
-            notifications={notifications}
-            onLoadMore={loadMore}
-            hasMore={hasMore}
-            loading={loading}
-            onMarkAllRead={markAllAsRead}
-          />
-          
+
+
           {openMenu && (
             <div className="md:hidden absolute w-4/5 left-0 h-screen top-0 backdrop-blur-xl bg-black/50 shadow-lg border border-white/10 p-4">
               <div className="relative flex flex-col h-full">
@@ -220,8 +179,18 @@ const Navbar = ({ profile }: { profile: any }) => {
 
 export default Navbar;
 
-const ViewAsLogin = ({ profile, setIsBarOpen }: any) => {
+const ViewAsLogin = ({ profile, isBarOpen, setIsBarOpen }: any) => {
+  // -- Notification State ------------
+  const [view, setView] = useState('bar');
+  const [notifications, setNotifications] = useState<any[]>([]);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const [unReadNotificationCount, setUnReadNotificationCount] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+
   const router = useRouter();
+  
   const handleLogout = () => {
     Cookies.remove("accessToken");
     deleteCookie("user");
@@ -229,16 +198,79 @@ const ViewAsLogin = ({ profile, setIsBarOpen }: any) => {
     router.push("/");
     toast.success("Logged out successfully");
   };
+
+  const getNotificationData = async (pageNum: number = 1) => {
+    try {
+      setLoading(true);
+      const response = await myFetch(`/notifications?page=${pageNum}`, { 
+        cache: "no-cache" 
+      });
+      
+      if ((response as any)?.success) {
+        const { result, unreadCount } = response?.data;               
+        if (pageNum === 1) {
+          setUnReadNotificationCount(unreadCount);
+        }              
+        setNotifications(prev => pageNum === 1 ? result : [...prev, ...result]);
+                      
+        setTotalPages(Number(response?.meta?.totalPage));
+        setHasMore(pageNum < Number(response?.meta?.totalPage));        
+      }
+    } catch (error) {
+      console.log("notification error", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const loadMore = () => {
+    if (loading || !hasMore) return;
+    
+    const nextPage = page + 1;
+    setPage(nextPage);
+    getNotificationData(nextPage);
+  };
+
+  const markAllAsRead = async () => {
+    try {
+      // Call your API to mark all as read
+      await myFetch("/notifications", { method: "POST" });
+      
+      // Update local state
+      setNotifications(prev => prev.map(notif => ({ ...notif, read: true })));
+      setUnReadNotificationCount(0);
+    } catch (error) {
+      console.log("Mark all as read error", error);
+    }
+  };
+
+  useEffect(() => {
+    getNotificationData(1);
+  }, []);
+
   return (
     <div className="flex items-center gap-3">
       <Wallet strokeWidth={1} size={30} color="#ededed" />
-      <Bell onClick={() => setIsBarOpen(true)} strokeWidth={1} size={30} color="white" />
+      <div className="relative">
+        <Bell 
+          onClick={() => setIsBarOpen(true)} 
+          strokeWidth={1} 
+          size={30} 
+          color="white" 
+          className="cursor-pointer"
+        />
+        {unReadNotificationCount > 0 && (
+          <Badge className="absolute -top-2 -right-1 h-5 min-w-5 rounded-full px-1 font-mono tabular-nums">
+            {unReadNotificationCount}
+          </Badge>
+        )}
+      </div>
+
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger>
-          {profile?.image ?
+          {profile?.image ? (
             <Avatar className="rounded-lg cursor-pointer">
-              <div className=" border-slate-300/50 rounded-full">
-
+              <div className="border-slate-300/50 rounded-full">
                 <AvatarImage
                   src={
                     profile?.image
@@ -246,14 +278,16 @@ const ViewAsLogin = ({ profile, setIsBarOpen }: any) => {
                       : "/placeholder.png"
                   }
                   alt={profile?.name}
-                  className="w-12 h-12 object-fill rounded-full "
+                  className="w-12 h-12 object-fill rounded-full"
                 />
               </div>
             </Avatar>
-            : <CircleUser strokeWidth={1.25} size={30} color="#ededed" />}
+          ) : (
+            <CircleUser strokeWidth={1.25} size={30} color="#ededed" />
+          )}
         </DropdownMenuTrigger>
         <DropdownMenuContent align="center">
-          <Link href={profile?.role == "CREATOR" ? "/creator" : "/promotor"}>
+          <Link href={profile?.role === "CREATOR" ? "/creator" : "/promotor"}>
             <DropdownMenuItem className="cursor-pointer">
               Profile
               <DropdownMenuShortcut>
@@ -269,6 +303,17 @@ const ViewAsLogin = ({ profile, setIsBarOpen }: any) => {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+
+      <NotificationBar
+        isOpen={isBarOpen}
+        onClose={() => setIsBarOpen(false)}
+        notifications={notifications}
+        onLoadMore={loadMore}
+        hasMore={hasMore}
+        loading={loading}
+        onMarkAllRead={markAllAsRead}
+      />
     </div>
   );
 };
+

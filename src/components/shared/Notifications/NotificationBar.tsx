@@ -5,37 +5,42 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Link from 'next/link';
+import { IoNotificationsCircleOutline } from 'react-icons/io5';
+import { FormatDate } from '../FormatDate';
+import { Badge } from '@/components/ui/badge';
 
 
-const NotificationItem = ({ notification, onClick }:any) => {
+const NotificationItem = ({ notification, onClick }: any) => {
   const Icon = notification.icon;
-  
+
   return (
     <div
       onClick={onClick}
-      className={`p-4 hover:bg-gray-50 cursor-pointer border-b ${
-        !notification.read ? 'bg-blue-50' : ''
-      }`}
+      className={`p-4 hover:bg-gray-50 cursor-pointer border-b ${!notification.read ? 'bg-blue-50' : ''
+        }`}
     >
       <div className="flex items-start gap-3">
-        <Avatar>
-          <AvatarImage src={notification.avatar} />
-          <AvatarFallback>{notification.user[0]}</AvatarFallback>
+
+        <Avatar className="rounded-full cursor-pointer bg-primary flex items-center justify-center w-10 h-10">
+          <Bell size={25} className='text-slate-200' />
         </Avatar>
-        
+
         <div className="flex-1">
-          <p className="text-sm">
-            <span className="font-semibold">{notification.user}</span>{' '}
-            <span className="text-gray-600">{notification.type}</span>
-          </p>
-          <p className="text-xs text-gray-500 mt-1">{notification.time} ago</p>
-        </div>                
+          <p className={`text-sm ${notification.read ?  "" : "font-bold"}`}>{notification?.title}</p>
+          <p className="text-sm">{notification?.message}</p>
+          <div className="flex items-center justify-between pt-2">
+            <Badge variant="destructive">{notification.type}</Badge>
+            <p className="text-xs text-gray-500 ">{FormatDate(notification?.createdAt ?? notification?.updatedAt)}</p>
+          </div>
+
+        </div>
       </div>
     </div>
   );
 };
 
-const NotificationBar = ({ isOpen, onClose, notifications, onLoadMore, hasMore, loading, onMarkAllRead }: any) => {
+const NotificationBar = ({ isOpen, onClose, notifications, onLoadMore, hasMore, loading, onMarkAllRead }: any) => {  
+  
   const scrollRef = useRef(null);
   const modalRef = useRef(null);
 
@@ -83,7 +88,7 @@ const NotificationBar = ({ isOpen, onClose, notifications, onLoadMore, hasMore, 
       <div className="p-4 border-b flex items-center justify-between">
         <h2 className="text-lg font-semibold">Notifications</h2>
         <div className="flex items-center gap-2">
-         <Link href="/notifications"> <Button variant="ghost" size="sm">
+          <Link href="/notifications" onClick={()=>onClose()}> <Button variant="ghost" size="sm">
             View All
           </Button></Link>
           <Button size="sm" onClick={onMarkAllRead}>
@@ -97,25 +102,30 @@ const NotificationBar = ({ isOpen, onClose, notifications, onLoadMore, hasMore, 
 
       {/* Notifications List */}
       <div ref={scrollRef} className="flex-1  overflow-y-auto">
-        {notifications.map((notif: any) => (
+        {notifications?.length > 0 ? notifications?.map((notif: any, index:number) => (
           <NotificationItem
-            key={notif.id}
+            key={index}
             notification={notif}
             onClick={() => console.log('Clicked:', notif.id)}
           />
-        ))}
-        
+        )) : !hasMore && notifications.length > 0 ? (
+          <div className="text-center py-4 text-sm text-gray-500">
+            No more notifications
+          </div>
+        )
+      
+      : !hasMore && notifications.length === 0 && (
+          <div className="text-center py-4 text-sm text-gray-500">
+            No Notifications
+          </div>
+        )}
+
         {loading && (
           <div className="flex justify-center p-4">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900" />
           </div>
         )}
-        
-        {!hasMore && notifications.length > 0 && (
-          <div className="text-center py-4 text-sm text-gray-500">
-            No more notifications
-          </div>
-        )}
+
       </div>
     </div>
   );

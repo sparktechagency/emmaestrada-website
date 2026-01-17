@@ -1,57 +1,67 @@
 'use client'
 
-import React, { useState, useRef, useEffect } from 'react';
-import { Bell, User, Heart, MessageCircle, UserPlus, Settings, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { myFetch } from '@/utils/myFetch';
+import { Bell, Heart, X } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 
-// Mock notification data generator
-const generateNotification = (id:any) => {
-  const types = [
-    { icon: Heart, text: 'liked your post', color: 'bg-red-100' },
-    { icon: MessageCircle, text: 'commented on your post', color: 'bg-blue-100' },
-    { icon: UserPlus, text: 'started following you', color: 'bg-green-100' },
-    { icon: User, text: 'tagged you in a post', color: 'bg-purple-100' }
-  ];
-  const type = types[Math.floor(Math.random() * types.length)];
-  const names = ['Sarah Johnson', 'Mike Chen', 'Emily Davis', 'Alex Rodriguez', 'Jessica Brown'];
-  
-  return {
-    id,
-    user: names[Math.floor(Math.random() * names.length)],
-    avatar: `https://i.pravatar.cc/150?img=${id % 70}`,
-    type: type.text,
-    icon: type.icon,
-    iconColor: type.color,
-    time: id < 5 ? `${Math.floor(Math.random() * 60)}m` : id < 15 ? `${Math.floor(Math.random() * 24)}h` : `${Math.floor(Math.random() * 30)}d`,
-    read: id > 3 && Math.random() > 0.5
+const NotificationItem = ({ notification, onClick }: any) => {
+  // Map notification types to icons and colors
+  const getTypeIcon = (type: string) => {
+    switch (type) {
+      case 'REQUESTED':
+        return { icon: Bell, color: 'bg-blue-100' };
+      case 'APPROVED':
+        return { icon: Heart, color: 'bg-green-100' };
+      case 'REJECTED':
+        return { icon: X, color: 'bg-red-100' };
+      default:
+        return { icon: Bell, color: 'bg-gray-100' };
+    }
   };
-};
 
-const NotificationItem = ({ notification, onClick }:any) => {
-  const Icon = notification.icon;
-  
+  const { icon: Icon, color } = getTypeIcon(notification.type);
+
+  // Format time ago
+  const formatTimeAgo = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+    const diffDays = Math.floor(diffMs / 86400000);
+
+    if (diffMins < 60) return `${diffMins}m`;
+    if (diffHours < 24) return `${diffHours}h`;
+    return `${diffDays}d`;
+  };
+
   return (
     <div
       onClick={onClick}
-      className={`p-4 hover:bg-gray-50 cursor-pointer border-b ${
+      className={`p-4 hover:bg-gray-50 cursor-pointer border-b transition-colors ${
         !notification.read ? 'bg-blue-50' : ''
       }`}
     >
       <div className="flex items-start gap-3">
-        <Avatar>
-          <AvatarImage src={notification.avatar} />
-          <AvatarFallback>{notification.user[0]}</AvatarFallback>
-        </Avatar>
+        <div className={`p-2 rounded-full ${color}`}>
+          <Icon className="h-5 w-5 text-gray-700" />
+        </div>
         
         <div className="flex-1">
           <p className="text-sm">
-            <span className="font-semibold">{notification.user}</span>{' '}
-            <span className="text-gray-600">{notification.type}</span>
+            <span className="font-semibold">{notification.message}</span>
           </p>
-          <p className="text-xs text-gray-500 mt-1">{notification.time} ago</p>
-        </div>                
+          <p className="text-sm text-gray-600 mt-1">{notification.title}</p>
+          <p className="text-xs text-gray-500 mt-1">
+            {formatTimeAgo(notification.createdAt)} ago
+          </p>
+        </div>
+
+        {!notification.read && (
+          <div className="w-2 h-2 bg-blue-600 rounded-full mt-2" />
+        )}
       </div>
     </div>
   );
@@ -63,39 +73,65 @@ const Notifications = () => {
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const scrollContainerRef = useRef(null);
+  const [totalPages, setTotalPages] = useState(1);
+  const [unreadCount, setUnreadCount] = useState(0);
 
-  // Initialize notifications
-  useEffect(() => {
-    const initial = Array.from({ length: 15 }, (_, i) => generateNotification(i));
-    // @ts-ignore
-    setNotifications(initial);
-  }, []);
+  const getNotificationData = async (pageNum: number = 1) => {
+    try {
+      setLoading(true);
+      const response = await myFetch(`/notifications?page=${pageNum}`, { 
+        cache: "no-cache" 
+      });
+      
+      if (response?.success) {
+        const { result, unreadCount } = response?.data;
+        
+        // Update unread count only on first load
+        if (pageNum === 1) {
+          setUnreadCount(unreadCount);
+        }
+        
+        // Append new notifications to existing ones
+        setNotifications(prev => pageNum === 1 ? result : [...prev, ...result]);
+        
+        // Update pagination state
+        setTotalPages(Number(response?.meta?.totalPage));
+        setHasMore(pageNum < Number(response?.meta?.totalPage));
+      }
+    } catch (error) {
+      console.log("notification error", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const loadMore = () => {
     if (loading || !hasMore) return;
     
-    setLoading(true);
-    setTimeout(() => {
-      const newPage = page + 1;
-      const newNotifications = Array.from(
-        { length: 10 }, 
-        (_, i) => generateNotification(page * 15 + i)
-      );
-      
-      setNotifications(prev => [...prev, ...newNotifications]);
-      setPage(newPage);
-      setLoading(false);
-      
-      if (newPage >= 5) setHasMore(false);
-    }, 1000);
+    const nextPage = page + 1;
+    setPage(nextPage);
+    getNotificationData(nextPage);
   };
 
-  const markAllAsRead = () => {
-    setNotifications(prev => prev.map(notif => ({ ...notif, read: true })));
+  const markAllAsRead = async () => {
+    try {
+      // Call your API to mark all as read
+      await myFetch("/notifications", { method: "POST" });
+      
+      // Update local state
+      setNotifications(prev => prev.map(notif => ({ ...notif, read: true })));
+      setUnreadCount(0);
+    } catch (error) {
+      console.log("Mark all as read error", error);
+    }
   };
+
+  useEffect(() => {
+    getNotificationData(1);
+  }, []);
 
   // Scroll event handler
-  const handleScroll = (e:any) => {
+  const handleScroll = (e: any) => {
     const container = e.target;
     const scrollTop = container.scrollTop;
     const scrollHeight = container.scrollHeight;
@@ -113,15 +149,23 @@ const Notifications = () => {
   return (
     <div className="my-20">
       <div className="max-w-4xl mx-auto px-4 py-6">
-        <Card className="bg-white">
-          <header className="shadow-sm sticky top-0 z-40">
-            <div className="max-w-4xl mx-auto px-4 pb-4 flex items-center justify-between">
-              <h1 className="text-2xl font-bold">Notifications</h1>
+        <Card className="bg-white shadow-lg">
+          <header className="shadow-sm sticky top-0 z-40 bg-white rounded-t-lg">
+            <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+              <div>
+                <h1 className="text-2xl font-bold">Notifications</h1>
+                {unreadCount > 0 && (
+                  <p className="text-sm text-gray-500 mt-1">
+                    {unreadCount} unread notification{unreadCount !== 1 ? 's' : ''}
+                  </p>
+                )}
+              </div>
               <Button 
                 variant="ghost" 
                 size="sm"
                 onClick={markAllAsRead}
-                className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                disabled={unreadCount === 0}
+                className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 disabled:opacity-50"
               >
                 Mark all as read
               </Button>
@@ -133,23 +177,35 @@ const Notifications = () => {
             onScroll={handleScroll}
             className="divide-y min-h-[30vh] max-h-[62vh] overflow-y-auto"
           >
-            {notifications.map((notif) => (
-              <NotificationItem 
-                key={notif.id} 
-                notification={notif}
-                onClick={() => console.log('Clicked:', notif.id)}
-              />
-            ))}
+            {notifications.length === 0 && !loading ? (
+              <div className="flex flex-col items-center justify-center p-12 text-center">
+                <Bell className="h-16 w-16 text-gray-300 mb-4" />
+                <h3 className="text-lg font-semibold text-gray-700 mb-2">
+                  No notifications yet
+                </h3>
+                <p className="text-sm text-gray-500">
+                  When you get notifications, they'll show up here
+                </p>
+              </div>
+            ) : (
+              notifications.map((notif) => (
+                <NotificationItem 
+                  key={notif._id} 
+                  notification={notif}
+                  onClick={() => console.log('Clicked:', notif._id)}
+                />
+              ))
+            )}
             
             {loading && (
               <div className="flex justify-center p-4">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900" />
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" />
               </div>
             )}
             
             {!hasMore && notifications.length > 0 && (
-              <div className="p-4 text-center text-gray-500">
-                No more notifications
+              <div className="p-4 text-center text-gray-500 text-sm">
+                You're all caught up! No more notifications
               </div>
             )}
           </div>
@@ -160,124 +216,3 @@ const Notifications = () => {
 };
 
 export default Notifications;
-
-
-// export default function Notifications() {
-//   const [view, setView] = useState('bar');
-//   const [isBarOpen, setIsBarOpen] = useState(false);
-//   const [notifications, setNotifications] = useState([]);
-//   const [page, setPage] = useState(1);
-//   const [loading, setLoading] = useState(false);
-//   const [hasMore, setHasMore] = useState(true);
-
-//   // Initialize notifications
-//   useEffect(() => {
-//     const initial = Array.from({ length: 15 }, (_, i) => generateNotification(i));
-//     setNotifications(initial);
-//   }, []);
-
-//   const loadMore = () => {
-//     if (loading || !hasMore) return;
-    
-//     setLoading(true);
-//     setTimeout(() => {
-//       const newPage = page + 1;
-//       const newNotifications = Array.from(
-//         { length: 10 }, 
-//         (_, i) => generateNotification(page * 15 + i)
-//       );
-      
-//       setNotifications(prev => [...prev, ...newNotifications]);
-//       setPage(newPage);
-//       setLoading(false);
-      
-//       if (newPage >= 5) setHasMore(false);
-//     }, 1000);
-//   };
-
-//   const markAllAsRead = () => {
-//     setNotifications(prev => prev.map(notif => ({ ...notif, read: true })));
-//   };
-
-//   const unreadCount = notifications.filter(n => !n.read).length;
-
-//   return (
-//     <div className="min-h-screen bg-gray-50">
-//       {/* Top Navigation */}
-//       <nav className="bg-white shadow-sm fixed top-0 left-0 right-0 z-50">
-//         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-//           <div className="flex items-center gap-4">
-//             <h1 className="text-xl font-bold text-blue-600">facebook</h1>
-//             <div className="flex gap-2">
-//               <Button
-//                 variant={view === 'bar' ? 'default' : 'outline'}
-//                 onClick={() => setView('bar')}
-//                 size="sm"
-//               >
-//                 Notification Bar
-//               </Button>
-//               <Button
-//                 variant={view === 'page' ? 'default' : 'outline'}
-//                 onClick={() => setView('page')}
-//                 size="sm"
-//               >
-//                 Notification Page
-//               </Button>
-//             </div>
-//           </div>
-          
-//           <div className="flex items-center gap-3">
-//             <Button
-//               variant="ghost"
-//               size="icon"
-//               className="relative"
-//               onClick={() => {
-//                 if (view === 'bar') {
-//                   setIsBarOpen(!isBarOpen);
-//                 } else {
-//                   setView('page');
-//                 }
-//               }}
-//             >
-//               <Bell className="h-6 w-6" />
-//               {unreadCount > 0 && (
-//                 <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-semibold">
-//                   {unreadCount > 9 ? '9+' : unreadCount}
-//                 </span>
-//               )}
-//             </Button>
-//             <Button variant="ghost" size="icon">
-//               <Settings className="h-6 w-6" />
-//             </Button>
-//           </div>
-//         </div>
-//       </nav>
-
-//       <div className="pt-16">
-//         {view === 'bar' ? (
-//           <div className="max-w-7xl mx-auto px-4 py-8">
-//             <h2 className="text-3xl font-bold mb-4">Welcome to Your Dashboard</h2>
-//             <p className="text-gray-600">Click the notification bell icon to view your notifications in the dropdown bar.</p>
-//             <NotificationBar
-//               isOpen={isBarOpen}
-//               onClose={() => setIsBarOpen(false)}
-//               notifications={notifications}
-//               onLoadMore={loadMore}
-//               hasMore={hasMore}
-//               loading={loading}
-//               onMarkAllRead={markAllAsRead}
-//             />
-//           </div>
-//         ) : (
-//           <NotificationPage
-//             notifications={notifications}
-//             onLoadMore={loadMore}
-//             hasMore={hasMore}
-//             loading={loading}
-//             onMarkAllRead={markAllAsRead}
-//           />
-//         )}
-//       </div>
-//     </div>
-//   );
-// }
