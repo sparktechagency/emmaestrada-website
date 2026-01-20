@@ -58,7 +58,7 @@ const LoadingSkeleton = () => (
 );
 
 
-const MessageSidebar = () => {
+const MessageSidebar = ({profile}: {profile: any}) => {
     const [chats, setChats] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1);
@@ -68,8 +68,7 @@ const MessageSidebar = () => {
 
     const searchParams = useSearchParams();
     const router = useRouter();
-    const pathname = usePathname();
-    const { profile } = useProfile();
+    const pathname = usePathname();    
     const socket = useSocket();
 
     // Get searchTerm from URL params

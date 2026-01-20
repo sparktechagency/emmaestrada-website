@@ -75,7 +75,7 @@ const NotificationItem = ({ notification, onClick }: any) => {
   );
 };
 
-const Notifications = () => {
+const Notifications = ({profile}:{profile: any}) => {
   const [notifications, setNotifications] = useState<any[]>([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -83,7 +83,8 @@ const Notifications = () => {
   const scrollContainerRef = useRef(null);
   const [totalPages, setTotalPages] = useState(1);
   const [unreadCount, setUnreadCount] = useState(0);
-  const {profile} = useProfile();
+  
+
    const socket = useSocket();
   
     // ✅ FIX 2: Proper socket listener with cleanup

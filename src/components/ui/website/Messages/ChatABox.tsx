@@ -17,12 +17,13 @@ import ChatBoxFooter from "./ChatBoxFooter"
 import ChatBoxHeader from "./ChatBoxHeader"
 
 interface ChatBoxProps {
-  chatId: string
+  chatId: string,
+  profile:any
 }
 
-const ChatBox = ({ chatId }: ChatBoxProps) => {
+const ChatBox = ({ chatId, profile }: ChatBoxProps) => {
   const [loading, setLoading] = useState(true)
-  const { profile } = useProfile();
+  
   const [messages, setMessage] = useState([]);
   const [participant, setParticipant] = useState(null)
   const scrollRef = useRef<HTMLDivElement>(null)

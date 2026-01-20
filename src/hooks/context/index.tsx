@@ -4,14 +4,12 @@ import { DataProvider } from './DataContext'
 import { ProfileProvider, useProfile } from './ProfileContext'
 
 
-const ContextProviders = async({ children }: { children: React.ReactNode }) => {
-       
+const ContextProviders = async ({ children }: { children: React.ReactNode }) => {
+
     return (
         <>
             <DataProvider>
-                <ProfileProvider>                    
-                        {children}                    
-                </ProfileProvider>
+                {children}
             </DataProvider>
         </>
     )

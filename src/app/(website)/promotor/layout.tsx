@@ -1,10 +1,15 @@
 import PromotorHeader from '@/components/ui/website/promotor/PromotorHeader'
+import getProfile from '@/utils/getProfile'
 import React from 'react'
 
-const layout = ({children}: {children: React.ReactNode}) => {
+const layout = async({children}: {children: React.ReactNode}) => {
+
+  const profile =  await getProfile()
+
+  
   return (
     <div>
-    <PromotorHeader />
+    <PromotorHeader profile={profile}/>
     <main>{children}</main>
     </div>
   )

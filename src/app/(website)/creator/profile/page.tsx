@@ -2,8 +2,8 @@ import InfluencerProfile from '@/components/ui/website/Influencer/InfluencerProf
 import getProfile from '@/utils/getProfile';
 import React from 'react'
 
-const page = async() => {
-    const user = await getProfile();  
+const page = () => {
+    
   return (
     <div><InfluencerProfile/></div>
   )

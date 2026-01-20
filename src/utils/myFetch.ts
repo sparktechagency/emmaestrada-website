@@ -51,7 +51,7 @@ export const myFetch = async (
     ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
   };
 
-  try {
+  try {    
     const response = await fetch(`${process.env.BASE_URL}${url}`, {
       method,
       headers: reqHeaders,

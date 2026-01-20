@@ -77,6 +77,8 @@ const Navbar = ({ profile }: { profile: any }) => {
 
     handleScroll();
     window.addEventListener("scroll", handleScroll);
+    console.log("mara shara");
+    
     return () => window.removeEventListener("scroll", handleScroll);
   }, [mounted]);
 

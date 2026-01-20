@@ -11,12 +11,10 @@ import { IUser } from "@/types/profile";
 import "swiper/css";
 import { Button } from "../../button";
 import ArtistCard from "@/components/shared/ArtistCard";
-import { useProfile } from "@/hooks/context/ProfileContext";
 import { useRouter } from "next/navigation";
 
-function ArtistsSection({ creators }: any) {
+function ArtistsSection({ creators, profile }: {creators:any, profile: any}) {
   const [open, setOpen] = useState(false);
-  const {profile} = useProfile()
     
   const route = useRouter()
 

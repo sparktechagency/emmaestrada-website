@@ -21,6 +21,7 @@ import React from 'react'
 
 const page = async () => {
   const response = await myFetch('/faqs')
+  console.log("response", response);
   
   return (
     <div>

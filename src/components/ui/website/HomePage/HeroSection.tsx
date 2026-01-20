@@ -8,6 +8,8 @@ import Image from "next/image";
 const HeroSection = async () => {
 
   const sliders = await myFetch(`/sliders/all`);
+
+  
   const planners = await myFetch(`/home-campaign-planners/all`);
 
   return (

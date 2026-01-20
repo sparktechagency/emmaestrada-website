@@ -10,6 +10,8 @@ const authRoutes = [
   "/login",
   "/forgot-password",
   "/reset-password",
+  "/businessname",
+  "/otp-verify",
   "/otp-verify",
 ];
 
@@ -79,6 +81,10 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [    
     "/creator/:path*",
+    "/creators/:path*",
+    "/notifications/:path*",
+    "/promotor/:path*",
+    "/success/:path*",
     "/campaigns/:path*",
     "/bookings/:path*",
     "/verification/:path*",

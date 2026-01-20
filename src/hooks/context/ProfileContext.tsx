@@ -10,8 +10,6 @@ import React, {
 } from "react";
 import { myFetch } from "@/utils/myFetch";
 import { IUser } from "@/types/profile";
-import Cookies from "js-cookie"
-
 interface ProfileContextType {
   profile: IUser | null;
   loading: boolean;
@@ -35,7 +33,7 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
       setLoading(true);
       setError(null);
 
-      const res = await myFetch("/users/profile", { cache: "no-cache" });
+      const res = await myFetch("/users/profile", { cache: "force-cache" });
 
       if (res?.success) {
         setProfile(res?.data);
@@ -53,11 +51,16 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // ✅ Auto call once (client only)
+  // useEffect(() => {
+  //   if (fetchedRef.current) return;
+  //   fetchedRef.current = true;
+  //   fetchProfile();
+  // }, []);
   useEffect(() => {
-    if (fetchedRef.current) return;
+    if (fetchedRef.current || profile) return;
     fetchedRef.current = true;
     fetchProfile();
-  }, []);
+  }, [profile]);
 
   const clearProfile = () => {
     setProfile(null);

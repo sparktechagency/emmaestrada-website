@@ -24,6 +24,7 @@ import { useProfile } from "@/hooks/context/ProfileContext";
 import { myFetch } from "@/utils/myFetch";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { revalidate } from "@/helpers/revalidateHelper";
 
 const isoToDate = (date: any) => {
   const yyyyMmDd = [
@@ -34,8 +35,8 @@ const isoToDate = (date: any) => {
   return yyyyMmDd;
 }
 
-export default function ProfileInfo() {
-  const { profile, refetchProfile, loading: profileLoading } = useProfile();
+export default function ProfileInfo({profile}: {profile:any}) {
+  
 
   const [loading, setLoading] = useState(false);
   const [imageLoading, setImageLoading] = useState(false);
@@ -116,9 +117,9 @@ export default function ProfileInfo() {
         body,
       });
 
-
+      
       if (res?.success) {
-        refetchProfile();
+        revalidate("profile")
         toast.success("Profile picture updated successfully!");
       } else {        
         toast.error(res?.message);
@@ -159,7 +160,7 @@ export default function ProfileInfo() {
 
 
       if (res?.success) {
-        refetchProfile();
+        revalidate("profile")
         setEditMode(false);
         toast.success(res?.message);
       } else {
@@ -172,7 +173,7 @@ export default function ProfileInfo() {
     }
   };
 
-  if (profileLoading) return <Loader />;
+  // if (profileLoading) return <Loader />;
 
   return (
     <div className="space-y-10">

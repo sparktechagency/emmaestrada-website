@@ -3,7 +3,7 @@ import getProfile from "@/utils/getProfile";
 
 const layout = async ({ children }: { children: React.ReactNode }) => {
   const user = await getProfile();
-
+  
   return (
     <div className="">
       <InfluencerHeader profile={user} />

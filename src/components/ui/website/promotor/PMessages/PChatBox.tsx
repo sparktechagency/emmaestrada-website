@@ -15,9 +15,8 @@ import { useEffect, useState, useRef } from "react";
 import PChatBoxFooter from "./PChatBoxFooter";
 import { getSocket } from "@/lib/socketClient";
 
-const PChatBox = () => {
+const PChatBox = ({profile}: {profile: any}) => {
   const params = useParams() as { chatId?: string };
-  const { profile } = useProfile();
 
   const [messages, setMessages] = useState<any[]>([]);
   const scrollRef = useRef<HTMLDivElement>(null);

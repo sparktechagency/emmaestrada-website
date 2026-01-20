@@ -2,8 +2,10 @@ import Container from '@/components/shared/Container';
 
 import PChatBox from './PChatBox';
 import PMessageSidebar from './PMessageSidebar';
+import getProfile from '@/utils/getProfile';
 
 const PMessages = async ({ chatList, response }: any) => {
+    const profile = await getProfile()
     return (
         <div>
             <Container >
@@ -13,7 +15,7 @@ const PMessages = async ({ chatList, response }: any) => {
                 </div>
                 <div className="flex flex-col lg:flex-row min-h-screen overflow-hidden md:gap-5 pb-20">                    
                     <PMessageSidebar />
-                    <PChatBox  />
+                    <PChatBox  profile={profile}/>
                 </div>
             </Container>
         </div>

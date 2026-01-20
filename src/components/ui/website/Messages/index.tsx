@@ -15,7 +15,7 @@ const Messages = async ({ chatList, response }: any) => {
                 </div>
                 <div className="flex flex-col lg:flex-row min-h-screen overflow-hidden md:gap-5 pb-20 bg-transparent">
                     {/* <MessageSidebar chatData={chatList} /> */}
-                    <MessageSidebar />
+                    {/* <MessageSidebar /> */}
                     {/* <ChatABox  /> */}
                 </div>
             </Container>

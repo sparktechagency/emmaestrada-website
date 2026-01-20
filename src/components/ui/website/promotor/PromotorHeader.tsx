@@ -30,9 +30,8 @@ const displayLinks = [
 ];
 
 
-const PromotorHeader = () => {
-  const pathname = usePathname();
-  const { profile } = useProfile();
+const PromotorHeader = ({profile}: {profile: any}) => {
+  const pathname = usePathname();  
   const route = useRouter()
   const [hasUnreadMesssage, setHasUnreadMessage] = useState(false)
   const socket = useSocket()

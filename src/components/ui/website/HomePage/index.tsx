@@ -9,17 +9,18 @@ import HeroSection from "./HeroSection";
 import Statics from "./Statics";
 import Testimonial from "./Testimonial";
 import WhyChooseUs from "./WhyChooseUs";
+import getProfile from "@/utils/getProfile";
 
 const HomePage = async () => {
   const  campaigns  = await myFetch("/campaigns/active-campaigns");
   const creators  = await myFetch("/creators");  
-
+const profile = await getProfile()
   return (
     <div className="">
       <HeroSection />
       <Container>
         <ArtAndInfluencerBanner />
-        <ArtistsSection creators={creators?.data}/>
+        <ArtistsSection creators={creators?.data} profile={profile}/>
         <WhyChooseUs />
       </Container>
       <BehindProcess />
