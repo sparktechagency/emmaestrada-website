@@ -41,7 +41,7 @@ const InfluencerHeader = ({ profile }: { profile: any }) => {
   const socket = useSocket();
   const [hasUnreadMesssage, setHasUnreadMessage] = useState(false)
   
-    const role = typeof window !== 'undefined' ? localStorage.getItem('role') : null;
+    
 
 
   useEffect(() => {
@@ -128,7 +128,7 @@ const InfluencerHeader = ({ profile }: { profile: any }) => {
               <div className="w-2 h-2 bg-green-500 rounded-full" />
               <span>
                 Currently viewing as:{" "}
-                <span className="text-primary uppercase">{role}</span>{" "}
+                <span className="text-primary uppercase">{profile?.role}</span>{" "}
               </span>
             </button>
 

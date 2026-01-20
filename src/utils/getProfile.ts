@@ -8,7 +8,7 @@ const getProfile = async (): Promise<any | null> => {
     next: {
       tags: ["profile"],
     },
-    cache: "force-cache",
+    // cache: "force-cache",
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",

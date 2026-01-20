@@ -23,11 +23,13 @@ const nextConfig = {
       // Increase the maximum request body size
       bodySizeLimit: "10mb",
     },
+    
   },
 
   eslint: {
     ignoreDuringBuilds: true, // 🚀 skips ESLint during build
   },
+  
 };
 
 export default nextConfig;

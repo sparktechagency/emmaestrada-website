@@ -15,6 +15,9 @@ const HomePage = async () => {
   const  campaigns  = await myFetch("/campaigns/active-campaigns");
   const creators  = await myFetch("/creators");  
 const profile = await getProfile()
+
+console.log("campaigns", campaigns);
+
   return (
     <div className="">
       <HeroSection />

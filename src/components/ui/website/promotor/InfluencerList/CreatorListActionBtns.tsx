@@ -22,8 +22,7 @@ const CreatorListActionBtns = ({ row }: { row: any }) => {
     try {            
       const res = await myFetch("/chats/create", { method: "POST", body: { participant } });      
       if (res?.success) {
-        toast.success("Created Chat Successfully")
-        revalidate("chats")
+        toast.success("Created Chat Successfully")        
         router.push("/creator/messages")
       }
     } catch (error) {
@@ -35,8 +34,7 @@ const CreatorListActionBtns = ({ row }: { row: any }) => {
     try {
       const res = await myFetch("/followers/follow", { method: "POST", body: { followingId: id } });      
       if (res?.success) {
-        revalidate("CREATOR")
-        toast.success("Created Chat Successfully")
+        revalidate("CREATOR")        
       } else {
         toast.error(res?.message)
       }

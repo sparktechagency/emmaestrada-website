@@ -24,7 +24,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const fetchProfile = async () => {
     try {
 
-      const res = await myFetch("/users/profile", { cache: "force-cache", tags: ["profile"] });
+      const res = await myFetch("/users/profile", { tags: ["profile"] });
 
       if (res?.success) {
         setProfile(res?.data);

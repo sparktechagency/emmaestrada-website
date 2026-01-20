@@ -36,8 +36,6 @@ const PromotorHeader = ({profile}: {profile: any}) => {
   const [hasUnreadMesssage, setHasUnreadMessage] = useState(false)
   const socket = useSocket()
 
-    const role = typeof window !== 'undefined' ? localStorage.getItem('role') : null;
-
 
   useEffect(() => {
     if (!profile?._id || !socket) return;
@@ -114,7 +112,7 @@ const PromotorHeader = ({profile}: {profile: any}) => {
             <button className="btn flex items-center gap-2 bg-white font-semibold text-black text-lg rounded-full shadow">
               <div className="w-2 h-2 bg-green-500 rounded-full" />
               <span>Currently viewing as: {" "}
-                <span className="text-primary uppercase">{role}</span>
+                <span className="text-primary uppercase">{profile?.role}</span>
               </span>
             </button>
 

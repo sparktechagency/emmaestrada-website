@@ -36,7 +36,8 @@ export const myFetch = async (
     tags,
     token,
     headers = {},
-    cache = "force-cache",
+    // cache = "force-cache",
+    cache = "no-store",
   }: FetchOptions = {}
 ): Promise<FetchResponse> => {
   const accessToken = token || (await getToken());
@@ -62,6 +63,8 @@ export const myFetch = async (
 
     const responseData = await response.json();
 
+    console.log("responseData", responseData);
+    
     if (response.ok) {
       return {
         success: responseData?.success ?? true,

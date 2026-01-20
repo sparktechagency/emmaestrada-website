@@ -24,12 +24,12 @@ const LoginVerify = () => {
   const route = useRouter()
   const [timerKey, setTimerKey] = useState(0);
 
-
   const secondsLeft = useOtpTimer(timerKey);
   const minutes = String(Math.floor(secondsLeft / 60)).padStart(2, "0");
   const seconds = String(secondsLeft % 60).padStart(2, "0");
 
   const email = Cookies.get('email');
+
   const handleChange = (value: string, index: number) => {
     if (!/^\d*$/.test(value)) return // allow only digits
 
@@ -41,6 +41,35 @@ const LoginVerify = () => {
     if (value && index < 5) {
       inputsRef.current[index + 1]?.focus()
     }
+  }
+
+  const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>, index: number) => {
+    e.preventDefault()
+    const pastedData = e.clipboardData.getData('text').trim()
+    
+    // Check if pasted data contains only digits
+    if (!/^\d+$/.test(pastedData)) {
+      toast.error('Please paste only numbers')
+      return
+    }
+
+    // Get up to 6 digits from the pasted data
+    const digits = pastedData.slice(0, 6).split('')
+    
+    const newOtp = [...otp]
+    
+    // Fill the inputs starting from the current index
+    digits.forEach((digit, i) => {
+      if (index + i < 6) {
+        newOtp[index + i] = digit
+      }
+    })
+    
+    setOtp(newOtp)
+    
+    // Focus the next empty input or the last input
+    const nextIndex = Math.min(index + digits.length, 5)
+    inputsRef.current[nextIndex]?.focus()
   }
 
   const handleBackspace = (e: React.KeyboardEvent, index: number) => {
@@ -69,18 +98,18 @@ const LoginVerify = () => {
   }
 
   return (
-        <div className="min-h-screen flex items-center justify-center relative px-4 py-8">
-          {/* Optimized Background Image */}
-          <Image
-            src="/images/bgImg.png"
-            alt="Background"
-            fill
-            priority
-            quality={85}
-            className="object-cover -z-10"
-            sizes="100vw"
-          />
-      <div className="  backdrop-blur-[2.5px] border-2 border-white/20 rounded-xl py-5 sm:p-12 ">
+    <div className="min-h-screen flex items-center justify-center relative px-4 py-8">
+      {/* Optimized Background Image */}
+      <Image
+        src="/images/bgImg.png"
+        alt="Background"
+        fill
+        priority
+        quality={85}
+        className="object-cover -z-10"
+        sizes="100vw"
+      />
+      <div className="backdrop-blur-[2.5px] border-2 border-white/20 rounded-xl py-5 sm:p-12">
         <Card className="w-[90%] mx-auto md:w-full max-w-xl p-0 sm:p-10">
           {/* Card Header */}
           <CardHeader className="flex flex-col items-center space-y-3">
@@ -103,6 +132,7 @@ const LoginVerify = () => {
                     value={digit}
                     onChange={(e) => handleChange(e.target.value, index)}
                     onKeyDown={(e) => handleBackspace(e, index)}
+                    onPaste={(e) => handlePaste(e, index)}
                     ref={(el: any) => inputsRef.current[index] = el}
                     className="text-center text-xl h-12 w-12"
                   />
@@ -114,7 +144,6 @@ const LoginVerify = () => {
                   {secondsLeft > 0 ? `${minutes}:${seconds}` : "OTP Expired"}
                 </span>
               </div>
-
 
               <Button disabled={!secondsLeft} type="submit" size="lg" className="w-full mt-4">
                 Verify OTP

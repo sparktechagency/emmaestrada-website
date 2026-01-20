@@ -204,7 +204,7 @@ const MessageSidebar = ({profile}: {profile: any}) => {
             {/* Search Bar */}
             <div className="relative p-2 flex items-center my-5">
                 <Input
-                    onChange={handleOnChange}
+                    onChange={(e)=>handleOnChange(e)}
                     placeholder="Search conversations..."
                     className="pl-3 pr-14 bg-white h-12"
                 />
