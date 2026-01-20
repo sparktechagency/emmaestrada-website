@@ -64,7 +64,7 @@ const PromotorHeader = ({profile}: {profile: any}) => {
   const handleSwitchRoleConfirm = () => {
     Swal.fire({
       title: "Are you sure?",
-      text: "You you want to swich from Creator to Promotor",
+      text: "You you want to swich from Promotor to Creator",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "var(--color-primary)",
@@ -82,8 +82,9 @@ const PromotorHeader = ({profile}: {profile: any}) => {
               icon: "success",
             });
 
-            Cookies.set("accessToken", res?.data?.data?.accessToken);
-            route.push("/creator")
+            Cookies.set("accessToken", res?.data?.accessToken);            
+            route.push("/creator");
+            route.refresh();
           } else {
             Swal.fire({
               title: "Failed!",

@@ -51,6 +51,8 @@ const generateNotification = (id: any) => {
 };
 
 
+
+
 const Navbar = ({ profile }: { profile: any }) => {
   const [mounted, setMounted] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -63,6 +65,15 @@ const Navbar = ({ profile }: { profile: any }) => {
   const darkBgRoutes = ["creator", "promotor", "success", "notifications"];
   const hasDarkBackground = darkBgRoutes.includes(pathname.split("/")[1]);
 
+  useEffect(() => {
+    // Set role in localStorage if it doesn't exist
+    if (profile?.role && typeof window !== 'undefined') {
+      const storedRole = localStorage.getItem('role');
+      if (!storedRole) {
+        localStorage.setItem('role', profile.role);
+      }
+    }
+  }, [profile]);
 
   useEffect(() => {
     setMounted(true);
@@ -76,9 +87,7 @@ const Navbar = ({ profile }: { profile: any }) => {
     };
 
     handleScroll();
-    window.addEventListener("scroll", handleScroll);
-    console.log("mara shara");
-    
+    window.addEventListener("scroll", handleScroll);    
     return () => window.removeEventListener("scroll", handleScroll);
   }, [mounted]);
 
@@ -303,7 +312,7 @@ const ViewAsLogin = ({ profile, isBarOpen, setIsBarOpen }: any) => {
               </div>
             </Avatar>
           ) : (
-            <CircleUser strokeWidth={1.25} size={30} color="#ededed" />
+            <CircleUser strokeWidth={1.25} size={30} color="#DBDBDB" />
           )}
         </DropdownMenuTrigger>
         <DropdownMenuContent align="center">

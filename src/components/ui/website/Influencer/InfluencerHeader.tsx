@@ -85,9 +85,10 @@ const InfluencerHeader = ({ profile }: { profile: any }) => {
               text: "The role has been successfully switched to Promoter.",
               icon: "success",
             });
-            revalidate("user-profile");
-            Cookies.set("accessToken", res?.data?.data?.accessToken);
+            revalidate("profile");
+            Cookies.set("accessToken", res?.data?.accessToken);
             route.push("/promotor");
+            route.refresh();
           } else {
             Swal.fire({
               title: "Failed!",

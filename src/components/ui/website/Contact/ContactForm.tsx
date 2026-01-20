@@ -19,30 +19,32 @@ export default function ContactForm() {
         message: form.message.value,
       }
       
-      
       const response = await myFetch("/contacts/send-message", { method: "POST", body: data})
       if(response?.success){            
         toast.success(response?.message)
+        form.reset(); // Reset form after successful submission
       }else{
-        toast.success(response?.message)
+        toast.error(response?.message) // Changed to toast.error
       }
     } catch (error:any) {
       console.log("handleContact", error);
-      toast.success(error?.data?.message)
-
+      toast.error(error?.data?.message) // Changed to toast.error
     }
   }
+
   return (
     <section className="w-full section">
-      <div className="max-w-7xl mx-auto px-4 lg:px-8 grid md:grid-cols-2 gap-10 items-center overflowhidden">
-        {/* Left Image */}
-        <div className="w-full h-[300px] md:h-[650px]">
+      <div className="max-w-7xl mx-auto px-4 lg:px-8 grid md:grid-cols-2 gap-10 items-center overflow-hidden">
+        {/* Left Image - Optimized */}
+        <div className="relative w-full h-[300px] md:h-[650px] rounded-2xl overflow-hidden">
           <Image
             src="https://images.pexels.com/photos/3756767/pexels-photo-3756767.jpeg"
             alt="Woman listening to music"
-            width={800}
-            height={50}
-            className="rounded-2xl object-cover w-full h-full"
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 50vw"
+            quality={85}
+            priority={false}
           />
         </div>
 
@@ -63,6 +65,7 @@ export default function ContactForm() {
               type="text"
               name="name"
               placeholder="Name *"
+              required
               className="rounded-full h-14 px-6 text-gray-700 bg-white border-gray-300"
             />
 
@@ -72,10 +75,11 @@ export default function ContactForm() {
                 type="email"
                 name="email"
                 placeholder="Email"
+                required
                 className="rounded-full h-14 px-6 text-gray-700 bg-white border-gray-300"
               />
               <Input
-                type="text"
+                type="tel"
                 name="phone"
                 placeholder="Phone"
                 className="rounded-full h-14 px-6 text-gray-700 bg-white border-gray-300"
@@ -86,7 +90,8 @@ export default function ContactForm() {
             <Textarea
               name="message"
               placeholder="Write your message"
-              className="rounded-2xl px-6 py-4 text-gray-700 bg-white border-gray-300 h-40"
+              required
+              className="rounded-2xl px-6 py-4 text-gray-700 bg-white border-gray-300 h-40 resize-none"
             />
 
             {/* Submit Button */}
