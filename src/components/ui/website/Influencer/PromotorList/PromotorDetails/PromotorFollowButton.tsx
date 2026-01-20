@@ -10,8 +10,7 @@ const PromotorFollowButton = ({promotorId, isFollowing}: {promotorId:string, isF
 
     const handleFollow = async (id: string) => {
         try {
-          const res = await myFetch("/followers/follow", { method: "POST", body: { followingId: id } });
-          console.log("handleFollow", res);
+          const res = await myFetch("/followers/follow", { method: "POST", body: { followingId: id } });          
           if (res?.success) {
             revalidate("single-creator")
             toast.success("Follow  Successfully")
@@ -26,8 +25,6 @@ const PromotorFollowButton = ({promotorId, isFollowing}: {promotorId:string, isF
       const handleUnFollow = async (id: string) => {
         try {
           const res = await myFetch(`/followers/unfollow/${id}`, { method: "DELETE"});          
-                console.log("handleUnFollow", res);
-                
           if (res?.success) {
             revalidate("single-creator")
             toast.success("Unfollow Successfully")

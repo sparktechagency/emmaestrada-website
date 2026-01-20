@@ -17,6 +17,7 @@ import { ImCheckboxChecked } from 'react-icons/im'
 import { MdCancel } from 'react-icons/md'
 import { toast } from 'sonner'
 import { useData } from '@/hooks/context/DataContext'
+import Image from 'next/image'
 
 const SetUsername = () => {
   const [username, setUsername] = useState('')
@@ -37,8 +38,6 @@ const SetUsername = () => {
   const checkAvailablelity = async () => {
     try {
       const result = await myFetch(`/users/check-field?userName=${username}`);
-
-      console.log("checkAvailablelity", result)
       if (result?.success) {
         setIsVerified(result?.data?.isAvailable)
       }
@@ -56,7 +55,17 @@ const SetUsername = () => {
   }
 
   return (
-    <div className="h-screen flex items-center justify-center bg-[url('/images/bgImg.png')] bg-cover bg-no-repeat bg-center px-4  overflow-hidden">
+        <div className="min-h-screen flex items-center justify-center relative px-4 py-8">
+          {/* Optimized Background Image */}
+          <Image
+            src="/images/bgImg.png"
+            alt="Background"
+            fill
+            priority
+            quality={85}
+            className="object-cover -z-10"
+            sizes="100vw"
+          />
       <div className="backdrop-blur-[2.5px] border-2 border-white/20 rounded-xl p-3 sm:p-12">
         <Card className="w-full md:min-w-xl md:p-8 sm:p-10">
           {/* Card Header */}

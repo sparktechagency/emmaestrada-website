@@ -35,12 +35,13 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
       setLoading(true);
       setError(null);
 
-      const res = await myFetch("/users/profile", {cache: "no-cache"});
+      const res = await myFetch("/users/profile", { cache: "no-cache" });
 
-      if (res?.success) {        
+      if (res?.success) {
         setProfile(res?.data);
-        Cookies.set("role", res?.data?.role)
-
+        if (typeof window !== 'undefined') {
+          localStorage.setItem("role", res?.data?.role);
+        }
       } else {
         setError(res?.message || "Failed to load profile");
       }

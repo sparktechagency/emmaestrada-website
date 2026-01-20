@@ -10,8 +10,7 @@ const TableAction = ({ id, isFollowing }: { id: string, isFollowing: boolean }) 
 
     const handleFollow = async (id: string) => {
         try {
-            const res = await myFetch("/followers/follow", { method: "POST", body: { followingId: id } });
-            console.log("create chat", res);
+            const res = await myFetch("/followers/follow", { method: "POST", body: { followingId: id } });            
             if (res?.success) {
                 revalidate("promotors")
                 toast.success("Created Chat Successfully")
@@ -26,7 +25,7 @@ const TableAction = ({ id, isFollowing }: { id: string, isFollowing: boolean }) 
     const handleUnFollow = async (id: string) => {
         try {
             const res = await myFetch("/followers/follow", { method: "DELETE", body: { followingId: id } });
-            console.log("create chat", res);
+            
             if (res?.success) {
                 revalidate("CREATOR")
                 toast.success("Created Chat Successfully")

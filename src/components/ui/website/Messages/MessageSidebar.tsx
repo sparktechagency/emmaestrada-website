@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState, useMemo, useCallback } from 'react'
+import React, { useEffect, useState, useMemo, useCallback, useRef } from 'react'
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
@@ -59,58 +59,107 @@ const LoadingSkeleton = () => (
 
 
 const MessageSidebar = () => {
-    const [chats, setChats] = useState([]);
+    const [chats, setChats] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
+    const [loadingMore, setLoadingMore] = useState(false);
+    const scrollContainerRef = useRef<HTMLDivElement>(null);
+
     const searchParams = useSearchParams();
     const router = useRouter();
     const pathname = usePathname();
     const { profile } = useProfile();
+    const socket = useSocket();
 
-    // --- Socket -------
-    const socket = useSocket()
     // Get searchTerm from URL params
     const searchTerm = searchParams.get('searchTerm') || '';
-    
-    // ✅ FIX 1: Use useCallback to memoize the function
-    const getChats = useCallback(async () => {
+
+    // Fetch chats with pagination
+    const getChats = useCallback(async (pageNum: number = 1, append: boolean = false) => {
         try {
-            const { data } = await myFetch("/chats", { tags: ["chats"], cache: "no-cache" });
-            setChats(data?.chats || []);
-            setLoading(false);
+            if (append) {
+                setLoadingMore(true);
+            } else {
+                setLoading(true);
+            }
+
+            const response = await myFetch(`/chats?page=${pageNum}`, {
+                tags: ["chats"],
+                cache: "no-cache"
+            });
+            if (response?.success) {
+                const newChats = response?.data?.chats || [];
+
+                if (append) {
+                    setChats(prev => [...prev, ...newChats]);
+                } else {
+                    setChats(newChats);
+                }
+
+                // Update hasMore based on response
+                const totalPages = response?.meta?.totalPage || 1;
+                setHasMore(pageNum < totalPages);
+            }
         } catch (error) {
             console.log("get chat error", error);
+        } finally {
             setLoading(false);
+            setLoadingMore(false);
         }
-    }, []); // No dependencies needed since myFetch is stable
+    }, []);
 
+    // Initial load
     useEffect(() => {
-        setLoading(true);
-        getChats();
-    }, [getChats])
+        setPage(1);
+        getChats(1, false);
+    }, [getChats]);
 
-    // ✅ FIX 2: Move socket listeners inside useEffect with proper cleanup
+    // Socket listeners
     useEffect(() => {
         if (!socket || !profile?._id) return;
 
-        const handleChatUpdate = async (data: any) => {
-            console.log("chat update", data);
-            await getChats();
+        const handleChatUpdate = async () => {
+            setPage(1);
+            await getChats(1, false);
         };
 
         const newChatEvent = `newChat::${profile._id}`;
         const chatListUpdateEvent = `chatListUpdate::${profile._id}`;
 
-        // Register listeners
         socket.on(newChatEvent, handleChatUpdate);
         socket.on(chatListUpdateEvent, handleChatUpdate);
 
-        // ✅ FIX 3: Cleanup function to remove listeners
         return () => {
             socket.off(newChatEvent, handleChatUpdate);
             socket.off(chatListUpdateEvent, handleChatUpdate);
         };
-    }, [socket, profile?._id, getChats]); // Include all dependencies
+    }, [socket, profile?._id, getChats]);
 
+    // Load more function
+    const loadMore = useCallback(() => {
+        if (loadingMore || !hasMore) return;
+
+        const nextPage = page + 1;
+        setPage(nextPage);
+        getChats(nextPage, true);
+    }, [page, loadingMore, hasMore, getChats]);
+
+    // Scroll handler
+    const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
+        const target = e.target as HTMLDivElement;
+        const scrollTop = target.scrollTop;
+        const scrollHeight = target.scrollHeight;
+        const clientHeight = target.clientHeight;
+
+        // Trigger when 100px from bottom
+        const threshold = 100;
+        const isNearBottom = scrollTop + clientHeight >= scrollHeight - threshold;
+
+        if (isNearBottom && hasMore && !loadingMore) {
+            loadMore();
+        }
+    }, [hasMore, loadingMore, loadMore]);
 
     // Filter chats based on searchTerm
     const filteredChats = useMemo(() => {
@@ -139,12 +188,20 @@ const MessageSidebar = () => {
         } else {
             params.delete("searchTerm");
         }
-
         router.push(`${pathname}?${params.toString()}`);
     }
 
+    const handleReadMessage = async (id: string) => {
+        try {
+            await myFetch(`/chats/mark-chat-as-read/${id}`, { method: "PATCH" });
+            getChats(1, false);
+        } catch (error) {
+            console.log("handleReadMessage", error);
+        }
+    }
+
     return (
-        <div className="w-full min-h-[70vh] border-r bg-white flex flex-col rounded-2xl">
+        <div className="w-full min-h-[70vh] max-h-[70vh]  border-r bg-white flex flex-col rounded-2xl no-scrollbar!">
             {/* Search Bar */}
             <div className="relative p-2 flex items-center my-5">
                 <Input
@@ -158,7 +215,11 @@ const MessageSidebar = () => {
             </div>
 
             {/* Conversation List */}
-            <ScrollArea className="flex-1">
+            <div
+                ref={scrollContainerRef}
+                onScroll={handleScroll}
+                className="flex-1 overflow-y-auto rounded-b-2xl"
+            >
                 {loading ? (
                     <LoadingSkeleton />
                 ) : filteredChats.length === 0 ? (
@@ -174,45 +235,58 @@ const MessageSidebar = () => {
                         <EmptyState />
                     )
                 ) : (
-                    filteredChats.map((item: any, idx: number) => (
-                        <Link key={idx} href={`/${profile?.role === "CREATOR" ? "creator" : "promotor"}/messages/chat/${item?._id}`}>
-                            <div>
-                                <div className="flex items-start justify-between gap-4 px-5 py-2 hover:bg-gray-50 cursor-pointer transition-colors">
-                                    <div className="flex items-center gap-2">
-                                        <Avatar className='w-12 h-12'>
-                                            <AvatarImage
-                                                src={`${imageUrl + item.participants[0]?.image}`}
-                                                alt="@evilrabbit"
-                                            />
-                                            <AvatarFallback>
-                                                {item.participants[0]?.email.split(" ").map((n: any) => n[0]).join("")}
-                                            </AvatarFallback>
-                                        </Avatar>
-                                        <div className="">
-                                            <p className="font-semibold capitalize">{item.participants[0]?.name}</p>
-                                            <p className="text-sm text-gray-600 text-clip pr-3">{item?.lastMessage?.text ?? 'text'}</p>
+                    <>
+                        {filteredChats.map((item: any, idx: number) => (
+                            <Link
+                                key={idx}
+                                onClick={() => handleReadMessage(item?._id)}
+                                href={`/${profile?.role === "CREATOR" ? "creator" : "promotor"}/messages/chat/${item?._id}`}
+                            >
+                                <div>
+                                    <div className="flex items-start justify-between gap-4 px-5 py-2 hover:bg-gray-50 cursor-pointer transition-colors">
+                                        <div className="flex items-center gap-2">
+                                            <Avatar className='w-12 h-12'>
+                                                <AvatarImage
+                                                    src={`${imageUrl + item.participants[0]?.image}`}
+                                                    alt="@evilrabbit"
+                                                />
+                                                <AvatarFallback>
+                                                    {item.participants[0]?.email.split(" ").map((n: any) => n[0]).join("")}
+                                                </AvatarFallback>
+                                            </Avatar>
+                                            <div className="">
+                                                <p className="font-semibold capitalize">{item.participants[0]?.name}</p>
+                                                <p className="text-sm text-gray-600 text-clip pr-3">{item?.lastMessage?.text ?? 'text'}</p>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex flex-col h-full">
+                                            <small className="text-gray-500 whitespace-nowrap mb-2 self-end">
+                                                {formatChatTime(item?.lastMessageAt)}
+                                            </small>
+                                            {item?.unreadCount > 0 && (
+                                                <span className='self-end'>
+                                                    <Badge className="bg-primary text-white rounded-full">
+                                                        {item.unreadCount}
+                                                    </Badge>
+                                                </span>
+                                            )}
                                         </div>
                                     </div>
-
-                                    <div className="flex flex-col h-full">
-                                        <small className="text-gray-500 whitespace-nowrap mb-2 self-end">
-                                            {formatChatTime(item?.lastMessageAt)}
-                                        </small>
-                                        {item.unreadCount > 0 && (
-                                            <span className='self-end'>
-                                                <Badge className="bg-primary text-white rounded-full">
-                                                    {item.unreadCount}
-                                                </Badge>
-                                            </span>
-                                        )}
-                                    </div>
+                                    <Separator />
                                 </div>
-                                <Separator />
+                            </Link>
+                        ))}
+
+                        {/* Loading indicator for pagination */}
+                        {loadingMore && (
+                            <div className="flex justify-center p-4">
+                                <Loader2 className="h-6 w-6 animate-spin text-primary" />
                             </div>
-                        </Link>
-                    ))
+                        )}
+                    </>
                 )}
-            </ScrollArea>
+            </div>
         </div>
     )
 }

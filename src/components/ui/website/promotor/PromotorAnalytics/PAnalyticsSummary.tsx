@@ -155,10 +155,6 @@ const PAnalyticsSummary = () => {
           method: "POST",
           body: { amount, withdrawalMethod: "BANK_ACCOUNT" },
         })
-
-
-        console.log("setWithdrawing", response);
-        
         if (response?.success) {
           Swal.fire({
             title: "Withdrawal Successful!",
@@ -208,17 +204,6 @@ const PAnalyticsSummary = () => {
           ) : (
             <>
               <div className="flex items-center justify-end mb-5 gap-3">
-                {(accountData as any)?.accountStatus !== "active" && (
-                  <Button
-                    size="lg"
-                    onClick={() => handleGetLink()}
-                    className="bg-blue-600 hover:bg-blue-700 text-white gap-2"
-                  >
-                    <ArrowUpRight className="h-5 w-5" />
-                    Connect Wallet
-                  </Button>
-                )}
-
                 <Button
                   size="lg"
                   onClick={handleWithdrawClick}

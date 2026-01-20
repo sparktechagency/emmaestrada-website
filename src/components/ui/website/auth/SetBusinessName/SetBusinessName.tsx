@@ -10,11 +10,12 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { myFetch } from '@/utils/myFetch'
 import { useData } from '@/hooks/context/DataContext'
+import Image from 'next/image'
 
 
 const SetBusinessName = () => {
   const [businessName, setBusinessName] = useState('')
-   const { data, image, clearData} = useData();
+  const { data, image, clearData } = useData();
 
   const router = useRouter()
   const isValid = !!businessName
@@ -34,30 +35,24 @@ const SetBusinessName = () => {
 
 
     if (!data?.userName || !data?.birthday || !data?.country) {
-      toast.error("Incomplete previous data")      
+      toast.error("Incomplete previous data")
       return
     }
 
     try {
-
-      console.log("formData", { businessName, ...data }, image);
-      
       const formData = new FormData()
       formData.append("image", image)
       formData.append("data", JSON.stringify({ businessName, ...data }))
-      
+
       const response = await myFetch(`/users/complete-registration`, {
         method: "POST",
         body: formData
-      })      
-
-      console.log("login response", response);
-      
-if (response?.success) {
-  toast.success(response.message)
-  clearData()
-  router.push("/")
-}
+      })
+      if (response?.success) {
+        toast.success(response.message)
+        clearData()
+        router.push("/")
+      }
 
     } catch (error) {
       console.error("Error creating user:", error)
@@ -66,7 +61,17 @@ if (response?.success) {
   }
 
   return (
-    <div className="h-screen flex items-center justify-center bg-[url('/images/bgImg.png')] bg-cover bg-no-repeat bg-center px-4 py-8">
+        <div className="min-h-screen flex items-center justify-center relative px-4 py-8">
+          {/* Optimized Background Image */}
+          <Image
+            src="/images/bgImg.png"
+            alt="Background"
+            fill
+            priority
+            quality={85}
+            className="object-cover -z-10"
+            sizes="100vw"
+          />
       <div className="backdrop-blur-[2.5px] border-2 border-white/20 rounded-xl p-4 sm:p-12">
         <Card className="w-full md:min-w-xl py-5 sm:p-10">
           {/* Card Header */}

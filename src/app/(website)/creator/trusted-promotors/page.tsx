@@ -3,10 +3,7 @@ import { myFetch } from '@/utils/myFetch'
 import React from 'react'
 
 const page = async () => {
-  const TrustedPromotorsData = await myFetch("/partners/creator");
-  
-  console.log("TrustedPromotorsData", TrustedPromotorsData);
-  
+  const TrustedPromotorsData = await myFetch("/partners/creator");  
   return <TrustedPromotors data={TrustedPromotorsData} />
 }
 

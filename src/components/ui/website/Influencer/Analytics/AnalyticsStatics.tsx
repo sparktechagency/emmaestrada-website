@@ -16,9 +16,6 @@ const AnalyticsStatics = async () => {
 
   const analyticsData = await myFetch("/analytics");
   const { data } = analyticsData;
-
-  console.log("AnalyticsStatics", data);
-  
   return (
     <div className="my-5">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

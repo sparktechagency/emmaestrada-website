@@ -35,9 +35,6 @@ const PChatBoxFooter = ({ onMessageSent }: PChatBoxFooterProps) => {
       const res = await myFetch(`/messages/send-message/${params?.chatId}`, {
         body: formData,
       });
-
-      console.log("Message sent:", res);
-
       if (res?.success) {
         // Clear inputs
         setMessage("");

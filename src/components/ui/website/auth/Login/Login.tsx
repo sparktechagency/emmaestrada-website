@@ -3,6 +3,7 @@
 
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { FcGoogle } from "react-icons/fc";
 import { FaAppleAlt } from "react-icons/fa";
 import { FaDiscord } from "react-icons/fa6";
@@ -54,9 +55,7 @@ export default function Login() {
     e.preventDefault()
 
     try {
-      const result = await myFetch('/auth/login', { method: "POST", body: { email } });      
-      console.log(":result", result);
-      
+      const result = await myFetch('/auth/login', { method: "POST", body: { email } });            
       if (result?.data) {
         toast.success(result?.data?.message)
         Cookies.set("email", email);
@@ -68,22 +67,37 @@ export default function Login() {
       }
     } catch (error) {
       console.log("otp error", error);
-
-
     }
-
   }
 
-
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[url('/images/bgImg.png')] bg-cover bg-no-repeat bg-center px-4 py-8">
-      <div className=" backdrop-blur-[2.5px] border-2 border-white/20 rounded-xl py-5 md:p-18">
+    <div className="min-h-screen flex items-center justify-center relative px-4 py-8">
+      {/* Optimized Background Image */}
+      <Image
+        src="/images/bgImg.png"
+        alt="Background"
+        fill
+        priority
+        quality={85}
+        className="object-cover -z-10"
+        sizes="100vw"
+      />
 
+      <div className="backdrop-blur-[2.5px] border-2 border-white/20 rounded-xl py-5 md:p-18">
         <Card className="w-[90%] md:w-full mx-auto max-w-md p-0 py-5 sm:p-3">
           {/* Card Header */}
           <CardHeader className="flex flex-col items-center space-y-3">
-            <img src="/logo.png" className='w-14 h-14' alt="Logo" />
+            {/* Optimized Logo */}
+            <div className="relative w-14 h-14">
+              <Image
+                src="/logo.png"
+                alt="Whop Logo"
+                fill
+                className="object-contain"
+                priority
+                sizes="56px"
+              />
+            </div>
             <h2 className="text-2xl font-bold text-center">Sign in to Whop</h2>
           </CardHeader>
 
@@ -102,8 +116,8 @@ export default function Login() {
                   placeholder="example@example.com"
                   className="pr-10 mt-1"
                 />
-                {isVerified ? <ImCheckboxChecked className='absolute top-1/2  right-3 text-green-600' /> :
-                  <MdCancel className='absolute top-1/2  right-3 text-red-600' />}
+                {isVerified ? <ImCheckboxChecked className='absolute top-1/2 right-3 text-green-600' /> :
+                  <MdCancel className='absolute top-1/2 right-3 text-red-600' />}
               </div>
 
               <Button disabled={!isVerified} type="submit" size="lg" className="w-full">
@@ -116,8 +130,8 @@ export default function Login() {
 
             {/* Social Buttons */}
             <div className="flex space-x-1.5 md:space-x-3">
-              <Button size="sm" variant="outline" className=" justify-center w-full h-12">
-                <FcGoogle className=" text-xs md:text-lg" /> Google
+              <Button size="sm" variant="outline" className="justify-center w-full h-12">
+                <FcGoogle className="text-xs md:text-lg" /> Google
               </Button>
             </div>
           </CardContent>

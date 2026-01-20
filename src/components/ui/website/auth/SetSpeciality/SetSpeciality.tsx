@@ -8,6 +8,7 @@ import {
 } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
 import { Music, Sparkles, Users } from 'lucide-react'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
@@ -45,7 +46,17 @@ export default function SetSpeciality() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[url('/images/bgImg.png')] bg-cover bg-no-repeat bg-center px-4 py-8">
+        <div className="min-h-screen flex items-center justify-center relative px-4 py-8">
+          {/* Optimized Background Image */}
+          <Image
+            src="/images/bgImg.png"
+            alt="Background"
+            fill
+            priority
+            quality={85}
+            className="object-cover -z-10"
+            sizes="100vw"
+          />
       <div className="backdrop-blur-[2.5px] md:w-2/5 border-2 border-white/20 rounded-xl p-3 sm:p-12">
         <Card className="w-full p-4 sm:p-10">
           {/* Header */}

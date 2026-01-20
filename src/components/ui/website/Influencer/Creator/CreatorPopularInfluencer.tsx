@@ -52,12 +52,10 @@ const PLATFORM_CONFIG = {
 
 
 export default function CreatorPopularInfluencer({ popularCreator }: any) {    
-  const router = useRouter()
 
   const handleCreateChat = async (participant: string) => {
     try {
-      const res = await myFetch("/chats/create", { method: "POST", body: { participant } });
-      console.log("create chat", res);
+      const res = await myFetch("/chats/create", { method: "POST", body: { participant } });      
       if (res?.success) {
         toast.success("Created Chat Successfully")
         // router.push("/creator/messages")
@@ -69,8 +67,7 @@ export default function CreatorPopularInfluencer({ popularCreator }: any) {
 
   const handleFollow = async (id: string) => {
     try {
-      const res = await myFetch("/followers/follow", { method: "POST", body: { followingId: id } });
-      console.log("create chat", res);
+      const res = await myFetch("/followers/follow", { method: "POST", body: { followingId: id } });      
       if (res?.success) {
         revalidate("CREATOR")
         toast.success("Created Chat Successfully")
@@ -84,8 +81,7 @@ export default function CreatorPopularInfluencer({ popularCreator }: any) {
 
   const handleUnFollow = async (id: string) => {
     try {
-      const res = await myFetch("/followers/follow", { method: "DELETE", body: { followingId: id } });
-      console.log("create chat", res);
+      const res = await myFetch("/followers/follow", { method: "DELETE", body: { followingId: id } });      
       if (res?.success) {
         revalidate("CREATOR")
         toast.success("Created Chat Successfully")

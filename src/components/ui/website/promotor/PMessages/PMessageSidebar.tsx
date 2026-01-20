@@ -49,8 +49,7 @@ const PMessageSidebar = ({ userId }: PMessageSidebarProps) => {
   // Fetch initial chat list
   const fetchChats = useCallback(async () => {
     try {
-      const res = await myFetch("/chats", { tags: ["chats"], cache: "no-cache" });
-      console.log("PMessageSidebar", res);
+      const res = await myFetch("/chats", { tags: ["chats"], cache: "no-cache" });      
       setChatList(res?.data?.data?.chats || []);
     } catch (error) {
       console.error("Failed to fetch chats", error);
@@ -61,8 +60,7 @@ const PMessageSidebar = ({ userId }: PMessageSidebarProps) => {
 
   // Handle new chat event
   const handleNewChat = useCallback((data: any) => {
-    console.log("New chat received:", data);
-    
+  
     setChatList((prevChats) => {
       // Check if chat already exists
       const existingChatIndex = prevChats.findIndex(
@@ -105,9 +103,7 @@ const PMessageSidebar = ({ userId }: PMessageSidebarProps) => {
     setSocket(socketInstance);
 
     // Connection events
-    socketInstance.on("connect", () => {
-      console.log("Socket connected:", socketInstance.id);
-      // Join user's room or authenticate
+    socketInstance.on("connect", () => {      
       socketInstance.emit("join", { userId });
     });
 
@@ -115,16 +111,10 @@ const PMessageSidebar = ({ userId }: PMessageSidebarProps) => {
       console.error("Socket connection error:", error);
     });
 
-    socketInstance.on("disconnect", (reason) => {
-      console.log("Socket disconnected:", reason);
-    });
-
-    // Listen for new chat events
-    socketInstance.on(`newChat::${userId}`, handleNewChat);
-
-    // Cleanup on unmount
-    return () => {
-      console.log("Cleaning up socket connection");
+    socketInstance.on("disconnect", () => {      
+    });    
+    socketInstance.on(`newChat::${userId}`, handleNewChat);    
+    return () => {      
       socketInstance.off(`newChat::${userId}`, handleNewChat);
       socketInstance.disconnect();
     };

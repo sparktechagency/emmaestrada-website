@@ -24,6 +24,7 @@ import { toast } from "sonner";
 import NotificationBar from "../Notifications/NotificationBar";
 import { myFetch } from "@/utils/myFetch";
 import { Badge } from "@/components/ui/badge";
+import useSocket from "@/hooks/useSocket";
 
 
 // Mock notification data generator
@@ -51,7 +52,7 @@ const generateNotification = (id: any) => {
 
 
 const Navbar = ({ profile }: { profile: any }) => {
-  const [mounted, setMounted] = useState(false); // ✅ ADD
+  const [mounted, setMounted] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
   const [isBarOpen, setIsBarOpen] = useState(false);
@@ -190,31 +191,51 @@ const ViewAsLogin = ({ profile, isBarOpen, setIsBarOpen }: any) => {
   const [totalPages, setTotalPages] = useState(1);
 
   const router = useRouter();
-  
+  const socket = useSocket();
+
+  // ✅ FIX 2: Proper socket listener with cleanup
+  useEffect(() => {
+    if (!profile?._id || !socket) return;
+
+    const eventName = `notification::${profile?._id}`;
+
+    const handleNewMessage = async () => {
+      getNotificationData()
+    }
+    socket.on(eventName, handleNewMessage);
+    return () => {
+      socket.off(eventName, handleNewMessage);
+    }
+  }, [profile?._id, socket])
+
   const handleLogout = () => {
     Cookies.remove("accessToken");
+
     deleteCookie("user");
     revalidate("user-profile");
     router.push("/");
     toast.success("Logged out successfully");
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem("role");
+    }
   };
 
   const getNotificationData = async (pageNum: number = 1) => {
     try {
       setLoading(true);
-      const response = await myFetch(`/notifications?page=${pageNum}`, { 
-        cache: "no-cache" 
+      const response = await myFetch(`/notifications?page=${pageNum}`, {
+        cache: "no-cache"
       });
-      
+
       if ((response as any)?.success) {
-        const { result, unreadCount } = response?.data;               
+        const { result, unreadCount } = response?.data;
         if (pageNum === 1) {
           setUnReadNotificationCount(unreadCount);
-        }              
+        }
         setNotifications(prev => pageNum === 1 ? result : [...prev, ...result]);
-                      
+
         setTotalPages(Number(response?.meta?.totalPage));
-        setHasMore(pageNum < Number(response?.meta?.totalPage));        
+        setHasMore(pageNum < Number(response?.meta?.totalPage));
       }
     } catch (error) {
       console.log("notification error", error);
@@ -225,7 +246,7 @@ const ViewAsLogin = ({ profile, isBarOpen, setIsBarOpen }: any) => {
 
   const loadMore = () => {
     if (loading || !hasMore) return;
-    
+
     const nextPage = page + 1;
     setPage(nextPage);
     getNotificationData(nextPage);
@@ -233,10 +254,7 @@ const ViewAsLogin = ({ profile, isBarOpen, setIsBarOpen }: any) => {
 
   const markAllAsRead = async () => {
     try {
-      // Call your API to mark all as read
-      await myFetch("/notifications", { method: "POST" });
-      
-      // Update local state
+      await myFetch("/notifications", { method: "PATCH" });
       setNotifications(prev => prev.map(notif => ({ ...notif, read: true })));
       setUnReadNotificationCount(0);
     } catch (error) {
@@ -252,15 +270,15 @@ const ViewAsLogin = ({ profile, isBarOpen, setIsBarOpen }: any) => {
     <div className="flex items-center gap-3">
       <Wallet strokeWidth={1} size={30} color="#ededed" />
       <div className="relative">
-        <Bell 
-          onClick={() => setIsBarOpen(true)} 
-          strokeWidth={1} 
-          size={30} 
-          color="white" 
+        <Bell
+          onClick={() => setIsBarOpen(true)}
+          strokeWidth={1}
+          size={30}
+          color="white"
           className="cursor-pointer"
         />
         {unReadNotificationCount > 0 && (
-          <Badge className="absolute -top-2 -right-1 h-5 min-w-5 rounded-full px-1 font-mono tabular-nums">
+          <Badge className="bg-red-600 absolute -top-2 -right-1 h-5 min-w-5 rounded-full px-1 font-mono tabular-nums">
             {unReadNotificationCount}
           </Badge>
         )}

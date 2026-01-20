@@ -11,8 +11,13 @@ import { Badge } from '@/components/ui/badge';
 
 
 const NotificationItem = ({ notification, onClick }: any) => {
-  const Icon = notification.icon;
-
+  
+function formatConstant(str: string): string {
+  return str
+    .split('_')
+    .map(word => word.charAt(0) + word.slice(1).toLowerCase())
+    .join(' ');
+}
   return (
     <div
       onClick={onClick}
@@ -29,7 +34,7 @@ const NotificationItem = ({ notification, onClick }: any) => {
           <p className={`text-sm ${notification.read ?  "" : "font-bold"}`}>{notification?.title}</p>
           <p className="text-sm">{notification?.message}</p>
           <div className="flex items-center justify-between pt-2">
-            <Badge variant="destructive">{notification.type}</Badge>
+            <Badge variant="destructive">{formatConstant(notification.type)}</Badge>
             <p className="text-xs text-gray-500 ">{FormatDate(notification?.createdAt ?? notification?.updatedAt)}</p>
           </div>
 
@@ -105,8 +110,7 @@ const NotificationBar = ({ isOpen, onClose, notifications, onLoadMore, hasMore, 
         {notifications?.length > 0 ? notifications?.map((notif: any, index:number) => (
           <NotificationItem
             key={index}
-            notification={notif}
-            onClick={() => console.log('Clicked:', notif.id)}
+            notification={notif}          
           />
         )) : !hasMore && notifications.length > 0 ? (
           <div className="text-center py-4 text-sm text-gray-500">

@@ -32,7 +32,7 @@ export default function Footer() {
             <ul className="space-y-2 text-lg ">
               <li><Link href="/about-us">About Us</Link></li>
               <li><Link href="/campaigns">Compaigns</Link></li>
-              <li><Link href="/creator">Influencers</Link></li>
+              <li><Link href="/creator">Creator</Link></li>
               <li><Link href="/#testimonial">Testimonial</Link></li>
               <li><Link href="/#why_choose_us">Why Choose Us</Link></li>
             </ul>

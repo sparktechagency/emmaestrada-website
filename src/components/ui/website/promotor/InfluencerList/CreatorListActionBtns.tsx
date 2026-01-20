@@ -20,8 +20,7 @@ const CreatorListActionBtns = ({ row }: { row: any }) => {
 
      const handleCreateChat = async (participant: string) => {
     try {            
-      const res = await myFetch("/chats/create", { method: "POST", body: { participant } });
-      console.log("create chat", res);
+      const res = await myFetch("/chats/create", { method: "POST", body: { participant } });      
       if (res?.success) {
         toast.success("Created Chat Successfully")
         revalidate("chats")
@@ -34,8 +33,7 @@ const CreatorListActionBtns = ({ row }: { row: any }) => {
 
   const handleFollow = async (id: string) => {
     try {
-      const res = await myFetch("/followers/follow", { method: "POST", body: { followingId: id } });
-      console.log("create chat", res);
+      const res = await myFetch("/followers/follow", { method: "POST", body: { followingId: id } });      
       if (res?.success) {
         revalidate("CREATOR")
         toast.success("Created Chat Successfully")
@@ -49,8 +47,7 @@ const CreatorListActionBtns = ({ row }: { row: any }) => {
 
   const handleUnFollow = async (id: string) => {
     try {
-      const res = await myFetch("/followers/follow", { method: "DELETE", body: { followingId: id } });
-      console.log("create chat", res);
+      const res = await myFetch("/followers/follow", { method: "DELETE", body: { followingId: id } });      
       if (res?.success) {
         revalidate("CREATOR")
         toast.success("Created Chat Successfully")

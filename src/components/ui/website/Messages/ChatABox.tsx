@@ -60,7 +60,6 @@ const ChatBox = ({ chatId }: ChatBoxProps) => {
     }
   }, [chatId, fetchMessages])
 
-  // Scroll to bottom when messages change
   useEffect(() => {
     scrollToBottom()
   }, [messages])

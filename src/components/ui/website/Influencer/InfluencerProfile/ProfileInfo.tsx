@@ -120,8 +120,7 @@ export default function ProfileInfo() {
       if (res?.success) {
         refetchProfile();
         toast.success("Profile picture updated successfully!");
-      } else {
-        console.log("res", res);
+      } else {        
         toast.error(res?.message);
         router.refresh();
       }

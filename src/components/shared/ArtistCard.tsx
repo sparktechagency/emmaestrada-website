@@ -35,7 +35,7 @@ const ArtistCard = ({ data , userRole}: { data?: IUser, userRole?: any }) => {
                     <Button size="sm" className=" right-5 glassBg">Follow <FaPlus size={2} /></Button>
                 </div>
 
-                <Link href={`/${userRole === "PROMOTER" ? "promotor/creators": "creator/creators"}/${data?._id}`}><div className="absolute bottom-0 w-full bg-white p-3 border-t border-white/10 flex items-center justify-between">
+                <Link href={`/${userRole === "PROMOTER" ? "promotor/creator": "creator/creators"}/${data?._id}`}><div className="absolute bottom-0 w-full bg-white p-3 border-t border-white/10 flex items-center justify-between">
                     <div className="flex items-center space-x-3 ">
 
                         <Avatar className="w-10 h-10 border-2 relative">

@@ -20,9 +20,10 @@ import { myFetch } from "@/utils/myFetch";
 import { toast } from "sonner";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
+import { revalidate } from "@/helpers/revalidateHelper";
 
 export function DropDownMenu({ campaignData }: { campaignData: any }) {
-    const [showRefund, setShowRefund] = useState(false);
+    // const [showRefund, setShowRefund] = useState(false);
     const [showAddBudget, setShowAddBudget] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
     const [budget, setBudget] = useState(5000);
@@ -32,17 +33,16 @@ export function DropDownMenu({ campaignData }: { campaignData: any }) {
     const router = useRouter()
 
 
+    console.log("campaignData", campaignData);
+    
     const handleAddBudget = async () => {
         try {
             const response = await myFetch(`/orders/create-and-checkout`, {
                 method: 'POST',
                 body: { campaignId: campaignData?._id },
             });
-
-            console.log("handleAddBudget", response);
-
             if (response?.success) {
-                console.log('Budget Added:', response);
+
                 if (response?.success && response?.data?.url) {
                     router.push(response.data.url);
                 }
@@ -72,10 +72,8 @@ export function DropDownMenu({ campaignData }: { campaignData: any }) {
                 const response = await myFetch(`/campaigns/delete/${campaignData?._id}`, {
                     method: 'DELETE',
                 });
-                console.log("handleDeleteCampaign", response);
 
                 if (response?.success) {
-                    console.log('Campaign Deleted:', response);
                     Swal.fire(
                         'Deleted!',
                         'Your campaign has been deleted.',
@@ -89,6 +87,48 @@ export function DropDownMenu({ campaignData }: { campaignData: any }) {
             Swal.fire(
                 'Error!',
                 error?.message || 'Failed to delete campaign.',
+                'error'
+            );
+        }
+    }
+
+    const handleRefund = async () => {
+        try {
+            const result = await Swal.fire({
+                title: 'Refund Campaign Budget?',
+                html: `
+                    <p>Current Budget: <strong>$${campaignData?.remainingAmount || 0}</strong></p>
+                    <p class="text-sm y mt-1"><strong>Note:</strong> A platform fee of <strong class="text-orange-600">$${campaignData?.platformFee}</strong> will be charged for this transaction.</p>
+                `,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Yes, refund it!',
+                cancelButtonText: 'Cancel'
+            });
+
+            if (result.isConfirmed) {
+                const response = await myFetch(`/orders/refund-campaign-amount/${campaignData?._id}`, {
+                    method: 'POST',
+                });
+                if (response?.success) {
+                    Swal.fire(
+                        'Refunded!',
+                        'Your campaign budget has been refunded successfully.',
+                        'success'
+                    );
+                    revalidate("promotor-campaigns")
+                } else {
+                    toast.error(response?.message || 'Failed to process refund');
+                }
+            }
+        } catch (error: any) {
+            toast.error(error?.message);
+            console.log("error", error);
+            Swal.fire(
+                'Error!',
+                error?.message || 'Failed to process refund.',
                 'error'
             );
         }
@@ -110,11 +150,11 @@ export function DropDownMenu({ campaignData }: { campaignData: any }) {
                             Delete
                             <DropdownMenuShortcut> <Trash2 /></DropdownMenuShortcut>
                         </DropdownMenuItem>
-                        <DropdownMenuItem onSelect={() => setShowRefund(true)}>
+                        <DropdownMenuItem hidden={campaignData?.status === "upcoming" || campaignData?.status === "ended" } onSelect={() => handleRefund()}>
                             Refund
                             <DropdownMenuShortcut><BanknoteArrowDown /> </DropdownMenuShortcut>
                         </DropdownMenuItem>
-                        <DropdownMenuItem onSelect={handleAddBudget}>
+                        <DropdownMenuItem hidden={campaignData?.status === "active"} onSelect={handleAddBudget}>
                             Add Budget
                             <DropdownMenuShortcut> <CirclePlus /></DropdownMenuShortcut>
                         </DropdownMenuItem>
@@ -134,7 +174,6 @@ export function DropDownMenu({ campaignData }: { campaignData: any }) {
                 confirmText="Delete"
                 cancelText="Cancel"
                 onConfirm={() => {
-                    console.log("Archived!");
                     setShowDelete(false);
                 }}
                 onCancel={() => setShowDelete(false)}
@@ -144,22 +183,18 @@ export function DropDownMenu({ campaignData }: { campaignData: any }) {
                 open={showAddBudget}
                 previousBudget={budget}
                 onCancel={() => setShowAddBudget(false)}
-                onConfirm={(addedAmount, total) => {
+                onConfirm={(total) => {
                     setBudget(total);
-                    console.log("Added:", addedAmount);
                 }}
             />
 
-            <RefundDialog
+            {/* <RefundDialog
                 open={showRefund}
                 onCancel={() => setShowRefund(false)}
-                onConfirm={(refundAmount, afterFee, fee) => {
-                    console.log("Refund amount:", refundAmount);
-                    console.log("Fee:", fee);
-                    console.log("User receives:", afterFee);
+                onConfirm={() => {                    
                     setShowRefund(false);
                 }}
-            />
+            /> */}
 
         </div >
     )

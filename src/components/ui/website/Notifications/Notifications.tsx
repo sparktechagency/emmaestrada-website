@@ -2,9 +2,14 @@
 
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { useProfile } from '@/hooks/context/ProfileContext';
+import useSocket from '@/hooks/useSocket';
 import { myFetch } from '@/utils/myFetch';
 import { Bell, Heart, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { Avatar } from '../../avatar';
+import { Badge } from '../../badge';
+import { FormatDate } from '@/components/shared/FormatDate';
 
 const NotificationItem = ({ notification, onClick }: any) => {
   // Map notification types to icons and colors
@@ -37,31 +42,34 @@ const NotificationItem = ({ notification, onClick }: any) => {
     return `${diffDays}d`;
   };
 
+  function formatConstant(str: string): string {
+  return str
+    .split('_')
+    .map(word => word.charAt(0) + word.slice(1).toLowerCase())
+    .join(' ');
+}
+
   return (
     <div
       onClick={onClick}
-      className={`p-4 hover:bg-gray-50 cursor-pointer border-b transition-colors ${
-        !notification.read ? 'bg-blue-50' : ''
-      }`}
+      className={`p-4 hover:bg-gray-50 cursor-pointer border-b ${!notification.read ? 'bg-blue-50' : ''
+        }`}
     >
       <div className="flex items-start gap-3">
-        <div className={`p-2 rounded-full ${color}`}>
-          <Icon className="h-5 w-5 text-gray-700" />
-        </div>
-        
-        <div className="flex-1">
-          <p className="text-sm">
-            <span className="font-semibold">{notification.message}</span>
-          </p>
-          <p className="text-sm text-gray-600 mt-1">{notification.title}</p>
-          <p className="text-xs text-gray-500 mt-1">
-            {formatTimeAgo(notification.createdAt)} ago
-          </p>
-        </div>
 
-        {!notification.read && (
-          <div className="w-2 h-2 bg-blue-600 rounded-full mt-2" />
-        )}
+        <Avatar className="rounded-full cursor-pointer bg-primary flex items-center justify-center w-10 h-10">
+          <Bell size={25} className='text-slate-200' />
+        </Avatar>
+
+        <div className="flex-1">
+          <p className={`text-sm ${notification.read ?  "" : "font-bold"}`}>{notification?.title}</p>
+          <p className="text-sm">{notification?.message}</p>
+          <div className="flex items-center justify-between pt-2">
+            <Badge variant="destructive">{formatConstant(notification.type)}</Badge>
+            <p className="text-xs text-gray-500 ">{FormatDate(notification?.createdAt ?? notification?.updatedAt)}</p>
+          </div>
+
+        </div>
       </div>
     </div>
   );
@@ -75,6 +83,23 @@ const Notifications = () => {
   const scrollContainerRef = useRef(null);
   const [totalPages, setTotalPages] = useState(1);
   const [unreadCount, setUnreadCount] = useState(0);
+  const {profile} = useProfile();
+   const socket = useSocket();
+  
+    // ✅ FIX 2: Proper socket listener with cleanup
+    useEffect(() => {
+      if (!profile?._id || !socket) return;
+  
+      const eventName = `notification::${profile?._id}`;
+  
+      const handleNewMessage = async () => {        
+        getNotificationData()
+      }
+      socket.on(eventName, handleNewMessage);    
+      return () => {
+        socket.off(eventName, handleNewMessage);
+      }
+    }, [profile?._id, socket])
 
   const getNotificationData = async (pageNum: number = 1) => {
     try {
@@ -116,7 +141,7 @@ const Notifications = () => {
   const markAllAsRead = async () => {
     try {
       // Call your API to mark all as read
-      await myFetch("/notifications", { method: "POST" });
+      await myFetch("/notifications", { method: "PATCH" });
       
       // Update local state
       setNotifications(prev => prev.map(notif => ({ ...notif, read: true })));

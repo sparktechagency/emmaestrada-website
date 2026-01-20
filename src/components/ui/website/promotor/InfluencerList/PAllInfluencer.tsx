@@ -55,9 +55,7 @@ const PAllInfluencer = ({ allCreator }: any) => {
  const router = useRouter()
   const handleCreateChat = async (participant: string) => {
     try {
-      const res = await myFetch("/chats/create", { method: "POST", body: { participant } });
-
-      console.log("create chat", res);
+      const res = await myFetch("/chats/create", { method: "POST", body: { participant } });      
       if (res?.success) {
         toast.success("Created Chat Successfully")
         router.push("/creator/messages")
@@ -70,10 +68,7 @@ const PAllInfluencer = ({ allCreator }: any) => {
 
   const handleFollow = async (id: string) => {
     try {
-      const res = await myFetch("/followers/follow", { method: "POST", body: { followingId: id }, tags: ['Creators'] });
-
-
-      console.log("create chat", res);
+      const res = await myFetch("/followers/follow", { method: "POST", body: { followingId: id }, tags: ['Creators'] });      
       if (res?.success) {
         toast.success("Created Chat Successfully")
       } else {

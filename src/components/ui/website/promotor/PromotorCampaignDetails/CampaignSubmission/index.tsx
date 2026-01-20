@@ -7,10 +7,8 @@ import { myFetch } from '@/utils/myFetch'
 import PlatformSubmissionTabs from '@/components/shared/PlatformSubmissionTabs'
 
 const CampaignSubmission = async ({status, campaignId}: {status?: string, campaignId: string}) => {
-    const res = await myFetch(status ? `/submissions/campaign-submissions/${campaignId}?status=${status}` :  `/submissions/campaign-submissions/${campaignId}`, {tags: ['campaign-submissions']});
-
-    console.log("CampaignSubmission", res);
-    
+    const res = await myFetch(status ? `/submissions/campaign-submissions/${campaignId}?status=${status}` 
+      :  `/submissions/campaign-submissions/${campaignId}`, {tags: ['campaign-submissions']});
   return (
     <div>
       <div className="mt-5">

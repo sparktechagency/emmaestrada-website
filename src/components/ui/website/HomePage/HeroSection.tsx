@@ -3,19 +3,23 @@ import { Star, ArrowUpRight } from "lucide-react";
 import BrandLogos from "./BrandLogos";
 import { myFetch } from "@/utils/myFetch";
 import Link from "next/link";
+import Image from "next/image";
 
 const HeroSection = async () => {
-  
-  const  sliders = await myFetch(`/sliders/all`);
-  const  planners = await myFetch(`/home-campaign-planners/all`);
-  
+
+  const sliders = await myFetch(`/sliders/all`);
+  const planners = await myFetch(`/home-campaign-planners/all`);
+
   return (
     <section className="relative h-screen md:py-20 pb-30 pt-24">
       <div className="absolute top-0 left-0 w-full h-full inset-0 pointer-events-none -z-10">
-        <img
+        <Image
           src="/headerBg.png"
           alt="background"
-          className="h-full w-full object-cover "
+          fill
+          className="object-cover"
+          priority // loads immediately since it's above the fold
+          quality={75} // reduce quality if acceptable (default is 75)
         />
       </div>
       <Container>
@@ -44,13 +48,13 @@ const HeroSection = async () => {
         <div className=" text-center relative z-10 mt-10 md:mt-32">
           {/* Top Reviews */}
           <div className="flex flex-wrap justify-center gap-4 md:gap-24 mb-8 md:mb-20">
-            {planners?.data?.map((item:any, i:number) => (
+            {planners?.data?.map((item: any, i: number) => (
               <div key={i} className="flex flex-col items-center gap-2">
                 <p className="text-white text-sm md:text-2xl mb-2">
                   {item?.name}
                 </p>
                 <div className="flex gap-1">
-                  {Array.from({length: item?.rating}).map((star, i:number) => (
+                  {Array.from({ length: item?.rating }).map((star, i: number) => (
                     <Star
                       key={i}
                       className="w-4 h-4 md:w-5 md:h-5 fill-yellow-400 text-yellow-400"
@@ -85,7 +89,7 @@ const HeroSection = async () => {
         </div>
       </Container>
       <BrandLogos brands={sliders?.data} />
-      
+
       <style>{`
         @keyframes float {
           0%, 100% {

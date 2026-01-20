@@ -16,6 +16,7 @@ import Cookies from 'js-cookie'
 import { myFetch } from '@/utils/myFetch'
 import { toast } from 'sonner'
 import { useOtpTimer } from '@/hooks/useOtpTimer'
+import Image from 'next/image'
 
 const OTPVerify = () => {
   const [otp, setOtp] = useState<string[]>(Array(6).fill(''))
@@ -68,7 +69,17 @@ const OTPVerify = () => {
   }
 
   return (
-    <div className="h-screen flex items-center justify-center bg-[url('/images/bgImg.png')] bg-cover bg-no-repeat bg-center px-0 md:px-4 py-8">
+        <div className="min-h-screen flex items-center justify-center relative px-4 py-8">
+          {/* Optimized Background Image */}
+          <Image
+            src="/images/bgImg.png"
+            alt="Background"
+            fill
+            priority
+            quality={85}
+            className="object-cover -z-10"
+            sizes="100vw"
+          />
       <div className="  backdrop-blur-[2.5px] border-2 border-white/20 rounded-xl py-5 sm:p-12 ">
         <Card className="w-[90%] mx-auto md:w-full max-w-xl p-0 sm:p-10">
           {/* Card Header */}

@@ -16,8 +16,10 @@ import { usePathname, useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 
 import Cookies from "js-cookie";
-import { useProfile } from "@/hooks/context/ProfileContext";
+
 import { revalidate } from "@/helpers/revalidateHelper";
+import useSocket from "@/hooks/useSocket";
+import { useEffect, useState } from "react";
 
 const displayLinks = [
   { link: "/creator", label: "Campaigns", icon: Music },
@@ -35,7 +37,26 @@ const displayLinks = [
 
 const InfluencerHeader = ({ profile }: { profile: any }) => {
   const pathname = usePathname();
-  const route = useRouter();  
+  const route = useRouter();
+  const socket = useSocket();
+  const [hasUnreadMesssage, setHasUnreadMessage] = useState(false)
+  
+    const role = typeof window !== 'undefined' ? localStorage.getItem('role') : null;
+
+
+  useEffect(() => {
+    if (!profile?._id || !socket) return;
+
+    const eventName = `newMessage::${profile?._id}`;
+    const handleNewMessage = async () => {      
+      setHasUnreadMessage(true)
+    }
+    socket.on(eventName, handleNewMessage);
+    return () => {
+      socket.off(eventName, handleNewMessage);
+    }
+  }, [profile?._id, socket])
+
 
   const isActive = (path: string) => {
     if (path === "/creator") {
@@ -58,8 +79,6 @@ const InfluencerHeader = ({ profile }: { profile: any }) => {
       if (result.isConfirmed) {
         try {
           const res = await myFetch("/users/switched-role", { method: "POST" });
-          console.log("role switch response", res);
-
           if (res?.success) {
             Swal.fire({
               title: "Role Updated!",
@@ -89,6 +108,16 @@ const InfluencerHeader = ({ profile }: { profile: any }) => {
     });
   };
 
+  useEffect(() => {
+    const isMessagesActive = displayLinks.some(
+      (item) => item.label === "Messages" && isActive(item.link)
+    );
+
+    if (isMessagesActive) {
+      setHasUnreadMessage(false);
+    }
+  }, [displayLinks, isActive]);
+
   return (
     <div>
       <Container>
@@ -98,7 +127,7 @@ const InfluencerHeader = ({ profile }: { profile: any }) => {
               <div className="w-2 h-2 bg-green-500 rounded-full" />
               <span>
                 Currently viewing as:{" "}
-                <span className="text-primary">{profile?.role}</span>{" "}
+                <span className="text-primary uppercase">{role}</span>{" "}
               </span>
             </button>
 
@@ -118,21 +147,28 @@ const InfluencerHeader = ({ profile }: { profile: any }) => {
         <div className="flex gap-3 overflow-x-auto no-scrollbar p-4 glassBg rounded-md shadow-md">
           {displayLinks.map((item) => {
             const Icon = item.icon;
-            // const isActive = pathname.startsWith(item.link); // detect active
-
+            const active = isActive(item.link);
             return (
               <Link
                 href={item.link}
                 key={item.link}
-                className={`flex items-center justify-center gap-2 w-full px-4 py-2 rounded-lg whitespace-nowrap transition-all border 
-                  ${
-                    isActive(item.link)
-                      ? "bg-primary text-white border-primary"
-                      : "bg-white text-gray-700 hover:bg-gray-50 border-gray-300"
+                className={`relative flex items-center justify-center gap-2 w-full px-4 py-2 rounded-lg whitespace-nowrap transition-all border 
+          ${active
+                    ? "bg-primary text-white border-primary"
+                    : "bg-white text-gray-700 hover:bg-gray-50 border-gray-300"
                   }`}
               >
                 <Icon className="w-4 h-4" />
                 <span>{item.label}</span>
+
+                {!active && hasUnreadMesssage && item.label === "Messages" && (
+                  <span className="absolute -top-1 right-0 flex h-3 w-3">
+                    {/* glow */}
+                    <span className="absolute inline-flex h-full w-full rounded-full bg-primary opacity-75 animate-ping"></span>
+                    {/* dot */}
+                    <span className="relative inline-flex h-3 w-3 rounded-full bg-primary"></span>
+                  </span>
+                )}
               </Link>
             );
           })}

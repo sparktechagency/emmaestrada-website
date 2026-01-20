@@ -61,8 +61,6 @@ export default function AnalyticsRevenueStatistics() {
     getRevenue(year);
   }, [year]);
 
-  console.log("getRevenue", data);
-  
   return (
     <Card className="bg-orange-50 rounded-2xl h-full">
       <CardHeader className="flex sm:flex-row items-start sm:items-center justify-between gap-4">

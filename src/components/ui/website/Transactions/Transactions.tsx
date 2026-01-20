@@ -30,9 +30,6 @@ export default function Transactions() {
     try {
       setLoading(true)
       const response = await myFetch('/wallets/transactions')
-
-      console.log("Transactions Response:", response)
-      
       if (response?.success && response?.data) {
         const transactionData = Array.isArray(response.data) ? response.data : []
         setTransactions(transactionData)

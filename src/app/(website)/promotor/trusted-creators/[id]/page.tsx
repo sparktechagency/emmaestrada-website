@@ -6,9 +6,7 @@ import React from 'react'
 import { MdOutlineStar } from 'react-icons/md';
 
 const page = async ({ params }: { params: Promise<{ id: string }> }) => {
-    const { id } = await params;
-    console.log("params", id);
-
+    
     return (
         <Container>
             <div className=' glassBg px-2 md:px-10 my-10 py-10'>

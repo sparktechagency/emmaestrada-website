@@ -50,15 +50,12 @@ type Props = {
 }
 
 export default function ConnectAccountModal({ user, open, setOpen }: Props) {
-    console.log("user", user)
-
     const connectedPlatformsSet = new Set(
         (user?.connectedPlatforms || []).map((platform: string) => platform.toLowerCase())
     )
 
     const isConnected = (platform: string) => {
-        const connected = connectedPlatformsSet.has(platform.toLowerCase())
-        console.log(`Checking ${platform}: ${connected}`)
+        const connected = connectedPlatformsSet.has(platform.toLowerCase())        
         return connected
     }
 
@@ -74,9 +71,6 @@ export default function ConnectAccountModal({ user, open, setOpen }: Props) {
             const res = await myFetch(`/socialIntegrations/${platformName}/disconnect`, {
                 method: 'DELETE'
             })
-
-            console.log("handleDisconnect", res)
-
             if (res?.success) {
                 // Success message
                 await Swal.fire({
@@ -142,10 +136,10 @@ export default function ConnectAccountModal({ user, open, setOpen }: Props) {
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>                
-                    <Button size="lg" className="bg-blue-600! ">
-                        Connect Account
-                    </Button>                
+            <DialogTrigger asChild>
+                <Button size="lg" className="bg-blue-600! ">
+                    Connect Account
+                </Button>
             </DialogTrigger>
 
             <DialogContent className="md:max-w-2xl max-h-[80vh] overflow-y-auto">

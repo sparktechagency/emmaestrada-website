@@ -38,9 +38,6 @@ const trustedCreators = Array.from({ length: 10 }).map(() => ({
 
 
 const PromotorTrustedCreators = ({ data }: any) => {
-    const [open, setOpen] = useState(false)
-
-    console.log("datadata", data);
 
     return <Container>
         <div className="mt-10">
@@ -105,12 +102,12 @@ const PromotorTrustedCreators = ({ data }: any) => {
                                 <TableCell className="flex items-center">
                                     {/* ------ Followed Creator Rating -------- */}
                                     {row?.creatorId?.rating < 1 ? <Star className="text-orange-500" size={15} /> :
-                                        Array.from({ length: row?.creatorId?.rating })?.map((_: any, i: number) => <MdOutlineStar key={i} className="text-orange-500" size={15} />)}                                                                 
+                                        Array.from({ length: row?.creatorId?.rating })?.map((_: any, i: number) => <MdOutlineStar key={i} className="text-orange-500" size={15} />)}
                                 </TableCell>
 
                                 <TableCell className="text-right md:w-[50px]">
                                     <div className="flex items-center gap-3">
-                                        <Link href={`/promotor/creator/${ row?.creatorId?._id}`}> <Button
+                                        <Link href={`/promotor/creator/${row?.creatorId?._id}`}> <Button
                                             className="border border-black/50 text-black/50 hover:bg-white hover:text-black bg-transparent"
                                         >
                                             View

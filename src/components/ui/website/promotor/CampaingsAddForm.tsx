@@ -54,8 +54,6 @@ const CampaignsAddForm = ({ editData, onClose }: { editData?: any, onClose?: any
     },
   });
 
-  // console.log("formData", editData);
-
   const fetchingCategories = async () => {
     try {
       const category = await myFetch('/categories?type=CATEGORY');
@@ -69,8 +67,7 @@ const CampaignsAddForm = ({ editData, onClose }: { editData?: any, onClose?: any
 
   const fetchingGenries = async () => {
     try {
-      const category = await myFetch('/categories?type=GENRE');
-      console.log("genre", category);
+      const category = await myFetch('/categories?type=GENRE');      
       setGenries(category?.data)
     } catch (error) {
       console.error('Error:', error);
@@ -101,10 +98,6 @@ const CampaignsAddForm = ({ editData, onClose }: { editData?: any, onClose?: any
       setStep(1);
     }
   }, [editData]);
-
-  
-  console.log("form data", editData);
-
 
   const updateFormData = (field: any) =>
     setFormData((p) => ({ ...p, ...field }));
@@ -171,7 +164,6 @@ const CampaignsAddForm = ({ editData, onClose }: { editData?: any, onClose?: any
           method: 'PATCH',
           body: submitFormData
         });
-        console.log("update campaign", response);
 
         if (response?.success) {
           revalidate("promotor-campaigns")
@@ -187,10 +179,7 @@ const CampaignsAddForm = ({ editData, onClose }: { editData?: any, onClose?: any
         const response = await myFetch('/campaigns/create', {
           method: 'POST',
           body: submitFormData,
-        });
-
-        console.log('create campaign', response);
-
+        });        
         if (response?.success) {
           revalidate("promotor-campaigns")
           console.log('Success:', response);

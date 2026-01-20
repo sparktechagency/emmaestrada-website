@@ -150,16 +150,11 @@ const AnayticsSummary = () => {
     if (result.isConfirmed) {
       try {
         setWithdrawing(true)
-
-        // Make API call to process withdrawal
         const response = await myFetch("/withdrawal/create", {
           method: "POST",
           body: { amount, withdrawalMethod: "BANK_ACCOUNT" },
         })
 
-
-        console.log("setWithdrawing", response);
-        
         if (response?.success) {
           Swal.fire({
             title: "Withdrawal Successful!",
@@ -208,18 +203,7 @@ const AnayticsSummary = () => {
             </div>
           ) : (
             <>
-              <div className="flex items-center justify-end mb-5 gap-3">
-                {(accountData as any)?.accountStatus !== "active" && (
-                  <Button
-                    size="lg"
-                    onClick={() => handleGetLink()}
-                    className="bg-blue-600 hover:bg-blue-700 text-white gap-2"
-                  >
-                    <ArrowUpRight className="h-5 w-5" />
-                    Connect Wallet
-                  </Button>
-                )}
-
+              <div className="flex items-center justify-end mb-5 gap-3">              
                 <Button
                   size="lg"
                   onClick={handleWithdrawClick}

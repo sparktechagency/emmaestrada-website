@@ -186,8 +186,7 @@ export default function UserList({ data }: { data: any[] }) {
 
   const onSubmit = async (values: FormValues) => {
     try {
-      const result = await myFetch('/api/users', { method: "POST", body: values });
-      console.log("result ", result);
+       await myFetch('/api/users', { method: "POST", body: values });      
       revalidate('users');      
     } catch (error) {
       console.error("Error creating user:", error);

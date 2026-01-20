@@ -30,9 +30,6 @@ const influencers = Array.from({ length: 10 }).map(() => ({
 }))
 
 const CPromotorList = async ({ promotorData }: any) => {
-
-    console.log("promotorData", promotorData);
-
     return (
         <Container>
             <Card className="bg-transparent shadow-none border-0">

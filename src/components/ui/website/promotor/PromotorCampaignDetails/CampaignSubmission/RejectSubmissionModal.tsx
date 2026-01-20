@@ -27,8 +27,7 @@ const RejectSubmissionForm = ({submission,  closeModal }: { submission?: any,  c
     try {            
       const response = await myFetch(`/submissions/update-status/${submission?._id}`, {method: "PATCH", body: {status: "cancelled", reason: values.reason }});
       
-      if(response?.success) {
-        console.log("Response:", response);
+      if(response?.success) {        
         revalidate("campaign-submissions")
         toast.success(response?.message);
         closeModal();

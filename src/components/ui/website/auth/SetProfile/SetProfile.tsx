@@ -109,7 +109,17 @@ export default function SetProfile() {
     /* ------------------ UI ------------------ */
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-[url('/images/bgImg.png')] bg-cover bg-center px-4">
+            <div className="min-h-screen flex items-center justify-center relative px-4 py-8">
+              {/* Optimized Background Image */}
+              <Image
+                src="/images/bgImg.png"
+                alt="Background"
+                fill
+                priority
+                quality={85}
+                className="object-cover -z-10"
+                sizes="100vw"
+              />
             <div className="backdrop-blur-[2.5px] border-2 border-white/20 rounded-xl p-2 md:p-10">
                 <Card className="w-full max-w-lg py-8 px-2">
                     <CardHeader className="text-center space-y-2">

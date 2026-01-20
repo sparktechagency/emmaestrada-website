@@ -27,10 +27,7 @@ export default function PAnalyticsCampaignRankings() {
   const fetchCampaignPerformance = async () => {
     try {
       setLoading(true)
-      const response = await myFetch('/analytics/campaign-performance')
-
-      console.log("Campaign Performance Response:", response);
-      
+      const response = await myFetch('/analytics/campaign-performance')      
       if (response?.success) {
         setCampaigns(response?.data)
       } else {

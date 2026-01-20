@@ -41,9 +41,6 @@ const getPaymentStatus = (status:any) => {
 
 const AnalyticsWithdrawalHistory = async () => {
     const withdrawData = await myFetch("/withdrawal");
-
-    console.log("withdrawData", withdrawData);
-
     return (
         <Card className='bg-orange-50 mb-6'>
             <CardHeader>

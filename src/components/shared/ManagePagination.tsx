@@ -21,7 +21,7 @@ const ManagePagination = ({ meta }:any) => {
   };
 
   return (
-    <div className="flex items-center justify-center w-full p-4">
+    <div className={`${!totalPage ? "hidden" : "flex"} "items-center justify-center w-full p-4"`}>
       <div className="flex items-center space-x-2 md:space-x-4">
 
         {/* Prev */}

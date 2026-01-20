@@ -2,14 +2,11 @@ import AllCreators from '@/components/ui/website/Artists'
 import { myFetch } from '@/utils/myFetch';
 import React from 'react'
 
-const page = async() => {
-        const  data = await myFetch("/creators");
-
-        console.log("creators", data);
-        
+const page = async () => {
+    const data = await myFetch("/creators");
     return (
         <div>
-            <AllCreators data={data}/>
+            <AllCreators data={data} />
         </div>
     )
 }

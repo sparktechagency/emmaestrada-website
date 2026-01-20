@@ -37,10 +37,7 @@ const PendingDropDown = ({ submission }: { submission: any }) => {
             const response = await myFetch(`/submissions/update-status/${submission?._id}`, {
                 method: "PATCH",
                 body: { status: "accepted" },
-            });
-
-            console.log("response", response);
-
+            });        
             if (response?.success) {
                 toast.success("Submission accepted successfully")
                 revalidate("campaign-submissions")
@@ -86,8 +83,7 @@ const PendingDropDown = ({ submission }: { submission: any }) => {
                     submissionId: submission?._id,
                     reason: values.reason
                 }
-            });
-            console.log("handleReport response", response);
+            });            
             if (response?.success) {
                 setOpenReport(false);
                 toast.success(response?.message);

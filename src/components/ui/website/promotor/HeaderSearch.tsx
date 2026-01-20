@@ -9,9 +9,7 @@ export default function HeaderSearch() {
     const [searchTerm, setSearchTerm] = useState("");
 
     const handleSubmit = (e:any) => {
-        e.preventDefault();
-        console.log("Searching for:", searchTerm);
-        // Add navigation or API call logic here
+        e.preventDefault();        
     };
 
     return (

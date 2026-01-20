@@ -22,6 +22,7 @@ import { MdCancel } from 'react-icons/md';
 
 import Cookies from "js-cookie"
 import { toast } from 'sonner';
+import Image from 'next/image';
 
 
 export default function Signup() {
@@ -54,9 +55,6 @@ export default function Signup() {
 
     try {
       const result = await myFetch('/auth/register', { method: "POST", body: { email } });
-
-      console.log("result", result);
-
       if (result?.data) {
         toast.success(result?.data?.message)
         Cookies.set("email", email);
@@ -68,16 +66,21 @@ export default function Signup() {
       }
     } catch (error) {
       console.log("otp error", error);
-
-
     }
-
   }
 
-
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[url('/images/bgImg.png')] bg-cover bg-no-repeat bg-center px-4 py-8">
+        <div className="min-h-screen flex items-center justify-center relative px-4 py-8">
+          {/* Optimized Background Image */}
+          <Image
+            src="/images/bgImg.png"
+            alt="Background"
+            fill
+            priority
+            quality={85}
+            className="object-cover -z-10"
+            sizes="100vw"
+          />
       <div className=" backdrop-blur-[2.5px] border-2 border-white/20 rounded-xl py-5 md:p-18">
 
         <Card className="w-[90%] md:w-full mx-auto max-w-md p-0 py-5 sm:p-3">

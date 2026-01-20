@@ -46,8 +46,6 @@ const PChatBox = () => {
     if (!profile?._id) return;
 
     const socket = getSocket();
-
-    console.log("socket", socket);
     
     const handleNewMessage = (newMessage: any) => {
       // ✅ only for current chat

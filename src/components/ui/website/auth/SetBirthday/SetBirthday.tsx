@@ -14,6 +14,7 @@ import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { useData } from '@/hooks/context/DataContext'
+import Image from 'next/image'
 
 
 const SetBirthday = () => {
@@ -57,7 +58,17 @@ const SetBirthday = () => {
   const isFormValid = day && month && year
 
   return (
-    <div className="h-screen flex items-center justify-center bg-[url('/images/bgImg.png')] bg-cover bg-no-repeat bg-center ">
+        <div className="min-h-screen flex items-center justify-center relative px-4 py-8">
+          {/* Optimized Background Image */}
+          <Image
+            src="/images/bgImg.png"
+            alt="Background"
+            fill
+            priority
+            quality={85}
+            className="object-cover -z-10"
+            sizes="100vw"
+          />
       <div className="backdrop-blur-[2.5px] border-2 border-white/20 rounded-xl p-5 sm:p-12">
         <Card className="w-full max-w-lg  sm:p-10">
           {/* Card Header */}

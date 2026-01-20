@@ -21,9 +21,8 @@ const AcccountConnectModal = ({ closeModal, setOpenVerifiedModal }: any) => {
     },
   })
 
-  const onSubmit = async (values: any) => {
-    try {
-      console.log(values)
+  const onSubmit = async () => {
+    try {      
       closeModal()
       setOpenVerifiedModal(true)
     } catch (error) {

@@ -55,8 +55,7 @@ const PFollowedInfluencer = ({ followedCreator }: any) => {
 
   const handleCreateChat = async (participant: string) => {
     try {
-      const res = await myFetch("/chats/create", { method: "POST", body: { participant } });
-      console.log("create chat", res);
+      const res = await myFetch("/chats/create", { method: "POST", body: { participant } });      
       if (res?.success) {
         toast.success("Created Chat Successfully")
         router.push("/creator/messages")
@@ -68,8 +67,7 @@ const PFollowedInfluencer = ({ followedCreator }: any) => {
 
   const handleUnFollow = async (id: string) => {
     try {
-      const res = await myFetch("/followers/follow", { method: "DELETE", body: { followingId: id } });
-      console.log("create chat", res);
+      const res = await myFetch("/followers/follow", { method: "DELETE", body: { followingId: id } });      
       if (res?.success) {
         toast.success("Created Chat Successfully")
         revalidate("CREATOR")

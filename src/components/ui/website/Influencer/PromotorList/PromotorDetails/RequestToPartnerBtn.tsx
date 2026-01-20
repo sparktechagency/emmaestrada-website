@@ -6,8 +6,7 @@ import { toast } from 'sonner'
 const RequestToPartnerBtn = ({ promoterId }: any) => {
     const handleClick = async () => {
         try {
-            const response = await myFetch(`/followers/promoter/${promoterId}/become-partner`, { method: 'POST' });
-            console.log("RequestToPartnerBtn", response);
+            const response = await myFetch(`/followers/promoter/${promoterId}/become-partner`, { method: 'POST' });            
             if(response?.success){
               toast.success(response?.message);
             }

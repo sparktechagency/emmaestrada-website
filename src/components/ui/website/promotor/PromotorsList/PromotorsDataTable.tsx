@@ -33,7 +33,6 @@ const influencers = Array.from({ length: 10 }).map(() => ({
 
 
 const PromotorsDataTable = ({ promotorData }: any) => {
-    console.log("promotorData", promotorData);
 
     return (
         <Container>

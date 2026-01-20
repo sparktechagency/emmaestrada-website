@@ -10,9 +10,8 @@ const AccountVerified = ({ closeModal }: any) => {
         },
       })
 
-    const onSubmit = async (values: any) => {
-    try {
-      console.log(values)
+    const onSubmit = async () => {
+    try {      
       closeModal()      
     } catch (error) {
       console.error('Error creating user:', error)

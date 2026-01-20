@@ -25,6 +25,7 @@ import { cn } from '@/lib/utils'
 import { countriesData } from '@/assets/countrydata'
 import { toast } from 'sonner'
 import { useData } from '@/hooks/context/DataContext'
+import Image from 'next/image'
 
 
 export default function SetCountry() {
@@ -65,7 +66,17 @@ export default function SetCountry() {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-[url('/images/bgImg.png')] bg-cover bg-no-repeat bg-center md:px-4 py-8">
+            <div className="min-h-screen flex items-center justify-center relative px-4 py-8">
+              {/* Optimized Background Image */}
+              <Image
+                src="/images/bgImg.png"
+                alt="Background"
+                fill
+                priority
+                quality={85}
+                className="object-cover -z-10"
+                sizes="100vw"
+              />
             <div className="backdrop-blur-[2.5px] border-2 border-white/20 rounded-xl p-4 sm:p-12">
                 <Card className="w-full md:min-w-lg py-4 sm:p-10">
                     <CardHeader className="flex flex-col items-center space-y-3">

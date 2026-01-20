@@ -1,48 +1,57 @@
 "use client";
 
-import React from "react";
-import { Button } from "../../button";
-import {
-  Music,
-  User,
-  BarChart3,
-  MessageSquare,
-  Shield,
-  UserCircle,
-  Search,
-  SlidersHorizontal,
-  ArrowUpDown,
-  Repeat,
-  Users,
-  Send,
-  Handshake,
-  UsersRound,
-} from "lucide-react";
-import Link from "next/link";
 import Container from "@/components/shared/Container";
-import HeaderSearch from "./HeaderSearch";
-import { usePathname, useRouter } from "next/navigation";
 import { useProfile } from "@/hooks/context/ProfileContext";
-import Swal from "sweetalert2";
+import useSocket from "@/hooks/useSocket";
 import { myFetch } from "@/utils/myFetch";
 import Cookies from "js-cookie";
+import {
+  BarChart3,
+  Handshake,
+  MessageSquare,
+  Music,
+  Repeat,
+  UserCircle,
+  UsersRound
+} from "lucide-react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
- const displayLinks = [
-    { link: "/promotor", label: "Campaigns", icon: Music },
-    { link: "/promotor/creator", label: "Creator", icon: UsersRound },
-    { link: "/promotor/promotor-list", label: "Promotor", icon: UsersRound },
-    { link: "/promotor/analytics", label: "Analytics", icon: BarChart3 },
-    { link: "/creator/messages", label: "Messages", icon: MessageSquare },
-    { link: "/promotor/trusted-creators", label: "Trusted Creator", icon: Handshake },    
-    { link: "/promotor/profile", label: "Profile", icon: UserCircle },
-  ];
+const displayLinks = [
+  { link: "/promotor", label: "Campaigns", icon: Music },
+  { link: "/promotor/creator", label: "Creator", icon: UsersRound },
+  { link: "/promotor/promotor-list", label: "Promotor", icon: UsersRound },
+  { link: "/promotor/analytics", label: "Analytics", icon: BarChart3 },
+  { link: "/creator/messages", label: "Messages", icon: MessageSquare },
+  { link: "/promotor/trusted-creators", label: "Trusted Creator", icon: Handshake },
+  { link: "/promotor/profile", label: "Profile", icon: UserCircle },
+];
 
-  
+
 const PromotorHeader = () => {
   const pathname = usePathname();
-  const {profile} = useProfile();
+  const { profile } = useProfile();
   const route = useRouter()
+  const [hasUnreadMesssage, setHasUnreadMessage] = useState(false)
+  const socket = useSocket()
 
+    const role = typeof window !== 'undefined' ? localStorage.getItem('role') : null;
+
+
+  useEffect(() => {
+    if (!profile?._id || !socket) return;
+
+    const eventName = `newMessage::${profile?._id}`;
+    const handleNewMessage = async () => {      
+      setHasUnreadMessage(true)
+    }
+    socket.on(eventName, handleNewMessage);
+    return () => {
+      socket.off(eventName, handleNewMessage);
+    }
+  }, [profile?._id, socket])
 
   // ACTIVE LINK FIX
   const isActive = (path: string) => {
@@ -67,8 +76,6 @@ const PromotorHeader = () => {
 
         try {
           const res = await myFetch("/users/switched-role", { method: "POST" });
-          console.log("role switch response", res);
-
           if (res?.success) {
             Swal.fire({
               title: "Role Updated!",
@@ -98,7 +105,7 @@ const PromotorHeader = () => {
     });
   };
 
- 
+
   return (
     <div>
       <Container>
@@ -106,13 +113,15 @@ const PromotorHeader = () => {
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <button className="btn flex items-center gap-2 bg-white font-semibold text-black text-lg rounded-full shadow">
               <div className="w-2 h-2 bg-green-500 rounded-full" />
-              <span>Currently viewing as: <span className="text-primary uppercase">{profile?.role}</span> </span>
+              <span>Currently viewing as: {" "}
+                <span className="text-primary uppercase">{role}</span>
+              </span>
             </button>
-            
-              <button onClick={()=>handleSwitchRoleConfirm()} className="btn bg-primary text-white flex items-center w-full sm:w-auto text-lg rounded-full shadow whitespace-nowrap">
-                <Repeat className="w-4 h-4 mr-2" />
-                Switch into music creator
-              </button>            
+
+            <button onClick={() => handleSwitchRoleConfirm()} className="btn bg-primary text-white flex items-center w-full sm:w-auto text-lg rounded-full shadow whitespace-nowrap">
+              <Repeat className="w-4 h-4 mr-2" />
+              Switch into music creator
+            </button>
           </div>
         </div>
 
@@ -121,20 +130,27 @@ const PromotorHeader = () => {
           {displayLinks?.map((item) => {
             const Icon = item.icon;
             const active = isActive(item.link);
-
             return (
               <Link
-                key={item.link}
                 href={item.link}
-                className={`flex items-center justify-center gap-2 w-full px-5 py-2 rounded-lg whitespace-nowrap transition-colors border 
-                  ${active
-                    ? "bg-primary text-white border-primary shadow"
-                    : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
-                  }
-                `}
+                key={item.link}
+                className={`relative flex items-center justify-center gap-2 w-full px-4 py-2 rounded-lg whitespace-nowrap transition-all border 
+    ${active
+                    ? "bg-primary text-white border-primary"
+                    : "bg-white text-gray-700 hover:bg-gray-50 border-gray-300"
+                  }`}
               >
                 <Icon className="w-4 h-4" />
                 <span>{item.label}</span>
+
+                {!active && hasUnreadMesssage && item.label === "Messages" && (
+                  <span className="absolute -top-1 right-0 flex h-3 w-3">
+                    {/* glow */}
+                    <span className="absolute inline-flex h-full w-full rounded-full bg-primary opacity-75 animate-ping"></span>
+                    {/* dot */}
+                    <span className="relative inline-flex h-3 w-3 rounded-full bg-primary"></span>
+                  </span>
+                )}
               </Link>
             );
           })}

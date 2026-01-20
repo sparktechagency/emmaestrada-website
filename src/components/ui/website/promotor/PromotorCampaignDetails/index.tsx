@@ -18,7 +18,7 @@ const PromotorCampaignDetails = async({data, status, openTab }: {data:any,  stat
         <Container>
             <div className="glassBg p-4 my-10">
             <div className="flex justify-end mt-5">
-            <DropDownMenu campaignData={data} />
+            {profile?._id == data?.userId?._id.toString() && <DropDownMenu campaignData={data} />}
             </div>
             <div className="relative w-full  px-0 py-4 md:p-8 flex flex-col items-center">
                 <div className="w-full">
