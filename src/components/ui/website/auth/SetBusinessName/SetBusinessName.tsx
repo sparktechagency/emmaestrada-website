@@ -48,10 +48,13 @@ const SetBusinessName = () => {
         method: "POST",
         body: formData
       })
+
       if (response?.success) {
-        toast.success(response.message)
         clearData()
-        router.push("/")
+        toast.success(response.message)
+        router.replace("/")        
+      } else {
+        toast.error(response?.message || "Registration failed")
       }
 
     } catch (error) {
@@ -61,17 +64,17 @@ const SetBusinessName = () => {
   }
 
   return (
-        <div className="min-h-screen flex items-center justify-center relative px-4 py-8">
-          {/* Optimized Background Image */}
-          <Image
-            src="/images/bgImg.png"
-            alt="Background"
-            fill
-            priority
-            quality={85}
-            className="object-cover -z-10"
-            sizes="100vw"
-          />
+    <div className="min-h-screen flex items-center justify-center relative px-4 py-8">
+      {/* Optimized Background Image */}
+      <Image
+        src="/images/bgImg.png"
+        alt="Background"
+        fill
+        priority
+        quality={85}
+        className="object-cover -z-10"
+        sizes="100vw"
+      />
       <div className="backdrop-blur-[2.5px] border-2 border-white/20 rounded-xl p-4 sm:p-12">
         <Card className="w-full md:min-w-xl py-5 sm:p-10">
           {/* Card Header */}

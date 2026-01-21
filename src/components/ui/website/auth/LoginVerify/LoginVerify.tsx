@@ -88,7 +88,7 @@ const LoginVerify = () => {
         const {data} = result;
         Cookies.set("accessToken", data?.accessToken)
         toast.success(data?.message)
-        route.push("/")
+        route.push("/")        
       }else{
         toast.error(result?.message)
       }

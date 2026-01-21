@@ -1,1 +1,1 @@
-export const imageUrl = "http://10.10.7.48:5000";
+export const imageUrl = process.env.NEXT_PUBLIC_SOCKET_URL ?? "";

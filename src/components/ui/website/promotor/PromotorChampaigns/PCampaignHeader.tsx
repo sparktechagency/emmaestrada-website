@@ -40,7 +40,7 @@ const PCampaignHeader = () => {
 
   const setCampaignType = (type: string) => {
     setActiveCampaignTab(type);
-    router.push(`/creator?campaignType=${type}`);
+    router.push(`/promotor?campaignType=${type}`);
   };
 
 
@@ -66,7 +66,7 @@ const PCampaignHeader = () => {
       </div>
 
       {/* Campaign Tabs */}
-      <div className="flex items-center justify-center md:inline-block mb-6  bg-secondary rounded-full p-1">
+      {/* <div className="flex items-center justify-center md:inline-block mb-6  bg-secondary rounded-full p-1">
         <button
           onClick={() => setCampaignType("campaigns")}
           className={`flex-1 sm:flex-none md:px-14 py-3 rounded-full transition-colors ${activeCampaignTab === "campaigns"
@@ -85,7 +85,7 @@ const PCampaignHeader = () => {
         >
           My Submissions
         </button>
-      </div>
+      </div> */}
       
       {contentType !== "my-submissions" && <div className="bg-secondary rounded-xl p-4 mb-6">
 

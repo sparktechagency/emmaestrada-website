@@ -192,8 +192,7 @@ const MessageSidebar = ({profile}: {profile: any}) => {
 
     const handleReadMessage = async (id: string) => {
         try {
-            await myFetch(`/chats/mark-chat-as-read/${id}`, { method: "PATCH" });
-            getChats(1, false);
+            await myFetch(`/chats/mark-chat-as-read/${id}`, { method: "PATCH" });            
         } catch (error) {
             console.log("handleReadMessage", error);
         }

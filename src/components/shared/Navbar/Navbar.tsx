@@ -1,14 +1,9 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-import Link from "next/link";
-import { Menu, X, Bell, Wallet, Contact, LogOut, CircleUser, User, Heart, MessageCircle, UserPlus, Settings, } from "lucide-react";
-import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { imageUrl } from "@/constants";
-import Cookies from "js-cookie";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,15 +11,20 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import Container from "../Container";
-import { Button } from "@/components/ui/button";
-import { deleteCookie } from "cookies-next";
+import { imageUrl } from "@/constants";
 import { revalidate } from "@/helpers/revalidateHelper";
-import { toast } from "sonner";
-import NotificationBar from "../Notifications/NotificationBar";
-import { myFetch } from "@/utils/myFetch";
-import { Badge } from "@/components/ui/badge";
 import useSocket from "@/hooks/useSocket";
+import { myFetch } from "@/utils/myFetch";
+import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
+import { deleteCookie } from "cookies-next";
+import Cookies from "js-cookie";
+import { Bell, CircleUser, Contact, Heart, LogOut, Menu, MessageCircle, User, UserPlus, Wallet, X } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { toast } from "sonner";
+import Container from "../Container";
+import NotificationBar from "../Notifications/NotificationBar";
 
 
 // Mock notification data generator
@@ -60,7 +60,7 @@ const Navbar = ({ profile }: { profile: any }) => {
   const [isBarOpen, setIsBarOpen] = useState(false);
 
 
-
+  const router = useRouter()
   const pathname = usePathname();
   const darkBgRoutes = ["creator", "promotor", "success", "notifications"];
   const hasDarkBackground = darkBgRoutes.includes(pathname.split("/")[1]);
@@ -87,7 +87,7 @@ const Navbar = ({ profile }: { profile: any }) => {
     };
 
     handleScroll();
-    window.addEventListener("scroll", handleScroll);    
+    window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [mounted]);
 
@@ -100,6 +100,18 @@ const Navbar = ({ profile }: { profile: any }) => {
 
   const isActive = (href: string) => pathname === href;
   if (!mounted) return null;
+
+  const handleLogout = () => {
+    Cookies.remove("accessToken");
+
+    deleteCookie("user");
+    router.push("/");
+    setOpenMenu(false);
+    toast.success("Logged out successfully");
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem("role");
+    }
+  };
 
 
 
@@ -151,6 +163,8 @@ const Navbar = ({ profile }: { profile: any }) => {
           {openMenu && (
             <div className="md:hidden absolute w-4/5 left-0 h-screen top-0 backdrop-blur-xl bg-black/50 shadow-lg border border-white/10 p-4">
               <div className="relative flex flex-col h-full">
+
+                {/* Header / Logo */}
                 <div className="flex items-center gap-2 border-b border-gray-700 pb-2">
                   <Link href="/">
                     <Image src="/logo.png" alt="logo" width={35} height={35} />
@@ -158,28 +172,48 @@ const Navbar = ({ profile }: { profile: any }) => {
                   <h1 className="text-xl font-semibold text-white">Whop</h1>
                 </div>
 
+                {/* Close button */}
                 <X
                   onClick={() => setOpenMenu(false)}
-                  className="w-6 h-6 text-white absolute right-0"
+                  className="w-6 h-6 text-white absolute right-0 top-4" // ← added top-4 for better positioning
                 />
 
+                {/* Navigation links */}
                 <div className="flex flex-col gap-2 mt-6">
                   {links.map((link) => (
                     <Link
                       key={link.href}
                       href={link.href}
                       onClick={() => setOpenMenu(false)}
-                      className={`px-4 py-3 rounded-lg ${isActive(link.href) ? "bg-orange-500 text-white" : "text-white/80 hover:bg-white/5"}`}>
+                      className={`px-4 py-3 rounded-lg ${isActive(link.href) ? "bg-orange-500 text-white" : "text-white/80 hover:bg-white/5"
+                        }`}
+                    >
                       {link.name}
                     </Link>
                   ))}
                 </div>
 
-                <Link href="/signup">
-                  <button className="mt-auto bg-linear-to-r from-orange-500 to-orange-600 text-white px-4 py-3 rounded-lg">
-                    Sign Up
-                  </button>
-                </Link>
+                {/* Spacer that pushes the button to the bottom */}
+                <div className="flex-1" /> {/* ← or mt-auto on the next element */}
+
+                {/* Login / Logout button at the BOTTOM */}
+                <div className="mt-auto pb-6"> {/* pb-6 = nice padding from bottom */}
+                  {profile ? (
+                    <Button
+                      onClick={handleLogout}
+                      className="bg-primary w-full text-white rounded-full"
+                    >
+                      Logout
+                    </Button>
+                  ) : (
+                    <Link href="/login" className="w-full block">
+                      <Button className="bg-primary w-full text-white rounded-full">
+                        Log In
+                      </Button>
+                    </Link>
+                  )}
+                </div>
+
               </div>
             </div>
           )}
@@ -223,7 +257,6 @@ const ViewAsLogin = ({ profile, isBarOpen, setIsBarOpen }: any) => {
     Cookies.remove("accessToken");
 
     deleteCookie("user");
-    revalidate("user-profile");
     router.push("/");
     toast.success("Logged out successfully");
     if (typeof window !== 'undefined') {
@@ -279,7 +312,7 @@ const ViewAsLogin = ({ profile, isBarOpen, setIsBarOpen }: any) => {
 
   return (
     <div className="flex items-center gap-3">
-      <Wallet strokeWidth={1} size={30} color="#ededed" />
+      <Link href={`${profile?.role === "CREATOR" ? "/creator/analytics" : "/promotor/analytics"}`}><Wallet strokeWidth={1} size={25} color="#ededed" /></Link>
       <div className="relative">
         <Bell
           onClick={() => setIsBarOpen(true)}
@@ -297,7 +330,7 @@ const ViewAsLogin = ({ profile, isBarOpen, setIsBarOpen }: any) => {
 
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger>
-          {profile?.image ? (
+          {profile ? (
             <Avatar className="rounded-lg cursor-pointer">
               <div className="border-slate-300/50 rounded-full">
                 <AvatarImage
@@ -307,7 +340,7 @@ const ViewAsLogin = ({ profile, isBarOpen, setIsBarOpen }: any) => {
                       : "/placeholder.png"
                   }
                   alt={profile?.name}
-                  className="w-12 h-12 object-fill rounded-full"
+                  className="w-78md:w-12 h-8 md:h-12 object-fill rounded-full"
                 />
               </div>
             </Avatar>

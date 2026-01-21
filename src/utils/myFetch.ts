@@ -62,9 +62,6 @@ export const myFetch = async (
     });
 
     const responseData = await response.json();
-
-    console.log("responseData", responseData);
-    
     if (response.ok) {
       return {
         success: responseData?.success ?? true,

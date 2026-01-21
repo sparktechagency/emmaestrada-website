@@ -18,7 +18,7 @@ import ChatBoxHeader from "./ChatBoxHeader"
 
 interface ChatBoxProps {
   chatId: string,
-  profile:any
+  profile: any
 }
 
 const ChatBox = ({ chatId, profile }: ChatBoxProps) => {
