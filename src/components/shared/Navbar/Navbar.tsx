@@ -104,8 +104,7 @@ const Navbar = ({ profile }: { profile: any }) => {
   const handleLogout = () => {
     Cookies.remove("accessToken");
 
-    deleteCookie("user");
-    router.push("/");
+    deleteCookie("user");    
     window.location.href = "/"
     setOpenMenu(false);
     toast.success("Logged out successfully");

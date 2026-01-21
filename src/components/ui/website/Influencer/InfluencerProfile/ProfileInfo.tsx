@@ -13,18 +13,16 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
-import { AtSign, Camera, LucideUserPlus, MapPin, X, Check } from "lucide-react";
+import { AtSign, Camera, Check, LucideUserPlus, MapPin, X } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { FcLikePlaceholder } from "react-icons/fc";
 
 import DatePicker from "@/components/shared/DatePicker";
-import Loader from "@/components/shared/Loader";
 import { imageUrl } from "@/constants";
-import { useProfile } from "@/hooks/context/ProfileContext";
-import { myFetch } from "@/utils/myFetch";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 import { revalidate } from "@/helpers/revalidateHelper";
+import { myFetch } from "@/utils/myFetch";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const isoToDate = (date: any) => {
   const yyyyMmDd = [

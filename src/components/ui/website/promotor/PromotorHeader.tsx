@@ -30,8 +30,8 @@ const displayLinks = [
 ];
 
 
-const PromotorHeader = ({profile}: {profile: any}) => {
-  const pathname = usePathname();  
+const PromotorHeader = ({ profile }: { profile: any }) => {
+  const pathname = usePathname();
   const route = useRouter()
   const [hasUnreadMesssage, setHasUnreadMessage] = useState(false)
   const socket = useSocket()
@@ -41,7 +41,7 @@ const PromotorHeader = ({profile}: {profile: any}) => {
     if (!profile?._id || !socket) return;
 
     const eventName = `newMessage::${profile?._id}`;
-    const handleNewMessage = async () => {      
+    const handleNewMessage = async () => {
       setHasUnreadMessage(true)
     }
     socket.on(eventName, handleNewMessage);
@@ -81,7 +81,7 @@ const PromotorHeader = ({profile}: {profile: any}) => {
             });
 
             Cookies.set("accessToken", res?.data?.accessToken);            
-            route.push("/creator");
+            window.location.href = "/creator"
             route.refresh();
           } else {
             Swal.fire({

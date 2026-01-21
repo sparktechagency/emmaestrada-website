@@ -86,8 +86,8 @@ const InfluencerHeader = ({ profile }: { profile: any }) => {
               icon: "success",
             });
             revalidate("profile");
-            Cookies.set("accessToken", res?.data?.accessToken);
-            route.push("/promotor");
+            Cookies.set("accessToken", res?.data?.accessToken);            
+             window.location.href = "/promotor"
             route.refresh();
           } else {
             Swal.fire({

@@ -78,10 +78,7 @@ const PromotorChampaigns = async ({ queryString, status = "active" }: { queryStr
             </h3>
             <p className="text-gray-600 max-w-md mb-6">
               {emptyConfig.description}
-            </p>
-            {emptyConfig.showButton && (
-              <CampaignCreateButton />
-            )}
+            </p>           
           </div>
         )}
       </div>

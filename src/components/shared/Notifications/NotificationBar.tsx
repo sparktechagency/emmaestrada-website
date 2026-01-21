@@ -15,27 +15,33 @@ const NotificationItem = ({ notification, onClick }: any) => {
   function formatConstant(str: string): string {
     return str
       .split('_')
-      .map(word => word.charAt(0) + word.slice(1).toLowerCase())
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
       .join(' ')
   }
 
   return (
     <div
       onClick={onClick}
-      className={`p-4 hover:bg-gray-50 cursor-pointer border-b ${!notification.read ? 'bg-blue-50' : ''}`}
+      className={`p-4 hover:bg-gray-50 cursor-pointer border-b last:border-b-0 ${
+        !notification.read ? 'bg-blue-50' : ''
+      }`}
     >
       <div className="flex items-start gap-3">
-        <Avatar className="rounded-full cursor-pointer bg-primary flex items-center justify-center w-10 h-10">
-          <Bell size={25} className="text-slate-200" />
+        <Avatar className="rounded-full bg-primary/10 flex items-center justify-center w-10 h-10">
+          <Bell size={22} className="text-primary" />
         </Avatar>
 
-        <div className="flex-1">
-          <p className={`text-sm ${notification.read ? '' : 'font-bold'}`}>
+        <div className="flex-1 min-w-0">
+          <p className={`text-sm ${!notification.read ? 'font-semibold' : 'font-medium'}`}>
             {notification?.title}
           </p>
-          <p className="text-sm">{notification?.message}</p>
-          <div className="flex items-center justify-between pt-2">
-            <Badge variant="destructive">{formatConstant(notification.type)}</Badge>
+          <p className="text-sm text-gray-600 mt-0.5 line-clamp-2">
+            {notification?.message}
+          </p>
+          <div className="flex items-center justify-between mt-2">
+            <Badge variant="secondary" className="text-xs">
+              {formatConstant(notification.type)}
+            </Badge>
             <p className="text-xs text-gray-500">
               {FormatDate(notification?.createdAt ?? notification?.updatedAt)}
             </p>
@@ -47,7 +53,7 @@ const NotificationItem = ({ notification, onClick }: any) => {
 }
 
 // ────────────────────────────────────────────────
-// Notification Bar / Modal Component
+// Main Notification Bar / Modal Component
 // ────────────────────────────────────────────────
 const NotificationBar = ({
   isOpen,
@@ -57,39 +63,56 @@ const NotificationBar = ({
   hasMore,
   loading,
   onMarkAllRead,
-}: any) => {
+}: {
+  isOpen: boolean
+  onClose: () => void
+  notifications: any[]
+  onLoadMore: () => void
+  hasMore: boolean
+  loading: boolean
+  onMarkAllRead: () => void
+}) => {
   const scrollRef = useRef<HTMLDivElement>(null)
   const modalRef = useRef<HTMLDivElement>(null)
 
-  // Disable body scroll on mobile when modal is open
+  // Improved mobile body scroll lock
   useEffect(() => {
     if (!isOpen) return
 
     const isMobile = window.innerWidth < 640
     if (!isMobile) return
 
+    const scrollY = window.scrollY
+
+    document.body.style.position = 'fixed'
+    document.body.style.top = `-${scrollY}px`
+    document.body.style.width = '100%'
     document.body.style.overflow = 'hidden'
 
     return () => {
+      document.body.style.position = ''
+      document.body.style.top = ''
+      document.body.style.width = ''
       document.body.style.overflow = ''
+      window.scrollTo(0, scrollY)
     }
   }, [isOpen])
 
-  // Infinite scroll / load more trigger
+  // Infinite scroll trigger
   useEffect(() => {
     const handleScroll = () => {
       if (!scrollRef.current || loading || !hasMore) return
 
       const { scrollTop, scrollHeight, clientHeight } = scrollRef.current
-      if (scrollHeight - scrollTop - clientHeight < 100) {
+      if (scrollHeight - scrollTop - clientHeight < 120) {
         onLoadMore()
       }
     }
 
-    const scrollElement = scrollRef.current
-    if (scrollElement) {
-      scrollElement.addEventListener('scroll', handleScroll)
-      return () => scrollElement.removeEventListener('scroll', handleScroll)
+    const el = scrollRef.current
+    if (el) {
+      el.addEventListener('scroll', handleScroll)
+      return () => el.removeEventListener('scroll', handleScroll)
     }
   }, [loading, hasMore, onLoadMore])
 
@@ -112,49 +135,70 @@ const NotificationBar = ({
   return (
     <div
       ref={modalRef}
-      className="
-        fixed inset-0 z-50 flex flex-col bg-white shadow-xl border-l 
-        sm:inset-auto sm:top-24 sm:right-3 sm:w-96 
-        sm:min-h-[85vh] sm:max-h-[85vh] sm:rounded-lg
-      "
+      className={`
+        fixed inset-0 z-50 flex flex-col bg-white
+        sm:inset-auto sm:top-20 sm:right-4 sm:w-96 sm:max-h-[calc(100vh-6rem)] 
+        sm:rounded-xl sm:shadow-2xl sm:border sm:border-gray-200
+      `}
     >
-      {/* Header */}
-      <div className="p-4 border-b flex items-center justify-between">
-        <h2 className="text-lg font-semibold">Notifications</h2>
-        <div className="flex items-center gap-2">
-          <Link href="/notifications" onClick={() => onClose()}>
-            <Button variant="ghost" size="sm">
-              View All
+      {/* Header - fixed/sticky look */}
+      <div className="shrink-0 border-b bg-white z-10">
+        <div className="p-4 flex items-center justify-between">
+          <h2 className="text-lg font-semibold">Notifications</h2>
+          <div className="flex items-center gap-2">
+            <Link href="/notifications" onClick={onClose}>
+              <Button variant="ghost" size="sm">
+                View All
+              </Button>
+            </Link>
+            <Button size="sm" onClick={onMarkAllRead}>
+              Mark all read
             </Button>
-          </Link>
-          <Button size="sm" onClick={onMarkAllRead}>
-            Read All
-          </Button>
-          <Button variant="ghost" size="icon" onClick={onClose}>
-            <X className="h-4 w-4" />
-          </Button>
+            <Button variant="ghost" size="icon" onClick={onClose}>
+              <X className="h-5 w-5" />
+            </Button>
+          </div>
         </div>
       </div>
 
-      {/* Scrollable content */}
-      <div ref={scrollRef} className="flex-1 overflow-y-auto overscroll-contain">
+      {/* Scrollable content area */}
+      <div
+        ref={scrollRef}
+        className={`
+          flex-1 overflow-y-auto -webkit-overflow-scrolling:touch overscroll-contain
+          min-h-0 bg-gray-50/40
+        `}
+      >
         {notifications?.length > 0 ? (
           notifications.map((notif: any, index: number) => (
-            <NotificationItem key={index} notification={notif} />
+            <NotificationItem
+              key={notif.id ?? index}
+              notification={notif}
+              onClick={() => {
+                // Add your read + redirect logic here if needed
+              }}
+            />
           ))
-        ) : !hasMore && notifications?.length === 0 ? (
-          <div className="text-center py-4 text-sm text-gray-500">
-            No Notifications
+        ) : loading ? (
+          <div className="flex justify-center items-center h-40">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
           </div>
         ) : (
-          <div className="text-center py-4 text-sm text-gray-500">
-            No more notifications
+          <div className="flex flex-col items-center justify-center h-64 text-gray-500">
+            <Bell className="h-12 w-12 text-gray-300 mb-3" />
+            <p className="text-center">No notifications yet</p>
           </div>
         )}
 
-        {loading && (
-          <div className="flex justify-center p-4">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900" />
+        {loading && notifications?.length > 0 && (
+          <div className="flex justify-center py-6">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+          </div>
+        )}
+
+        {!hasMore && notifications?.length > 0 && (
+          <div className="text-center py-6 text-sm text-gray-500">
+            No more notifications
           </div>
         )}
       </div>
