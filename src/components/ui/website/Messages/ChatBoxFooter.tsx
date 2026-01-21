@@ -3,9 +3,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { revalidate } from '@/helpers/revalidateHelper';
 import { myFetch } from '@/utils/myFetch';
-import { Image, Send, X, Loader2 } from 'lucide-react';
+import { Image, Loader2, Send, X } from 'lucide-react';
 import { useParams } from 'next/navigation';
-import React, { useState } from 'react'
+import { useState } from 'react';
 
 const ChatBoxFooter = () => {
     const [message, setMessage] = useState("")
@@ -32,13 +32,10 @@ const ChatBoxFooter = () => {
                 body: formData 
             })
 
-            console.log("send-message", res);
-
             if (res?.success) {
                 setMessage("")
                 setImageFiles([])
-                revalidate("chats")
-                revalidate("messages")
+                revalidate("chats")                
             }
         } catch (error) {
             console.log(error)

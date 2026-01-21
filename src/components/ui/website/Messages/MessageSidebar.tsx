@@ -1,23 +1,17 @@
 'use client'
-import React, { useEffect, useState, useMemo, useCallback, useRef } from 'react'
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Separator } from "@/components/ui/separator";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Textarea } from "@/components/ui/textarea";
+import { formatChatTime } from '@/components/shared/FormatChatTime ';
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Music, Search, MessageCircle, Loader2 } from 'lucide-react';
-import { CampaignTabGroup } from '../Influencer/InfluencerCampaign/CampaignTabGroup';
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
 import { imageUrl } from '@/constants';
+import { revalidate } from '@/helpers/revalidateHelper';
+import useSocket from '@/hooks/useSocket';
 import { myFetch } from '@/utils/myFetch';
+import { Loader2, MessageCircle, Search } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useProfile } from '@/hooks/context/ProfileContext';
-import useSocket from '@/hooks/useSocket';
-import { formatChatTime } from '@/components/shared/FormatChatTime ';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 const EmptyState = () => (
     <div className="flex flex-col items-center justify-center h-full py-12 px-6">
@@ -102,13 +96,10 @@ const MessageSidebar = () => {
         try {
             if (append) {
                 setLoadingMore(true);
-            } else {
-                setLoading(true);
             }
 
             const response = await myFetch(`/chats?page=${pageNum}`, {
-                tags: ["chats"],
-                cache: "no-cache"
+                cache: "no-cache", tags: ["chats"]
             });
             if (response?.success) {
                 const newChats = response?.data?.chats || [];
@@ -132,8 +123,7 @@ const MessageSidebar = () => {
     }, []);
 
     // Initial load
-    useEffect(() => {
-        setPage(1);
+    useEffect(() => {        
         getChats(1, false);
     }, [getChats]);
 
@@ -215,7 +205,8 @@ const MessageSidebar = () => {
 
     const handleReadMessage = async (id: string) => {
         try {
-            await myFetch(`/chats/mark-chat-as-read/${id}`, { method: "PATCH" });            
+            await myFetch(`/chats/mark-chat-as-read/${id}`, { method: "PATCH" });      
+            revalidate("chats")      
         } catch (error) {
             console.log("handleReadMessage", error);
         }

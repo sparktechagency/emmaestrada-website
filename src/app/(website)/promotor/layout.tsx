@@ -3,9 +3,7 @@ import getProfile from '@/utils/getProfile'
 import React from 'react'
 
 const layout = async({children}: {children: React.ReactNode}) => {
-
   const profile =  await getProfile()
-
   
   return (
     <div>
