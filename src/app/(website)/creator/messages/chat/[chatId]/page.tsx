@@ -1,8 +1,6 @@
 
 import ChatABox from "@/components/ui/website/Messages/ChatABox";
 import getProfile from "@/utils/getProfile";
-import { myFetch } from "@/utils/myFetch";
-
 
 export default async function ChatPage({ params }: {
   params: Promise<{

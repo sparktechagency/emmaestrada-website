@@ -1,3 +1,4 @@
+'use client'
 import {
   Dialog,
   DialogContent,
@@ -17,7 +18,7 @@ import { myFetch } from "@/utils/myFetch";
 
 interface CreatorFilterModalProps {
   open: boolean;
-  onOpenChange: (open: boolean) => void;  
+  onOpenChange: (open: boolean) => void;
 }
 
 type Country = {
@@ -29,28 +30,28 @@ type Country = {
 
 export default function CreatorFilterModal({
   open,
-  onOpenChange,  
+  onOpenChange,
 }: CreatorFilterModalProps) {
   // Define initial values as constants
   const INITIAL_RATING = [1, 5];
   const INITIAL_FOLLOWERS = [0, 1000000];
 
-  
+
   const [gender, setGender] = useState<string>("Both");
   const [rating, setRating] = useState<number[]>(INITIAL_RATING);
   const [followers, setFollowers] = useState<number[]>(INITIAL_FOLLOWERS);
   const [platform, setPlatform] = useState<string>(""); // Changed to single platform
   const [selectedCountries, setSelectedCountries] = useState<Country[]>([]);
-  
+
   const [categories, setCategories] = useState<string[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const platformList = ["tiktok","instagram" ,"youtube"];
+  const platformList = ["tiktok", "instagram", "youtube"];
 
   const [openDropdown, setOpenDropdown] = useState(false);
   const [search, setSearch] = useState("");
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams(); 
+  const searchParams = useSearchParams();
 
   // Helper function to check if range has changed from initial
   const hasRangeChanged = (current: number[], initial: number[]) => {
@@ -69,20 +70,20 @@ export default function CreatorFilterModal({
   };
 
 
-  
-    const fetchingGCategories = async () => {
-      try {
-        const genres = await myFetch('/categories?type=USER');
-        const uCatagory = genres?.data?.map((cat: any) => cat?.name)
-        setCategories(uCatagory)
-      } catch (error) {
-        console.error('Error:', error);
-      }
+
+  const fetchingGCategories = async () => {
+    try {
+      const genres = await myFetch('/categories?type=USER');
+      const uCatagory = genres?.data?.map((cat: any) => cat?.name)
+      setCategories(uCatagory)
+    } catch (error) {
+      console.error('Error:', error);
     }
-  
-    useEffect(() => {
-      fetchingGCategories();      
-    }, [])
+  }
+
+  useEffect(() => {
+    fetchingGCategories();
+  }, [])
 
 
   const filteredCountries = countriesData.filter(country =>
@@ -114,7 +115,7 @@ export default function CreatorFilterModal({
     if (filters.selectedCategories && filters.selectedCategories.length > 0) {
       params.set('categories', filters.selectedCategories.join(','));
     } else {
-      params.delete('categories');      
+      params.delete('categories');
     }
 
     // Handle range values - only add if changed from initial
@@ -150,7 +151,7 @@ export default function CreatorFilterModal({
     );
   };
 
-  const selectSinglePlatform = (item: string) => {    
+  const selectSinglePlatform = (item: string) => {
     setPlatform(prev => prev === item ? "" : item);
   };
 
@@ -164,7 +165,7 @@ export default function CreatorFilterModal({
       countries: selectedCountries.map(c => c.name), // Send ISO2 codes
     };
 
-    setFiltersAsSearchParams(filterData);    
+    setFiltersAsSearchParams(filterData);
     onOpenChange(false);
   };
 
@@ -175,7 +176,7 @@ export default function CreatorFilterModal({
     setRating(INITIAL_RATING);
     setFollowers(INITIAL_FOLLOWERS);
     setSelectedCountries([]);
-    
+
     // Clear URL params
     router.push(pathname);
   };
@@ -238,11 +239,10 @@ export default function CreatorFilterModal({
               <button
                 key={cat}
                 onClick={() => toggleItem(categories, setSelectedCategories, cat)}
-                className={`border rounded-xl py-2 text-sm transition-colors ${
-                  selectedCategories.includes(cat)
+                className={`border rounded-xl py-2 text-sm transition-colors ${selectedCategories.includes(cat)
                     ? "bg-black text-white"
                     : "bg-white hover:bg-gray-50"
-                }`}
+                  }`}
               >
                 {cat}
               </button>
@@ -283,7 +283,7 @@ export default function CreatorFilterModal({
         {/* COUNTRY */}
         <div className="flex flex-col gap-3">
           <p className="font-medium">Country</p>
-          
+
           {/* Selected Countries Display */}
           <div className="flex w-full min-h-12 flex-wrap items-center gap-2 rounded-xl border px-3 py-2">
             {selectedCountries.length === 0 && (

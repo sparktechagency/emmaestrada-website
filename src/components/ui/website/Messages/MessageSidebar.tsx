@@ -58,13 +58,14 @@ const LoadingSkeleton = () => (
 );
 
 
-const MessageSidebar = ({profile}: {profile: any}) => {
+const MessageSidebar = () => {
     const [chats, setChats] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
     const [loadingMore, setLoadingMore] = useState(false);
     const scrollContainerRef = useRef<HTMLDivElement>(null);
+    const [profile, setProfile] = useState<any>(null)
 
     const searchParams = useSearchParams();
     const router = useRouter();
@@ -74,6 +75,28 @@ const MessageSidebar = ({profile}: {profile: any}) => {
     // Get searchTerm from URL params
     const searchTerm = searchParams.get('searchTerm') || '';
 
+      // ── All hooks go here first ──
+      const fetchProfile = async () => {
+        try {
+          const res = await myFetch("/users/profile", { tags: ["profile"] });
+    
+          if (res?.success) {
+            setProfile(res?.data);
+            if (typeof window !== "undefined") {
+              localStorage.setItem("role", res?.data?.role);
+            }
+          } else {
+            console.log(res?.message);
+          }
+        } catch (err: any) {
+          console.log(err?.message);
+        }
+      };
+    
+      useEffect(() => {
+        fetchProfile();
+      }, []);
+      
     // Fetch chats with pagination
     const getChats = useCallback(async (pageNum: number = 1, append: boolean = false) => {
         try {

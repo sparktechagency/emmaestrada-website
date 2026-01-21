@@ -1,85 +1,62 @@
+// middleware.ts
 import type { NextRequest } from "next/server";
-
 import { NextResponse } from "next/server";
-import { myFetch } from "./utils/myFetch";
-// import { cookies } from "next/headers";
 
-
-
-const authRoutes = [  
+const authRoutes = [
   "/login",
   "/forgot-password",
   "/reset-password",
   "/businessname",
   "/otp-verify",
-  "/otp-verify",
 ];
 
+const privateRoutes = [
+  "/creator",
+  "/creators",
+  "/notifications",
+  "/promotor",
+  "/success",
+  "/campaigns",
+  "/bookings",
+  "/verification",
+  "/support",
+  "/profile",
+];
 
-
-// This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-
+  const pathNameIsOneThePrivateRoute = privateRoutes.some(item => 
+    pathname.startsWith(item)
+  );
   const accessToken = request.cookies.get("accessToken")?.value;
+
+  // If user is not authenticated
   if (!accessToken) {
-    // Allow unauthenticated access to auth routes
+    // Allow access to auth routes
     if (authRoutes.includes(pathname)) {
       return NextResponse.next();
-    } else {
-      // Redirect unauthenticated users to login
+    }
+    // Redirect to login for private routes
+    if (pathNameIsOneThePrivateRoute) {
       return NextResponse.redirect(
         new URL(`/login?redirect=${pathname}`, request.url)
       );
     }
+    // Allow other routes
+    return NextResponse.next();
   }
 
-
-
-  // Get the current user from server
-  const userRes = await myFetch("/users/profile", { tags: ["profile"] });
-  const profile = userRes.data;
-
-
-
-  if (!profile) {
-    // Allow unauthenticated access to auth routes
-    if (authRoutes.includes(pathname)) {
-      return NextResponse.next();
-    } else {
-      // Redirect unauthenticated users to login
-      return NextResponse.redirect(
-        new URL(`/login?redirect=${pathname}`, request.url)
-      );
-    }
-  }
-
-
-
-  // Allow only users with ADMIN or SUPER_ADMIN role
-  // if (!(profile.role === "ADMIN" || profile.role === "SUPER_ADMIN")) {
-  //   (await cookies()).delete("accessToken");
-  //   (await cookies()).delete("refreshToken");
-  //   return NextResponse.redirect(new URL("/login", request.url));
-  // }
-
-
-
-  // Don't allow authorized users to access auth routes
+  // If user is authenticated and trying to access auth routes
   if (authRoutes.includes(pathname)) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-
-
+  // Allow access to all other routes
   return NextResponse.next();
 }
 
-
-
-// See "Matching Paths" below to learn more
 export const config = {
-  matcher: [    
+  matcher: [
     "/creator/:path*",
     "/creators/:path*",
     "/notifications/:path*",
@@ -89,12 +66,11 @@ export const config = {
     "/bookings/:path*",
     "/verification/:path*",
     "/support/:path*",
-    "/terms-and-conditions/:path*",
-    "/privacy-policy/:path*",
     "/profile/:path*",
     "/login",
     "/reset-password",
     "/forgot-password",
+    "/businessname",
     "/otp-verify",
   ],
 };

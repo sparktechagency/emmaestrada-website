@@ -1,4 +1,4 @@
-export default function loading() {
+export default function MessageLoader() {
   return (
     <div className="h-full w-full flex flex-col bg-white rounded-xl">
       {/* Header Skeleton */}

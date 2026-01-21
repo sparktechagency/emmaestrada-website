@@ -52,7 +52,8 @@ const SetBusinessName = () => {
       if (response?.success) {
         clearData()
         toast.success(response.message)
-        router.replace("/")        
+        router.push("/")  
+        window.location.href = "/"
       } else {
         toast.error(response?.message || "Registration failed")
       }

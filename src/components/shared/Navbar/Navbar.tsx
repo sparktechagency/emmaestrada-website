@@ -106,6 +106,7 @@ const Navbar = ({ profile }: { profile: any }) => {
 
     deleteCookie("user");
     router.push("/");
+    window.location.href = "/"
     setOpenMenu(false);
     toast.success("Logged out successfully");
     if (typeof window !== 'undefined') {
@@ -258,6 +259,7 @@ const ViewAsLogin = ({ profile, isBarOpen, setIsBarOpen }: any) => {
 
     deleteCookie("user");
     router.push("/");
+    window.location.href = "/"
     toast.success("Logged out successfully");
     if (typeof window !== 'undefined') {
       localStorage.removeItem("role");
@@ -340,7 +342,7 @@ const ViewAsLogin = ({ profile, isBarOpen, setIsBarOpen }: any) => {
                       : "/placeholder.png"
                   }
                   alt={profile?.name}
-                  className="w-78md:w-12 h-8 md:h-12 object-fill rounded-full"
+                  className="w-8 md:w-12 h-8 md:h-12 object-fill rounded-full"
                 />
               </div>
             </Avatar>
