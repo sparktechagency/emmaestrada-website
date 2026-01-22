@@ -83,7 +83,7 @@ const LoginVerify = () => {
     const otpValue = otp.join('')
 
     try {
-      const result = await myFetch('/auth/verify-otp', { method: "POST", body: { email, oneTimeCode: Number(otpValue) } });            
+      const result = await myFetch('/auth/verify-otp', { method: "POST", body: { email, oneTimeCode: Number(otpValue) } });        
       if (result?.success) {
         const {data} = result;
         Cookies.set("accessToken", data?.accessToken)
@@ -111,7 +111,7 @@ const LoginVerify = () => {
         sizes="100vw"
       />
       <div className="backdrop-blur-[2.5px] border-2 border-white/20 rounded-xl py-5 sm:p-12">
-        <Card className="w-[90%] mx-auto md:w-full max-w-xl p-0 sm:p-10">
+        <Card className="w-[90%] mx-auto md:w-full max-w-xl sm:p-10">
           {/* Card Header */}
           <CardHeader className="flex flex-col items-center space-y-3">
             <img src="/logo.png" className='w-14 h-14' alt="Logo" />

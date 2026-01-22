@@ -16,6 +16,9 @@ const CampaignsDetails = async ({ data }: { data: any }) => {
         YouTube: "/youtube.png",
     };
     const user = await getProfile();
+
+    console.log("data", data);
+    
     return (
         <Container>
             <div className="glassBg p-4 my-10">
@@ -89,7 +92,7 @@ const CampaignsDetails = async ({ data }: { data: any }) => {
 
                     {data?.assets?.contentRequirement && data?.assets?.contentRequirement?.map((item: string) => <span key={item} className="text-xl">{item}</span>)}
                 </div>                
-                <SubmitButton user={user} />
+              {data?.status === "active" &&  <SubmitButton user={user} />}
                 
 
                 {/* <div className="flex justify-end mt-5">

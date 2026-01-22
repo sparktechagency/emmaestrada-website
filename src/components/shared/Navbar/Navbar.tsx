@@ -65,15 +65,15 @@ const Navbar = ({ profile }: { profile: any }) => {
   const darkBgRoutes = ["creator", "promotor", "success", "notifications"];
   const hasDarkBackground = darkBgRoutes.includes(pathname.split("/")[1]);
 
-  useEffect(() => {
-    // Set role in localStorage if it doesn't exist
+ useEffect(() => {
+    // Set or update role in localStorage whenever profile.role changes
     if (profile?.role && typeof window !== 'undefined') {
       const storedRole = localStorage.getItem('role');
-      if (!storedRole) {
+      if (storedRole !== profile.role) {
         localStorage.setItem('role', profile.role);
       }
     }
-  }, [profile]);
+  }, [profile?.role]); // Add profile.role to dependency array
 
   useEffect(() => {
     setMounted(true);
