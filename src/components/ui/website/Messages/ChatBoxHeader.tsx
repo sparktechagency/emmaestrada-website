@@ -1,16 +1,14 @@
 import { imageUrl } from '@/constants'
+import { ArrowLeft } from 'lucide-react'
+import Link from 'next/link'
 import { Avatar, AvatarFallback, AvatarImage } from '../../avatar'
 import { Badge } from '../../badge'
-import { useRouter } from 'next/navigation'
-import { ArrowLeft } from 'lucide-react'
 
-const ChatBoxHeader = ({ participantInfo }: any) => {
-    const route  = useRouter();
-
+const ChatBoxHeader = ({ participantInfo, role }: any) => {
     return (
         <div className="p-4 border-b flex justify-between items-center">
             <div className="flex items-center gap-3">
-            <ArrowLeft size={20} onClick={()=>route.back()} className='md:hidden -mr-1'/>
+                <Link href={`/${role === "CREATOR" ? "creator" : "promotor"}/messages`}><ArrowLeft size={20} className='md:hidden -mr-1' /></Link>
                 <Avatar className="w-12 h-12">
                     <AvatarImage
                         src={`${participantInfo?.image &&

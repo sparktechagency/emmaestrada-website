@@ -90,7 +90,7 @@ const ChatBox = ({ chatId, profile }: ChatBoxProps) => {
   return (
     <div className="flex-1 h-full min-h-[70vh] max-h-[70vh] bg-white flex flex-col rounded-2xl">
       {/* Header */}
-      <ChatBoxHeader participantInfo={participant} />
+      <ChatBoxHeader participantInfo={participant} role={profile?.role}/>
 
       {/* Loading */}
       {loading ? (

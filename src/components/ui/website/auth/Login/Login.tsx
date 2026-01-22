@@ -84,7 +84,7 @@ export default function Login() {
       />
 
       <div className="backdrop-blur-[2.5px] border-2 border-white/20 rounded-xl py-5 md:p-18">
-        <Card className="w-[90%] md:w-full mx-auto max-w-md p-0 py-5 sm:p-3">
+        <Card className="w-[90%] md:w-full mx-auto max-w-md p-0 p-5 sm:p-3">
           {/* Card Header */}
           <CardHeader className="flex flex-col items-center space-y-3">
             {/* Optimized Logo */}
