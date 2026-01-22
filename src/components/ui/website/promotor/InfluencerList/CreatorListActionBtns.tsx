@@ -12,6 +12,8 @@ import { toast } from 'sonner';
 
 const CreatorListActionBtns = ({ row }: { row: any }) => {
 
+    const role = typeof window !== 'undefined' ? localStorage.getItem('role') : null;
+
   const router = useRouter();
   const searchParams = useSearchParams()
 
@@ -43,9 +45,9 @@ const CreatorListActionBtns = ({ row }: { row: any }) => {
     }
   }
 
-  const handleUnFollow = async (id: string) => {
+    const handleUnFollow = async (id: string) => {
     try {
-      const res = await myFetch("/followers/follow", { method: "DELETE", body: { followingId: id } });      
+      const res = await myFetch(`/followers/unfollow/${id}`, { method: "DELETE"});      
       if (res?.success) {
         revalidate("CREATOR")
         toast.success("Created Chat Successfully")
@@ -56,6 +58,8 @@ const CreatorListActionBtns = ({ row }: { row: any }) => {
       console.log(error)
     }
   }
+
+
   const isFollowing = row?.isFollowing || type === "followed";
 
     return (
@@ -65,8 +69,9 @@ const CreatorListActionBtns = ({ row }: { row: any }) => {
             </Button> :
                 <Button onClick={() => handleFollow(row._id)} className="w-24"><span>Follow</span> <Plus /></Button>
             }
-            <Button variant="outline" onClick={() => handleCreateChat(row?._id)} size="sm" className="cursor-pointer"><MessageCircleMore /></Button>
-            <Link href={`/promotor/creator/${row?._id}`}><Button variant="outline" size="sm" className="cursor-pointer"><Eye /></Button></Link>
+            <Button variant="outline" onClick={() => handleCreateChat(row?._id)} size="sm" className="cursor-pointer"><MessageCircleMore /></Button>          
+           <Link href={`${role === "PROMOTER" ? `/promotor/creator/${row?._id}` : `/creator/creators/${row?._id}`}`}>
+          <Button variant="outline" size="sm" className="cursor-pointer"><Eye /></Button></Link>
         </div>
     )
 }
