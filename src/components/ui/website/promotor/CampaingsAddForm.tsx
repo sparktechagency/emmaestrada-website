@@ -180,11 +180,16 @@ const CampaignsAddForm = ({ editData, onClose }: { editData?: any, onClose?: any
           method: 'POST',
           body: submitFormData,
         });        
+
+        console.log("campaign create", response);
+        
         if (response?.success) {
           revalidate("promotor-campaigns")
           console.log('Success:', response);
           toast.success(response?.message)
-          route.push("/promotor?status=upcoming")
+          // route.push("/promotor?status=upcoming")
+        }else{
+           toast.error(response?.message)
         }
       } catch (error) {
         console.error('Error:', error);
