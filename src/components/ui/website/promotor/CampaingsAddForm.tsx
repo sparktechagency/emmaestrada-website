@@ -329,10 +329,9 @@ const Step1 = ({
   removeThumbnail,
   next,
 }: any) => {
-  const valid = formData.title && formData.categoryId && formData.genreId;
 
   const handleNext = () => {
-    if (valid) next();
+   next();
   };
 
   return (
@@ -506,7 +505,7 @@ const Step1 = ({
       </div>
 
       <div className="flex justify-end gap-4 bg-white rounded-md shadow-md p-4">
-        <Button onClick={handleNext} disabled={!valid}>
+        <Button onClick={handleNext}>
           Next Step <ChevronRight className="ml-2 h-4 w-4" />
         </Button>
       </div>
