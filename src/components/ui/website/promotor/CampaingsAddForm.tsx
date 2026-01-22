@@ -57,9 +57,8 @@ const CampaignsAddForm = ({ editData, onClose }: { editData?: any, onClose?: any
   const fetchingCategories = async () => {
     try {
       const category = await myFetch('/categories?type=CATEGORY');
-
-
       setCategories(category?.data)
+       setFormData((prev) => ({ ...prev, categoryId: category?.data?.[0]?._id }));
     } catch (error) {
       console.error('Error:', error);
     }
@@ -69,6 +68,7 @@ const CampaignsAddForm = ({ editData, onClose }: { editData?: any, onClose?: any
     try {
       const category = await myFetch('/categories?type=GENRE');      
       setGenries(category?.data)
+      setFormData((prev) => ({ ...prev, genreId: category?.data?.[0]?._id }));
     } catch (error) {
       console.error('Error:', error);
     }
@@ -146,7 +146,7 @@ const CampaignsAddForm = ({ editData, onClose }: { editData?: any, onClose?: any
         contentRequirement: [formData.assets.contentRequirement],
       },
     };
-
+    
     if (
       formData.thumbnail &&
       typeof formData.thumbnail !== "string" &&
