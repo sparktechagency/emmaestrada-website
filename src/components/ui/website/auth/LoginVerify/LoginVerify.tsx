@@ -46,7 +46,7 @@ const LoginVerify = () => {
   const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>, index: number) => {
     e.preventDefault()
     const pastedData = e.clipboardData.getData('text').trim()
-    
+
     // Check if pasted data contains only digits
     if (!/^\d+$/.test(pastedData)) {
       toast.error('Please paste only numbers')
@@ -55,18 +55,18 @@ const LoginVerify = () => {
 
     // Get up to 6 digits from the pasted data
     const digits = pastedData.slice(0, 6).split('')
-    
+
     const newOtp = [...otp]
-    
+
     // Fill the inputs starting from the current index
     digits.forEach((digit, i) => {
       if (index + i < 6) {
         newOtp[index + i] = digit
       }
     })
-    
+
     setOtp(newOtp)
-    
+
     // Focus the next empty input or the last input
     const nextIndex = Math.min(index + digits.length, 5)
     inputsRef.current[nextIndex]?.focus()
@@ -83,20 +83,43 @@ const LoginVerify = () => {
     const otpValue = otp.join('')
 
     try {
-      const result = await myFetch('/auth/verify-otp', { method: "POST", body: { email, oneTimeCode: Number(otpValue) } });        
+      const result = await myFetch('/auth/verify-otp', { method: "POST", body: { email, oneTimeCode: Number(otpValue) } });
       if (result?.success) {
-        const {data} = result;
+        const { data } = result;
         Cookies.set("accessToken", data?.accessToken)
         toast.success(data?.message)
-        route.push("/")        
+        route.push("/")
         window.location.href = "/"
-      }else{
+      } else {
         toast.error(result?.message)
       }
     } catch (error) {
       console.error("Error creating user:", error);
     }
   }
+
+  const handleResendOtp = async () => {
+    setOtp(Array(6).fill(''));
+
+    try {
+      const email = Cookies.get("email");
+      const res = await myFetch("/auth/resend-otp", { body: { email }, method: "POST" });
+
+      if (res?.success) {
+        toast.success(res.message);
+
+        // ⏱ reset expiry
+        const expiryTime = Date.now() + 3 * 60 * 1000;
+        Cookies.set("otpExpiry", expiryTime.toString());
+
+        // 🔥 force timer restart
+        setTimerKey((prev) => prev + 1);
+      }
+    } catch (error: any) {
+      toast.error(error?.data?.message);
+    }
+  }
+
 
   return (
     <div className="min-h-screen flex items-center justify-center relative px-4 py-8">
@@ -116,7 +139,7 @@ const LoginVerify = () => {
           <CardHeader className="flex flex-col items-center space-y-3">
             <img src="/logo.png" className='w-14 h-14' alt="Logo" />
             <h2 className="text-2xl font-bold text-center">Verify your email</h2>
-            <p className='text-md text-center text-slate-500 font-sans'>              
+            <p className='text-md text-center text-slate-500 font-sans'>
               Please check mmail for your six digit code. Make sure to check spam 📧
             </p>
           </CardHeader>
@@ -146,10 +169,17 @@ const LoginVerify = () => {
                 </span>
               </div>
 
-              <Button disabled={!secondsLeft} type="submit" size="lg" className="w-full mt-4">
+              <Button hidden={!secondsLeft} disabled={!secondsLeft} type="submit" size="lg" className="w-full my-4">
                 Verify OTP
-              </Button>
+              </Button>             
             </form>
+             <Button
+              className='w-full'
+                hidden={secondsLeft > 0}
+                onClick={()=>handleResendOtp()}
+              >
+                Resend OTP
+              </Button>
           </CardContent>
         </Card>
       </div>
