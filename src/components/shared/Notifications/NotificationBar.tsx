@@ -137,12 +137,12 @@ const NotificationBar = ({
       ref={modalRef}
       className={`
         fixed inset-0 z-50 flex flex-col bg-white
-        sm:inset-auto sm:top-20 sm:right-4 sm:w-96 sm:max-h-[calc(100vh-6rem)] 
+        sm:inset-auto sm:top-24 sm:right-4 sm:w-96 sm:max-h-[calc(100vh-6rem)] 
         sm:rounded-xl sm:shadow-2xl sm:border sm:border-gray-200
       `}
     >
       {/* Header - fixed/sticky look */}
-      <div className="shrink-0 border-b bg-white z-10">
+      <div className="shrink-0 border-b z-10">
         <div className="p-4 flex items-center justify-between">
           <h2 className="text-lg font-semibold">Notifications</h2>
           <div className="flex items-center gap-2">
@@ -166,7 +166,7 @@ const NotificationBar = ({
         ref={scrollRef}
         className={`
           flex-1 overflow-y-auto -webkit-overflow-scrolling:touch overscroll-contain
-          min-h-0 bg-gray-50/40
+          md:min-h-[80vh]
         `}
       >
         {notifications?.length > 0 ? (

@@ -10,16 +10,14 @@ import { Megaphone, Calendar, CheckCircle2 } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 
-const PromotorChampaigns = async ({ queryString, status = "active" }: { queryString?: string, status?: string }) => {
+const PromotorChampaigns = async ({ queryString, status }: { queryString?: string, status?: string }) => {
 
-  const baseUrl = 
-    status === "upcoming" ? "/campaigns/unpaid-campaigns" 
-    : status ? `/campaigns/my-campaigns?status=${status}` 
-    : `/campaigns/my-campaigns?status=active`;
-  
-  const url = queryString ? `${baseUrl}&${queryString}` : baseUrl;  
-  const campaignsData = await myFetch(url, {tags: ['promotor-campaigns']});
-  
+  const baseUrl = status ? `/campaigns/my-campaigns?status=${status}`
+                  : `/campaigns/my-campaigns?status=active`;
+
+  const url = queryString ? `${baseUrl}&${queryString}` : baseUrl;
+  const campaignsData = await myFetch(url, { tags: ['promotor-campaigns'] });
+
   const hasCampaigns = campaignsData?.data && campaignsData.data.length > 0;
 
   // Status-specific empty state configuration
@@ -47,7 +45,7 @@ const PromotorChampaigns = async ({ queryString, status = "active" }: { queryStr
   const currentStatus = status === "upcoming" ? "upcoming" : status || "active";
   const emptyConfig = emptyStateConfig[currentStatus as keyof typeof emptyStateConfig] || emptyStateConfig.active;
   const EmptyIcon = emptyConfig.icon;
-  
+
   return (
     <Container>
       <div className="pb-16">
@@ -56,7 +54,7 @@ const PromotorChampaigns = async ({ queryString, status = "active" }: { queryStr
           <CampaignTabGroup
             tabs={[
               { label: 'Active', value: 'active' },
-              { label: 'Upcoming', value: 'upcoming' },
+              { label: 'Upcoming', value: 'inactive' },
               { label: 'Completed', value: 'ended' },
             ]}
             queryParam="status"
@@ -78,11 +76,11 @@ const PromotorChampaigns = async ({ queryString, status = "active" }: { queryStr
             </h3>
             <p className="text-gray-600 max-w-md mb-6">
               {emptyConfig.description}
-            </p>           
+            </p>
           </div>
         )}
       </div>
-      
+
       {status && !['create-campaign'].includes(status) && hasCampaigns && (
         <ManagePagination meta={campaignsData?.meta} />
       )}
