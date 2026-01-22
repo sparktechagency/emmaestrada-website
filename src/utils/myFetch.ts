@@ -67,7 +67,7 @@ export const myFetch = async (
         success: responseData?.success ?? true,
         message: responseData?.message,
         data: responseData?.data,
-        meta: responseData?.meta,
+        meta: responseData?.meta ?? {},
         error: null,
       };
     }
