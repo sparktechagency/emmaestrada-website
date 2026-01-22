@@ -1,9 +1,16 @@
-import { useMemo } from 'react'
-import { io } from 'socket.io-client'
+// hooks/useSocket.ts
+"use client";
+
+import { useEffect, useState } from "react";
+import { Socket } from "socket.io-client";
+import { socketInstance } from "./context/socket";
 
 export default function useSocket() {
-    // const socket = useMemo(()=>io(process.env.NEXT_PUBLIC_SOCKET_URL),[])
-    const socket = useMemo(()=>io(process.env.SOCKET_URL),[])
+  const [socket, setSocket] = useState<Socket | null>(null);
 
-    return socket
+  useEffect(() => {
+    setSocket(socketInstance());
+  }, []);
+
+  return socket;
 }

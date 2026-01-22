@@ -240,7 +240,7 @@ const ViewAsLogin = ({ profile, isBarOpen, setIsBarOpen }: any) => {
 
   // ✅ FIX 2: Proper socket listener with cleanup
   useEffect(() => {
-    if (!profile?._id || !socket?.connected) return;
+    if (!profile?._id || !socket) return;
 
     console.log("socket conneted", socket);
     
