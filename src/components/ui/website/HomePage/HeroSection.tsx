@@ -1,3 +1,4 @@
+
 import Container from "@/components/shared/Container";
 import { Star, ArrowUpRight } from "lucide-react";
 import BrandLogos from "./BrandLogos";
@@ -9,6 +10,8 @@ const HeroSection = async () => {
 
   const sliders = await myFetch(`/sliders/all`);
   const planners = await myFetch(`/home-campaign-planners/all`);  
+  
+  console.log("plannersplanners", planners);
   
   return (
     <section className="relative h-screen sm:h-[80vh] md:h-screen md:py-20 pb-30 pt-32">
