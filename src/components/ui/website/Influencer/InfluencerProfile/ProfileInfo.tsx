@@ -333,7 +333,7 @@ export default function ProfileInfo({profile}: {profile:any}) {
           </div>
 
           <div aria-disabled={!editMode} className="col-span-1 space-y-2">
-            <p className="font-medium mb-2">Date of Birth</p>
+            <p className="font-medium mb-0">Date of Birth</p>
             <DatePicker
               disabledDays={!editMode}
               value={formData.birthday}

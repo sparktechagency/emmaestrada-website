@@ -128,10 +128,11 @@ const Navbar = ({ profile }: { profile: any }) => {
       >
         <Container>
           <div className="flex items-center justify-between relative">
-            <Link href="/">
+            <Link href="/" className="flex items-center gap-3">
               <div className="relative h-12 w-12">
                 <Image src="/logo.png" alt="logo" height={50} width={50} />
               </div>
+              <p className="text-2xl font-bold text-white">WeSound</p>
             </Link>
 
             <div className="hidden md:flex absolute top-1/2 left-1/2 -translate-1/2 items-center gap-2 glassBg rounded-full px-8 py-3">
@@ -334,15 +335,11 @@ const ViewAsLogin = ({ profile, isBarOpen, setIsBarOpen }: any) => {
 
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger>
-          {profile ? (
+          {profile?.image ? (
             <Avatar className="rounded-lg cursor-pointer">
               <div className="border-slate-300/50 rounded-full">
                 <AvatarImage
-                  src={
-                    profile?.image
-                      ? `${imageUrl}${profile?.image}`
-                      : "/placeholder.png"
-                  }
+                  src={`${imageUrl}${profile?.image}`}
                   alt={profile?.name}
                   className="w-8 md:w-12 h-8 md:h-12 object-fill rounded-full"
                 />

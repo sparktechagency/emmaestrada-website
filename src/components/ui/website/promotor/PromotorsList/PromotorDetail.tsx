@@ -21,8 +21,11 @@ const PromotorDetail = async ({ promotor, searchQuery }: any) => {
         { title: "Total Campaigns", color: "text-[#C13584]", followers: promotor?.totalCampaigns ?? 0, icon: <FaInstagram /> },
     ];
 
-    const promotorCampaign = await myFetch(searchQuery ? `/campaigns/get-promoter-campaigns/${promotor?._id}?${searchQuery}` 
+    const promotorCampaign = await myFetch(searchQuery ? `/campaigns/get-promoter-campaigns/${promotor?._id}?${searchQuery}`
         : `/campaigns/get-promoter-campaigns/${promotor?._id}`);
+
+    const filterCampaigns = promotorCampaign?.data?.filter((cam: any, i: number) => cam?.status == "active")
+
 
     const { data } = await myFetch(`/followers/promoter/${promotor?._id}/partner-cta`);
 
@@ -54,8 +57,8 @@ const PromotorDetail = async ({ promotor, searchQuery }: any) => {
                 <h1 className='text-xl font-semibold mt-10 mb-5 text-primary'>Campaigns by {promotor?.name}:</h1>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  gap-3 md:gap-5 mb-5">
-                    {promotorCampaign?.data?.length > 0 ? (
-                        promotorCampaign.data.map((campaign: any, i: number) => (
+                    {filterCampaigns?.length > 0 ? (
+                        filterCampaigns.map((campaign: any, i: number) => (
                             <CampaignCard key={i} campaign={campaign} />
                         ))
                     ) : (
@@ -67,7 +70,7 @@ const PromotorDetail = async ({ promotor, searchQuery }: any) => {
                     )}
                 </div>
 
-                <ManagePagination meta={promotorCampaign?.meta} />
+                 {filterCampaigns?.length   > 0  &&  <ManagePagination meta={promotorCampaign?.meta} />}
             </div>
         </Container>
     )

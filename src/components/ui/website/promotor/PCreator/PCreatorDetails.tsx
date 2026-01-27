@@ -1,7 +1,7 @@
 import Container from '@/components/shared/Container';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
-import { CircleCheckBig, Star } from 'lucide-react';
+import { CircleCheckBig, Star, TrendingUp, TvMinimalPlay, Users } from 'lucide-react';
 import Image from 'next/image';
 import { FaInstagram, FaTiktok, FaYoutube } from 'react-icons/fa';
 import { IoLocationOutline } from 'react-icons/io5';
@@ -27,9 +27,9 @@ const PCreatorDetails = async ({ creator }: { creator: any }) => {
 
     const {data:trustedData} = await myFetch(`/partners/check/${creator?._id}`);
     const platformData = [
-        { title: "Total Followers", color: "text-[#69C9D0]", followers: creator?.totalFollowers ?? 0, icon: <FaTiktok /> },
-        { title: "Engagement", color: "text-[#FF0000]", followers: creator?.engagement ?? 0, icon: <FaYoutube /> },
-        { title: "Total Campaigns", color: "text-[#C13584]", followers: creator?.totalCampaigns ?? 0, icon: <FaInstagram /> },
+        { title: "Total Followers", color: "text-[#69C9D0]", followers: creator?.totalFollowers ?? 0, icon: <Users />  },
+        { title: "Engagement", color: "text-[#FF0000]", followers: creator?.engagement ?? 0,  icon: <TrendingUp /> },
+        { title: "Total Campaigns", color: "text-[#C13584]", followers: creator?.totalCampaigns ?? 0, icon: <TvMinimalPlay /> },
     ];
 
     // Calculate total followers across all platforms

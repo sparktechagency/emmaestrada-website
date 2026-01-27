@@ -24,7 +24,7 @@ export default function Loader() {
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex flex-col items-center justify-center bg-zinc-950/80 transition-opacity duration-700 ${
+      className={`fixed inset-0 z-50 flex flex-col items-center justify-center bg-zinc-950 transition-opacity duration-700 ${
         hidden ? 'opacity-0 pointer-events-none' : 'opacity-100'
       }`}
     >

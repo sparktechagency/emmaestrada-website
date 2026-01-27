@@ -21,16 +21,19 @@ import FilterModal from "./FilterModal";
 const CampaignHeader = () => {
   const [activeCampaignTab, setActiveCampaignTab] = useState("campaigns");
   const [filterModalOpen, setFilterModalOpen] = useState(false);
-  
+
   const [sortBy, setSortBy] = useState("all");
   const searchParams = useSearchParams();
-  const [searchValue, setSearchValue] = useState('');  
-  
+  const [searchValue, setSearchValue] = useState('');
+
   const router = useRouter();
   const pathname = usePathname();
   const contentType = searchParams.get("campaignType") || "";
 
-  
+  const params = Object.fromEntries(searchParams.entries());
+
+  const { campaignType, ...filterParams } = params;
+
   useEffect(() => {
     const paramValue = searchParams.get("campaignType");
     if (paramValue && paramValue !== activeCampaignTab) {
@@ -38,11 +41,16 @@ const CampaignHeader = () => {
     }
   }, []);
 
+  console.log("campaignType", searchParams);
+  
   const setCampaignType = (type: string) => {
     setActiveCampaignTab(type);
     router.push(`/creator?campaignType=${type}`);
   };
 
+  const clearAllParams = () => {
+    router.replace(pathname, { scroll: false });
+  };
 
 
   useEffect(() => {
@@ -86,10 +94,10 @@ const CampaignHeader = () => {
           My Submissions
         </button>
       </div>
-      
+
       {contentType !== "my-submissions" && <div className="bg-secondary rounded-xl p-4 mb-6">
 
-      {/* <div className="bg-secondary hidden rounded-xl p-4 mb-6"> */}
+        {/* <div className="bg-secondary hidden rounded-xl p-4 mb-6"> */}
         <div className="flex flex-col md:flex-row gap-4">
           {/* Search Input */}
           <div className="flex-1 relative">
@@ -101,24 +109,38 @@ const CampaignHeader = () => {
               className="pl-10 bg-white h-12"
             />
           </div>
-          
-           <div className="flex flex-col sm:flex-row gap-3 ">
-            <Button
-              variant="outline"
-              onClick={() => setFilterModalOpen(true)}
-              className="bg-white h-12 md:w-[200px] lg:w-[300px]"
-            >
-              <SlidersHorizontal className="w-4 h-4 mr-2" />
-              Filters
-            </Button>           
+
+          <div className="flex flex-col sm:flex-row gap-3 ">
+            {filterParams ?
+
+              <Button
+                variant="outline"
+                onClick={() => clearAllParams()}
+                className="bg-white h-12 md:w-[200px] lg:w-[300px]"
+              >
+                <SlidersHorizontal className="w-4 h-4 mr-2" />
+                Clear Filters
+              </Button>
+              :
+              <Button
+                variant="outline"
+                onClick={() => setFilterModalOpen(true)}
+                className="bg-white h-12 md:w-[200px] lg:w-[300px]"
+              >
+                <SlidersHorizontal className="w-4 h-4 mr-2" />
+                Filters
+              </Button>
+
+
+            }
           </div>
         </div>
-      {/* </div> */}
+        {/* </div> */}
       </div>}
 
       <FilterModal
         open={filterModalOpen}
-        onOpenChange={setFilterModalOpen}        
+        onOpenChange={setFilterModalOpen}
       />
     </div>
   );

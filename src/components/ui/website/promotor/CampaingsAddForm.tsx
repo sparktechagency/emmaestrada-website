@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Check, ChevronRight, Upload, X } from "lucide-react";
+import { Check, ChevronRight, Loader, Upload, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -31,7 +31,7 @@ const CampaignsAddForm = ({ editData, onClose }: { editData?: any, onClose?: any
   const [categories, setCategories] = useState([])
   const [genries, setGenries] = useState([])
   const route = useRouter()
-
+  const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -54,11 +54,12 @@ const CampaignsAddForm = ({ editData, onClose }: { editData?: any, onClose?: any
     },
   });
 
+
   const fetchingCategories = async () => {
     try {
       const category = await myFetch('/categories?type=CATEGORY');
       setCategories(category?.data)
-       setFormData((prev) => ({ ...prev, categoryId: category?.data?.[0]?._id }));
+      setFormData((prev) => ({ ...prev, categoryId: category?.data?.[0]?._id }));
     } catch (error) {
       console.error('Error:', error);
     }
@@ -66,7 +67,7 @@ const CampaignsAddForm = ({ editData, onClose }: { editData?: any, onClose?: any
 
   const fetchingGenries = async () => {
     try {
-      const category = await myFetch('/categories?type=GENRE');      
+      const category = await myFetch('/categories?type=GENRE');
       setGenries(category?.data)
       setFormData((prev) => ({ ...prev, genreId: category?.data?.[0]?._id }));
     } catch (error) {
@@ -123,10 +124,9 @@ const CampaignsAddForm = ({ editData, onClose }: { editData?: any, onClose?: any
   };
 
   const submit = async () => {
-    // Create FormData for multipart/form-data submission
+    setLoading(true);
     const submitFormData = new FormData();
 
-    // Prepare payload object
     const payload = {
       title: formData.title,
       contentType: formData.contentType,
@@ -146,7 +146,7 @@ const CampaignsAddForm = ({ editData, onClose }: { editData?: any, onClose?: any
         contentRequirement: [formData.assets.contentRequirement],
       },
     };
-    
+
     if (
       formData.thumbnail &&
       typeof formData.thumbnail !== "string" &&
@@ -169,30 +169,33 @@ const CampaignsAddForm = ({ editData, onClose }: { editData?: any, onClose?: any
           revalidate("promotor-campaigns")
           onClose()
           toast.success(response?.message)
+          setLoading(false)
         }
       } catch (error) {
         console.error('Error:', error);
         onClose()
+        setLoading(false)
       }
     } else {
       try {
         const response = await myFetch('/campaigns/create', {
           method: 'POST',
           body: submitFormData,
-        });        
+        });
 
-        console.log("campaign create", response);
-        
         if (response?.success) {
           revalidate("promotor-campaigns")
           console.log('Success:', response);
           toast.success(response?.message)
-          // route.push("/promotor?status=upcoming")
-        }else{
-           toast.error(response?.message)
+          route.push("/promotor?status=upcoming")
+          setLoading(false)
+        } else {
+          toast.error(response?.message)
+          setLoading(false)
         }
       } catch (error) {
         console.error('Error:', error);
+        setLoading(false)
       }
     }
 
@@ -228,6 +231,7 @@ const CampaignsAddForm = ({ editData, onClose }: { editData?: any, onClose?: any
         thumbnailPreview={thumbnailPreview}
         submit={submit}
         prev={() => setStep(2)}
+        loading={loading}
       />
     ),
   };
@@ -336,7 +340,7 @@ const Step1 = ({
 }: any) => {
 
   const handleNext = () => {
-   next();
+    next();
   };
 
   return (
@@ -581,7 +585,7 @@ const Step2 = ({
           </p>
           <Input
             className="h-[45px]"
-            placeholder="Create a 45 second video demonstrating key features"
+            placeholder="Content Requirement"
             value={formData.assets.contentRequirement}
             onChange={(e) =>
               updateAssets({ contentRequirement: e.target.value })
@@ -607,7 +611,7 @@ const Step2 = ({
   );
 };
 
-const Step3 = ({ formData, thumbnailPreview, prev, submit }: any) => {
+const Step3 = ({ formData, thumbnailPreview, prev, submit, loading }: any) => {
   return (
     <div>
       <p className="text-lg font-semibold mb-6">Review & Submit</p>
@@ -736,16 +740,18 @@ const Step3 = ({ formData, thumbnailPreview, prev, submit }: any) => {
       </div>
 
       <div className="flex justify-between bg-white p-4 mt-8 rounded-md shadow-md">
-        <Button size="lg" variant="outline" onClick={prev}>
+        <Button disabled={loading} size="lg" variant="outline" onClick={prev}>
           Previous
         </Button>
 
         <Button
+          disabled={loading}
           size="lg"
-          className="bg-orange-500 hover:bg-orange-600"
+          className="bg-orange-500 hover:bg-orange-600 flex items-center gap-2"
           onClick={submit}
         >
-          Submit Campaign
+          {loading && <Loader className="h-4 w-4 animate-spin" />}
+          {loading ? "Submitting..." : "Submit Campaign"}
         </Button>
       </div>
     </div>

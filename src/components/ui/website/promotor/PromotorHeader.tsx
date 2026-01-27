@@ -65,7 +65,7 @@ const PromotorHeader = ({ profile }: { profile: any }) => {
       text: "You you want to swich from Promotor to Creator",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "var(--color-primary)",
+      confirmButtonColor: "var(--color-black)",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, Switch"
     }).then(async (result) => {

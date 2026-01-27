@@ -48,7 +48,7 @@ const HeroSection = async () => {
         {/* Main Content */}
         <div className=" text-center relative z-10 mt-10 md:mt-32">
           {/* Top Reviews */}
-          <div className="flex flex-wrap justify-center gap-4 md:gap-24 mb-8 md:mb-20">
+          <div className="flex flex-wrap justify-center gap-4 md:gap-24 ">
             {planners?.data?.map((item: any, i: number) => (
               <div key={i} className="flex flex-col items-center gap-2">
                 <p className="text-white text-sm md:text-2xl mb-2">
@@ -67,7 +67,7 @@ const HeroSection = async () => {
           </div>
 
           {/* Main Heading */}
-          <div className="">
+          <div className="my-8 ">
             <h1 className="text-white text-4xl md:text-[72px] lg:text-7xl mb-4 md:mb-5 font-bold">
               Where Sound Meets
             </h1>

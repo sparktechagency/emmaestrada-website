@@ -72,7 +72,7 @@ const InfluencerHeader = ({ profile }: { profile: any }) => {
       text: "You you want to swich from Creator to Promotor",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "var(--color-primary)",
+      confirmButtonColor: "var(--color-black)",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, Switch",
     }).then(async (result) => {
