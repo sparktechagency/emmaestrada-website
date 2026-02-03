@@ -5,6 +5,7 @@ import {
     Card,
     CardContent,
 } from "@/components/ui/card"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
     Table,
     TableBody,
@@ -22,6 +23,7 @@ import Link from 'next/link'
 import ManagePagination from '@/components/shared/ManagePagination'
 import { imageUrl } from '@/constants'
 import { Star } from 'lucide-react'
+import CreatorDetailsInfoModal from '../../Influencer/Creator/CreatorDetailsInfoModal';
 
 
 
@@ -63,34 +65,31 @@ const PromotorTrustedCreators = ({ data }: any) => {
                         {data?.data && data?.data?.map((row: any, idx: number) => (
                             <TableRow key={idx}>
                                 <TableCell>
-                                    <div className="flex items-center gap-3">
-                                        <Image
-                                            src={`${imageUrl}${row?.creatorId?.image}`}
-                                            unoptimized
-                                            width={40}
-                                            height={40}
-                                            alt="creator"
-                                            className="rounded-full"
-                                        />
+                                    <div className="flex items-center gap-3">                                        
+                                        <CreatorDetailsInfoModal user={row?.creatorId}/>
                                         <div className="flex items-center gap-2">
                                             <span>{row?.creatorId?.name}</span>
                                         </div>
                                     </div>
+
                                 </TableCell>
 
-                                <TableCell className="flex items-center gap-2">
-                                    <Image
-                                        src="/tiktokBlack.png"
-                                        alt="platform"
-                                        width={22}
-                                        height={22}
-                                    />
-                                    <Image
-                                        src="/instagram.png"
-                                        alt="platform"
-                                        width={22}
-                                        height={22}
-                                    />
+                                <TableCell >
+                                    <div className="flex items-center gap-2">
+                                        <Image
+                                            src="/tiktokBlack.png"
+                                            alt="platform"
+                                            width={22}
+                                            height={22}
+                                        />
+                                        <Image
+                                            src="/instagram.png"
+                                            alt="platform"
+                                            width={22}
+                                            height={22}
+                                        />
+                                    </div>
+
                                 </TableCell>
 
                                 <TableCell>{row?.creatorId?.totalFollowers}</TableCell>
@@ -99,10 +98,13 @@ const PromotorTrustedCreators = ({ data }: any) => {
                                     {row?.creatorId?.engagement}
                                 </TableCell>
 
-                                <TableCell className="flex items-center">
-                                    {/* ------ Followed Creator Rating -------- */}
-                                    {row?.creatorId?.rating < 1 ? <Star className="text-orange-500" size={15} /> :
-                                        Array.from({ length: row?.creatorId?.rating })?.map((_: any, i: number) => <MdOutlineStar key={i} className="text-orange-500" size={15} />)}
+                                <TableCell >
+                                    <div className="flex items-center">
+                                        {row?.creatorId?.rating < 1 ? <Star className="text-orange-500" size={15} /> :
+                                            Array.from({ length: row?.creatorId?.rating })?.map((_: any, i: number) => 
+                                            <MdOutlineStar key={i} className="text-orange-500" size={15} />)}
+                                    </div>
+
                                 </TableCell>
 
                                 <TableCell className="text-right md:w-[50px]">

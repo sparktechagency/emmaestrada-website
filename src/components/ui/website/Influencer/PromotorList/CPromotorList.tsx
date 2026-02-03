@@ -13,21 +13,12 @@ import {
     TableRow,
 } from "@/components/ui/table"
 
+import { imageUrl } from "@/constants"
+import { Star } from "lucide-react"
 import Link from "next/link"
 import { MdOutlineStar } from "react-icons/md"
-import CreatorPagination from "../Creator/CreatorPagination"
-import { imageUrl } from "@/constants"
-import Image from "next/image"
-import { Star } from "lucide-react"
-
-const influencers = Array.from({ length: 10 }).map(() => ({
-    name: "Ava Storm",
-    profile: "/images/profile22.jpg",
-    totalFollowers: "45K",
-    engagement: "4.1%",
-    rating: 4,
-    totalCampaigns: 12,
-}))
+import PromotorInfoModal from "./PromotorInfoModal"
+import PromotorListActionBtn from "./PromotorListActionBtn"
 
 const CPromotorList = async ({ promotorData }: any) => {
     return (
@@ -51,7 +42,7 @@ const CPromotorList = async ({ promotorData }: any) => {
                                 <TableRow key={idx}>
                                     <TableCell>
                                         <div className="flex items-center gap-3">
-                                            <img src={`${imageUrl + row?.image}`} className="h-10 w-10 object-cover rounded-full" alt={row?.name} />
+                                            <PromotorInfoModal user={row} />
                                             <span className="capitalize">{row?.name ?? row?.userName }</span>
                                         </div>
                                     </TableCell>
@@ -71,14 +62,8 @@ const CPromotorList = async ({ promotorData }: any) => {
 
                                     <TableCell>{row?.totalCampaigns}</TableCell>
 
-                                    <TableCell className="text-right md:w-[50px]">
-                                        <div className="flex items-center gap-3">
-                                            <Link href={`/creator/promotor/${row?._id}`}> <Button
-                                                className="border border-black/50 text-black/50 hover:bg-white hover:text-black bg-transparent"
-                                            >
-                                                View
-                                            </Button></Link>
-                                        </div>
+                                    <TableCell className="text-right md:w-[50px]">                                                                                
+                                            <PromotorListActionBtn row={row} />                                        
                                     </TableCell>
                                 </TableRow>
                             )) :  <TableRow><TableCell colSpan={6}><p className="text-center text-lg textPara">Data not Found</p></TableCell> </TableRow> }

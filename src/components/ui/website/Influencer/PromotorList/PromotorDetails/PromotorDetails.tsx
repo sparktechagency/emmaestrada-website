@@ -11,6 +11,7 @@ import { IoLocationOutline } from 'react-icons/io5'
 import { MdOutlineStar } from 'react-icons/md'
 import RequestToPartnerBtn from './RequestToPartnerBtn'
 import { MdOutlineStarPurple500 } from "react-icons/md";
+import PromotorFollowButton from './PromotorFollowButton'
 
 const PromotorDetails = async ({ promotor, searchQuery }: any) => {
     const platformData = [
@@ -22,15 +23,15 @@ const PromotorDetails = async ({ promotor, searchQuery }: any) => {
     const promotorCampaign = await myFetch(searchQuery ? `/campaigns/get-promoter-campaigns/${promotor?._id}?${searchQuery}`
         : `/campaigns/get-promoter-campaigns/${promotor?._id}`);
 
-        const filterCampaigns = promotorCampaign?.data?.filter((cam:any, i:number)=> cam?.status == "active")
+    const filterCampaigns = promotorCampaign?.data?.filter((cam: any, i: number) => cam?.status == "active")
 
-    const { data } = await myFetch(`/followers/promoter/${promotor?._id}/partner-cta`);
+    const { data } = await myFetch(`/followers/promoter/${promotor?._id}/partner-cta`, { tags: ["promotor-detaild"] });
 
     const { data: trustedData } = await myFetch(`/partners/check/${promotor?._id}`);
 
     return (
         <Container>
-            <div className=' glassBg px-2 md:px-10 my-10 py-10'>
+            <div className='bg-white rounded-xl shadow-md px-2 md:px-10 my-10 py-10'>
                 <div className="text-center">
                     <div className={`relative rounded-full border-primary/50 ${trustedData?.isPartner ? 'border-2 p-1.5' : 'border-0 p-0'} inline-block`}>
                         <img src={`${imageUrl}${promotor?.image}`} className='mx-auto h-28 md:h-44 w-28 md:w-44 rounded-full object-cover' alt='profile' />
@@ -49,7 +50,7 @@ const PromotorDetails = async ({ promotor, searchQuery }: any) => {
                     <div className="flex items-center gap-5 justify-center my-5">
                         {promotor?.contentTypes?.length > 0 ? promotor?.contentTypes?.map((t: string) => <Badge key={t} className='rounded-full'>{t}</Badge>) : 'N/A'}
                     </div>
-                    {/* <PromotorFollowButton promotorId={promotor?._id} isFollowing={promotor?.isFollowing} /> */}
+                    <PromotorFollowButton promotorId={promotor?._id} isFollowing={promotor?.isFollowing} />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-10">
                     {platformData && platformData?.map((platform: any, i: any) => <PlatformCard key={i} platform={platform} />)}
@@ -70,7 +71,7 @@ const PromotorDetails = async ({ promotor, searchQuery }: any) => {
                     )}
                 </div>
 
-               {filterCampaigns?.length   > 0  &&  <ManagePagination meta={promotorCampaign?.meta} />}
+                {filterCampaigns?.length > 0 && <ManagePagination meta={promotorCampaign?.meta} />}
                 {data?.showBecomePartner && !data?.isTrustedPartner && <RequestToPartnerBtn promoterId={promotor?._id} />}
             </div>
         </Container>

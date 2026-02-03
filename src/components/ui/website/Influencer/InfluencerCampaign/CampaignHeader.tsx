@@ -32,8 +32,10 @@ const CampaignHeader = () => {
 
   const params = Object.fromEntries(searchParams.entries());
 
-  const { campaignType, ...filterParams } = params;
-
+  
+  const { campaignType,searchTerm, page, limit, ...filterParams } = params;
+  
+  const hasFilters = Object.keys(filterParams).length > 0;
   useEffect(() => {
     const paramValue = searchParams.get("campaignType");
     if (paramValue && paramValue !== activeCampaignTab) {
@@ -41,7 +43,6 @@ const CampaignHeader = () => {
     }
   }, []);
 
-  console.log("campaignType", searchParams);
   
   const setCampaignType = (type: string) => {
     setActiveCampaignTab(type);
@@ -111,7 +112,7 @@ const CampaignHeader = () => {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3 ">
-            {filterParams ?
+            {hasFilters ?
 
               <Button
                 variant="outline"

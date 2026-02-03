@@ -206,7 +206,7 @@ export default function CreatorFilterModal({
                   checked={platform === p}
                   onCheckedChange={() => selectSinglePlatform(p)}
                 />
-                <span>{p}</span>
+                <span className="capitalize">{p}</span>
               </div>
             ))}
           </div>

@@ -195,7 +195,7 @@ const PAnalyticsSummary = () => {
         <p className="textPara">Track your performance and growth metrics</p>
       </div>
 
-      <Card className="bg-black text-white rounded-2xl">
+      <Card className="bg-linear-to-tr from-primary/10 via-primary/30 to-secondary text-black rounded-2xl">      
         <CardContent className="p-6 md:p-8">
           {loading ? (
             <div className="flex items-center justify-center py-12">

@@ -4,11 +4,15 @@ import Container from "@/components/shared/Container";
 import MessageSidebar from "@/components/ui/website/Messages/MessageSidebar";
 import { myFetch } from "@/utils/myFetch";
 
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const params = useParams() as { chatId?: string };
+  const router = useRouter();
+  useEffect(()=>{
+    router.refresh()
+  },[router])
 
     const isMobileChatView =
     params?.chatId &&

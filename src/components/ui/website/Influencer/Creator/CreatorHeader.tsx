@@ -24,8 +24,19 @@ const CreatorHeader = () => {
   const router = useRouter();
   const pathname = usePathname();
 
+
+  const params = Object.fromEntries(searchParams.entries());
+  const {type, searchTerm, page, limit, ...filterParams} = params;
+
+  const hasFilters = Object.keys(filterParams)?.length > 0;
+
+  const clearAllParams = () => {
+    router.replace(pathname, { scroll: false });
+  };
+
   useEffect(() => {
     const params = new URLSearchParams(searchParams.toString());
+
 
     if (searchValue) {
       params.set('searchTerm', searchValue);
@@ -62,16 +73,29 @@ const CreatorHeader = () => {
           </div>
 
           {/* Controls */}
-          <div className="flex flex-col sm:flex-row gap-3">
-            <Button
-              variant="outline"
-              onClick={() => setFilterModalOpen(true)}
-              className="bg-white h-12"
-            >
-              <SlidersHorizontal className="w-4 h-4 mr-2" />
-              Filters
-            </Button>
+          <div className="flex flex-col sm:flex-row gap-3">         
+            {hasFilters ?
 
+              <Button
+                variant="outline"
+                onClick={() => clearAllParams()}
+                className="bg-white h-12 md:w-[200px] lg:w-[300px]"
+              >
+                <SlidersHorizontal className="w-4 h-4 mr-2" />
+                Clear Filters
+              </Button>
+              :
+              <Button
+                variant="outline"
+                onClick={() => setFilterModalOpen(true)}
+                className="bg-white h-12 md:w-[200px] lg:w-[300px]"
+              >
+                <SlidersHorizontal className="w-4 h-4 mr-2" />
+                Filters
+              </Button>
+
+
+            }
             <Select value={sortBy} onValueChange={setSortBy}>
               <SelectTrigger className="w-full sm:w-[150px] lg:w-[300px] bg-white h-12!">
                 <div className="flex items-center gap-2">
@@ -104,7 +128,7 @@ const CreatorHeader = () => {
       </div>
       <CreatorFilterModal
         open={filterModalOpen}
-        onOpenChange={setFilterModalOpen}        
+        onOpenChange={setFilterModalOpen}
       />
     </div>
   )

@@ -1,5 +1,6 @@
 'use client'
 import { Button } from '@/components/ui/button'
+import { revalidate } from '@/helpers/revalidateHelper'
 import { myFetch } from '@/utils/myFetch'
 import { toast } from 'sonner'
 
@@ -9,6 +10,7 @@ const RequestToPartnerBtn = ({ promoterId }: any) => {
             const response = await myFetch(`/followers/promoter/${promoterId}/become-partner`, { method: 'POST' });            
             if(response?.success){
               toast.success(response?.message);
+              revalidate("promotor-detaild");
             }
         } catch (error) {
             console.error("Error requesting to become partner:", error);

@@ -50,8 +50,8 @@ export default function Loader() {
       </div>
 
       {/* Gradient Text */}
-      <h1 className="text-4xl md:text-6xl font-black tracking-tighter uppercase bg-gradient-to-r from-orange-500 via-purple-500 to-primary bg-clip-text text-transparent animate-[gradient-text_5s_ease_infinite]">
-        Whop
+      <h1 className="text-4xl md:text-6xl font-black tracking-tighter  bg-gradient-to-r from-orange-500 via-purple-500 to-primary bg-clip-text text-transparent animate-[gradient-text_5s_ease_infinite]">
+        WeSound
       </h1>
 
       {/* Loading Percentage */}

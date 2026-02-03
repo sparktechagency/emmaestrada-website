@@ -2,6 +2,7 @@
 
 import Container from "@/components/shared/Container"
 import ManagePagination from "@/components/shared/ManagePagination"
+import { Avatar, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import {
     Card,
@@ -16,10 +17,12 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { imageUrl } from "@/constants"
+import { AvatarFallback } from "@radix-ui/react-avatar"
 import { Star } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { MdOutlineStar } from "react-icons/md"
+import PromotorInfoModal from "../PromotorList/PromotorInfoModal"
 
 export default function TrustedPromotors({ data }: any) {
     return (
@@ -46,10 +49,13 @@ export default function TrustedPromotors({ data }: any) {
                             {data?.data?.length > 0 ? (
                                 data?.data?.map((row: any, idx: number) => (
                                     <TableRow key={idx}>
-                                        <TableCell>
+                                        <TableCell>                                           
                                             <div className="flex items-center gap-3">
-                                                <img src={`${imageUrl + row?.promoterId?.image}`} className="h-10 w-10 object-cover rounded-full" alt="Profile" />
-                                                <span className="capitalize">{row?.promoterId?.name ?? row?.promoterId?.userName}</span>
+
+                                                <PromotorInfoModal user={row?.promoterId} />
+                                                <div className="flex items-center gap-2">
+                                                    <span>{row?.promoterId?.name}</span>
+                                                </div>
                                             </div>
                                         </TableCell>
 

@@ -20,6 +20,7 @@ import { Star } from 'lucide-react'
 import { MdOutlineStar, MdOutlineStarRate } from 'react-icons/md'
 import Image from 'next/image'
 import CreatorListActionBtns from '../ui/website/promotor/InfluencerList/CreatorListActionBtns'
+import CreatorDetailsInfoModal from '../ui/website/Influencer/Creator/CreatorDetailsInfoModal'
 
 
 const PLATFORM_CONFIG = {
@@ -44,7 +45,7 @@ const PLATFORM_CONFIG = {
 
 const CreatorList = ({ creatorData }: { creatorData: any }) => {    
     return (
-        <div>
+        <div className='pb-20'>
             {
                 creatorData?.data?.length === 0 ? <p className="mb-5 cursor-pointer flex items-center  gap-2">No Data Found</p> :
                     <Card className="bg-transparent shadow-none border-0">
@@ -66,7 +67,7 @@ const CreatorList = ({ creatorData }: { creatorData: any }) => {
                                         <TableRow key={i}>
                                             <TableCell>
                                                 <div className="flex items-center gap-3">
-                                                    <Avatar className="w-10 h-10 shrink-0 border-2 relative rounded-full">
+                                                    {/* <Avatar className="w-10 h-10 shrink-0 border-2 relative rounded-full">
                                                         <AvatarImage
                                                             src={`${imageUrl}${row?.image ?? row?.followingId?.image}` || "/placeholder.png"}
                                                             alt={row?.userName}
@@ -75,7 +76,8 @@ const CreatorList = ({ creatorData }: { creatorData: any }) => {
                                                         <AvatarFallback className="bg-orange-500 text-white text-2xl">
                                                             {row?.userName?.[0]?.toUpperCase()}
                                                         </AvatarFallback>
-                                                    </Avatar>
+                                                    </Avatar> */}
+                                                    <CreatorDetailsInfoModal user={row} />
                                                     <span>{row?.name ?? row?.followingId?.name}</span>
 
                                                 </div>

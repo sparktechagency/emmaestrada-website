@@ -1,9 +1,8 @@
 'use client';
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/ui/button';
 import { revalidate } from '@/helpers/revalidateHelper';
 import { myFetch } from '@/utils/myFetch';
-import { Plus } from 'lucide-react'
-import React from 'react'
+import { Plus } from 'lucide-react';
 import { toast } from 'sonner';
 
 const PromotorFollowButton = ({promotorId, isFollowing}: {promotorId:string, isFollowing: boolean}) => {

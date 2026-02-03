@@ -3,33 +3,26 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "http",
-        hostname: "**",
+        protocol: 'http',
+        hostname: '**',
       },
       {
-        protocol: "https",
-        hostname: "**",
-      },
-      {
-        protocol: "http",
-        hostname: "10.10.7.48",
+        protocol: 'https',
+        hostname: '**',
       },
     ],
   },
 
   experimental: {
-    serverSourceMaps: false, // ✅ Fixes invalid source map error
+    serverSourceMaps: false,
     serverActions: {
-      // Increase the maximum request body size
-      bodySizeLimit: "10mb",
+      bodySizeLimit: '10mb',
     },
-    
   },
 
   eslint: {
-    ignoreDuringBuilds: true, // 🚀 skips ESLint during build
+    ignoreDuringBuilds: true,
   },
-  
 };
 
 export default nextConfig;

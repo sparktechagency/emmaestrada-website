@@ -38,6 +38,8 @@ const CampaignsAddForm = ({ editData, onClose }: { editData?: any, onClose?: any
     contentType: "UGC",
     categoryId: "",
     genreId: "",
+    trackTitle: "",
+    artistName: "",
     thumbnail: null as File | null,
     budget: {
       rewardRate: "",
@@ -50,6 +52,8 @@ const CampaignsAddForm = ({ editData, onClose }: { editData?: any, onClose?: any
     platforms: [] as string[],
     assets: {
       availableContentLink: "",
+      instagram_audio_link: "",
+      tiktok_audio_link: "",
       contentRequirement: "",
     },
   });
@@ -132,6 +136,8 @@ const CampaignsAddForm = ({ editData, onClose }: { editData?: any, onClose?: any
       contentType: formData.contentType,
       categoryId: formData.categoryId,
       genreId: formData.genreId,
+      trackTitle: formData.trackTitle,
+      artistName: formData.artistName,
       budget: {
         rewardRate: Number(formData.budget.rewardRate),
         perViews: Number(formData.budget.perViews),
@@ -143,6 +149,8 @@ const CampaignsAddForm = ({ editData, onClose }: { editData?: any, onClose?: any
       platforms: formData.platforms,
       assets: {
         availableContentLink: formData.assets.availableContentLink,
+        instagram_audio_link: formData.assets.instagram_audio_link,
+        tiktok_audio_link: formData.assets.tiktok_audio_link,
         contentRequirement: [formData.assets.contentRequirement],
       },
     };
@@ -186,7 +194,12 @@ const CampaignsAddForm = ({ editData, onClose }: { editData?: any, onClose?: any
         if (response?.success) {
           revalidate("promotor-campaigns")
           console.log('Success:', response);
-          toast.success(response?.message)
+          // toast.success(response?.message),
+          setTimeout(() => {
+            toast.info(
+              "The campaign will become active once you have added budget to campaign"
+            );
+          }, 1000)
           route.push("/promotor?status=upcoming")
           setLoading(false)
         } else {
@@ -411,7 +424,7 @@ const Step1 = ({
           </p>
           {/* <Image src={`${imageUrl}${formData?.thumbnail}`} unoptimized height={200} width={300} className="h-[200px] w-full object-cover rounded-xl" alt="Thumbnail"/> */}
           <div className="relative">
-            <img src={`${imageUrl}${formData?.thumbnail}`} className="h-[200px] w-full object-cover rounded-xl" alt="Thumbnail" />
+            <img src={`${imageUrl}${formData?.thumbnail}`} className="aspect w-full object-cover rounded-xl" alt="Thumbnail" />
             <div className="w-10-h-10 border rounded-full">
               <X className="h-5 w-5 text-white cursor-pointer absolute top-2 right-2 bg-red-500 p-1 rounded-full" onClick={removeThumbnail} />
             </div>
@@ -437,6 +450,7 @@ const Step1 = ({
             className="h-[45px]"
             type="number"
             placeholder="1000"
+            min="0"
             value={formData.campaignAmount}
             onChange={(e) =>
               updateFormData({ campaignAmount: e.target.value })
@@ -454,6 +468,7 @@ const Step1 = ({
                 className="h-[45px]"
                 type="number"
                 placeholder="8"
+                min="0"
                 value={formData.budget.rewardRate}
                 onChange={(e) => updateBudget({ rewardRate: e.target.value })}
               />
@@ -464,6 +479,7 @@ const Step1 = ({
                 className="h-[45px]"
                 type="number"
                 placeholder="1000"
+                min="0"
                 value={formData.budget.perViews}
                 onChange={(e) => updateBudget({ perViews: e.target.value })}
               />
@@ -472,12 +488,14 @@ const Step1 = ({
 
           <div className="w-full">
             <p className="text-md font-md font-semibold mb-2">
-              Flat Price ($)
+              Flat Fee ($)
             </p>
             <Input
               className="h-[45px]"
               type="number"
-              placeholder="500"
+              placeholder="10 (Max 200)"
+              min="0"
+              max="200"
               value={formData.budget.flatPrice}
               onChange={(e) => updateBudget({ flatPrice: e.target.value })}
             />
@@ -492,7 +510,8 @@ const Step1 = ({
             <Input
               className="h-[45px]"
               type="number"
-              placeholder="100"
+              placeholder="20"
+              min="0"
               value={formData.budget.minPayout}
               onChange={(e) => updateBudget({ minPayout: e.target.value })}
             />
@@ -505,7 +524,8 @@ const Step1 = ({
             <Input
               className="h-[45px]"
               type="number"
-              placeholder="800"
+              placeholder="100"
+              min="0"
               value={formData.budget.maxPayout}
               onChange={(e) => updateBudget({ maxPayout: e.target.value })}
             />
@@ -564,6 +584,65 @@ const Step2 = ({
         </div>
 
         <div className="bg-white border rounded-xl p-3 md:p-6 mb-6">
+          <p className="text-lg font-semibold ">Select Platforms *</p>
+          <div className="flex items-center gap-5">
+            <div className="w-full">
+              <p className="text-md  mb-2">Tiktok</p>
+              <Input
+                className="h-[45px] placeholder:text-xs!"
+                placeholder="https://www.tiktok.com/music/AWGAZI-7573972001669433360"
+                value={formData.assets.tiktok_audio_link}
+                disabled={!formData.platforms.includes('TikTok')}
+                onChange={(e) =>
+                  updateAssets({ tiktok_audio_link: e.target.value })
+                }
+              />
+            </div>
+            <div className="w-full">
+              <p className="text-md  mb-2">Instagram</p>
+              <Input
+                className="h-[45px] placeholder:text-xs!"
+                placeholder="https://www.instagram.com/reels/audio/1369317098161453"
+                value={formData.assets.instagram_audio_link}
+                disabled={!formData.platforms.includes('Instagram')}
+                onChange={(e) =>
+                  updateAssets({ instagram_audio_link: e.target.value })
+                }
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white border rounded-xl p-3 md:p-6 mb-6">
+          <p className="text-lg font-semibold ">Track Informatiom</p>
+          <div className="flex items-center gap-5">
+            <div className="w-full">
+              <p className="text-md mb-2">Title</p>
+              <Input
+                className="h-[45px]"
+                placeholder="Title of the track"
+                value={formData.trackTitle}
+                onChange={(e) =>
+                  updateFormData({ trackTitle: e.target.value })
+                }
+              />
+            </div>
+            <div className="w-full">
+              <p className="text-md mb-2">Artist</p>
+              <Input
+                className="h-[45px]"
+                placeholder="Name of the artist"
+                value={formData.artistName}
+                onChange={(e) =>
+                  updateFormData({ artistName: e.target.value })
+                }
+              />
+            </div>
+          </div>
+        </div>
+
+
+        <div className="bg-white border rounded-xl p-3 md:p-6 mb-6">
           <p className="font-medium mb-1">Available Content Link</p>
           <p className="text-sm text-gray-500 mb-3">
             We recommend you add guides and raw footage here
@@ -578,13 +657,10 @@ const Step2 = ({
           />
         </div>
 
-        <div className="bg-white border rounded-xl p-3 md:p-6 mb-6">
-          <p className="font-medium mb-1">Content Requirement</p>
-          <p className="text-sm text-gray-500 mb-3">
-            Add content guidelines for users to follow
-          </p>
-          <Input
-            className="h-[45px]"
+        <p className="font-medium mb-1">Content Requirement</p>
+        <div className="bg-white border rounded-xl p-4 mb-6">
+          <textarea
+            className="h-[120px] w-full"
             placeholder="Content Requirement"
             value={formData.assets.contentRequirement}
             onChange={(e) =>
@@ -612,11 +688,14 @@ const Step2 = ({
 };
 
 const Step3 = ({ formData, thumbnailPreview, prev, submit, loading }: any) => {
+  const { budget = {}, assets = {} } = formData;
+
   return (
     <div>
       <p className="text-lg font-semibold mb-6">Review & Submit</p>
 
       <div className="space-y-6">
+        {/* Campaign Information */}
         <div className="border rounded-xl p-4 md:p-6 bg-white">
           <p className="font-semibold mb-4">Campaign Information</p>
 
@@ -628,7 +707,7 @@ const Step3 = ({ formData, thumbnailPreview, prev, submit, loading }: any) => {
 
             <div>
               <p className="text-sm text-gray-500">Content Type</p>
-              <p className="font-medium">{formData.contentType}</p>
+              <p className="font-medium">{formData.contentType || "Not set"}</p>
             </div>
 
             <div>
@@ -642,9 +721,21 @@ const Step3 = ({ formData, thumbnailPreview, prev, submit, loading }: any) => {
             </div>
 
             <div>
+              <p className="text-sm text-gray-500">Track Title</p>
+              <p className="font-medium">{formData.trackTitle || "Not set"}</p>
+            </div>
+
+            <div>
+              <p className="text-sm text-gray-500">Artist Name</p>
+              <p className="font-medium">{formData.artistName || "Not set"}</p>
+            </div>
+
+            <div>
               <p className="text-sm text-gray-500">Campaign Amount</p>
               <p className="font-medium">
-                ${formData.campaignAmount || "Not set"}
+                {formData.campaignAmount
+                  ? `$${formData.campaignAmount}`
+                  : "Not set"}
               </p>
             </div>
 
@@ -667,6 +758,7 @@ const Step3 = ({ formData, thumbnailPreview, prev, submit, loading }: any) => {
           )}
         </div>
 
+        {/* Budget & Rewards */}
         <div className="border rounded-xl p-4 md:p-6 bg-white">
           <p className="font-semibold mb-4">Budget & Rewards</p>
 
@@ -674,34 +766,36 @@ const Step3 = ({ formData, thumbnailPreview, prev, submit, loading }: any) => {
             <div>
               <p className="text-sm text-gray-500">Reward Rate</p>
               <p className="font-medium">
-                ${formData.budget.rewardRate || 0} per{" "}
-                {formData.budget.perViews || "—"} views
+                {budget.rewardRate
+                  ? `$${budget.rewardRate} per ${budget.perViews || "—"} views`
+                  : "Not set"}
               </p>
             </div>
 
             <div>
               <p className="text-sm text-gray-500">Flat Price</p>
               <p className="font-medium">
-                ${formData.budget.flatPrice || "Not set"}
+                {budget.flatPrice ? `$${budget.flatPrice}` : "Not set"}
               </p>
             </div>
 
             <div>
               <p className="text-sm text-gray-500">Minimum Payout</p>
               <p className="font-medium">
-                ${formData.budget.minPayout || "Not set"}
+                {budget.minPayout ? `$${budget.minPayout}` : "Not set"}
               </p>
             </div>
 
             <div>
               <p className="text-sm text-gray-500">Maximum Payout</p>
               <p className="font-medium">
-                ${formData.budget.maxPayout || "Not set"}
+                {budget.maxPayout ? `$${budget.maxPayout}` : "Not set"}
               </p>
             </div>
           </div>
         </div>
 
+        {/* Target Platforms */}
         <div className="border rounded-xl p-4 md:p-6 bg-white">
           <p className="font-semibold mb-4">Target Platforms</p>
 
@@ -718,27 +812,43 @@ const Step3 = ({ formData, thumbnailPreview, prev, submit, loading }: any) => {
           )}
         </div>
 
+        {/* Campaign Assets */}
         <div className="border rounded-xl p-4 md:p-6 bg-white">
-          <p className="font-semibold mb-2">Campaign Assets</p>
-          <div className="space-y-3">
+          <p className="font-semibold mb-4">Campaign Assets</p>
+
+          <div className="space-y-3 text-sm">
             <div>
-              <p className="text-sm text-gray-500">Available Content Link</p>
-              <p className="text-sm break-all">
-                {formData.assets.availableContentLink ||
-                  "No link provided"}
+              <p className="text-gray-500">Available Content Link</p>
+              <p className="break-all">
+                {assets.availableContentLink || "Not provided"}
               </p>
             </div>
+
             <div>
-              <p className="text-sm text-gray-500">Content Requirement</p>
-              <p className="text-sm">
-                {formData.assets.contentRequirement ||
-                  "No requirement specified"}
+              <p className="text-gray-500">Instagram Audio Link</p>
+              <p className="break-all">
+                {assets.instagram_audio_link || "Not provided"}
+              </p>
+            </div>
+
+            <div>
+              <p className="text-gray-500">TikTok Audio Link</p>
+              <p className="break-all">
+                {assets.tiktok_audio_link || "Not provided"}
+              </p>
+            </div>
+
+            <div>
+              <p className="text-gray-500">Content Requirement</p>
+              <p>
+                {assets.contentRequirement || "Not provided"}
               </p>
             </div>
           </div>
         </div>
       </div>
 
+      {/* Footer */}
       <div className="flex justify-between bg-white p-4 mt-8 rounded-md shadow-md">
         <Button disabled={loading} size="lg" variant="outline" onClick={prev}>
           Previous
@@ -757,5 +867,6 @@ const Step3 = ({ formData, thumbnailPreview, prev, submit, loading }: any) => {
     </div>
   );
 };
+
 
 export default CampaignsAddForm;

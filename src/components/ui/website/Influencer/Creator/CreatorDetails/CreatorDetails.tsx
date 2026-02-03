@@ -40,7 +40,7 @@ const CreatorDetails = ({ creator }: { creator: any }) => {
 
     return (
         <Container>
-            <div className='glassBg px-2 md:px-10 my-10 py-10'>
+            <div className='bg-white shadow-md rounded-xl px-2 md:px-10 my-10 py-10'>
                 <div className="text-center">
                     <img src={`${imageUrl}${creator?.image}`} className='mx-auto h-28 md:h-44 w-28 md:w-44 rounded-full object-cover' alt='profile' />
                     <h1 className='text-3xl font-semibold mt-5'>{creator?.name}</h1>

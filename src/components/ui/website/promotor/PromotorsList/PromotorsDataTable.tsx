@@ -21,6 +21,7 @@ import Link from 'next/link'
 import CreatorPagination from '../../Influencer/Creator/CreatorPagination'
 import Container from '@/components/shared/Container'
 import { imageUrl } from '@/constants'
+import PromotorInfoModal from '../../Influencer/PromotorList/PromotorInfoModal'
 
 const influencers = Array.from({ length: 10 }).map(() => ({
     name: "Ava Storm",
@@ -55,7 +56,8 @@ const PromotorsDataTable = ({ promotorData }: any) => {
                                 <TableRow key={idx}>
                                     <TableCell>
                                         <div className="flex items-center gap-3">
-                                            <img src={`${imageUrl + row?.image}`} className="h-14 w-14 object-cover rounded-full" alt={row?.name} />
+                                            
+                                            <PromotorInfoModal user={row} />
                                             <span>{row?.name}</span>
                                         </div>
                                     </TableCell>

@@ -12,11 +12,11 @@ import Image from 'next/image'
 import React, { useState } from 'react'
 
 const ProfileImageWithUserData = ({ submission }: any) => {
+    const [open, setOpen] = useState(false);
 
       const user = submission?.influencerId;
   const campaign = submission?.campaignId;
 
-    const [open, setOpen] = useState(false);
     return (
         <div className="">
             <Modal dialogTitle="Profile" open={open} setOpen={setOpen} className='w-[95%]! md:w-3/5! p-4 md:p-8' dialogTrigger={<img src={`${imageUrl}${user?.image}`}  alt="profile" className="h-12 w-12 rounded-full cursor-pointer" />}>

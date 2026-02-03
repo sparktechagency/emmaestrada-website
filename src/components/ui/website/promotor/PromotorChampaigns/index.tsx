@@ -65,7 +65,7 @@ const PromotorChampaigns = async ({ queryString, status }: { queryString?: strin
         {status === 'create-campaign' ? (
           <CampaingsAddForm />
         ) : hasCampaigns ? (
-          <PMyCampaigns campaigns={campaignsData?.data} />
+          <PMyCampaigns campaigns={campaignsData?.data} status={currentStatus}/>
         ) : (
           <div className="flex flex-col items-center justify-center min-h-[400px] text-center px-4 py-12">
             <div className="bg-gray-100 rounded-full p-6 mb-6">

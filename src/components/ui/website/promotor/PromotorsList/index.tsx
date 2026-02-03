@@ -7,9 +7,11 @@ export default function PromotorList({promotorData}:any) {
 
     return (
         <Container>
+            <div className="mb-20">
             <PromotorListHeader />
             <PromotorsDataTable promotorData={promotorData?.data}/>
             <ManagePagination meta={promotorData?.meta}/>
+            </div>
         </Container>
     )
 }

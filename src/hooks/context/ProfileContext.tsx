@@ -56,6 +56,7 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
   //   fetchedRef.current = true;
   //   fetchProfile();
   // }, []);
+
   useEffect(() => {
     if (fetchedRef.current || profile) return;
     fetchedRef.current = true;

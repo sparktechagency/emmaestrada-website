@@ -9,9 +9,11 @@ const CreatorPromotorList = ({promotorData}:any) => {
 
   return (
     <Container>
+      <div className="pb-20">
         <CPromotorHeader />
         <CPromotorList promotorData={promotorData?.data}/>
         <ManagePagination meta={promotorData?.meta}/>
+        </div>
     </Container>
   )
 }

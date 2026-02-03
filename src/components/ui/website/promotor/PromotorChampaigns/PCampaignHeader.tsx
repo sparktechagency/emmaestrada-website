@@ -21,16 +21,18 @@ import FilterModal from "../../Influencer/InfluencerCampaign/FilterModal";
 const PCampaignHeader = () => {
   const [activeCampaignTab, setActiveCampaignTab] = useState("campaigns");
   const [filterModalOpen, setFilterModalOpen] = useState(false);
-  
-  const [sortBy, setSortBy] = useState("all");
-  const searchParams = useSearchParams();
+    
   const [searchValue, setSearchValue] = useState('');  
   
+  const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
-  const contentType = searchParams.get("campaignType") || "";
-
   
+  // Query params
+  const params = Object.fromEntries(searchParams?.entries());
+  const {contentType, status, searchTerm,  ...filterParams} = params;
+
+  const hasFilters = Object.keys(filterParams)?.length > 0;
   useEffect(() => {
     const paramValue = searchParams.get("campaignType");
     if (paramValue && paramValue !== activeCampaignTab) {
@@ -44,10 +46,13 @@ const PCampaignHeader = () => {
   };
 
 
+  const clearAllParams = () => {
+    router.replace(pathname, { scroll: false });
+  };
+  
 
   useEffect(() => {
-    const params = new URLSearchParams(searchParams.toString());
-
+    const params = new URLSearchParams(searchParams.toString());    
     if (searchValue) {
       params.set('searchTerm', searchValue);
     } else {
@@ -103,14 +108,28 @@ const PCampaignHeader = () => {
           </div>
           
            <div className="flex flex-col sm:flex-row gap-3 ">
-            <Button
-              variant="outline"
-              onClick={() => setFilterModalOpen(true)}
-              className="bg-white h-12 md:w-[200px] lg:w-[300px]"
-            >
-              <SlidersHorizontal className="w-4 h-4 mr-2" />
-              Filters
-            </Button>           
+            {hasFilters ?
+
+              <Button
+                variant="outline"
+                onClick={() => clearAllParams()}
+                className="bg-white h-12 md:w-[200px] lg:w-[300px]"
+              >
+                <SlidersHorizontal className="w-4 h-4 mr-2" />
+                Clear Filters
+              </Button>
+              :
+              <Button
+                variant="outline"
+                onClick={() => setFilterModalOpen(true)}
+                className="bg-white h-12 md:w-[200px] lg:w-[300px]"
+              >
+                <SlidersHorizontal className="w-4 h-4 mr-2" />
+                Filters
+              </Button>
+
+
+            }           
           </div>
         </div>
       {/* </div> */}
