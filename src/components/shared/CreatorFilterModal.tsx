@@ -34,10 +34,10 @@ export default function CreatorFilterModal({
 }: CreatorFilterModalProps) {
   // Define initial values as constants
   const INITIAL_RATING = [1, 5];
-  const INITIAL_FOLLOWERS = [0, 1000000];
+  const INITIAL_FOLLOWERS = [0, 100000];
 
 
-  const [gender, setGender] = useState<string>("Both");
+  const [gender, setGender] = useState<string>("");
   const [rating, setRating] = useState<number[]>(INITIAL_RATING);
   const [followers, setFollowers] = useState<number[]>(INITIAL_FOLLOWERS);
   const [platform, setPlatform] = useState<string>(""); // Changed to single platform
@@ -45,7 +45,12 @@ export default function CreatorFilterModal({
 
   const [categories, setCategories] = useState<string[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const platformList = ["tiktok", "instagram", "youtube"];
+
+  const platformList = [
+  { label: "tiktok", value: "tiktok", icon: "/tiktokBlack.png" },
+  { label: "instagram", value: "instagram", icon: "/instagram.png" },
+  { label: "youtube", value: "youtube", icon: "/youtube.png" },
+];
 
   const [openDropdown, setOpenDropdown] = useState(false);
   const [search, setSearch] = useState("");
@@ -93,7 +98,7 @@ export default function CreatorFilterModal({
   const setFiltersAsSearchParams = (filters: any) => {
     const params = new URLSearchParams(searchParams.toString());
 
-    if (filters.gender && filters.gender !== "Both") {
+    if (filters.gender) {
       params.set('gender', filters?.gender?.toLowerCase());
     } else {
       params.delete('gender');
@@ -172,7 +177,7 @@ export default function CreatorFilterModal({
   const clear = () => {
     setPlatform("");
     setSelectedCategories([]);
-    setGender("Both");
+    setGender("");
     setRating(INITIAL_RATING);
     setFollowers(INITIAL_FOLLOWERS);
     setSelectedCountries([]);
@@ -196,20 +201,24 @@ export default function CreatorFilterModal({
         {/* PLATFORM - Single Selection */}
         <div className="my-3">
           <p className="font-medium mb-3">Platform (Select One)</p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             {platformList.map(p => (
               <div
-                key={p}
-                className="flex items-center gap-3 border rounded-xl p-4"
+                key={p.value}
+                className="flex items-center justify-center gap-1 border rounded-xl p-3"
               >
                 <Checkbox
-                  checked={platform === p}
-                  onCheckedChange={() => selectSinglePlatform(p)}
+                  checked={platform === p.value}
+                  onCheckedChange={() => selectSinglePlatform(p.value)}
                 />
-                <span className="capitalize">{p}</span>
+                <img src="" alt=""/>
+                <Image src={p.icon} height={20} width={20} alt="logo" />
+                <span className="capitalize text-sm">{p.label}</span>
               </div>
             ))}
           </div>
+
+
         </div>
 
         {/* FOLLOWERS */}
@@ -221,13 +230,13 @@ export default function CreatorFilterModal({
             disabled={!platform}
             value={followers}
             min={0}
-            max={1000000}
+            max={100000}
             step={1000}
             onValueChange={setFollowers}
             className={!hasRangeChanged(followers, INITIAL_FOLLOWERS) ? 'opacity-50' : ''}
           />
           {!platform && (
-            <p className="text-xs text-gray-500 mt-1">Select a platform first</p>
+            <p className="text-xs text-red-500 mt-1">Select a platform to enable this filter</p>
           )}
         </div>
 
@@ -258,7 +267,7 @@ export default function CreatorFilterModal({
             onChange={e => setGender(e.target.value)}
             className="w-full h-12 border rounded-xl px-3"
           >
-            <option>Both</option>
+            <option value="">Select Gender</option>
             <option>Male</option>
             <option>Female</option>
             <option>Other</option>
@@ -321,7 +330,7 @@ export default function CreatorFilterModal({
               className="h-12 w-full rounded-xl border px-3 flex items-center justify-between hover:bg-gray-50"
             >
               Add country
-              <ChevronDown className={`h-4 w-4 opacity-50 transition-transform ${openDropdown ? 'rotate-180' : ''}`} />
+              {openDropdown ? <X  className="h-4 w-4 text-red-600" /> : <ChevronDown className={`h-4 w-4 opacity-50 transition-transform ${openDropdown ? 'rotate-180' : ''}`} />}
             </button>
 
             {openDropdown && (

@@ -77,8 +77,7 @@ const PromotorInfoModal = ({ user }: PromotorInfoModalProps) => {
                         src={`${imageUrl}${user?.image || '/placeholder.png'}`}
                         alt="Profile"
                         width={48}
-                        height={48}
-                        unoptimized
+                        height={48}                        
                         className="h-12 w-12 rounded-full object-cover border border-gray-200"
                         onClick={() => setOpen(true)}
                     />

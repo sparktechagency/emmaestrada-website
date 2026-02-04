@@ -109,8 +109,7 @@ export default function PAnalyticsCampaignRankings() {
                       <div className="flex items-center gap-3 w-48">
                         <Image
                           src={`${imageUrl + row.campaignThumbnail}`}
-                          alt={row.campaignTitle}
-                          unoptimized
+                          alt={row.campaignTitle}                          
                           width={40}
                           height={40}
                           className="rounded object-cover"

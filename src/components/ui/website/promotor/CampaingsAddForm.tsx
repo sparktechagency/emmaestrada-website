@@ -13,6 +13,13 @@ import { useRouter } from "next/navigation";
 import { imageUrl } from "@/constants";
 import { revalidate } from "@/helpers/revalidateHelper";
 
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 const steps = [
   { id: 1, name: "Basic & Budget", subtitle: "Campaign details" },
   { id: 2, name: "Platform & Assets", subtitle: "Financial setup" },
@@ -25,15 +32,7 @@ const platforms = [
   { label: "YouTube", value: "YouTube", icon: "/youtube.png" },
 ];
 
-const CampaignsAddForm = ({ editData, onClose }: { editData?: any, onClose?: any }) => {
-  const [step, setStep] = useState(1);
-  const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
-  const [categories, setCategories] = useState([])
-  const [genries, setGenries] = useState([])
-  const route = useRouter()
-  const [loading, setLoading] = useState(false);
-
-  const [formData, setFormData] = useState({
+const initialState = {
     title: "",
     contentType: "UGC",
     categoryId: "",
@@ -56,7 +55,18 @@ const CampaignsAddForm = ({ editData, onClose }: { editData?: any, onClose?: any
       tiktok_audio_link: "",
       contentRequirement: "",
     },
-  });
+  }
+
+const CampaignsAddForm = ({ editData, onClose }: { editData?: any, onClose?: any }) => {
+  const [step, setStep] = useState(1);
+  const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
+  const [categories, setCategories] = useState([])
+  const [genries, setGenries] = useState([])
+  const route = useRouter()
+  const [loading, setLoading] = useState(false);
+  const [showFlash, setShowFlash] = useState(false);
+
+  const [formData, setFormData] = useState(initialState);
 
 
   const fetchingCategories = async () => {
@@ -192,15 +202,13 @@ const CampaignsAddForm = ({ editData, onClose }: { editData?: any, onClose?: any
         });
 
         if (response?.success) {
-          revalidate("promotor-campaigns")
-          console.log('Success:', response);
-          // toast.success(response?.message),
-          setTimeout(() => {
-            toast.info(
-              "The campaign will become active once you have added budget to campaign"
-            );
-          }, 1000)
+          revalidate("promotor-campaigns")                    
           route.push("/promotor?status=upcoming")
+
+          setTimeout(() => {
+            setShowFlash(true)
+          }, 2000)
+          setShowFlash(false)
           setLoading(false)
         } else {
           toast.error(response?.message)
@@ -260,10 +268,38 @@ const CampaignsAddForm = ({ editData, onClose }: { editData?: any, onClose?: any
         </p>
       </div>
       <Stepper currentStep={step} />
+      {showFlash && <FlashMessage open={showFlash} setOpen={setShowFlash} />}
       <div className="mt-8">{views[step]}</div>
     </div>
   );
 };
+
+
+// Flash Message UI component
+const FlashMessage = ({
+  open,
+  setOpen,
+}: {
+  open: boolean;
+  setOpen: (open: boolean) => void;
+}) => {
+  return (
+    <Dialog open={open} onOpenChange={setOpen} >
+      <DialogContent className="max-w-md rounded-xl">       
+        <DialogHeader>
+          <DialogTitle className="text-green-600">
+            Campaign Created Successfully
+          </DialogTitle>
+
+          <DialogDescription className="text-sm text-red-600 mt-2">
+            The campaign will become active once you have added budget to campaign!
+          </DialogDescription>
+        </DialogHeader>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
 
 const Stepper = ({ currentStep }: { currentStep: number }) => (
   <div className="relative w-full flex justify-between items-start md:items-center bg-white shadow-lg py-5 rounded-lg px-4">
@@ -422,9 +458,8 @@ const Step1 = ({
           <p className="text-md text-slate-400 font-md font-medium mb-2">
             Campaign Thumbnail
           </p>
-          {/* <Image src={`${imageUrl}${formData?.thumbnail}`} unoptimized height={200} width={300} className="h-[200px] w-full object-cover rounded-xl" alt="Thumbnail"/> */}
           <div className="relative">
-            <img src={`${imageUrl}${formData?.thumbnail}`} className="aspect w-full object-cover rounded-xl" alt="Thumbnail" />
+          <img src={`${imageUrl}${formData?.thumbnail}`} className="aspect-3/2 w-full h-full object-cover rounded-xl" alt="Thumbnail"/>
             <div className="w-10-h-10 border rounded-full">
               <X className="h-5 w-5 text-white cursor-pointer absolute top-2 right-2 bg-red-500 p-1 rounded-full" onClick={removeThumbnail} />
             </div>

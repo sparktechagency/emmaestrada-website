@@ -42,10 +42,10 @@ const PLATFORM_CONFIG = {
 } as const;
 
 
-const PCreatorsList = async({ creatorData }: { creatorData: any }) => {
+const PCreatorsList = async ({ creatorData }: { creatorData: any }) => {
 
 
-      
+
   return (
     <div className="pb-20">
       {
@@ -68,31 +68,15 @@ const PCreatorsList = async({ creatorData }: { creatorData: any }) => {
                   {creatorData?.data && creatorData?.data?.map((row: any, i: number) => (
                     <TableRow key={i}>
                       <TableCell>
-                        <div className="flex items-center gap-3 w-[200px] md:w-full">
-                         <CreatorDetailsInfoModal user={row}/>
+                        <div className="flex items-center gap-3 min-w-[200px] md:w-full">
+                          <CreatorDetailsInfoModal user={row} />
                           <span>{row?.name ?? row?.followingId?.name}</span>
 
                         </div>
                       </TableCell>
-                      <TableCell className="flex items-center gap-2">
-                        {row?.platforms?.length > 0 ? row?.platforms?.map((platform: any) => {
-                          const key = platform.toLowerCase() as any;
-                          const config = (PLATFORM_CONFIG as any)[key];
-
-                          if (!config) return null;
-
-                          return (
-                            <Image
-                              key={key}
-                              src={config.src}
-                              alt={config.alt}
-                              width={25}
-                              height={25}
-                              loading="lazy"
-                            />
-                          );
-                        }) :
-                          row?.followingId?.platforms?.length > 0 && row?.followingId?.platforms?.map((platform: any) => {
+                      <TableCell >
+                        <div className="flex items-center gap-2 min-w-30">
+                          {row?.platforms?.length > 0 ? row?.platforms?.map((platform: any) => {
                             const key = platform.toLowerCase() as any;
                             const config = (PLATFORM_CONFIG as any)[key];
 
@@ -108,8 +92,27 @@ const PCreatorsList = async({ creatorData }: { creatorData: any }) => {
                                 loading="lazy"
                               />
                             );
-                          })
-                        }
+                          }) :
+                            row?.followingId?.platforms?.length > 0 && row?.followingId?.platforms?.map((platform: any) => {
+                              const key = platform.toLowerCase() as any;
+                              const config = (PLATFORM_CONFIG as any)[key];
+
+                              if (!config) return null;
+
+                              return (
+                                <Image
+                                  key={key}
+                                  src={config.src}
+                                  alt={config.alt}
+                                  width={25}
+                                  height={25}
+                                  loading="lazy"
+                                />
+                              );
+                            })
+                          }
+                        </div>
+
                       </TableCell>
                       <TableCell>{row?.totalFollowers ?? row?.followingId?.totalFollowers}</TableCell>
                       <TableCell className="text-green-600 font-semibold">

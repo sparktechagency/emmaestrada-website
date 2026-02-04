@@ -4,13 +4,32 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'http',
-        hostname: '**',
+        hostname: '10.10.7.48',
+        port: '5000',
+        pathname: '/**',  // optional but good to have
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '5000',
+        pathname: '/**',
+      },
+      {
+        protocol: 'http',
+        hostname: '127.0.0.1',
+        port: '5000',
+        pathname: '/**',
       },
       {
         protocol: 'https',
-        hostname: '**',
+        hostname: 'images.pexels.com',       
+      },
+      {
+        protocol: 'https',
+        hostname: 'api.wesound.app',       
       },
     ],
+    dangerouslyAllowLocalIP: process.env.NODE_ENV === 'development' ? true : false,  // ← Correct: top-level under images
   },
 
   experimental: {

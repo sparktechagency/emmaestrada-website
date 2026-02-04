@@ -41,6 +41,7 @@ export default function ContactForm() {
             src="https://images.pexels.com/photos/3756767/pexels-photo-3756767.jpeg"
             alt="Woman listening to music"
             fill
+            unoptimized
             className="object-cover"
             sizes="(max-width: 768px) 100vw, 50vw"
             quality={85}

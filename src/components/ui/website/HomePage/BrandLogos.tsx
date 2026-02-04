@@ -15,7 +15,7 @@ export default function BrandLogos({ brands }: any) {
                 autoFill                
             >
                 {brands?.map((brand: any, i: number) => (
-                    <a key={i} target="_blank" href={`${brand?.link ? brand?.link : "#"}`} className="relative h-14 w-32 inline-block mx-10"><Image className="object-fill" src={`${imageUrl}${brand?.image}`} fill unoptimized alt="Slides" /></a>
+                    <a key={i} target="_blank" href={`${brand?.link ? brand?.link : "#"}`} className="relative h-14 w-32 inline-block mx-10"><Image className="object-fill" src={`${imageUrl}${brand?.image}`} fill  alt="Slides" /></a>
                 ))}                    
             </Marquee>
         </div>

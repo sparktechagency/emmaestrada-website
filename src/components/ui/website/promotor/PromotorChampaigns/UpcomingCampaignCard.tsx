@@ -30,23 +30,23 @@ const UpcomingCampaignCard = ({ campaign }: { campaign?: any }) => {
     const router = useRouter();
 
     const handleAddBudget = async () => {
-        // try {
-        //     const response = await myFetch(`/orders/create-and-checkout`, {
-        //         method: 'POST',
-        //         body: { campaignId: campaignData?._id },
-        //     });
-        //     if (response?.success) {
+        try {
+            const response = await myFetch(`/orders/create-and-checkout`, {
+                method: 'POST',
+                body: { campaignId: campaign?._id },
+            });
+            if (response?.success) {
 
-        //         if (response?.success && response?.data?.url) {
-        //             router.push(response.data.url);
-        //         }
-        //     } else if (response?.message) {
-        //         toast.error(response?.message);
-        //     }
-        // } catch (error: any) {
-        //     toast.error(error?.message);
-        //     console.log("error", error);
-        // }
+                if (response?.success && response?.data?.url) {
+                    router.push(response.data.url);
+                }
+            } else if (response?.message) {
+                toast.error(response?.message);
+            }
+        } catch (error: any) {
+            toast.error(error?.message);
+            console.log("error", error);
+        }
     }
 
     return (
@@ -63,8 +63,7 @@ const UpcomingCampaignCard = ({ campaign }: { campaign?: any }) => {
                     height={500}
                     width={500}
                     className="max-h-[200px] h-full w-full object-cover rounded-t-[12px]"
-                    draggable={false}
-                    unoptimized
+                    draggable={false}                    
                 />
             </div>
             {/* CONTENT */}
@@ -79,8 +78,7 @@ const UpcomingCampaignCard = ({ campaign }: { campaign?: any }) => {
                             alt="profile"
                             height={200}
                             width={200}
-                            className="w-12 h-12 rounded-full object-cover"
-                            unoptimized
+                            className="w-12 h-12 rounded-full object-cover"                            
                         />
                         <div>
                             <h3 className={`font-semibold text-lg ${!role && "blur-[10px]"}`}>
@@ -156,7 +154,7 @@ const UpcomingCampaignCard = ({ campaign }: { campaign?: any }) => {
 
                 {/* ACTIONS */}
                 <div >
-                    <Button className="w-full py-5 bg-secondary text-black my-3" onClick={() => handleAddBudget()}>
+                    <Button variant="outline" className="w-full py-5 text-primary! my-4" onClick={() => handleAddBudget()}>
                         Add Budget
                     </Button>
 

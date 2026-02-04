@@ -142,8 +142,7 @@ const CampaignCard = ({ campaign, label, profile }: CampaignCardProps) => {
               src={`${campaign?.userId?.image &&
                 campaign?.userId?.image.startsWith('http') ? `${campaign?.userId?.image}`
                 : campaign?.userId?.image ? `${imageUrl}${campaign?.userId?.image}` : "/placeholder.png"}`}
-              alt="profile"
-              unoptimized
+              alt="profile"              
               height={200}
               width={200}
               className="w-12 h-12 rounded-full  object-cover"
@@ -279,8 +278,7 @@ const CampaignCard = ({ campaign, label, profile }: CampaignCardProps) => {
           height={500}
           width={500}
           className="max-h-[200px] h-full w-full object-cover rounded-t-[12px]"
-          draggable={false}
-          unoptimized
+          draggable={false}          
         />
       </div>
     </div>

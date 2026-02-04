@@ -55,8 +55,7 @@ const PromotorsDataTable = ({ promotorData }: any) => {
                             {promotorData?.length > 0 ? promotorData.map((row: any, idx: number) => (
                                 <TableRow key={idx}>
                                     <TableCell>
-                                        <div className="flex items-center gap-3">
-                                            
+                                        <div className="flex items-center gap-3 w-48 md:w-full">                                            
                                             <PromotorInfoModal user={row} />
                                             <span>{row?.name}</span>
                                         </div>

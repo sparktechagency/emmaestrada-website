@@ -13,7 +13,7 @@ import { Button } from '@/components/ui/button'
 const PromotorChampaigns = async ({ queryString, status }: { queryString?: string, status?: string }) => {
 
   const baseUrl = status ? `/campaigns/my-campaigns?status=${status}`
-                  : `/campaigns/my-campaigns?status=active`;
+    : `/campaigns/my-campaigns?status=active`;
 
   const url = queryString ? `${baseUrl}&${queryString}` : baseUrl;
   const campaignsData = await myFetch(url, { tags: ['promotor-campaigns'] });
@@ -65,7 +65,7 @@ const PromotorChampaigns = async ({ queryString, status }: { queryString?: strin
         {status === 'create-campaign' ? (
           <CampaingsAddForm />
         ) : hasCampaigns ? (
-          <PMyCampaigns campaigns={campaignsData?.data} status={currentStatus}/>
+          <PMyCampaigns campaigns={campaignsData?.data} status={currentStatus} />
         ) : (
           <div className="flex flex-col items-center justify-center min-h-[400px] text-center px-4 py-12">
             <div className="bg-gray-100 rounded-full p-6 mb-6">
@@ -80,11 +80,10 @@ const PromotorChampaigns = async ({ queryString, status }: { queryString?: strin
           </div>
         )}
       </div>
-
-      {status && !['create-campaign'].includes(status) && hasCampaigns && (
-        <ManagePagination meta={campaignsData?.meta} />
-      )}
-
+      <div className="mb-10">
+        {status && !['create-campaign'].includes(status) && hasCampaigns && (
+          <ManagePagination meta={campaignsData?.meta} />
+        )}</div>
     </Container>
   )
 }

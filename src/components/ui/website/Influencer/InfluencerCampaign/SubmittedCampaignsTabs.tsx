@@ -83,8 +83,7 @@ const SubmittedCampaignsTabs = ({ submissions, connectedPlatforms = ["instagram"
                                                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
                                                             <Link href={`/creator/${campaign._id}`}> <div className="flex items-center gap-3">
                                                                 <Image
-                                                                    src={`${campaign.thumbnail ? imageUrl + campaign.thumbnail : "/placeholder.png"}`}
-                                                                    unoptimized
+                                                                    src={`${campaign.thumbnail ? imageUrl + campaign.thumbnail : "/placeholder.png"}`}                                                                    
                                                                     height={40}
                                                                     width={40}
                                                                     alt={campaign.title || campaign.name}
