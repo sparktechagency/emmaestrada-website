@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { Gift } from "lucide-react";
 
@@ -10,23 +10,13 @@ import { myFetch } from "@/utils/myFetch";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { imageUrl } from "@/constants";
-
-
-
-const platformIcons: Record<string, string> = {
-    TikTok: "/tiktokBlack.png",
-    Instagram: "/instagram.png",
-    YouTube: "/youtube.png",
-};
-
+import Cookies from "js-cookie";
 
 const UpcomingCampaignCard = ({ campaign }: { campaign?: any }) => {
-
-    console.log("campaign,campaign,", campaign);
-    
-    const role = typeof window !== 'undefined' ? localStorage.getItem('role') : null;
-    
-    console.log("campaign,role,", role);
+      const [role, setRole] = useState<string | null>(null);
+    useEffect(() => {
+        setRole(Cookies.get("role") || null);
+    }, []);
     const router = useRouter();
 
     const handleAddBudget = async () => {
@@ -63,7 +53,7 @@ const UpcomingCampaignCard = ({ campaign }: { campaign?: any }) => {
                     height={500}
                     width={500}
                     className="max-h-[200px] h-full w-full object-cover rounded-t-[12px]"
-                    draggable={false}                    
+                    draggable={false}
                 />
             </div>
             {/* CONTENT */}
@@ -78,14 +68,14 @@ const UpcomingCampaignCard = ({ campaign }: { campaign?: any }) => {
                             alt="profile"
                             height={200}
                             width={200}
-                            className="w-12 h-12 rounded-full object-cover"                            
+                            className="w-12 h-12 rounded-full object-cover"
                         />
                         <div>
                             <h3 className={`font-semibold text-lg ${!role && "blur-[10px]"}`}>
                                 {campaign?.userId?.name || "Unknown User"}
                             </h3>
                             <p className="text-gray-600 text-sm lowercase">
-                                @{campaign?.userId?.userName || "unknown"} 
+                                @{campaign?.userId?.userName || "unknown"}
                             </p>
                         </div>
                     </div>

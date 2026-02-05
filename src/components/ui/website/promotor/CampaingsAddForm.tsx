@@ -33,29 +33,29 @@ const platforms = [
 ];
 
 const initialState = {
-    title: "",
-    contentType: "UGC",
-    categoryId: "",
-    genreId: "",
-    trackTitle: "",
-    artistName: "",
-    thumbnail: null as File | null,
-    budget: {
-      rewardRate: "",
-      perViews: "",
-      minPayout: "",
-      maxPayout: "",
-      flatPrice: "",
-    },
-    campaignAmount: "",
-    platforms: [] as string[],
-    assets: {
-      availableContentLink: "",
-      instagram_audio_link: "",
-      tiktok_audio_link: "",
-      contentRequirement: "",
-    },
-  }
+  title: "",
+  contentType: "UGC",
+  categoryId: "",
+  genreId: "",
+  trackTitle: "",
+  artistName: "",
+  thumbnail: null as File | null,
+  budget: {
+    rewardRate: "",
+    perViews: "",
+    minPayout: "",
+    maxPayout: "",
+    flatPrice: "",
+  },
+  campaignAmount: "",
+  platforms: [] as string[],
+  assets: {
+    availableContentLink: "",
+    instagram_audio_link: "",
+    tiktok_audio_link: "",
+    contentRequirement: "",
+  },
+}
 
 const CampaignsAddForm = ({ editData, onClose }: { editData?: any, onClose?: any }) => {
   const [step, setStep] = useState(1);
@@ -202,7 +202,7 @@ const CampaignsAddForm = ({ editData, onClose }: { editData?: any, onClose?: any
         });
 
         if (response?.success) {
-          revalidate("promotor-campaigns")                    
+          revalidate("promotor-campaigns")
           route.push("/promotor?status=upcoming")
 
           setTimeout(() => {
@@ -285,7 +285,7 @@ const FlashMessage = ({
 }) => {
   return (
     <Dialog open={open} onOpenChange={setOpen} >
-      <DialogContent className="max-w-md rounded-xl">       
+      <DialogContent className="max-w-md rounded-xl">
         <DialogHeader>
           <DialogTitle className="text-green-600">
             Campaign Created Successfully
@@ -459,7 +459,7 @@ const Step1 = ({
             Campaign Thumbnail
           </p>
           <div className="relative">
-          <img src={`${imageUrl}${formData?.thumbnail}`} className="aspect-3/2 w-full h-full object-cover rounded-xl" alt="Thumbnail"/>
+            <img src={`${imageUrl}${formData?.thumbnail}`} className="aspect-3/2 w-full h-full object-cover rounded-xl" alt="Thumbnail" />
             <div className="w-10-h-10 border rounded-full">
               <X className="h-5 w-5 text-white cursor-pointer absolute top-2 right-2 bg-red-500 p-1 rounded-full" onClick={removeThumbnail} />
             </div>
@@ -619,7 +619,10 @@ const Step2 = ({
         </div>
 
         <div className="bg-white border rounded-xl p-3 md:p-6 mb-6">
-          <p className="text-lg font-semibold ">Select Platforms *</p>
+          <div className="flex flex-col md:flex-row mb-3 md:mb-0 gap-2">
+            <p className="text-lg font-semibold ">Platform's Audio Link *</p>
+            <span className="text-sm text-primary">(Select a platform to input audio link)</span>
+          </div>
           <div className="flex items-center gap-5">
             <div className="w-full">
               <p className="text-md  mb-2">Tiktok</p>

@@ -66,11 +66,11 @@ const Navbar = ({ profile }: { profile: any }) => {
   const hasDarkBackground = darkBgRoutes.includes(pathname.split("/")[1]);
 
  useEffect(() => {
-    // Set or update role in localStorage whenever profile.role changes
+    
     if (profile?.role && typeof window !== 'undefined') {
-      const storedRole = localStorage.getItem('role');
+      const storedRole = Cookies.get('role');
       if (storedRole !== profile.role) {
-        localStorage.setItem('role', profile.role);
+        Cookies.set('role', profile.role);
       }
     }
   }, [profile?.role]); // Add profile.role to dependency array

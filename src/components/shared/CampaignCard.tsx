@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StatusBadge } from "./StatusBadge";
 import Image from "next/image";
 import { Gift } from "lucide-react";
@@ -105,16 +105,16 @@ const platformIcons: Record<string, string> = {
 };
 
 const CampaignCard = ({ campaign, label, profile }: CampaignCardProps) => {
+      const [role, setRole] = useState<string | null>(null);
+    useEffect(() => {
+        setRole(Cookies.get("role") || null);
+    }, []);
 
   const progress = campaign?.campaignAmount
     ? Math.round(
       (campaign?.totalPaidOutAmount / campaign?.campaignAmount) * 100
     )
     : 0;
-
-
-
-  const role = typeof window !== 'undefined' ? localStorage.getItem('role') : null;
 
   return (
     <div className="rounded-2xl relative shadow-md grid grid-cols-1 gap-4 bg-[#FFF8F3]">
