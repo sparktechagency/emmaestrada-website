@@ -63,11 +63,11 @@ const CampaignData = ({ campaign: data }: any) => {
             <div className="p-5  glassBg shadow-lg!  font-semibold flex flex-col gap-5 md:flex-row justify-between">
                 <div className="">
                     <p className='text-xl'>Track Title</p>
-                    <p className="text-wrap text-gray-500">{data?.trackTitle} Bayziud 11</p>
+                    <p className="text-wrap text-gray-500">{data?.trackTitle}</p>
                 </div>
                 <div className="">
                     <p className='text-xl'>Track Artist</p>
-                    <p className="text-wrap text-gray-500">{data?.artistName}S S Md. Bayzid</p>
+                    <p className="text-wrap text-gray-500">{data?.artistName}</p>
                 </div>
             </div>
             <p className="font-semibold  text-2xl mt-7 mb-6">Assets</p>
@@ -77,12 +77,12 @@ const CampaignData = ({ campaign: data }: any) => {
 
             <p className="font-semibold  text-2xl mt-7 mb-6">Audio Link</p>
             <div className="p-5  glassBg shadow-lg!  font-semibold">
-                {!data?.assets?.tiktokAudioLink && <div className="">
+                {data?.assets?.tiktokAudioLink && <div className="">
                     <p className='text-gray-500'>Tiktok:</p>
                     <a href={data?.assets?.tiktokAudioLink} className="text-wrap text-blue-500">{data?.assets?.tiktokAudioLink} </a>
                 </div>}
                 
-                 {!data?.assets?.instagram_audio_link && <div className="">
+                 {data?.assets?.instagram_audio_link && <div className="">
                     <p className='text-gray-500'>Instagram:</p>
                     <a href={data?.assets?.instagram_audio_link} className="text-wrap text-blue-500">{data?.assets?.instagram_audio_link} </a>
                 </div>}                
