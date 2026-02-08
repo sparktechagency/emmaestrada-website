@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { Gift } from "lucide-react";
+import { Gift, Plus } from "lucide-react";
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -145,7 +145,7 @@ const UpcomingCampaignCard = ({ campaign }: { campaign?: any }) => {
                 {/* ACTIONS */}
                 <div >
                     <Button variant="outline" className="w-full py-5 text-primary! my-4" onClick={() => handleAddBudget()}>
-                        Add Budget
+                       <Plus /> Add Budget
                     </Button>
 
                     <Link href={`promotor/campaigns/${campaign?._id}`}>
