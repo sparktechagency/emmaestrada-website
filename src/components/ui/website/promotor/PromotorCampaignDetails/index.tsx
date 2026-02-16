@@ -12,39 +12,41 @@ import { DropDownMenu } from './DropDownMenu'
 import { imageUrl } from '@/constants'
 import getProfile from '@/utils/getProfile'
 
-const PromotorCampaignDetails = async({data, status, openTab }: {data:any,  status?: string, openTab?: string }) => {   
+const PromotorCampaignDetails = async ({ data, status, openTab }: { data: any, status?: string, openTab?: string }) => {
     const profile = await getProfile()
     return (
         <Container>
             <div className="glassBg p-4 my-10">
-            <div className="flex justify-end mt-5">
-            {profile?._id == data?.userId?._id.toString() && <DropDownMenu campaignData={data} />}
-            </div>
-            <div className="relative w-full  px-0 py-4 md:p-8 flex flex-col items-center">
-                <div className="w-full">
-                    {/* Image */}                    
-                        <img
-                            src={`${imageUrl}${data?.thumbnail}`}                            
-                            alt="Feel The Vibe"                           
-                            className="w-full md:w-3/5 h-[250px] mx-auto rounded-2xl object-cover"
-                        />       
-                        
-
-                    {/* Title */}
-                    <h1 className="text-center text-2xl md:text-3xl font-bold mt-4 text-primary">
-                        {data?.title}
-                    </h1>
-
-                    {/* Info Banner */}
-                    <div className="text-blue-500 text-md text-center pt-4">
-                        Only views after you submit count towards payout. Submit as soon as you post to get paid for all of your views.
-                    </div>
-                   {profile?._id == data?.userId?._id.toString() && <ViewAllSubmittionBtn />}
-                    {openTab ? <CampaignSubmission status={status} campaignId={data?._id}/> :
-                        <CampaignData campaign={data} />
-                    }                   
+                <div className="flex justify-end mt-5">
+                    {profile?._id == data?.userId?._id.toString() && <DropDownMenu campaignData={data} />}
                 </div>
-            </div >
+                <div className="relative w-full  px-0 py-4 md:p-8 flex flex-col items-center">
+                    <div className="w-full">
+                        {/* Image */}
+                        <Image
+                            height={500}
+                            width={1100}
+                            src={`${imageUrl}${data?.thumbnail}`}
+                            alt="Feel The Vibe"
+                            className="aspect-3/1 mx-auto object-cover rounded-2xl"
+                        />
+
+
+                        {/* Title */}
+                        <h1 className="text-center text-2xl md:text-3xl font-bold mt-4 text-primary">
+                            {data?.title}
+                        </h1>
+
+                        {/* Info Banner */}
+                        <div className="text-blue-500 text-md text-center pt-4">
+                            Only views after you submit count towards payout. Submit as soon as you post to get paid for all of your views.
+                        </div>
+                        {profile?._id == data?.userId?._id.toString() && <ViewAllSubmittionBtn />}
+                        {openTab ? <CampaignSubmission status={status} campaignId={data?._id} /> :
+                            <CampaignData campaign={data} />
+                        }
+                    </div>
+                </div >
             </div>
         </Container>
     )

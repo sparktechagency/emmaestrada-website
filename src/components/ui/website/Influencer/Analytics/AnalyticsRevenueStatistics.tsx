@@ -32,8 +32,7 @@ interface RevenueItem {
 
 export default function AnalyticsRevenueStatistics() {
   const currentYear = new Date().getFullYear();
-
-  // 👉 dynamic years: current year + previous 4
+  
   const years = useMemo(
     () => Array.from({ length: 5 }, (_, i) => currentYear - i),
     [currentYear]

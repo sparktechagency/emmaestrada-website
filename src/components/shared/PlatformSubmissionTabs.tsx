@@ -1,18 +1,15 @@
-import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
 import Image from 'next/image';
 
 import { imageUrl } from '@/constants';
+import PendingDropDown from '../ui/website/promotor/PromotorCampaignDetails/CampaignSubmission/PendingDropDown';
 import ProfileImageWithUserData from '../ui/website/promotor/PromotorCampaignDetails/CampaignSubmission/ProfileImageWithUserData';
 import ReelsAnalyticsChart from '../ui/website/promotor/PromotorCampaignDetails/CampaignSubmission/ReelsAnalyticsChart';
-import PendingDropDown from '../ui/website/promotor/PromotorCampaignDetails/CampaignSubmission/PendingDropDown';
-import { formatChatTime } from './FormatChatTime ';
 import { FormatDate } from './FormatDate';
 
 const PlatformSubmissionTabs = ({ submissions, connectedPlatforms = ["instagram", "tiktok", "youtube"] }: any) => {
-        
+
     const submissionsByInfluencer = submissions.reduce((acc: any, submission: any) => {
         const influencerId = submission.influencerId._id;
         if (!acc[influencerId]) {

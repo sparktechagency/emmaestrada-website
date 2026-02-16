@@ -18,16 +18,18 @@ const CampaignsDetails = async ({ data }: { data: any }) => {
     const user = await getProfile();
 
     console.log("data", data);
-    
+
     return (
         <Container>
             <div className="glassBg p-4 my-10">
                 {/* Image */}
                 <div className="w-full rounded-2xl overflow-hidden">
-                    <img
+                    <Image
+                        height={500}
+                        width={1100}
                         src={`${imageUrl}${data?.thumbnail}`}
                         alt="Feel The Vibe"
-                        className="w-full md:w-3/5 h-[250px] mx-auto object-cover rounded-2xl"
+                        className="aspect-3/1 mx-auto object-cover rounded-2xl"
                     />
                 </div>
 
@@ -48,7 +50,7 @@ const CampaignsDetails = async ({ data }: { data: any }) => {
                     <span className="text-3xl font-semibold">${data?.remainingAmount}</span>
                     <span className="text-slate-400  text-xl font-medium">of <span className='text-primary'>${data?.totalPaidOutAmount}</span> paid out</span>
                 </div>
-                <Progress  value={(data?.totalPaidOutAmount / data?.remainingAmount) * 100} className="h-3 mt-2" />
+                <Progress value={(data?.totalPaidOutAmount / data?.remainingAmount) * 100} className="h-3 mt-2" />
                 <div className="p-5 mt-7 glassBg shadow-lg!">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center  items-start ">
                         <div className="text-start">
@@ -91,9 +93,9 @@ const CampaignsDetails = async ({ data }: { data: any }) => {
                 <div className="p-5  glassBg shadow-lg! text-gray-500 font-semibold flex items-center gap-5">
 
                     {data?.assets?.contentRequirement && data?.assets?.contentRequirement?.map((item: string) => <span key={item} className="text-xl">{item}</span>)}
-                </div>                
-              {data?.status === "active" &&  <SubmitButton user={user} />}
-                
+                </div>
+                {data?.status === "active" && <SubmitButton user={user} />}
+
 
                 {/* <div className="flex justify-end mt-5">
                     <Modal

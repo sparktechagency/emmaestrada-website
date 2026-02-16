@@ -95,8 +95,9 @@ const Navbar = ({ profile }: { profile: any }) => {
     { name: "Home", href: "/" },
     { name: "About us", href: "/about-us" },
     { name: "Contact us", href: "/contact" },
-    // { name: "My Hub", href: "/creator" },
+    { name: "My Hub", href: profile?.role === "CREATOR" ? "/creator" : "/promotor" },
   ];
+  
 
   const isActive = (href: string) => pathname === href;
   if (!mounted) return null;
