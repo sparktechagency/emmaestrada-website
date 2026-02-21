@@ -18,7 +18,7 @@ const ArtAndInfluencerBanner = () => {
 
                     <div className="lg:col-span-9 pt-4 order-first lg:order-none">
                         <h1 className="title">
-                            Are you an <span className="text-primary">Music Promotor</span> or an <span className="text-primary">Creator</span>?
+                            Are you a <span className="text-primary">Music Promotor</span> or a <span className="text-primary">Creator</span>?
                         </h1>
                     </div>
                     <div className="lg:col-span-4 rounded-3xl overflow-hidden card-shadow bg-gray-400 h-[200px]">
@@ -29,13 +29,13 @@ const ArtAndInfluencerBanner = () => {
                     </div>
 
                     <div className="lg:col-span-5 rounded-3xl  p-6 sm:p-8 glassBg  flex flex-col justify-center ">
-                        <h2 className="text-2xl font-bold text-gray-800 mb-2">As an Creator</h2>
+                        <h2 className="text-2xl font-bold text-gray-800 mb-2">As a Creator</h2>
                         <p className="text-lg text-gray-600">
                             Join campaigns, create content, get paid, and grow your influence by promoting music you love.
                         </p>
                     </div>
                     <div className="lg:col-span-7 rounded-3xl  p-6 sm:p-8 glassBg flex flex-col justify-center ">
-                        <h2 className="text-2xl font-bold text-gray-800 mb-2">As an Promotor</h2>
+                        <h2 className="text-2xl font-bold text-gray-800 mb-2">As a Promotor</h2>
                         <p className="text-lg text-gray-600">
                             Promote your music, collaborate with influencers, track performance, and grow your audience globally.
                         </p>

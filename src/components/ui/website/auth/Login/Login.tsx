@@ -98,7 +98,7 @@ export default function Login() {
                 sizes="56px"
               />
             </div>
-            <h2 className="text-2xl font-bold text-center">Sign in to Whop</h2>
+            <h2 className="text-2xl font-bold text-center">Sign in to WeSound</h2>
           </CardHeader>
 
           {/* Card Content */}

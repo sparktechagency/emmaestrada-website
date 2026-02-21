@@ -21,7 +21,8 @@ const socialPlatforms = [
         icon: Instagram,
         color: 'text-pink-600',
         bgColor: 'bg-pink-50',
-        link: 'https://rakibur5000.binarybards.online/api/v1/socialIntegrations/instagram/connect',
+        link: 'https://api.wesound.app/api/v1/socialIntegrations/instagram/connect',
+      
     },
     {
         id: '2',
@@ -30,7 +31,7 @@ const socialPlatforms = [
         icon: Youtube,
         color: 'text-red-600',
         bgColor: 'bg-red-50',
-        link: 'https://rakibur5000.binarybards.online/api/v1/socialIntegrations/youtube/connect',
+        link: 'https://api.wesound.app/api/v1/socialIntegrations/youtube/connect',
     },
     {
         id: '3',
@@ -39,7 +40,7 @@ const socialPlatforms = [
         icon: Music2,
         color: 'text-black',
         bgColor: 'bg-gray-50',
-        link: 'https://rakibur5000.binarybards.online/api/v1/socialIntegrations/tiktok/connect',
+        link: 'https://api.wesound.app/api/v1/socialIntegrations/tiktok/connect',
     },
 ]
 

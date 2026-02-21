@@ -87,7 +87,7 @@ export default function Signup() {
           {/* Card Header */}
           <CardHeader className="flex flex-col items-center space-y-3">
             <img src="/logo.png" className='w-14 h-14' alt="Logo" />
-            <h2 className="text-2xl font-bold text-center">Welcome to Whop</h2>
+            <h2 className="text-2xl font-bold text-center">Welcome to WeSound</h2>
           </CardHeader>
 
           {/* Card Content */}
