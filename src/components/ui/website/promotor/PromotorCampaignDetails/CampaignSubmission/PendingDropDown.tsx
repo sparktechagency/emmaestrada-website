@@ -1,7 +1,7 @@
 "use client"
 
 import { Check, CircleAlert, Menu, X } from "lucide-react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -21,7 +21,7 @@ import ReviewModal from "@/components/shared/ReviewModal"
 import { myFetch } from "@/utils/myFetch"
 import { toast } from "sonner"
 import { revalidate } from "@/helpers/revalidateHelper"
-import { useSearchParams } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 
 
 const PendingDropDown = ({ submission }: { submission: any }) => {
@@ -30,8 +30,15 @@ const PendingDropDown = ({ submission }: { submission: any }) => {
     const [openReview, setOpenReview] = useState(false);
 
     const searchParams = useSearchParams();
-
     const status = searchParams.get("status");
+    const router = useRouter();
+
+    useEffect(()=>{
+    router.refresh();
+    },[status])
+
+
+
     const handleAcceptSubmission = async () => {
         try {
             const response = await myFetch(`/submissions/update-status/${submission?._id}`, {
