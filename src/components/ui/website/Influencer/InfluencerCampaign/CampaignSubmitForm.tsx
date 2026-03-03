@@ -115,6 +115,8 @@ const CampaignSubmitForm = ({ user, closeModal, setOpenAccVerifyModal, campaignI
             if (res?.success) {
                 toast.success("Campaign submitted successfully");
                 closeModal();
+            }{
+                toast.error(res?.message);
             }
         } catch (error) {
             console.error("Error submitting campaign:", error);
