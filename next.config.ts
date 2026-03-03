@@ -28,11 +28,11 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'images.pexels.com',       
+        hostname: 'images.pexels.com',
       },
       {
         protocol: 'https',
-        hostname: 'api.wesound.app',       
+        hostname: 'api.wesound.app',
       },
     ],
     dangerouslyAllowLocalIP: process.env.NODE_ENV === 'development' ? true : false,  // ← Correct: top-level under images
@@ -43,6 +43,7 @@ const nextConfig = {
     serverActions: {
       bodySizeLimit: '500mb',
     },
+    proxyClientMaxBodySize: '500mb'
   },
 
   eslint: {
