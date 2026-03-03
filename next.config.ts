@@ -41,7 +41,7 @@ const nextConfig = {
   experimental: {
     serverSourceMaps: false,
     serverActions: {
-      bodySizeLimit: '10mb',
+      bodySizeLimit: '500mb',
     },
   },
 

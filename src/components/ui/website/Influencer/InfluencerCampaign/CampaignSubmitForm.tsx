@@ -131,8 +131,7 @@ const CampaignSubmitForm = ({ user, closeModal, setOpenAccVerifyModal, campaignI
                     Only views after you submit count towards payout. Submit as soon as you post to get paid for all of your views.
                 </p>
             </div>
-
-            {/* Warning message for unconnected platforms */}
+            
             {connectedPlatforms.size === 0 && (
                 <div className="flex items-start gap-2 mt-2 p-3 bg-red-200 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-md mb-2">
                     <AlertCircle className="h-4 w-4 text-orange-600 dark:text-orange-400 mt-0.5 flex-shrink-0" />
@@ -144,7 +143,6 @@ const CampaignSubmitForm = ({ user, closeModal, setOpenAccVerifyModal, campaignI
                     </div>
                 </div>
             )}
-
 
             <Form {...form}>
                 <div className="space-y-4">
