@@ -12,14 +12,14 @@ import { Sparkles, Megaphone, DollarSign } from 'lucide-react';
 const TIMELINE_STEPS = [
     {
         step: 1,
-        title: "Create Campaign",
+        title: "Create Campaigns",
         description: "Upload your track, set your goals and budget, define your audience, and let our platform help you reach the right listeners, grow your fanbase, and amplify your music to the next level.",
         imageUrl: "https://media.self.com/photos/5e70f72443731c000882cfe7/4:3/w_2560%2Cc_limit/GettyImages-125112134.jpg",
         icon: Sparkles,
     },
     {
         step: 2,
-        title: "Creators Promote",
+        title: "Promoters",
         description: "Our network of vetted influencers and curators will promote your music across various platforms, ensuring high-quality placements and genuine engagement with potential new fans.",
         imageUrl: "https://img.freepik.com/free-photo/joyful-pleased-music-producer-enjoying-his-high-quality-track-control-room_482257-93613.jpg?semt=ais_hybrid&w=740&q=80",
         icon: Megaphone,
@@ -52,7 +52,7 @@ export default function BehindProcess() {
 
                     <div className="md:w-1/2 flex items-center pt-3">
                         <p className="text-2xl leading-12 text-white">
-                            Discover how our platform helps music creators and creators
+                            Discover how our platform helps music creators and content creators
                             connect, grow, and shine
                         </p>
                     </div>

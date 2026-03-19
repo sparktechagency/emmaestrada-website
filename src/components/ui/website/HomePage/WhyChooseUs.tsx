@@ -27,7 +27,7 @@ const WhyChooseUs = () => {
                 <div className="w-full col-span-2 flex flex-col justify-between md:gap-5">
                     <div className='mb-4'>
                         <h1 className="text-3xl md:text-5xl font-bold mb-3">
-                            Reason For Chosen <span className="text-primary">Us</span>
+                            Reason For Choosing <span className="text-primary">Us</span>
                         </h1>
                         <p className="text-lg md:text-xl text-slate-500 max-w-6xl mx-auto">
                             Explore our handpicked campaigns that are driving real impact, inspiring communities,
