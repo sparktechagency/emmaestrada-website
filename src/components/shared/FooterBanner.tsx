@@ -54,7 +54,7 @@ const FooterBanner = () => {
                         </Link>
                         <Link href="/login">
                         <button className="w-full sm:w-auto px-10 py-4 bg-primary text-white text-lg font-semibold rounded-full hover:bg-orange-600 transition duration-300 shadow-xl transform ">
-                            Become a Influencer
+                            Become an Influencer
                         </button></Link>
                     </div>
                 </div>
